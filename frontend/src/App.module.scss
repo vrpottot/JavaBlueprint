@@ -1,0 +1,65 @@
+@use './styles/variables' as *;
+@use './styles/mixins' as *;
+
+.appContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+.mainLayout {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  position: relative;
+}
+
+.centerArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--bg-canvas);
+}
+
+// Collapsed sidebar strip triggers
+.collapsedTrigger {
+  width: 20px;
+  height: 100%;
+  background-color: var(--bg-panel);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all $transition-fast;
+
+  &:hover {
+    background-color: var(--bg-panel-hover);
+    color: var(--text-primary);
+  }
+
+  &.right {
+    border-right: none;
+    border-left: 1px solid var(--border-color);
+  }
+}
+
+.verticalText {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

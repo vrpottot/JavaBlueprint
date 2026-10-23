@@ -1,0 +1,71 @@
+// JavaScope Design System Variables
+// Theme: Dark Professional Developer IDE
+
+// Backgrounds
+$bg-main: #10151E;
+$bg-canvas: #0B111B;
+$bg-panel: #151D29;
+$bg-panel-secondary: #1B2533;
+$bg-panel-hover: #222E3F;
+$bg-active: #253347;
+$bg-header: #131A24;
+$bg-input: #0E141D;
+$bg-card: #182230;
+
+// Borders & Dividers
+$border-color: #2A3647;
+$border-light: #344357;
+$border-focus: #4294F7;
+
+// Typography Colors
+$text-primary: #E6EDF7;
+$text-secondary: #8D9BAF;
+$text-muted: #5E6D82;
+$text-disabled: #414D5E;
+
+// Accent & Semantic Colors
+$accent-blue: #4294F7;
+$accent-blue-hover: #5DA5F9;
+$accent-blue-glow: rgba(66, 148, 247, 0.2);
+
+$accent-purple: #A879F8;
+$accent-purple-hover: #B992F9;
+$accent-purple-glow: rgba(168, 121, 248, 0.2);
+
+$accent-green: #39C98A;
+$accent-green-hover: #4ED197;
+$accent-green-glow: rgba(57, 201, 138, 0.2);
+
+$accent-orange: #F4A34B;
+$accent-orange-hover: #F6B165;
+$accent-orange-glow: rgba(244, 163, 75, 0.2);
+
+$accent-red: #F16C70;
+$accent-red-hover: #F38185;
+$accent-red-glow: rgba(241, 108, 112, 0.2);
+
+// Block Type Colors
+$node-method: #A879F8;
+$node-variable: #4294F7;
+$node-condition: #F4A34B;
+$node-loop: #9366E8;
+$node-operation: #388BFD;
+$node-return: #39C98A;
+$node-error: #F16C70;
+
+// Sizing & Spacing
+$header-height: 46px;
+$sidebar-width: 220px;
+$analysis-width: 290px;
+$radius-xs: 3px;
+$radius-sm: 5px;
+$radius-md: 7px;
+$radius-lg: 9px;
+
+// Fonts
+$font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+// Transitions
+$transition-fast: 0.15s ease;
+$transition-normal: 0.22s ease;

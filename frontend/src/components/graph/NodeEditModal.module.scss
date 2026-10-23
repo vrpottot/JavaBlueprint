@@ -1,0 +1,177 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContent {
+  width: 480px;
+  max-width: 90vw;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-lg;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalFadeIn 0.15s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: var(--bg-panel-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.closeBtn {
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: $radius-sm;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-panel-hover);
+  }
+}
+
+.modalBody {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.input {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-sm;
+  padding: 8px 10px;
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color $transition-fast;
+
+  &:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+}
+
+.textarea {
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-sm;
+  padding: 10px;
+  color: var(--text-primary);
+  font-family: $font-mono;
+  font-size: 12.5px;
+  line-height: 1.45;
+  outline: none;
+  resize: vertical;
+  transition: border-color $transition-fast;
+
+  &:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+}
+
+.modalFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: var(--bg-panel-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.footerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.saveBtn {
+  @include ide-button;
+  background-color: var(--accent-blue);
+  color: #FFFFFF;
+
+  &:hover {
+    background-color: #1D4ED8;
+  }
+}
+
+.cancelBtn {
+  @include ide-button;
+  background-color: transparent;
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+
+  &:hover {
+    background-color: var(--bg-panel-hover);
+    color: var(--text-primary);
+  }
+}
+
+.deleteBtn {
+  @include ide-button;
+  background-color: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.3);
+  color: var(--accent-red);
+
+  &:hover {
+    background-color: rgba(220, 38, 38, 0.2);
+  }
+}

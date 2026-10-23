@@ -1,0 +1,292 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.baseNode {
+  min-width: 260px;
+  max-width: 340px;
+  background-color: var(--bg-panel);
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-md;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  color: var(--text-primary);
+  font-family: $font-sans;
+  transition: all $transition-fast;
+  position: relative;
+  overflow: visible;
+
+  &:hover {
+    border-color: var(--border-light);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  &.selected,
+  &.highlighted {
+    border-color: var(--accent-blue) !important;
+    box-shadow: 0 0 0 2px rgba(66, 148, 247, 0.3), 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  &.hasWarning {
+    border-color: var(--accent-orange);
+  }
+
+  &.hasError {
+    border-color: var(--accent-red);
+  }
+}
+
+.nodeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background-color: var(--bg-panel-secondary);
+  border-top-left-radius: $radius-md - 1px;
+  border-top-right-radius: $radius-md - 1px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.typeIndicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.badge {
+  font-size: 9.5px;
+  font-family: $font-mono;
+  padding: 1px 5px;
+  border-radius: $radius-xs;
+  background-color: rgba(125, 125, 125, 0.08);
+  color: var(--text-secondary);
+  border: 1px solid rgba(125, 125, 125, 0.15);
+}
+
+.lineNum {
+  font-size: 10px;
+  font-family: $font-mono;
+  color: var(--text-muted);
+}
+
+.nodeBody {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.codeSnippet {
+  font-family: $font-mono;
+  font-size: 12px;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  padding: 6px 8px;
+  border-radius: $radius-sm;
+  border: 1px solid var(--border-color);
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.description {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.warningBox {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  color: var(--accent-orange);
+  background-color: rgba(244, 163, 75, 0.1);
+  border: 1px solid rgba(244, 163, 75, 0.3);
+  padding: 3px 6px;
+  border-radius: $radius-xs;
+  margin-top: 2px;
+}
+
+.errorBox {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  color: var(--accent-red);
+  background-color: rgba(241, 108, 112, 0.1);
+  border: 1px solid rgba(241, 108, 112, 0.3);
+  padding: 3px 6px;
+  border-radius: $radius-xs;
+  margin-top: 2px;
+}
+
+// Dark Mode Variants
+:global([data-theme="dark"]) {
+  .methodNode {
+    .typeIndicator { background-color: $node-method; box-shadow: 0 0 6px $accent-purple; }
+    .nodeHeader { border-left: 3px solid $node-method; }
+  }
+  .variableNode {
+    .typeIndicator { background-color: $node-variable; box-shadow: 0 0 6px $accent-blue; }
+    .nodeHeader { border-left: 3px solid $node-variable; }
+  }
+  .conditionNode {
+    .typeIndicator { background-color: $node-condition; box-shadow: 0 0 6px $accent-orange; }
+    .nodeHeader { border-left: 3px solid $node-condition; }
+  }
+  .loopNode {
+    .typeIndicator { background-color: $node-loop; box-shadow: 0 0 6px $node-loop; }
+    .nodeHeader { border-left: 3px solid $node-loop; }
+  }
+  .operationNode {
+    .typeIndicator { background-color: $node-operation; box-shadow: 0 0 6px $node-operation; }
+    .nodeHeader { border-left: 3px solid $node-operation; }
+  }
+  .returnNode {
+    .typeIndicator { background-color: $node-return; box-shadow: 0 0 6px $node-return; }
+    .nodeHeader { border-left: 3px solid $node-return; }
+  }
+}
+
+// Light Mode Variants (Exact match with reference image)
+:global([data-theme="light"]) {
+  .methodNode {
+    background-color: #FAF5FF;
+    border-color: #C084FC;
+    .nodeHeader {
+      background-color: #F3E8FF;
+      border-bottom-color: #E9D5FF;
+      color: #6B21A8;
+    }
+    .codeSnippet {
+      background-color: #FFFFFF;
+      border-color: #E9D5FF;
+      color: #3B0764;
+    }
+    .typeIndicator { background-color: #A855F7; }
+  }
+
+  .variableNode {
+    background-color: #EFF6FF;
+    border-color: #60A5FA;
+    .nodeHeader {
+      background-color: #DBEAFE;
+      border-bottom-color: #BFDBFE;
+      color: #1E40AF;
+    }
+    .codeSnippet {
+      background-color: #FFFFFF;
+      border-color: #BFDBFE;
+      color: #1E3A8A;
+    }
+    .typeIndicator { background-color: #3B82F6; }
+  }
+
+  .conditionNode {
+    background-color: #FFF7ED;
+    border-color: #FB923C;
+    .nodeHeader {
+      background-color: #FFEDD5;
+      border-bottom-color: #FED7AA;
+      color: #9A3412;
+    }
+    .codeSnippet {
+      background-color: #FFFFFF;
+      border-color: #FED7AA;
+      color: #7C2D12;
+    }
+    .typeIndicator { background-color: #F97316; }
+  }
+
+  .loopNode {
+    background-color: #FAF5FF;
+    border-color: #C084FC;
+    .nodeHeader {
+      background-color: #F3E8FF;
+      border-bottom-color: #E9D5FF;
+      color: #6B21A8;
+    }
+    .codeSnippet {
+      background-color: #FFFFFF;
+      border-color: #E9D5FF;
+      color: #3B0764;
+    }
+    .typeIndicator { background-color: #A855F7; }
+  }
+
+  .operationNode {
+    background-color: #EFF6FF;
+    border-color: #60A5FA;
+    .nodeHeader {
+      background-color: #DBEAFE;
+      border-bottom-color: #BFDBFE;
+      color: #1E40AF;
+    }
+    .codeSnippet {
+      background-color: #FFFFFF;
+      border-color: #BFDBFE;
+      color: #1E3A8A;
+    }
+    .typeIndicator { background-color: #3B82F6; }
+  }
+
+  .returnNode {
+    background-color: #ECFDF5;
+    border-color: #34D399;
+    .nodeHeader {
+      background-color: #D1FAE5;
+      border-bottom-color: #A7F3D0;
+      color: #065F46;
+    }
+    .codeSnippet {
+      background-color: #FFFFFF;
+      border-color: #A7F3D0;
+      color: #064E3B;
+    }
+    .typeIndicator { background-color: #10B981; }
+  }
+}
+
+// React Flow Handle Customization
+:global(.react-flow__handle) {
+  width: 9px !important;
+  height: 9px !important;
+  background-color: #4294F7 !important;
+  border: 2px solid var(--bg-panel) !important;
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: scale(1.35);
+  }
+}
+
+:global(.react-flow__handle-top) {
+  top: -5px !important;
+}
+
+:global(.react-flow__handle-bottom) {
+  bottom: -5px !important;
+}
+
+.branchLabels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4px;
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 600;
+
+  .yesLabel {
+    color: var(--accent-green);
+  }
+
+  .noLabel {
+    color: var(--accent-orange);
+  }
+}

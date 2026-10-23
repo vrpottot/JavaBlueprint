@@ -1,0 +1,98 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.editorContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-canvas);
+  border-right: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.header {
+  height: 32px;
+  padding: 0 10px;
+  background-color: var(--bg-panel-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fileName {
+  font-family: $font-mono;
+  font-size: 11.5px;
+  color: var(--text-primary);
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toggleGroup {
+  display: flex;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xs;
+  padding: 1px;
+}
+
+.toggleBtn {
+  font-size: 10.5px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+
+  &.active {
+    background-color: var(--bg-active);
+    color: var(--accent-blue);
+    font-weight: 600;
+  }
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  border-radius: $radius-xs;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-panel-hover);
+  }
+
+  &.success {
+    color: var(--accent-green);
+  }
+}
+
+.monacoWrapper {
+  flex: 1;
+  width: 100%;
+  height: calc(100% - 32px);
+  position: relative;
+  background-color: var(--bg-panel);
+}

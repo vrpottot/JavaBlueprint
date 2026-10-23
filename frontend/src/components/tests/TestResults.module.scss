@@ -1,0 +1,172 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.testsContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-panel);
+  overflow: hidden;
+}
+
+.header {
+  height: 32px;
+  padding: 0 10px;
+  background-color: var(--bg-panel-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rerunBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: $radius-xs;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-panel-hover);
+  }
+}
+
+.summaryCard {
+  padding: 10px 12px;
+  background-color: var(--bg-panel);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.summaryLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #16A34A;
+
+  &.running {
+    color: var(--accent-blue);
+  }
+}
+
+.summaryRight {
+  font-family: $font-mono;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+.progressBarTrack {
+  height: 6px;
+  background-color: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background-color: #16A34A;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+
+  &.running {
+    background-color: var(--accent-blue);
+    animation: progressIndeterminate 1.2s infinite ease-in-out;
+  }
+}
+
+@keyframes progressIndeterminate {
+  0% { transform: translateX(-100%) scaleX(0.2); }
+  50% { transform: translateX(0) scaleX(0.6); }
+  100% { transform: translateX(100%) scaleX(0.2); }
+}
+
+// Table styling matching screenshot
+.tableWrapper {
+  flex: 1;
+  overflow-y: auto;
+  @include custom-scrollbar;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  text-align: left;
+}
+
+.tableHead {
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-panel-secondary);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 5;
+
+  th {
+    padding: 6px 10px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: var(--bg-panel-hover);
+  }
+
+  td {
+    padding: 6px 10px;
+    color: var(--text-primary);
+  }
+}
+
+.testNameCell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: $font-mono;
+  font-size: 11.5px;
+}
+
+.statusSuccess {
+  color: #16A34A;
+  font-weight: 500;
+}
+
+.statusRunning {
+  color: var(--accent-blue);
+  font-weight: 500;
+}
+
+.durationCell {
+  font-family: $font-mono;
+  font-size: 11px;
+  color: var(--text-muted);
+}

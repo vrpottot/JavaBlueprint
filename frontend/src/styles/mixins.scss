@@ -1,0 +1,81 @@
+@use './variables' as *;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #253347;
+    border-radius: 4px;
+
+    &:hover {
+      background: #344357;
+    }
+  }
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin ide-panel-header {
+  height: 36px;
+  padding: 0 12px;
+  background-color: $bg-panel;
+  border-bottom: 1px solid $border-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $text-secondary;
+}
+
+@mixin ide-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-family: $font-sans;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all $transition-fast;
+  user-select: none;
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px $accent-blue-glow;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

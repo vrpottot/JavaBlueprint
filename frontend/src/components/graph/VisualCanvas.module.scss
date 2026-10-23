@@ -1,0 +1,165 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.canvasContainer {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  background-color: var(--bg-canvas);
+  overflow: hidden;
+}
+
+.canvasTopBar {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  right: 12px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.fileTabsGroup {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fileTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-sm;
+  padding: 5px 10px;
+  font-family: $font-mono;
+  font-size: 11.5px;
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.tabCloseBtn {
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.addTabBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 26px;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-sm;
+  color: var(--text-muted);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-panel-hover);
+  }
+}
+
+.canvasControlsPill {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 3px 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.pillBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: var(--text-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-panel-hover);
+  }
+}
+
+.zoomText {
+  font-family: $font-mono;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 0 4px;
+  user-select: none;
+}
+
+// Context Menu
+.contextMenu {
+  position: fixed;
+  z-index: 1000;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-md;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 4px;
+  min-width: 160px;
+  animation: menuFade 0.12s ease-out;
+}
+
+@keyframes menuFade {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.contextMenuItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--text-primary);
+  border-radius: $radius-xs;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: var(--bg-panel-hover);
+  }
+
+  &.danger {
+    color: var(--accent-red);
+
+    &:hover {
+      background-color: rgba(220, 38, 38, 0.1);
+    }
+  }
+}
+
+.contextDivider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 4px 0;
+}
