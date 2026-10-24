@@ -46,6 +46,7 @@ jobs:
         shell: bash
         env:
           DEPLOY_URL: https://javascope-api.193-233-246-241.sslip.io
+          WEB_URL: https://javascope.193-233-246-241.sslip.io
         run: |
           set -euo pipefail
           token=$(curl -fsS -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=javascope-deploy" | jq -r .value)
@@ -54,7 +55,8 @@ jobs:
           curl --fail-with-body --retry 2 -H "Authorization: Bearer $token" -H 'Content-Type: application/gzip' --data-binary @/tmp/javascope-release.tar.gz "$DEPLOY_URL/_deploy"
           for attempt in {1..90}; do
             revision=$(curl -fsS "$DEPLOY_URL/api/health" | jq -r .version || true)
-            if [[ "$revision" == "$GITHUB_SHA" ]]; then echo "Deployed $revision"; exit 0; fi
+            frontend_revision=$(curl -fsS "$WEB_URL/version.txt" || true)
+            if [[ "$revision" == "$GITHUB_SHA" && "$frontend_revision" == "$GITHUB_SHA" ]]; then echo "Deployed frontend and backend $revision"; exit 0; fi
             sleep 2
           done
           echo 'Deployment did not become healthy within 180 seconds'; exit 1

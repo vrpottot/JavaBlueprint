@@ -1,10 +1,18 @@
 # Deployment
 
-Topology: browser → Vercel static frontend + `/api` server function → HTTPS nginx on the VPS → Fastify on `127.0.0.1:3001` → isolated Docker Java jobs.
+Topology: browser → HTTPS nginx on the VPS → static Vite frontend and same-origin `/api` proxy → Fastify on `127.0.0.1:3001` → isolated Docker Java jobs.
 
-Backend address: `https://javascope-api.193-233-246-241.sslip.io`. This temporary DNS name resolves to the provided VPS. Replace it with an owned domain when available. nginx terminates TLS; certbot renews the certificate automatically. SSH credentials and API secrets are not in this repository.
+Frontend: **https://javascope.193-233-246-241.sslip.io**. Backend administration/health address: `https://javascope-api.193-233-246-241.sslip.io`. This temporary DNS name resolves to the provided VPS. Replace it with an owned domain when available. nginx terminates TLS; certbot renews the certificate automatically. SSH credentials and API secrets are not in this repository.
 
-## Vercel
+## Frontend on the VPS
+
+`deploy/nginx-frontend.conf` serves `/opt/javascope/current/frontend/dist` and proxies `/api/` directly to the local backend. It adds `X-Backend-Key` from `/etc/nginx/snippets/javascope-gateway.conf`; the browser never receives the secret. The snippet is generated locally from `/etc/javascope/backend.env` and has mode 600. Never run `nginx -T` in shared logs because that would print the secret include.
+
+Install the frontend configuration as `/etc/nginx/sites-available/javascope-web`, enable the matching symlink, validate with `nginx -t`, and reload nginx. Issue the certificate with `certbot --nginx -d javascope.193-233-246-241.sslip.io --redirect`. Certbot's renewal timer maintains both frontend and backend certificates. The API rate-limit zones must already be loaded from `deploy/nginx.conf`.
+
+The frontend is built with `VITE_API_URL=/api`. Hashed assets use immutable caching and gzip; HTML and `/version.txt` are revalidated. Missing assets return 404, while application routes fall back to `index.html`. Only the built `dist` directory is public. No Vercel account is needed for this deployment.
+
+## Optional Vercel alternative
 
 Import `vrpottot/JavaBlueprint`, production branch `main`, **Root Directory `frontend`**, framework Vite. `frontend/vercel.json` defines the build and API function duration. Set these server-side variables for Production (and Preview if previews should use the VPS):
 
@@ -20,7 +28,7 @@ Connect Vercel's Git integration to this repository to build/deploy after pushes
 ## VPS layout
 
 - `/opt/javascope/releases/<commit>/`: independently installed and tested releases.
-- `/opt/javascope/current`: atomic symlink to the active release.
+- `/opt/javascope/current`: atomic symlink to the active frontend/backend release; nginx follows it for static files.
 - `/opt/javascope/repository.git`: shallow Git cache used by the updater.
 - `/etc/javascope/backend.env`: production configuration and gateway key, mode 600.
 - `/etc/javascope/release.env`: current commit and content-tagged runner image.
@@ -45,11 +53,11 @@ An optional pull-based fallback is included in `javascope-update.timer`. It chec
 
 Each changed commit performs:
 
-1. `npm ci`, Java engine setup, TypeScript checks, `npm run test:ci`, build.
+1. Backend dependencies, Java engine setup, TypeScript checks, `npm run test:ci` and build; then frontend dependencies, lint and production build.
 2. Build a content-tagged runner image **only if its Dockerfile/JUnit content changed**.
 3. Start the candidate on port 3002. Run one small real API → AST edit → Big O → javac → JUnit → expected-output smoke scenario.
-4. Switch the current symlink and restart production only after those checks pass.
-5. Restore the previous release/image if the production health check fails. Keep five releases, including the active release and its predecessor.
+4. Switch the shared current symlink and restart production only after those checks pass. Check public frontend HTML, its commit marker and the same-origin API before accepting the release.
+5. Restore the previous frontend/backend release and runner image if a production health check fails. Keep five releases, including the active release and its predecessor.
 
 Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: the CI suite has 17 focused test groups, with complexity examples batched in one JVM call; the deployment smoke compiles one tiny project. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
 
@@ -69,7 +77,7 @@ systemctl start javascope-update.service
 certbot certificates
 ```
 
-`/api/health` reports the active Git revision. To perform a full check against production from the VPS without printing the secret:
+`/api/health` reports the active backend Git revision; the frontend exposes the same revision at `/version.txt`. GitHub Actions waits until both match the pushed commit. To perform a full check against production from the VPS without printing the secret:
 
 ```bash
 set -a
@@ -83,3 +91,12 @@ An initial release can be uploaded as a Git archive from an authenticated develo
 ## Measured checks
 
 On the allocated VPS, the first installation took 99 seconds including the initial runner image build; cached deployments took about 66–67 seconds. The short backend tests took about 23–26 seconds on its two cores, and the live HTTPS/javac/JUnit smoke took about 8–11 seconds. On the development machine, 23 full tests passed in 55 seconds, while the 17-group CI suite took about six seconds. Gateway and browser checks also passed. The first GitHub push authenticated successfully to the VPS through OIDC without a repository deploy key.
+
+
+To run the browser workflow against the live VPS instead of starting local servers:
+
+```bash
+E2E_BASE_URL=https://javascope.193-233-246-241.sslip.io CHROME_PATH=/path/to/chrome npm --prefix backend run test:browser
+```
+
+The browser test is a manual post-deployment check; it is not added to each automatic release.
