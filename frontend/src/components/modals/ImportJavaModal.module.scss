@@ -101,6 +101,28 @@
   color: var(--text-muted);
 }
 
+.optionsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 0;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent-blue);
+  cursor: pointer;
+}
+
+.optionLabel {
+  font-size: 13px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
 .fieldGroup {
   display: flex;
   flex-direction: column;

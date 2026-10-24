@@ -50,3 +50,112 @@ export async function api<T>(path: string, body?: unknown, method = body === und
 
   return result as T;
 }
+
+export interface AIProviderConfig {
+  provider?: 'gemini' | 'openai' | 'anthropic' | 'ollama' | 'openrouter' | 'omniroute';
+  apiKey?: string;
+  model?: string;
+  baseUrl?: string;
+}
+
+export interface AIChatResponse {
+  reply: string;
+  proposal?: import('../types').AIProposal;
+  parsedAnalysis?: {
+    complexity?: import('../types').ComplexityEstimate;
+    metrics?: Partial<import('../types').CodeMetrics>;
+    issues?: import('../types').CodeIssue[];
+    recommendations?: import('../types').CodeRecommendation[];
+  };
+}
+
+export interface AIProposalResponse extends ProjectSnapshot {
+  verification: Verification;
+  comparisonBaseline: string;
+}
+
+export async function sendAIChatMessage(
+  projectId: string,
+  message: string,
+  config?: AIProviderConfig
+): Promise<AIChatResponse> {
+  return await api<AIChatResponse>(`/projects/${projectId}/ai-chat`, { message, config });
+}
+
+export async function streamAIChatMessage(
+  projectId: string,
+  message: string,
+  onChunk: (deltaText: string) => void,
+  config?: AIProviderConfig
+): Promise<{ proposal?: import('../types').AIProposal; parsedAnalysis?: AIChatResponse['parsedAnalysis']; fullReply: string }> {
+  const res = await fetch(`/api/projects/${projectId}/ai-chat-stream`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, config }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Ошибка подключения к потоку ИИ (HTTP ${res.status}): ${err}`);
+  }
+
+  const reader = res.body?.getReader();
+  if (!reader) throw new Error('ReadableStream не поддерживается браузером');
+
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let finalResult: { proposal?: import('../types').AIProposal; parsedAnalysis?: AIChatResponse['parsedAnalysis']; fullReply: string } = { fullReply: '' };
+
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const events = buffer.split('\n\n');
+    buffer = events.pop() || '';
+
+    for (const evt of events) {
+      const lines = evt.split('\n');
+      let eventType = '';
+      let dataStr = '';
+
+      for (const line of lines) {
+        if (line.startsWith('event: ')) {
+          eventType = line.slice(7).trim();
+        } else if (line.startsWith('data: ')) {
+          dataStr = line.slice(6).trim();
+        }
+      }
+
+      if (eventType === 'chunk' && dataStr) {
+        try {
+          const parsed = JSON.parse(dataStr);
+          if (parsed.text) {
+            onChunk(parsed.text);
+          }
+        } catch {}
+      } else if (eventType === 'done' && dataStr) {
+        try {
+          finalResult = JSON.parse(dataStr);
+        } catch {}
+      } else if (eventType === 'error' && dataStr) {
+        try {
+          const parsed = JSON.parse(dataStr);
+          throw new Error(parsed.error || 'Ошибка в потоке ИИ');
+        } catch (e) {
+          throw e instanceof Error ? e : new Error(String(e));
+        }
+      }
+    }
+  }
+
+  return finalResult;
+}
+
+export async function submitAIProposal(
+  projectId: string,
+  proposal: import('../types').AIProposal
+): Promise<AIProposalResponse> {
+  return await api<AIProposalResponse>(`/projects/${projectId}/ai-proposals`, proposal);
+}
+

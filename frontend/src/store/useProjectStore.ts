@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import type { Node, Edge, NodeChange, EdgeChange } from '@xyflow/react';
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
-import type { FileItem, CodeIssue, CodeRecommendation, CodeMetrics, ComplexityEstimate, ConsoleLog, TestCase, BlockType, VisualBlockData } from '../types';
-import { api, type ProjectSnapshot, type SourceFile, type Analysis, type Verification } from '../services/api';
+import type { FileItem, CodeIssue, CodeRecommendation, CodeMetrics, ComplexityEstimate, ConsoleLog, TestCase, BlockType, VisualBlockData, AIProposal, ChatMessage } from '../types';
+import { api, type ProjectSnapshot, type SourceFile, type Analysis, type Verification, submitAIProposal, type AIProposalResponse, type AIChatResponse } from '../services/api';
 import { PALETTE_ITEMS } from '../lib/palette';
 
 const SAMPLE = `import java.util.Scanner;
@@ -24,6 +24,8 @@ public class Main {
 `;
 
 const emptyMetrics: CodeMetrics = { cyclomaticComplexity: 0, linesOfCode: 0, nestingDepth: 0, testCoverage: null, maintainabilityIndex: null };
+
+const INITIAL_CHAT_MESSAGES: ChatMessage[] = [];
 
 interface ProjectState {
   projectId: string | null;
@@ -81,8 +83,8 @@ interface ProjectState {
   applyOptimization: () => Promise<void>;
   revertOptimization: () => Promise<void>;
   runProgram: () => Promise<void>;
-  importJavaFile: (name: string, content: string) => Promise<void>;
-  importJavaFiles: (files: SourceFile[]) => Promise<void>;
+  importJavaFile: (name: string, content: string, replaceProject?: boolean) => Promise<void>;
+  importJavaFiles: (files: SourceFile[], replaceProject?: boolean) => Promise<void>;
   exportJavaFile: () => Promise<void>;
   setRunStdin: (value: string) => void;
   toggleTheme: () => void;
@@ -97,6 +99,12 @@ interface ProjectState {
   setShowAddBlockModal: (v: boolean) => void;
   clearConsole: () => void;
   addConsoleLog: (type: ConsoleLog['type'], message: string) => void;
+  commitAIProposal: (proposal: AIProposal) => Promise<AIProposalResponse>;
+  applyAIAnalysis: (analysis: AIChatResponse['parsedAnalysis']) => void;
+  chatMessages: ChatMessage[];
+  setChatMessages: (updater: ChatMessage[] | ((prev: ChatMessage[]) => ChatMessage[])) => void;
+  addChatMessage: (msg: ChatMessage) => void;
+  clearChatMessages: () => void;
 }
 
 let debounce: ReturnType<typeof setTimeout> | undefined;
@@ -348,17 +356,55 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         if (!get().isLoading) set({ isCompiling: false, isRunning: false });
       }),
 
-    importJavaFile: (name, content) => get().importJavaFiles([{ path: name, content }]),
+    importJavaFile: (name, content, replaceProject = false) => get().importJavaFiles([{ path: name, content }], replaceProject),
 
-    importJavaFiles: (files) =>
+    importJavaFiles: (files, replaceProject = false) =>
       busy(async () => {
-        const oldId = get().projectId;
-        const p = await api<ProjectSnapshot>('/projects/parse', { files });
-        accept(p, true);
-        set({ showImportModal: false });
-        await analysis();
-        if (oldId) void api(`/projects/${oldId}`, undefined, 'DELETE').catch(() => {});
-        log('success', `JavaParser: загружено файлов ${files.length}, узлов ${p.graph.nodes.length}.`);
+        const currentProjectId = get().projectId;
+        const currentFiles = get().sourceFiles;
+
+        if (replaceProject || !currentProjectId || currentFiles.length === 0) {
+          const oldId = currentProjectId;
+          const p = await api<ProjectSnapshot>('/projects/parse', { files });
+          accept(p, true);
+          set({ showImportModal: false });
+          await analysis();
+          if (oldId && oldId !== p.projectId) void api(`/projects/${oldId}`, undefined, 'DELETE').catch(() => {});
+          log('success', `Создан проект: загружено файлов ${files.length}, узлов ${p.graph.nodes.length}.`);
+        } else {
+          // Merge incoming files with existing project files so old files are kept
+          const fileMap = new Map<string, SourceFile>();
+          for (const f of currentFiles) {
+            fileMap.set(f.path, f);
+          }
+          for (const f of files) {
+            fileMap.set(f.path, f);
+          }
+          const mergedFiles = Array.from(fileMap.values());
+          const targetPath = files[files.length - 1]?.path || mergedFiles[0].path;
+
+          const updated = await api<ProjectSnapshot>(`/projects/${currentProjectId}/sources`, {
+            revision: get().revision,
+            files: mergedFiles,
+          }, 'PUT');
+
+          set({
+            activeFilePath: targetPath,
+            activeFileId: targetPath,
+            showImportModal: false,
+          });
+
+          accept(updated, true);
+
+          set({
+            activeFilePath: targetPath,
+            activeFileId: targetPath,
+            javaCode: mergedFiles.find((f) => f.path === targetPath)?.content || '',
+          });
+
+          await analysis();
+          log('success', `Файл(ы) успешно добавлен(ы) в проект (${files.map((f) => f.path).join(', ')}). Всего файлов: ${mergedFiles.length}.`);
+        }
       }),
 
     exportJavaFile: () =>
@@ -415,5 +461,83 @@ export const useProjectStore = create<ProjectState>((set, get) => {
           { id: crypto.randomUUID(), timestamp: new Date().toLocaleTimeString(), type, message },
         ],
       }),
+
+    commitAIProposal: async (proposal: AIProposal) => {
+      if (!get().projectId) throw new Error('Проект не инициализирован. Импортируйте Java-код.');
+      set({ isLoading: true, error: null });
+      try {
+        const res = await submitAIProposal(get().projectId!, proposal);
+        accept(res);
+        set({ isOptimized: true, codeViewMode: 'optimized' });
+        await analysis();
+        log('success', `ИИ-предложение успешно верифицировано и применено! Результат: ${res.verification.comparison.status}`);
+        return res;
+      } catch (err: unknown) {
+        fail(err);
+        throw err;
+      } finally {
+        set({ isLoading: false });
+      }
+    },
+
+    applyAIAnalysis: (analysis) => {
+      if (!analysis) return;
+      set((state) => {
+        const nextIssues = analysis.issues && analysis.issues.length > 0
+          ? analysis.issues.map((iss, idx) => ({
+              ...iss,
+              id: iss.id || `ai-issue-${idx + 1}-${Date.now()}`,
+              level: iss.level || 'medium',
+              file: iss.file || state.activeFilePath || 'Main.java',
+              line: iss.line ?? 1,
+              resolved: false,
+            }))
+          : state.issues;
+
+        const nextRecs = analysis.recommendations && analysis.recommendations.length > 0
+          ? analysis.recommendations.map((rec, idx) => ({
+              ...rec,
+              id: rec.id || `ai-rec-${idx + 1}-${Date.now()}`,
+              impact: rec.impact || 'medium',
+              tag: rec.tag || 'ИИ-рекомендация',
+            }))
+          : state.recommendations;
+
+        const nextMetrics = analysis.metrics
+          ? { ...state.metrics, ...analysis.metrics }
+          : state.metrics;
+
+        const nextComplexity = analysis.complexity
+          ? {
+              current: analysis.complexity.current || state.complexity.current,
+              optimized: analysis.complexity.optimized || state.complexity.optimized,
+              speedup: analysis.complexity.speedup || state.complexity.speedup,
+              explanation: analysis.complexity.explanation || state.complexity.explanation,
+            }
+          : state.complexity;
+
+        return {
+          issues: nextIssues,
+          recommendations: nextRecs,
+          metrics: nextMetrics,
+          complexity: nextComplexity,
+        };
+      });
+      log('info', 'Вкладка «Сводка» (Проблемы, Рекомендации, Метрики) обновлена данными от ИИ');
+    },
+
+    chatMessages: INITIAL_CHAT_MESSAGES,
+
+    setChatMessages: (updater) =>
+      set((s) => ({
+        chatMessages: typeof updater === 'function' ? updater(s.chatMessages) : updater,
+      })),
+
+    addChatMessage: (msg) =>
+      set((s) => ({
+        chatMessages: [...s.chatMessages, msg],
+      })),
+
+    clearChatMessages: () => set({ chatMessages: INITIAL_CHAT_MESSAGES }),
   };
 });

@@ -9,6 +9,7 @@ import { analyze } from './services/analyzer.js';
 import { ApiError } from './services/errors.js';
 import type { VerifyRequest } from './types/index.js';
 import { timingSafeEqual } from 'node:crypto';
+import { processAIChatRequest, streamAIChatRequest } from './services/aiService.js';
 
 const Strict = { additionalProperties: false };
 const File = Type.Object({ path: Type.String({ minLength: 6, maxLength: 240 }), content: Type.String({ maxLength: 2097152 }) }, Strict);
@@ -147,6 +148,71 @@ export function buildApp(options: { engine?: JavaEngine; runner?: Runner; store?
     const updated = store.update(p.id, request.body.revision, candidate);
     // Candidate verification compares against the immediate predecessor, not initial upload.
     return { ...snapshot(updated), verification, comparisonBaseline: 'previous_revision' };
+  });
+  const AIChatBody = Type.Object({
+    message: Type.String({ minLength: 1, maxLength: 50000 }),
+    config: Type.Optional(Type.Object({
+      provider: Type.Optional(Type.Union([Type.Literal('gemini'), Type.Literal('openai'), Type.Literal('anthropic'), Type.Literal('ollama'), Type.Literal('openrouter'), Type.Literal('omniroute')])),
+      apiKey: Type.Optional(Type.String({ maxLength: 500 })),
+      model: Type.Optional(Type.String({ maxLength: 100 })),
+      baseUrl: Type.Optional(Type.String({ maxLength: 500 })),
+    }, Strict)),
+  }, Strict);
+  app.post<{ Params: Static<typeof Params>; Body: Static<typeof AIChatBody> }>('/api/projects/:id/ai-chat', {
+    schema: { params: Params, body: AIChatBody },
+  }, async request => {
+    const p = store.get(request.params.id);
+    const aiContext = {
+      projectId: p.id,
+      revision: p.revision,
+      files: p.result.files,
+      ir: { nodes: p.result.nodes, edges: p.result.edges },
+      analysis: analyze(p.result),
+      verification: p.verification ?? null,
+    };
+    return await processAIChatRequest(aiContext, request.body.message, request.body.config);
+  });
+  app.post<{ Params: Static<typeof Params>; Body: Static<typeof AIChatBody> }>('/api/projects/:id/ai-chat-stream', {
+    schema: { params: Params, body: AIChatBody },
+  }, async (request, reply) => {
+    const p = store.get(request.params.id);
+    const aiContext = {
+      projectId: p.id,
+      revision: p.revision,
+      files: p.result.files,
+      ir: { nodes: p.result.nodes, edges: p.result.edges },
+      analysis: analyze(p.result),
+      verification: p.verification ?? null,
+    };
+
+    reply.raw.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache, no-transform',
+      'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*',
+    });
+
+    try {
+      const result = await streamAIChatRequest(
+        aiContext,
+        request.body.message,
+        (delta) => {
+          reply.raw.write(`event: chunk\ndata: ${JSON.stringify({ text: delta })}\n\n`);
+        },
+        request.body.config
+      );
+
+      reply.raw.write(`event: done\ndata: ${JSON.stringify({
+        proposal: result.proposal,
+        parsedAnalysis: result.parsedAnalysis,
+        fullReply: result.fullReply,
+      })}\n\n`);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      reply.raw.write(`event: error\ndata: ${JSON.stringify({ error: msg })}\n\n`);
+    } finally {
+      reply.raw.end();
+    }
   });
   return app;
 }

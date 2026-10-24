@@ -11,6 +11,7 @@ export const ImportJavaModal: React.FC = () => {
   const isLoading = useProjectStore((s) => s.isLoading);
   const error = useProjectStore((s) => s.error);
   const [fileError, setFileError] = useState<string | null>(null);
+  const [keepExisting, setKeepExisting] = useState<boolean>(true);
 
   const [filename, setFilename] = useState('PaymentGateway.java');
   const [content, setContent] = useState(`package com.example;
@@ -37,7 +38,9 @@ public class PaymentGateway {
     setFileError(null);
     const uploaded = Array.from(e.target.files || []);
     if (uploaded.length > 1) {
-      void Promise.all(uploaded.map(async f => ({ path: f.name, content: await f.text() }))).then(importJavaFiles).catch(() => setFileError('Не удалось прочитать файлы. Выберите их повторно.'));
+      void Promise.all(uploaded.map(async f => ({ path: f.name, content: await f.text() })))
+        .then((parsed) => importJavaFiles(parsed, !keepExisting))
+        .catch(() => setFileError('Не удалось прочитать файлы. Выберите их повторно.'));
       return;
     }
     const file = uploaded[0];
@@ -55,7 +58,7 @@ public class PaymentGateway {
 
   const handleImport = () => {
     if (!filename.trim()) return;
-    importJavaFile(filename.trim(), content);
+    importJavaFile(filename.trim(), content, !keepExisting);
   };
 
   return (
@@ -106,6 +109,18 @@ public class PaymentGateway {
               placeholder="package com.example; ..."
             />
           </div>
+
+          <label className={styles.optionsRow}>
+            <input
+              type="checkbox"
+              className={styles.checkbox}
+              checked={keepExisting}
+              onChange={(e) => setKeepExisting(e.target.checked)}
+            />
+            <span className={styles.optionLabel}>
+              Добавить к текущему проекту (сохранить существующие файлы)
+            </span>
+          </label>
         </div>
 
         <div className={styles.modalFooter}>

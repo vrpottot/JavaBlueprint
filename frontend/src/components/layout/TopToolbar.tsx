@@ -215,6 +215,8 @@ export const TopToolbar: React.FC = () => {
         </button>
       </div>
 
+      <div className={styles.vDivider} />
+
       {/* Right Tools: Analysis, Theme, Settings */}
       <div className={styles.toolsGroup}>
         <button

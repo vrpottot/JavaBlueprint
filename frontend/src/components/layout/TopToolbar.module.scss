@@ -110,12 +110,13 @@
   border-radius: 4px;
 }
 
-// Action Buttons in the center
+// Action Buttons aligned to the right block
 .actionsGroup {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .actionBtn {

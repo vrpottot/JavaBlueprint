@@ -93,3 +93,43 @@ export interface BlockPaletteItem {
   defaultCode: string;
   color: string;
 }
+
+export interface AIProposalOperation {
+  type: 'updateCondition' | 'updateExpression' | 'updateVariable' | 'replaceStatement' | 'addBlock' | 'deleteBlock' | 'duplicateBlock';
+  nodeId: string;
+  code?: string;
+}
+
+export interface AIProposalVerification {
+  mainClass: string;
+  inputs: { name: string; stdin: string; args?: string[]; expectedStdout?: string }[];
+  tests?: { path: string; content: string }[];
+}
+
+export interface AIProposal {
+  revision: number;
+  operations: AIProposalOperation[];
+  verification: AIProposalVerification;
+}
+
+export interface AIChatAnalysis {
+  issues?: CodeIssue[];
+  recommendations?: CodeRecommendation[];
+  metrics?: CodeMetrics;
+  complexity?: ComplexityEstimate;
+  optimizedCode?: string;
+  summary?: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant' | 'system';
+  timestamp: string;
+  text: string;
+  analysis?: AIChatAnalysis;
+  proposal?: AIProposal;
+  proposalStatus?: 'idle' | 'verifying' | 'verified' | 'failed';
+  proposalVerificationResult?: unknown;
+  isStreaming?: boolean;
+}
+

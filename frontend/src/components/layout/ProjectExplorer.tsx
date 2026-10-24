@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   Folder,
   FolderOpen,
@@ -15,6 +15,7 @@ import {
   Plus,
   CornerDownLeft,
   Layers,
+  FilePlus,
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import { PALETTE_ITEMS } from '../../lib/palette';
@@ -26,6 +27,25 @@ export const ProjectExplorer: React.FC = () => {
   const activeFileId = useProjectStore((s) => s.activeFileId);
   const selectFile = useProjectStore((s) => s.selectFile);
   const addNode = useProjectStore((s) => s.addNode);
+  const importJavaFiles = useProjectStore((s) => s.importJavaFiles);
+  const addFileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleAddFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const uploaded = Array.from(e.target.files || []);
+    if (uploaded.length === 0) return;
+    try {
+      const parsedFiles = await Promise.all(
+        uploaded.map(async (f) => ({ path: f.name, content: await f.text() }))
+      );
+      await importJavaFiles(parsedFiles, false);
+    } catch (err) {
+      console.error('Ошибка добавления файлов:', err);
+    } finally {
+      if (addFileInputRef.current) {
+        addFileInputRef.current.value = '';
+      }
+    }
+  };
 
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>({
     'f-src': true,
@@ -156,6 +176,21 @@ export const ProjectExplorer: React.FC = () => {
             <span className={styles.headerTitle}>Проект</span>
           </div>
           <div className={styles.headerActions}>
+            <input
+              type="file"
+              ref={addFileInputRef}
+              multiple
+              accept=".java"
+              style={{ display: 'none' }}
+              onChange={handleAddFiles}
+            />
+            <button
+              className={styles.headerActionBtn}
+              onClick={() => addFileInputRef.current?.click()}
+              title="Добавить .java файл в проект (сохраняя текущие)"
+            >
+              <FilePlus size={14} />
+            </button>
             <button className={styles.headerActionBtn} title="Сфокусировать текущий файл">
               <Crosshair size={14} />
             </button>
