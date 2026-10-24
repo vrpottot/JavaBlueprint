@@ -79,3 +79,7 @@ API_URL=http://127.0.0.1:3001/api node /opt/javascope/current/backend/scripts/sm
 ```
 
 An initial release can be uploaded as a Git archive from an authenticated development machine, then installed with `bash /opt/javascope/releases/<commit>/deploy/release.sh /opt/javascope/releases/<commit> <commit>`. Future automatic updates use Actions/OIDC; a Git key is needed only for the optional polling fallback.
+
+## Measured checks
+
+On the allocated VPS, the first installation took 99 seconds including the initial runner image build; cached deployments took about 66–67 seconds. The short backend tests took about 23–26 seconds on its two cores, and the live HTTPS/javac/JUnit smoke took about 8–11 seconds. On the development machine, 23 full tests passed in 55 seconds, while the 17-group CI suite took about six seconds. Gateway and browser checks also passed. The first GitHub push authenticated successfully to the VPS through OIDC without a repository deploy key.
