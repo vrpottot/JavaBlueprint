@@ -1,41 +1,50 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-.explorer {
+.sidebar {
   width: $sidebar-width;
-  min-width: 170px;
+  min-width: 220px;
   height: 100%;
-  background-color: var(--bg-main);
+  background-color: var(--bg-panel);
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 10px;
   user-select: none;
   overflow: hidden;
   transition: width $transition-normal;
 }
 
-.projectCard {
-  flex: 1;
-  background-color: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: $radius-md;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+// Top Section: Project
+.projectSection {
+  flex: 1.1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 180px;
 }
 
 .sectionHeader {
-  height: 34px;
-  padding: 0 10px;
-  background-color: var(--bg-panel-secondary);
-  border-bottom: 1px solid var(--border-color);
+  height: 40px;
+  padding: 0 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 11.5px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-panel-secondary);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.headerIcon {
+  color: var(--accent-blue);
+}
+
+.headerTitle {
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -43,14 +52,20 @@
 .headerActions {
   display: flex;
   align-items: center;
-  gap: 6px;
-  color: var(--text-muted);
+  gap: 4px;
 }
 
-.actionIcon {
+.headerActionBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
   cursor: pointer;
-  padding: 2px;
+  padding: 4px;
   border-radius: $radius-xs;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-fast;
 
   &:hover {
     color: var(--text-primary);
@@ -61,18 +76,23 @@
 .treeContainer {
   flex: 1;
   overflow-y: auto;
-  padding: 6px 0;
+  padding: 8px 6px;
   @include custom-scrollbar;
+}
+
+.treeNode {
+  display: flex;
+  flex-direction: column;
 }
 
 .treeItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 8px;
-  margin: 1px 4px;
-  border-radius: $radius-xs;
-  font-size: 12px;
+  padding: 5px 8px;
+  margin: 1px 2px;
+  border-radius: 6px;
+  font-size: 12.5px;
   color: var(--text-secondary);
   cursor: pointer;
   transition: all $transition-fast;
@@ -83,126 +103,230 @@
   }
 
   &.active {
-    background-color: var(--bg-active);
-    color: var(--accent-blue);
+    background-color: #0D3868 !important;
+    color: #FFFFFF !important;
     font-weight: 500;
+
+    .fileNameText {
+      color: #FFFFFF;
+    }
   }
 }
 
 .itemLabel {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   @include truncate;
 }
 
-.itemIcon {
+.chevron {
+  color: var(--text-muted);
   display: flex;
   align-items: center;
 }
 
+.treeIndentSpacer {
+  width: 12px;
+  display: inline-block;
+}
+
+.folderIcon {
+  color: #8D9BAF;
+  display: flex;
+  align-items: center;
+}
+
+// Java "Ja" Icon Badge matching the reference screenshot
+.javaFileIcon {
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
+  color: #FFFFFF;
+  border-radius: 3px;
+  font-size: 9.5px;
+  font-weight: 700;
+  font-family: $font-mono;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.fileNameText {
+  @include truncate;
+  font-size: 12.5px;
+}
+
 .issueDot {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: rgba(244, 163, 75, 0.15);
+  min-width: 16px;
+  height: 16px;
+  border-radius: $radius-full;
+  background-color: var(--accent-orange-subtle);
   color: var(--accent-orange);
   font-size: 9.5px;
   font-weight: 700;
   @include flex-center;
-  border: 1px solid rgba(244, 163, 75, 0.35);
+  border: 1px solid rgba(240, 136, 62, 0.4);
+  padding: 0 4px;
 }
 
-// Blocks Palette section card
-.paletteCardSection {
-  height: 310px;
-  background-color: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: $radius-md;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+// Horizontal Divider
+.divider {
+  height: 1px;
+  background-color: var(--border-color);
+  width: 100%;
+  flex-shrink: 0;
+}
+
+// Bottom Section: Blocks
+.blocksSection {
+  flex: 1.2;
   display: flex;
   flex-direction: column;
+  padding: 12px 14px;
   overflow: hidden;
+  background-color: var(--bg-panel);
+}
+
+.blocksHeader {
+  margin-bottom: 8px;
+}
+
+.blocksTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .searchBox {
-  padding: 6px 8px;
-  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  color: #64748B;
+  pointer-events: none;
 }
 
 .searchInput {
   width: 100%;
-  background-color: var(--bg-panel-secondary);
+  background-color: var(--bg-input);
   border: 1px solid var(--border-color);
-  border-radius: $radius-xs;
-  padding: 5px 6px 5px 24px;
-  font-size: 11.5px;
+  border-radius: 8px;
+  padding: 7px 10px 7px 32px;
+  font-size: 12px;
   color: var(--text-primary);
   outline: none;
+  transition: all $transition-fast;
+
+  &::placeholder {
+    color: #64748B;
+  }
 
   &:focus {
-    border-color: var(--accent-blue);
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px var(--accent-blue-subtle);
   }
 }
 
-.paletteList {
+.blockList {
   flex: 1;
   overflow-y: auto;
-  padding: 6px 8px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
+  padding-right: 2px;
   @include custom-scrollbar;
 }
 
-.paletteCard {
+.blockCard {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 8px;
+  padding: 7px 10px;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: $radius-sm;
+  border-radius: 8px;
   cursor: grab;
   transition: all $transition-fast;
 
   &:hover {
     border-color: var(--border-light);
     background-color: var(--bg-panel-hover);
-    transform: translateX(1px);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
   }
 
   &:active {
     cursor: grabbing;
+    transform: scale(0.99);
   }
 }
 
 .cardLeft {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  flex: 1;
+  overflow: hidden;
+}
+
+// Colorful icon badges matching the reference photo
+.blockIconBadge {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+
+  &.badgeVariable {
+    background: linear-gradient(135deg, #A855F7 0%, #7E22CE 100%);
+  }
+
+  &.badgeCondition {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  }
+
+  &.badgeLoop {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  }
+
+  &.badgeMethod {
+    background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+  }
+
+  &.badgeOperation {
+    background: linear-gradient(135deg, #84CC16 0%, #65A30D 100%);
+  }
+
+  &.badgeReturn {
+    background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%);
+  }
 }
 
 .cardName {
-  font-size: 11.5px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-primary);
+  @include truncate;
 }
 
 .cardRight {
   display: flex;
   align-items: center;
-  gap: 4px;
 }
 
-.addBtn {
-  color: var(--text-muted);
-  padding: 2px;
-  border-radius: $radius-xs;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--accent-blue);
-    background-color: var(--bg-panel-secondary);
-  }
+.dragIcon {
+  color: #64748B;
+  cursor: grab;
 }

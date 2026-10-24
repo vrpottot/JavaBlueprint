@@ -10,27 +10,45 @@ export const LoopNode = memo(({ data, selected }: NodeProps) => {
 
   return (
     <div
-      className={`${styles.baseNode} ${styles.loopNode} ${isSelected ? styles.selected : ''} ${
-        nodeData.warning ? styles.hasWarning : ''
+      className={`${styles.flowNodeContainer} ${styles.preparationNode} ${
+        isSelected ? styles.selected : ''
       }`}
     >
       <Handle type="target" position={Position.Top} id="in" />
 
-      <div className={styles.nodeHeader}>
-        <div className={styles.headerLeft}>
-          <span className={styles.typeIndicator} />
-          <RefreshCw size={13} color="#A879F8" />
-          <span>{nodeData.title}</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          {nodeData.badge && <span className={styles.badge}>{nodeData.badge}</span>}
-          {nodeData.line && <span className={styles.lineNum}>L{nodeData.line}</span>}
-        </div>
-      </div>
+      {/* 4. ПОДГОТОВКА: Шестиугольник со скошенными углами (ГОСТ / ISO) */}
+      <svg
+        className={styles.shapeSvgBg}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <polygon
+          points="10,1 90,1 99,50 90,99 10,99 1,50"
+          className={styles.shapePath}
+        />
+      </svg>
 
-      <div className={styles.nodeBody}>
+      <div className={styles.nodeContent}>
+        <div className={styles.nodeHeader}>
+          <div className={styles.headerLeft}>
+            <div className={styles.headerIcon}>
+              <RefreshCw size={13} color="#8B5CF6" />
+            </div>
+            <span className={styles.nodeTitle}>{nodeData.title}</span>
+          </div>
+
+          <div className={styles.headerRight}>
+            <span className={styles.shapeBadge}>Подготовка</span>
+            {nodeData.line && <span className={styles.lineBadge}>L{nodeData.line}</span>}
+          </div>
+        </div>
+
         <div className={styles.codeSnippet}>{nodeData.codeSnippet}</div>
-        {nodeData.description && <div className={styles.description}>{nodeData.description}</div>}
+
+        {nodeData.description && (
+          <div className={styles.description}>{nodeData.description}</div>
+        )}
 
         {nodeData.warning && (
           <div className={styles.warningBox}>

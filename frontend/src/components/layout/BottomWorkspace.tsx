@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { FileCode, Terminal, CheckCircle2 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import { JavaEditor } from '../editor/JavaEditor';
 import { ConsolePanel } from '../console/ConsolePanel';
@@ -9,6 +10,7 @@ export const BottomWorkspace: React.FC = () => {
   const bottomPanelHeight = useProjectStore((s) => s.bottomPanelHeight);
   const setBottomPanelHeight = useProjectStore((s) => s.setBottomPanelHeight);
 
+  const [activeTab, setActiveTab] = useState<'editor' | 'console' | 'tests'>('editor');
   const [isResizing, setIsResizing] = useState(false);
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -20,7 +22,9 @@ export const BottomWorkspace: React.FC = () => {
     (e: MouseEvent) => {
       if (!isResizing) return;
       const newHeight = window.innerHeight - e.clientY;
-      setBottomPanelHeight(newHeight);
+      if (newHeight >= 120 && newHeight <= window.innerHeight - 150) {
+        setBottomPanelHeight(newHeight);
+      }
     },
     [isResizing, setBottomPanelHeight]
   );
@@ -42,16 +46,47 @@ export const BottomWorkspace: React.FC = () => {
 
   return (
     <section className={styles.workspace} style={{ height: `${bottomPanelHeight}px` }}>
+      {/* Draggable Height Resizer */}
       <div
         className={`${styles.resizeHandle} ${isResizing ? styles.active : ''}`}
         onMouseDown={handleMouseDown}
-        title="Перетащите для изменения высоты нижней рабочей области"
+        title="Перетащите для изменения высоты"
       />
 
-      <div className={styles.columns}>
-        <JavaEditor />
-        <ConsolePanel />
-        <TestResults />
+      {/* Tabs Header matching reference screenshot */}
+      <div className={styles.tabBar}>
+        <div className={styles.tabsGroup}>
+          <button
+            className={`${styles.tabBtn} ${activeTab === 'editor' ? styles.active : ''}`}
+            onClick={() => setActiveTab('editor')}
+          >
+            <FileCode size={14} className={styles.tabIcon} />
+            <span>Код Java</span>
+          </button>
+
+          <button
+            className={`${styles.tabBtn} ${activeTab === 'console' ? styles.active : ''}`}
+            onClick={() => setActiveTab('console')}
+          >
+            <Terminal size={14} className={styles.tabIcon} />
+            <span>Консоль</span>
+          </button>
+
+          <button
+            className={`${styles.tabBtn} ${activeTab === 'tests' ? styles.active : ''}`}
+            onClick={() => setActiveTab('tests')}
+          >
+            <CheckCircle2 size={14} className={styles.tabIcon} />
+            <span>Результат тестов</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Tab Panels */}
+      <div className={styles.tabContentArea}>
+        {activeTab === 'editor' && <JavaEditor />}
+        {activeTab === 'console' && <ConsolePanel />}
+        {activeTab === 'tests' && <TestResults />}
       </div>
     </section>
   );

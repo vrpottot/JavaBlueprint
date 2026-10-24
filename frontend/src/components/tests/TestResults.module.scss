@@ -10,14 +10,14 @@
 }
 
 .header {
-  height: 32px;
-  padding: 0 10px;
+  height: 36px;
+  padding: 0 12px;
   background-color: var(--bg-panel-secondary);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -25,33 +25,68 @@
 .headerLeft {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .rerunBtn {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 10.5px;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
   color: var(--text-secondary);
   cursor: pointer;
-  padding: 2px 6px;
+  padding: 3px 8px;
   border-radius: $radius-xs;
+  background: none;
+  border: 1px solid transparent;
   transition: all $transition-fast;
 
-  &:hover {
+  &:hover:not(:disabled) {
     color: var(--text-primary);
     background-color: var(--bg-panel-hover);
+    border-color: var(--border-color);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }
 
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.iconSuccess {
+  color: var(--accent-green);
+}
+
+.iconRunning {
+  color: var(--accent-blue);
+  animation: spin 1s linear infinite;
+}
+
+.iconFailure {
+  color: var(--accent-red);
+}
+
+.iconPending {
+  color: var(--text-muted);
+}
+
 .summaryCard {
-  padding: 10px 12px;
+  padding: 10px 14px;
   background-color: var(--bg-panel);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .summaryRow {
@@ -66,7 +101,7 @@
   gap: 8px;
   font-size: 13px;
   font-weight: 700;
-  color: #16A34A;
+  color: var(--accent-green);
 
   &.running {
     color: var(--accent-blue);
@@ -76,21 +111,22 @@
 .summaryRight {
   font-family: $font-mono;
   font-size: 11.5px;
+  font-weight: 600;
   color: var(--text-secondary);
 }
 
 .progressBarTrack {
-  height: 6px;
+  height: 5px;
   background-color: var(--border-color);
-  border-radius: 3px;
+  border-radius: $radius-full;
   overflow: hidden;
 }
 
 .progressBarFill {
   height: 100%;
-  background-color: #16A34A;
-  border-radius: 3px;
-  transition: width 0.3s ease;
+  background-color: var(--accent-green);
+  border-radius: $radius-full;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   &.running {
     background-color: var(--accent-blue);
@@ -104,7 +140,6 @@
   100% { transform: translateX(100%) scaleX(0.2); }
 }
 
-// Table styling matching screenshot
 .tableWrapper {
   flex: 1;
   overflow-y: auto;
@@ -126,10 +161,12 @@
   z-index: 5;
 
   th {
-    padding: 6px 10px;
+    padding: 7px 12px;
     font-size: 10.5px;
     font-weight: 600;
-    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
   }
 }
 
@@ -142,7 +179,7 @@
   }
 
   td {
-    padding: 6px 10px;
+    padding: 7px 12px;
     color: var(--text-primary);
   }
 }
@@ -150,19 +187,28 @@
 .testNameCell {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-family: $font-mono;
   font-size: 11.5px;
 }
 
 .statusSuccess {
-  color: #16A34A;
-  font-weight: 500;
+  color: var(--accent-green);
+  font-weight: 600;
 }
 
 .statusRunning {
   color: var(--accent-blue);
-  font-weight: 500;
+  font-weight: 600;
+}
+
+.statusFailure {
+  color: var(--accent-red);
+  font-weight: 600;
+}
+
+.statusPending {
+  color: var(--text-muted);
 }
 
 .durationCell {

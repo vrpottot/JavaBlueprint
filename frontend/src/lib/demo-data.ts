@@ -237,7 +237,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-cond-null',
     type: 'conditionNode',
-    position: { x: 270, y: 250 },
+    position: { x: 215, y: 260 },
     data: {
       title: 'Условие (Guard Clause)',
       codeSnippet: 'orders == null || orders.isEmpty()',
@@ -250,7 +250,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-ret-early',
     type: 'returnNode',
-    position: { x: 50, y: 370 },
+    position: { x: -140, y: 340 },
     data: {
       title: 'Возврат',
       codeSnippet: 'return result',
@@ -263,7 +263,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-loop',
     type: 'loopNode',
-    position: { x: 300, y: 370 },
+    position: { x: 300, y: 560 },
     data: {
       title: 'Цикл',
       codeSnippet: 'for (Order order : orders)',
@@ -277,7 +277,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-cond-valid',
     type: 'conditionNode',
-    position: { x: 300, y: 490 },
+    position: { x: 215, y: 720 },
     data: {
       title: 'Условие валидации',
       codeSnippet: 'validator.isValidOrder(order)',
@@ -291,7 +291,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-op-process',
     type: 'operationNode',
-    position: { x: 300, y: 610 },
+    position: { x: 300, y: 1030 },
     data: {
       title: 'Операция',
       codeSnippet: 'Order processed = processOrder(order)',
@@ -304,7 +304,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-op-add',
     type: 'operationNode',
-    position: { x: 300, y: 720 },
+    position: { x: 300, y: 1160 },
     data: {
       title: 'Операция',
       codeSnippet: 'result.add(processed)',
@@ -317,7 +317,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-op-continue',
     type: 'operationNode',
-    position: { x: 540, y: 490 },
+    position: { x: 740, y: 800 },
     data: {
       title: 'Продолжить (continue)',
       codeSnippet: 'continue',
@@ -330,7 +330,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-method-external',
     type: 'methodNode',
-    position: { x: 560, y: 390 },
+    position: { x: 720, y: 1030 },
     data: {
       title: 'Метод (внешний вызов)',
       codeSnippet: 'processOrder(Order order)',
@@ -343,7 +343,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-ret-final',
     type: 'returnNode',
-    position: { x: 300, y: 840 },
+    position: { x: 300, y: 1290 },
     data: {
       title: 'Возврат',
       codeSnippet: 'return result',
@@ -373,8 +373,9 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-cond-yes-early',
     source: 'node-cond-null',
+    sourceHandle: 'out-left',
     target: 'node-ret-early',
-    label: 'No',
+    label: 'Да',
     labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
     labelBgStyle: { fill: '#F0FDF4', rx: 4, ry: 4, stroke: '#86EFAC' },
     style: { stroke: '#22C55E', strokeWidth: 2 },
@@ -382,8 +383,9 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-cond-no-loop',
     source: 'node-cond-null',
+    sourceHandle: 'out-bottom',
     target: 'node-loop',
-    label: 'Yes',
+    label: 'Нет',
     labelStyle: { fill: '#EA580C', fontWeight: 600, fontSize: 11 },
     labelBgStyle: { fill: '#FFF7ED', rx: 4, ry: 4, stroke: '#FDBA74' },
     style: { stroke: '#F97316', strokeWidth: 2 },
@@ -400,6 +402,7 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-valid-yes-process',
     source: 'node-cond-valid',
+    sourceHandle: 'out-bottom',
     target: 'node-op-process',
     label: 'Да',
     labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
@@ -415,6 +418,7 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-valid-no-continue',
     source: 'node-cond-valid',
+    sourceHandle: 'out-right',
     target: 'node-op-continue',
     label: 'Нет',
     labelStyle: { fill: '#DC2626', fontWeight: 600, fontSize: 11 },
@@ -455,7 +459,7 @@ export const OPTIMIZED_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-cond-opt',
     type: 'conditionNode',
-    position: { x: 300, y: 150 },
+    position: { x: 260, y: 150 },
     data: {
       title: 'Guard Clause',
       codeSnippet: 'orders == null || orders.isEmpty()',
@@ -468,7 +472,7 @@ export const OPTIMIZED_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-stream-opt',
     type: 'operationNode',
-    position: { x: 300, y: 280 },
+    position: { x: 300, y: 370 },
     data: {
       title: 'Параллельный поток',
       codeSnippet: 'orders.parallelStream()',
@@ -481,7 +485,7 @@ export const OPTIMIZED_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-filter-opt',
     type: 'operationNode',
-    position: { x: 300, y: 400 },
+    position: { x: 300, y: 490 },
     data: {
       title: 'Фильтрация (O(1) hash check)',
       codeSnippet: '.filter(validator::isValidOrder)',
@@ -494,7 +498,7 @@ export const OPTIMIZED_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-map-opt',
     type: 'operationNode',
-    position: { x: 300, y: 520 },
+    position: { x: 300, y: 610 },
     data: {
       title: 'Маппинг преобразования',
       codeSnippet: '.map(this::processOrder)',
@@ -507,7 +511,7 @@ export const OPTIMIZED_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-collect-opt',
     type: 'returnNode',
-    position: { x: 300, y: 640 },
+    position: { x: 300, y: 730 },
     data: {
       title: 'Сборка и возврат',
       codeSnippet: 'return .collect(Collectors.toList())',

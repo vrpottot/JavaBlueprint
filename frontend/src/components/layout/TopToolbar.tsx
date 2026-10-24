@@ -1,11 +1,8 @@
-import { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
-  Sidebar,
-  Layers,
   Upload,
   Download,
   Play,
-  Plus,
   ChevronDown,
   Settings,
   Moon,
@@ -15,6 +12,10 @@ import {
   SlidersHorizontal,
   ChevronRight,
   Terminal,
+  Activity,
+  Sparkles,
+  FileText,
+  Sidebar,
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import styles from './TopToolbar.module.scss';
@@ -35,76 +36,81 @@ export const TopToolbar: React.FC = () => {
   const setShowOptimizationModal = useProjectStore((s) => s.setShowOptimizationModal);
   const revertOptimization = useProjectStore((s) => s.revertOptimization);
   const setShowImportModal = useProjectStore((s) => s.setShowImportModal);
-  const setShowAddBlockModal = useProjectStore((s) => s.setShowAddBlockModal);
   const exportJavaFile = useProjectStore((s) => s.exportJavaFile);
   const runProgram = useProjectStore((s) => s.runProgram);
 
   const [runDropdownOpen, setRunDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setRunDropdownOpen(false);
+      }
+    };
+    if (runDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [runDropdownOpen]);
+
+  const fileName = activeFilePath.split('/').pop() || 'OrderService.java';
 
   return (
     <header className={styles.toolbar}>
-      {/* Left: Sidebar toggle, Logo with subtitle, Project info */}
-      <div className={styles.leftSection}>
+      {/* Left side: Sidebar Toggle + Breadcrumb (Project > [File + Method Pill]) */}
+      <div className={styles.leftGroup}>
         <button
-          className={`${styles.iconButton} ${isLeftSidebarOpen ? styles.active : ''}`}
+          className={`${styles.iconBtn} ${isLeftSidebarOpen ? styles.active : ''}`}
           onClick={toggleLeftSidebar}
-          title="Свернуть / Развернуть проводник проекта"
+          title="Свернуть / Развернуть проводник (Ctrl+B)"
+          aria-label="Toggle explorer sidebar"
         >
-          <Sidebar size={16} />
+          <Sidebar size={15} />
         </button>
 
-        <div className={styles.brand} title="JavaScope: Understand. Transform. Verify.">
-          <div className={styles.brandLogo}>
-            <Layers size={14} />
-          </div>
-          <div className={styles.brandTextGroup}>
-            <span className={styles.brandTitle}>Visual Programming Environment</span>
-            <span className={styles.brandSubtitle}>JAVA BLUEPRINTS</span>
-          </div>
-        </div>
-
-        <div className={styles.projectInfo}>
-          <span className={styles.projectName}>{projectName}</span>
-          <span style={{ color: 'var(--text-muted)' }}>/</span>
-          <div className={styles.filePath}>
-            <span style={{ color: 'var(--text-primary)' }}>{activeFilePath.split('/').pop()}</span>
-            <ChevronRight size={12} color="var(--text-muted)" />
-            <span style={{ color: 'var(--text-secondary)' }}>processOrders()</span>
+        <div className={styles.breadcrumb}>
+          <span className={styles.projectName}>{projectName || 'OrderProcessingService'}</span>
+          <ChevronRight size={13} className={styles.chevron} />
+          <div className={styles.fileMethodPill}>
+            <FileText size={14} className={styles.fileIcon} />
+            <span className={styles.fileName}>{fileName}</span>
+            <span className={styles.methodBadge}>processOrders()</span>
           </div>
         </div>
       </div>
 
-      {/* Center/Right Actions matching reference image */}
-      <div className={styles.centerSection}>
+      {/* Actions: Import, Export, Divider, Optimize, Run/Dropdown, Debug, Add Block */}
+      <div className={styles.actionsGroup}>
         <button
-          className={styles.toolbarBtn}
+          className={styles.actionBtn}
           onClick={() => setShowImportModal(true)}
-          title="Импортировать .java файл в проект"
+          title="Импортировать .java файл"
         >
-          <Upload size={14} />
-          <span>Import Java</span>
+          <Upload size={13} />
+          <span>Импорт</span>
         </button>
 
         <button
-          className={styles.toolbarBtn}
+          className={styles.actionBtn}
           onClick={exportJavaFile}
-          title="Экспортировать текущий файл на компьютер"
+          title="Экспортировать текущий файл"
         >
-          <Download size={14} />
-          <span>Export Java</span>
+          <Download size={13} />
+          <span>Экспорт</span>
         </button>
 
-        <div className={styles.divider} />
+        <div className={styles.vDivider} />
 
-        {/* Optimize button (Vibrant orange button with Play/Sparkle) */}
+        {/* Optimize button (Solid Orange filled button matching screenshot) */}
         {!isOptimized ? (
           <button
             className={styles.optimizeBtn}
             onClick={() => setShowOptimizationModal(true)}
-            title="Автоматическая оптимизация алгоритма и снижение сложности"
+            title="Автоматическая оптимизация алгоритма O(N²) -> O(N)"
           >
-            <Play size={13} fill="currentColor" />
-            <span>Optimize</span>
+            <Sparkles size={13} />
+            <span>Оптимизировать</span>
           </button>
         ) : (
           <button
@@ -117,118 +123,85 @@ export const TopToolbar: React.FC = () => {
           </button>
         )}
 
-        {/* Run button group */}
-        <div className={styles.runGroup} style={{ position: 'relative' }}>
+        {/* Run button with unified dropdown */}
+        <div className={styles.runGroup} ref={dropdownRef}>
           <button
             className={`${styles.runBtn} ${isRunning || isCompiling ? styles.running : ''}`}
             onClick={runProgram}
             disabled={isRunning || isCompiling}
-            title="Запустить программу"
+            title="Запустить программу (F5)"
           >
-            <Play size={14} />
+            <Play size={13} className={styles.playIcon} fill="currentColor" />
             <span>{isCompiling ? 'Компиляция...' : isRunning ? 'Выполнение...' : 'Run'}</span>
           </button>
           <button
-            className={styles.runDropdownBtn}
+            className={styles.runChevronBtn}
             onClick={() => setRunDropdownOpen(!runDropdownOpen)}
             title="Конфигурация запуска"
+            aria-expanded={runDropdownOpen}
           >
-            <ChevronDown size={13} />
+            <ChevronDown size={12} />
           </button>
 
           {runDropdownOpen && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '34px',
-                right: 0,
-                backgroundColor: 'var(--bg-panel)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '6px',
-                padding: '4px',
-                minWidth: '220px',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-                zIndex: 100,
-              }}
-              onClick={() => setRunDropdownOpen(false)}
-            >
-              <div
-                style={{
-                  padding: '6px 10px',
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  borderRadius: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  color: 'var(--text-primary)',
+            <div className={styles.runDropdownMenu}>
+              <button
+                className={styles.dropdownOption}
+                onClick={() => {
+                  setRunDropdownOpen(false);
+                  runProgram();
                 }}
-                onClick={runProgram}
               >
-                <Play size={13} color="var(--accent-green)" />
+                <Activity size={13} className={styles.greenIcon} />
                 <span>Запуск с бенчмарком</span>
-              </div>
-              <div
-                style={{
-                  padding: '6px 10px',
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  borderRadius: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  color: 'var(--text-secondary)',
+              </button>
+              <button
+                className={styles.dropdownOption}
+                onClick={() => {
+                  setRunDropdownOpen(false);
+                  runProgram();
                 }}
-                onClick={runProgram}
               >
-                <Terminal size={13} />
-                <span>Профилирование ForkJoinPool</span>
-              </div>
+                <Terminal size={13} className={styles.blueIcon} />
+                <span>Параллельный ForkJoinPool</span>
+              </button>
             </div>
           )}
         </div>
 
         {/* Debug button */}
         <button
-          className={styles.toolbarBtn}
+          className={styles.actionBtn}
           onClick={runProgram}
           title="Запуск в режиме отладки"
         >
-          <Bug size={14} />
+          <Bug size={13} />
           <span>Debug</span>
-        </button>
-
-        <button
-          className={styles.toolbarBtn}
-          onClick={() => setShowAddBlockModal(true)}
-          title="Добавить новый блок на холст"
-        >
-          <Plus size={14} color="var(--accent-blue)" />
-          <span>Добавить блок</span>
         </button>
       </div>
 
-      {/* Right: Settings, Theme Toggle, Analysis Sidebar Toggle */}
-      <div className={styles.rightSection}>
+      {/* Right Tools: Analysis, Theme, Settings */}
+      <div className={styles.toolsGroup}>
         <button
-          className={`${styles.iconButton} ${isRightSidebarOpen ? styles.active : ''}`}
+          className={`${styles.iconBtn} ${isRightSidebarOpen ? styles.active : ''}`}
           onClick={toggleRightSidebar}
           title="Панель статического анализа кода"
+          aria-label="Toggle analysis sidebar"
         >
-          <SlidersHorizontal size={15} />
+          <SlidersHorizontal size={14} />
         </button>
 
-        {/* Theme Toggle Button */}
         <button
-          className={styles.iconButton}
+          className={styles.iconBtn}
           onClick={toggleTheme}
-          title={theme === 'dark' ? 'Переключить на светлую тему' : 'Переключить на тёмную тему'}
+          title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+          aria-label="Toggle theme"
         >
-          {theme === 'dark' ? <Sun size={15} color="#F4A34B" /> : <Moon size={15} color="#475569" />}
+          {theme === 'dark' ? <Sun size={14} className={styles.sunIcon} /> : <Moon size={14} className={styles.moonIcon} />}
         </button>
 
-        <button className={styles.iconButton} title="Настройки среды JavaScope">
-          <Settings size={15} />
+        <button className={styles.iconBtn} title="Настройки" aria-label="Settings">
+          <Settings size={14} />
         </button>
       </div>
     </header>

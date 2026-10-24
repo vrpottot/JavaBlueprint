@@ -32,7 +32,7 @@
 
 // Collapsed sidebar strip triggers
 .collapsedTrigger {
-  width: 20px;
+  width: 24px;
   height: 100%;
   background-color: var(--bg-panel);
   border-right: 1px solid var(--border-color);
@@ -42,10 +42,11 @@
   cursor: pointer;
   color: var(--text-muted);
   transition: all $transition-fast;
+  z-index: 15;
 
   &:hover {
     background-color: var(--bg-panel-hover);
-    color: var(--text-primary);
+    color: var(--accent-blue);
   }
 
   &.right {
@@ -58,7 +59,7 @@
   writing-mode: vertical-rl;
   text-orientation: mixed;
   transform: rotate(180deg);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
-import { CheckCircle2, AlertTriangle } from 'lucide-react';
+import { CornerDownLeft, AlertTriangle } from 'lucide-react';
 import type { VisualBlockData } from '../../../types';
 import styles from './NodeStyles.module.scss';
 
@@ -10,27 +10,50 @@ export const ReturnNode = memo(({ data, selected }: NodeProps) => {
 
   return (
     <div
-      className={`${styles.baseNode} ${styles.returnNode} ${isSelected ? styles.selected : ''} ${
-        nodeData.warning ? styles.hasWarning : ''
+      className={`${styles.flowNodeContainer} ${styles.terminatorNode} ${styles.returnVariant} ${
+        isSelected ? styles.selected : ''
       }`}
     >
       <Handle type="target" position={Position.Top} id="in" />
 
-      <div className={styles.nodeHeader}>
-        <div className={styles.headerLeft}>
-          <span className={styles.typeIndicator} />
-          <CheckCircle2 size={13} color="#39C98A" />
-          <span>{nodeData.title}</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          {nodeData.badge && <span className={styles.badge}>{nodeData.badge}</span>}
-          {nodeData.line && <span className={styles.lineNum}>L{nodeData.line}</span>}
-        </div>
-      </div>
+      {/* 1. ТЕРМИНАТОР: Скругленный овал завершения */}
+      <svg
+        className={styles.shapeSvgBg}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect
+          x="1"
+          y="1"
+          width="98"
+          height="98"
+          rx="22"
+          ry="22"
+          className={styles.shapePath}
+        />
+      </svg>
 
-      <div className={styles.nodeBody}>
+      <div className={styles.nodeContent}>
+        <div className={styles.nodeHeader}>
+          <div className={styles.headerLeft}>
+            <div className={styles.headerIcon}>
+              <CornerDownLeft size={14} color="#10B981" />
+            </div>
+            <span className={styles.nodeTitle}>{nodeData.title}</span>
+          </div>
+
+          <div className={styles.headerRight}>
+            <span className={styles.shapeBadge}>Терминатор</span>
+            {nodeData.line && <span className={styles.lineBadge}>L{nodeData.line}</span>}
+          </div>
+        </div>
+
         <div className={styles.codeSnippet}>{nodeData.codeSnippet}</div>
-        {nodeData.description && <div className={styles.description}>{nodeData.description}</div>}
+
+        {nodeData.description && (
+          <div className={styles.description}>{nodeData.description}</div>
+        )}
 
         {nodeData.warning && (
           <div className={styles.warningBox}>
@@ -40,7 +63,6 @@ export const ReturnNode = memo(({ data, selected }: NodeProps) => {
         )}
       </div>
 
-      {/* Optional pass-through handle */}
       <Handle type="source" position={Position.Bottom} id="out" />
     </div>
   );

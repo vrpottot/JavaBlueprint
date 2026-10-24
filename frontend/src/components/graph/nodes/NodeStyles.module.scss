@@ -1,268 +1,405 @@
 @use '../../../styles/variables' as *;
 @use '../../../styles/mixins' as *;
 
-.baseNode {
-  min-width: 260px;
-  max-width: 340px;
-  background-color: var(--bg-panel);
-  border: 1.5px solid var(--border-color);
-  border-radius: $radius-md;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  color: var(--text-primary);
-  font-family: $font-sans;
-  transition: all $transition-fast;
+// Common container for all custom flowchart nodes
+.flowNodeContainer {
+  min-width: 280px;
+  max-width: 380px;
   position: relative;
-  overflow: visible;
+  user-select: none;
+  font-family: $font-sans;
+  transition: transform $transition-fast;
 
   &:hover {
-    border-color: var(--border-light);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  }
-
-  &.selected,
-  &.highlighted {
-    border-color: var(--accent-blue) !important;
-    box-shadow: 0 0 0 2px rgba(66, 148, 247, 0.3), 0 4px 16px rgba(0, 0, 0, 0.15) !important;
-  }
-
-  &.hasWarning {
-    border-color: var(--accent-orange);
-  }
-
-  &.hasError {
-    border-color: var(--accent-red);
+    transform: translateY(-1px);
   }
 }
 
+// Background SVG canvas that draws the exact geometric flowchart contour
+.shapeSvgBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+
+  .shapePath {
+    fill: var(--bg-panel);
+    stroke: var(--border-color);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+    transition: stroke $transition-fast, filter $transition-fast;
+  }
+}
+
+// Node Inner Content layer
+.nodeContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 18px;
+  gap: 6px;
+}
+
+// Node Header
 .nodeHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 10px;
-  background-color: var(--bg-panel-secondary);
-  border-top-left-radius: $radius-md - 1px;
-  border-top-right-radius: $radius-md - 1px;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  gap: 8px;
 }
 
 .headerLeft {
   display: flex;
   align-items: center;
+  gap: 7px;
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+}
+
+.nodeTitle {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
   gap: 6px;
 }
 
-.typeIndicator {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
-.badge {
+// Flowchart Shape Semantic Badge (Терминатор, Решение, Данные, Процесс, Подготовка)
+.shapeBadge {
   font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 10px;
   font-family: $font-mono;
-  padding: 1px 5px;
-  border-radius: $radius-xs;
-  background-color: rgba(125, 125, 125, 0.08);
-  color: var(--text-secondary);
-  border: 1px solid rgba(125, 125, 125, 0.15);
 }
 
-.lineNum {
-  font-size: 10px;
+.lineBadge {
+  font-size: 10.5px;
   font-family: $font-mono;
   color: var(--text-muted);
 }
 
-.nodeBody {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
+// Code Snippet Box
 .codeSnippet {
   font-family: $font-mono;
-  font-size: 12px;
+  font-size: 11.5px;
   background-color: var(--bg-canvas);
   color: var(--text-primary);
-  padding: 6px 8px;
-  border-radius: $radius-sm;
+  padding: 6px 10px;
+  border-radius: 6px;
   border: 1px solid var(--border-color);
   word-break: break-all;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .description {
   font-size: 11px;
   color: var(--text-secondary);
+  line-height: 1.35;
 }
 
 .warningBox {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 10.5px;
+  gap: 6px;
+  font-size: 11px;
   color: var(--accent-orange);
-  background-color: rgba(244, 163, 75, 0.1);
-  border: 1px solid rgba(244, 163, 75, 0.3);
-  padding: 3px 6px;
-  border-radius: $radius-xs;
-  margin-top: 2px;
+  background-color: var(--accent-orange-subtle);
+  border: 1px solid rgba(240, 136, 62, 0.35);
+  padding: 4px 8px;
+  border-radius: 5px;
 }
 
-.errorBox {
+// Branch labels for Condition Node
+.branchLabels {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 10.5px;
-  color: var(--accent-red);
-  background-color: rgba(241, 108, 112, 0.1);
-  border: 1px solid rgba(241, 108, 112, 0.3);
-  padding: 3px 6px;
-  border-radius: $radius-xs;
-  margin-top: 2px;
-}
+  justify-content: space-between;
+  padding: 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: $font-mono;
 
-// Dark Mode Variants
-:global([data-theme="dark"]) {
-  .methodNode {
-    .typeIndicator { background-color: $node-method; box-shadow: 0 0 6px $accent-purple; }
-    .nodeHeader { border-left: 3px solid $node-method; }
+  .yesLabel {
+    color: var(--accent-green);
   }
-  .variableNode {
-    .typeIndicator { background-color: $node-variable; box-shadow: 0 0 6px $accent-blue; }
-    .nodeHeader { border-left: 3px solid $node-variable; }
-  }
-  .conditionNode {
-    .typeIndicator { background-color: $node-condition; box-shadow: 0 0 6px $accent-orange; }
-    .nodeHeader { border-left: 3px solid $node-condition; }
-  }
-  .loopNode {
-    .typeIndicator { background-color: $node-loop; box-shadow: 0 0 6px $node-loop; }
-    .nodeHeader { border-left: 3px solid $node-loop; }
-  }
-  .operationNode {
-    .typeIndicator { background-color: $node-operation; box-shadow: 0 0 6px $node-operation; }
-    .nodeHeader { border-left: 3px solid $node-operation; }
-  }
-  .returnNode {
-    .typeIndicator { background-color: $node-return; box-shadow: 0 0 6px $node-return; }
-    .nodeHeader { border-left: 3px solid $node-return; }
+
+  .noLabel {
+    color: var(--accent-orange);
   }
 }
 
-// Light Mode Variants (Exact match with reference image)
-:global([data-theme="light"]) {
-  .methodNode {
-    background-color: #FAF5FF;
-    border-color: #C084FC;
-    .nodeHeader {
-      background-color: #F3E8FF;
-      border-bottom-color: #E9D5FF;
-      color: #6B21A8;
-    }
-    .codeSnippet {
-      background-color: #FFFFFF;
-      border-color: #E9D5FF;
-      color: #3B0764;
-    }
-    .typeIndicator { background-color: #A855F7; }
+// -------------------------------------------------------------
+// 1. ТЕРМИНАТОР: Скругленный овал / капсула (MethodNode & ReturnNode)
+// -------------------------------------------------------------
+.terminatorNode {
+  .shapePath {
+    stroke: var(--node-method);
   }
 
-  .variableNode {
-    background-color: #EFF6FF;
-    border-color: #60A5FA;
-    .nodeHeader {
-      background-color: #DBEAFE;
-      border-bottom-color: #BFDBFE;
-      color: #1E40AF;
-    }
-    .codeSnippet {
-      background-color: #FFFFFF;
-      border-color: #BFDBFE;
-      color: #1E3A8A;
-    }
-    .typeIndicator { background-color: #3B82F6; }
+  .shapeBadge {
+    background-color: var(--accent-purple-subtle);
+    color: var(--accent-purple);
+    border: 1px solid rgba(163, 113, 247, 0.3);
   }
 
-  .conditionNode {
-    background-color: #FFF7ED;
-    border-color: #FB923C;
-    .nodeHeader {
-      background-color: #FFEDD5;
-      border-bottom-color: #FED7AA;
-      color: #9A3412;
+  &.returnVariant {
+    .shapePath {
+      stroke: var(--node-return);
     }
-    .codeSnippet {
-      background-color: #FFFFFF;
-      border-color: #FED7AA;
-      color: #7C2D12;
+    .shapeBadge {
+      background-color: var(--accent-green-subtle);
+      color: var(--accent-green);
+      border: 1px solid rgba(63, 185, 80, 0.3);
     }
-    .typeIndicator { background-color: #F97316; }
   }
 
-  .loopNode {
-    background-color: #FAF5FF;
-    border-color: #C084FC;
-    .nodeHeader {
-      background-color: #F3E8FF;
-      border-bottom-color: #E9D5FF;
-      color: #6B21A8;
-    }
-    .codeSnippet {
-      background-color: #FFFFFF;
-      border-color: #E9D5FF;
-      color: #3B0764;
-    }
-    .typeIndicator { background-color: #A855F7; }
+  &:hover .shapePath {
+    filter: drop-shadow(0 2px 8px rgba(163, 113, 247, 0.25));
   }
 
-  .operationNode {
-    background-color: #EFF6FF;
-    border-color: #60A5FA;
-    .nodeHeader {
-      background-color: #DBEAFE;
-      border-bottom-color: #BFDBFE;
-      color: #1E40AF;
-    }
-    .codeSnippet {
-      background-color: #FFFFFF;
-      border-color: #BFDBFE;
-      color: #1E3A8A;
-    }
-    .typeIndicator { background-color: #3B82F6; }
-  }
-
-  .returnNode {
-    background-color: #ECFDF5;
-    border-color: #34D399;
-    .nodeHeader {
-      background-color: #D1FAE5;
-      border-bottom-color: #A7F3D0;
-      color: #065F46;
-    }
-    .codeSnippet {
-      background-color: #FFFFFF;
-      border-color: #A7F3D0;
-      color: #064E3B;
-    }
-    .typeIndicator { background-color: #10B981; }
+  &.selected .shapePath {
+    stroke: #BC8CFF !important;
+    stroke-width: 2.2 !important;
+    filter: drop-shadow(0 0 10px rgba(188, 140, 255, 0.4)) !important;
   }
 }
 
-// React Flow Handle Customization
+// -------------------------------------------------------------
+// 2. ДАННЫЕ: Параллелограмм (VariableNode)
+// -------------------------------------------------------------
+.dataNode {
+  .nodeContent {
+    padding: 10px 24px;
+  }
+
+  .shapePath {
+    stroke: var(--node-variable);
+  }
+
+  .shapeBadge {
+    background-color: var(--accent-blue-subtle);
+    color: var(--accent-blue);
+    border: 1px solid rgba(56, 139, 253, 0.3);
+  }
+
+  &:hover .shapePath {
+    filter: drop-shadow(0 2px 8px rgba(56, 139, 253, 0.25));
+  }
+
+  &.selected .shapePath {
+    stroke: #58A6FF !important;
+    stroke-width: 2.2 !important;
+    filter: drop-shadow(0 0 10px rgba(88, 166, 255, 0.4)) !important;
+  }
+}
+
+// -------------------------------------------------------------
+// 3. РЕШЕНИЕ: Вытянутый ромб / заостренный шестиугольник (ConditionNode)
+// -------------------------------------------------------------
+.decisionNode {
+  width: 470px !important;
+  min-width: 470px !important;
+  max-width: 520px !important;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .shapePath {
+    stroke: var(--node-condition);
+    stroke-linejoin: round;
+  }
+
+  .shapeBadge {
+    background-color: var(--accent-orange-subtle);
+    color: var(--accent-orange);
+    border: 1px solid rgba(240, 136, 62, 0.3);
+  }
+
+  &:hover .shapePath {
+    filter: drop-shadow(0 2px 14px rgba(240, 136, 62, 0.45));
+  }
+
+  &.selected .shapePath {
+    stroke: #FFA657 !important;
+    stroke-width: 2.2 !important;
+    filter: drop-shadow(0 0 14px rgba(255, 166, 87, 0.55)) !important;
+  }
+}
+
+.decisionContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 52px 38px 52px;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 7px;
+}
+
+.decisionHeader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.decisionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  max-width: 250px;
+  line-height: 1.25;
+}
+
+.decisionCodeSnippet {
+  font-family: $font-mono;
+  font-size: 12px;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.decisionDescription {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  max-width: 240px;
+}
+
+.decisionWarning {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--accent-orange);
+  background-color: var(--accent-orange-subtle);
+  border: 1px solid rgba(240, 136, 62, 0.35);
+  padding: 4px 10px;
+  border-radius: 6px;
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.handleTipLeft {
+  position: absolute;
+  left: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  font-family: $font-mono;
+  color: var(--accent-green);
+  pointer-events: none;
+}
+
+.handleTipBottom {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  font-family: $font-mono;
+  color: var(--accent-orange);
+  pointer-events: none;
+}
+
+// -------------------------------------------------------------
+// 4. ПОДГОТОВКА: Шестиугольник со скошенными углами (LoopNode)
+// -------------------------------------------------------------
+.preparationNode {
+  .nodeContent {
+    padding: 10px 24px;
+  }
+
+  .shapePath {
+    stroke: var(--node-loop);
+  }
+
+  .shapeBadge {
+    background-color: rgba(137, 87, 229, 0.15);
+    color: var(--node-loop);
+    border: 1px solid rgba(137, 87, 229, 0.3);
+  }
+
+  &:hover .shapePath {
+    filter: drop-shadow(0 2px 8px rgba(137, 87, 229, 0.3));
+  }
+
+  &.selected .shapePath {
+    stroke: #A371F7 !important;
+    stroke-width: 2.2 !important;
+    filter: drop-shadow(0 0 10px rgba(163, 113, 247, 0.45)) !important;
+  }
+}
+
+// -------------------------------------------------------------
+// 5. ПРОЦЕСС: Четкий прямоугольник (OperationNode)
+// -------------------------------------------------------------
+.processNode {
+  .shapePath {
+    stroke: var(--node-operation);
+  }
+
+  .shapeBadge {
+    background-color: var(--accent-green-subtle);
+    color: var(--node-operation);
+    border: 1px solid rgba(46, 160, 67, 0.3);
+  }
+
+  &:hover .shapePath {
+    filter: drop-shadow(0 2px 8px rgba(46, 160, 67, 0.25));
+  }
+
+  &.selected .shapePath {
+    stroke: #56D364 !important;
+    stroke-width: 2.2 !important;
+    filter: drop-shadow(0 0 10px rgba(86, 211, 100, 0.4)) !important;
+  }
+}
+
+// React Flow Handles positioned exactly on shape vertices
 :global(.react-flow__handle) {
-  width: 9px !important;
-  height: 9px !important;
-  background-color: #4294F7 !important;
+  width: 10px !important;
+  height: 10px !important;
+  background-color: var(--accent-blue) !important;
   border: 2px solid var(--bg-panel) !important;
-  transition: transform 0.15s ease;
+  border-radius: 50% !important;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  z-index: 10 !important;
 
   &:hover {
-    transform: scale(1.35);
+    transform: scale(1.4);
+    background-color: #58A6FF !important;
   }
 }
 
@@ -274,19 +411,10 @@
   bottom: -5px !important;
 }
 
-.branchLabels {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 4px;
-  margin-top: 2px;
-  font-size: 10px;
-  font-weight: 600;
+:global(.react-flow__handle-left) {
+  left: -5px !important;
+}
 
-  .yesLabel {
-    color: var(--accent-green);
-  }
-
-  .noLabel {
-    color: var(--accent-orange);
-  }
+:global(.react-flow__handle-right) {
+  right: -5px !important;
 }

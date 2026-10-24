@@ -3,7 +3,7 @@ import { X, Plus, Code, Database, GitFork, RefreshCw, PlayCircle, CheckCircle2 }
 import { useProjectStore } from '../../store/useProjectStore';
 import { PALETTE_ITEMS } from '../../lib/demo-data';
 import type { BlockType } from '../../types';
-import styles from './ImportJavaModal.module.scss';
+import styles from './AddBlockModal.module.scss';
 
 export const AddBlockModal: React.FC = () => {
   const showAddBlockModal = useProjectStore((s) => s.showAddBlockModal);
@@ -17,17 +17,17 @@ export const AddBlockModal: React.FC = () => {
   const getIcon = (type: BlockType) => {
     switch (type) {
       case 'method':
-        return <Code size={16} color="#A879F8" />;
+        return <Code size={16} color="var(--accent-purple)" />;
       case 'variable':
-        return <Database size={16} color="#4294F7" />;
+        return <Database size={16} color="var(--accent-blue)" />;
       case 'condition':
-        return <GitFork size={16} color="#F4A34B" />;
+        return <GitFork size={16} color="var(--accent-orange)" />;
       case 'loop':
-        return <RefreshCw size={16} color="#A879F8" />;
+        return <RefreshCw size={16} color="var(--node-loop)" />;
       case 'operation':
-        return <PlayCircle size={16} color="#388BFD" />;
+        return <PlayCircle size={16} color="var(--accent-green)" />;
       case 'return':
-        return <CheckCircle2 size={16} color="#39C98A" />;
+        return <CheckCircle2 size={16} color="var(--accent-green)" />;
     }
   };
 
@@ -36,45 +36,43 @@ export const AddBlockModal: React.FC = () => {
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={() => setShowAddBlockModal(false)}>
+    <div
+      className={styles.modalOverlay}
+      onClick={() => setShowAddBlockModal(false)}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-block-title"
+    >
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Plus size={16} color="#39C98A" />
-            <span>Добавить новый визуальный блок</span>
+          <div className={styles.headerLeft}>
+            <Plus size={16} className={styles.headerIcon} />
+            <span id="add-block-title">Добавить новый визуальный блок</span>
           </div>
-          <button className={styles.closeBtn} onClick={() => setShowAddBlockModal(false)}>
+          <button
+            className={styles.closeBtn}
+            onClick={() => setShowAddBlockModal(false)}
+            aria-label="Закрыть модальное окно"
+          >
             <X size={16} />
           </button>
         </div>
 
         <div className={styles.modalBody}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+          <div className={styles.blocksGrid}>
             {PALETTE_ITEMS.map((item) => {
               const isSelected = selectedType === item.type;
               return (
                 <div
                   key={item.type}
                   onClick={() => setSelectedType(item.type)}
-                  style={{
-                    backgroundColor: isSelected ? '#1B2533' : '#151D29',
-                    border: `1px solid ${isSelected ? item.color : '#2A3647'}`,
-                    borderRadius: '6px',
-                    padding: '10px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '4px',
-                    transition: 'all 0.15s ease',
-                  }}
+                  className={`${styles.blockCard} ${isSelected ? styles.selected : ''}`}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div className={styles.cardHeader}>
                     {getIcon(item.type)}
-                    <span style={{ fontWeight: 600, fontSize: '12px', color: '#E6EDF7' }}>
-                      {item.name}
-                    </span>
+                    <span className={styles.cardTitle}>{item.name}</span>
                   </div>
-                  <span style={{ fontSize: '10.5px', color: '#8D9BAF' }}>{item.description}</span>
+                  <span className={styles.cardDesc}>{item.description}</span>
                 </div>
               );
             })}

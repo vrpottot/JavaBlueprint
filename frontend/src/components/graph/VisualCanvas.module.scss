@@ -11,9 +11,9 @@
 
 .canvasTopBar {
   position: absolute;
-  top: 10px;
-  left: 12px;
-  right: 12px;
+  top: 12px;
+  left: 14px;
+  right: 14px;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -25,21 +25,27 @@
   pointer-events: auto;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .fileTab {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background-color: var(--bg-panel);
+  gap: 8px;
+  background-color: var(--bg-glass);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--border-color);
   border-radius: $radius-sm;
-  padding: 5px 10px;
+  padding: 6px 12px;
   font-family: $font-mono;
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--text-primary);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: var(--border-light);
+  }
 }
 
 .tabCloseBtn {
@@ -47,9 +53,13 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  border-radius: $radius-xs;
+  padding: 2px;
+  transition: all $transition-fast;
 
   &:hover {
     color: var(--text-primary);
+    background-color: var(--bg-panel-hover);
   }
 }
 
@@ -57,17 +67,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 26px;
-  background-color: var(--bg-panel);
+  width: 28px;
+  height: 28px;
+  background-color: var(--bg-glass);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--border-color);
   border-radius: $radius-sm;
   color: var(--text-muted);
   cursor: pointer;
+  transition: all $transition-fast;
 
   &:hover {
     color: var(--text-primary);
     background-color: var(--bg-panel-hover);
+    border-color: var(--border-light);
   }
 }
 
@@ -76,27 +89,34 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background-color: var(--bg-panel);
+  background-color: var(--bg-glass);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 3px 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: $radius-full;
+  padding: 4px 10px;
+  box-shadow: var(--shadow-md);
 }
 
 .pillBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   color: var(--text-secondary);
-  border-radius: 50%;
+  border-radius: $radius-full;
   cursor: pointer;
   transition: all $transition-fast;
+  background: none;
+  border: none;
 
   &:hover {
     color: var(--text-primary);
     background-color: var(--bg-panel-hover);
+  }
+
+  &:active {
+    transform: scale(0.92);
   }
 }
 
@@ -107,6 +127,12 @@
   color: var(--text-secondary);
   padding: 0 4px;
   user-select: none;
+  cursor: pointer;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+  }
 }
 
 // Context Menu
@@ -116,9 +142,9 @@
   background-color: var(--bg-panel);
   border: 1px solid var(--border-color);
   border-radius: $radius-md;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  padding: 4px;
-  min-width: 160px;
+  box-shadow: var(--shadow-lg);
+  padding: 5px;
+  min-width: 170px;
   animation: menuFade 0.12s ease-out;
 }
 
@@ -138,11 +164,14 @@
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 6px 10px;
+  padding: 7px 10px;
   font-size: 12px;
+  font-weight: 500;
   color: var(--text-primary);
   border-radius: $radius-xs;
   cursor: pointer;
+  border: none;
+  background: none;
   transition: background-color $transition-fast;
 
   &:hover {
@@ -153,7 +182,7 @@
     color: var(--accent-red);
 
     &:hover {
-      background-color: rgba(220, 38, 38, 0.1);
+      background-color: var(--accent-red-subtle);
     }
   }
 }

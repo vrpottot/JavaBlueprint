@@ -1,11 +1,12 @@
 import {
-  AlertCircle,
   Lightbulb,
   ExternalLink,
   Sparkles,
   CheckCircle2,
   ArrowRight,
-  ChevronDown,
+  TrendingUp,
+  BarChart2,
+  ShieldAlert,
   ArrowUpRight,
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
@@ -25,39 +26,52 @@ export const AnalysisPanel: React.FC = () => {
   const activeIssuesCount = issues.filter((i) => !i.resolved).length;
 
   return (
-    <aside className={styles.panel}>
+    <aside className={styles.panel} aria-label="Code Analysis Panel">
       {/* Header */}
       <div className={styles.header}>
-        <span>Analysis</span>
-        <span className={styles.headerBadge}>{activeIssuesCount} issues</span>
+        <div className={styles.headerTitleGroup}>
+          <BarChart2 size={15} className={styles.headerIcon} />
+          <span>Анализ кода</span>
+        </div>
+        <span className={styles.headerBadge}>
+          {activeIssuesCount} {activeIssuesCount === 1 ? 'проблема' : 'проблем'}
+        </span>
       </div>
 
-      {/* Tabs matching screenshot: Code Insights, Rekomending, Metrics */}
-      <div className={styles.tabs}>
-        <div
+      {/* Tabs */}
+      <div className={styles.tabs} role="tablist">
+        <button
           className={`${styles.tab} ${activeTab === 'issues' ? styles.active : ''}`}
           onClick={() => setActiveTab('issues')}
+          role="tab"
+          aria-selected={activeTab === 'issues'}
         >
-          Code Insights
-        </div>
-        <div
+          <span>Проблемы</span>
+          {activeIssuesCount > 0 && <span className={styles.tabCounter}>{activeIssuesCount}</span>}
+        </button>
+        <button
           className={`${styles.tab} ${activeTab === 'recommendations' ? styles.active : ''}`}
           onClick={() => setActiveTab('recommendations')}
+          role="tab"
+          aria-selected={activeTab === 'recommendations'}
         >
-          Rekomending ({recommendations.length})
-        </div>
-        <div
+          <span>Рекомендации</span>
+          <span className={styles.tabCounter}>{recommendations.length}</span>
+        </button>
+        <button
           className={`${styles.tab} ${activeTab === 'metrics' ? styles.active : ''}`}
           onClick={() => setActiveTab('metrics')}
+          role="tab"
+          aria-selected={activeTab === 'metrics'}
         >
-          Metrics
-        </div>
+          <span>Метрики</span>
+        </button>
       </div>
 
       {/* Tab Content */}
       <div className={styles.content}>
         {activeTab === 'issues' && (
-          <>
+          <div className={styles.cardsList}>
             {issues.map((issue) => (
               <div
                 key={issue.id}
@@ -65,53 +79,54 @@ export const AnalysisPanel: React.FC = () => {
               >
                 <div className={styles.cardTop}>
                   <div className={styles.titleArea}>
-                    <AlertCircle
+                    <ShieldAlert
                       size={15}
-                      color={issue.level === 'high' ? '#DC2626' : '#EA580C'}
-                      fill={issue.level === 'high' ? '#FEE2E2' : '#FFEDD5'}
+                      className={issue.level === 'high' ? styles.highIcon : styles.mediumIcon}
                     />
                     <span className={styles.cardTitle}>{issue.title}</span>
                   </div>
 
-                  <div className={styles.badgeGroup}>
-                    <span
-                      className={`${styles.severityBadge} ${
-                        issue.level === 'high'
-                          ? styles.high
-                          : issue.level === 'medium'
-                          ? styles.medium
-                          : styles.low
-                      }`}
-                    >
-                      {issue.level === 'high' ? 'High' : issue.level === 'medium' ? 'Medium' : 'Low'}
-                    </span>
-                    <span className={styles.cardFile}>{issue.file}</span>
-                  </div>
+                  <span
+                    className={`${styles.severityBadge} ${
+                      issue.level === 'high'
+                        ? styles.high
+                        : issue.level === 'medium'
+                        ? styles.medium
+                        : styles.low
+                    }`}
+                  >
+                    {issue.level === 'high' ? 'Критично' : issue.level === 'medium' ? 'Средне' : 'Инфо'}
+                  </span>
                 </div>
 
                 <p className={styles.cardDesc}>{issue.description}</p>
 
-                {issue.nodeId && (
-                  <button
-                    className={styles.jumpBtn}
-                    onClick={() => issue.nodeId && focusNodeFromIssue(issue.nodeId)}
-                  >
-                    <ExternalLink size={11} />
-                    <span>Перейти к блоку</span>
-                  </button>
-                )}
+                <div className={styles.cardFooter}>
+                  <span className={styles.cardFile}>{issue.file}</span>
+
+                  {issue.nodeId && (
+                    <button
+                      className={styles.jumpBtn}
+                      onClick={() => issue.nodeId && focusNodeFromIssue(issue.nodeId)}
+                      title="Сфокусировать блок на диаграмме"
+                    >
+                      <span>К блоку</span>
+                      <ExternalLink size={11} />
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
-          </>
+          </div>
         )}
 
         {activeTab === 'recommendations' && (
-          <>
+          <div className={styles.cardsList}>
             {recommendations.map((rec) => (
               <div key={rec.id} className={styles.issueCard}>
                 <div className={styles.cardTop}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Lightbulb size={13} color="var(--accent-orange)" />
+                  <div className={styles.titleArea}>
+                    <Lightbulb size={14} className={styles.recIcon} />
                     <span className={styles.cardTitle}>{rec.title}</span>
                   </div>
                   <span className={`${styles.severityBadge} ${styles.low}`}>{rec.tag}</span>
@@ -120,62 +135,76 @@ export const AnalysisPanel: React.FC = () => {
                 <p className={styles.cardDesc}>{rec.description}</p>
               </div>
             ))}
-          </>
+          </div>
         )}
 
         {activeTab === 'metrics' && (
           <div className={styles.metricsGrid}>
             <div className={styles.metricCard}>
-              <span className={styles.metricValue}>{metrics.cyclomaticComplexity}</span>
               <span className={styles.metricLabel}>Цикломатическая сложность</span>
+              <span className={`${styles.metricValue} ${styles.valWarning}`}>
+                {metrics.cyclomaticComplexity}
+              </span>
+              <span className={styles.metricSub}>Рекомендуется &lt; 10</span>
             </div>
 
             <div className={styles.metricCard}>
-              <span className={styles.metricValue}>{metrics.linesOfCode}</span>
               <span className={styles.metricLabel}>Строк кода (LOC)</span>
+              <span className={styles.metricValue}>{metrics.linesOfCode}</span>
+              <span className={styles.metricSub}>В текущем файле</span>
             </div>
 
             <div className={styles.metricCard}>
-              <span className={styles.metricValue}>{metrics.nestingDepth}</span>
               <span className={styles.metricLabel}>Глубина вложенности</span>
+              <span className={`${styles.metricValue} ${styles.valAlert}`}>
+                {metrics.nestingDepth}
+              </span>
+              <span className={styles.metricSub}>Уровень 4: вложенный цикл</span>
             </div>
 
             <div className={styles.metricCard}>
-              <span className={styles.metricValue} style={{ color: 'var(--accent-green)' }}>
+              <span className={styles.metricLabel}>Покрытие тестами</span>
+              <span className={`${styles.metricValue} ${styles.valSuccess}`}>
                 {metrics.testCoverage}%
               </span>
-              <span className={styles.metricLabel}>Покрытие тестами</span>
+              <span className={styles.metricSub}>12 из 14 сценариев</span>
             </div>
           </div>
         )}
       </div>
 
-      {/* Complexity & Optimization Section from reference photo */}
+      {/* Complexity & Optimization Section */}
       <div className={styles.complexitySection}>
         <div className={styles.complexityHeader}>
-          <ChevronDown size={14} />
-          <span>Complexity</span>
+          <TrendingUp size={14} className={styles.compHeaderIcon} />
+          <span>Вычислительная сложность</span>
         </div>
 
         <div className={styles.complexityComparison}>
-          <span>Current:</span>
-          <span className={styles.compRed}>{complexity.current}</span>
-          <ArrowRight size={13} className={styles.arrow} />
-          <span>Optimized:</span>
-          <span className={styles.compGreen}>{complexity.optimized}</span>
+          <div className={styles.compBox}>
+            <span className={styles.compLabel}>Текущая</span>
+            <span className={styles.compRed}>{complexity.current}</span>
+          </div>
+
+          <ArrowRight size={14} className={styles.arrow} />
+
+          <div className={styles.compBox}>
+            <span className={styles.compLabel}>Оптимизированная</span>
+            <span className={styles.compGreen}>{complexity.optimized}</span>
+          </div>
         </div>
 
-        {/* Green Performance Estimation Card */}
+        {/* Performance Estimation Card */}
         <div className={styles.perfEstimationCard}>
           <div className={styles.perfTop}>
-            <CheckCircle2 size={13} color="#059669" />
-            <span>Performance Estimation</span>
+            <CheckCircle2 size={14} />
+            <span>Оценка прироста производительности</span>
           </div>
           <div className={styles.perfMain}>
-            <span>Expected acceleration:</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+            <span className={styles.perfSubText}>Ускорение обработки:</span>
+            <div className={styles.speedupPill}>
               <span className={styles.highlight}>{complexity.speedup}</span>
-              <ArrowUpRight size={15} color="#059669" />
+              <ArrowUpRight size={14} />
             </div>
           </div>
         </div>
@@ -184,12 +213,12 @@ export const AnalysisPanel: React.FC = () => {
 
         {!isOptimized ? (
           <button className={styles.applyBtn} onClick={applyOptimization}>
-            <Sparkles size={13} />
+            <Sparkles size={14} />
             <span>Применить оптимизацию</span>
           </button>
         ) : (
           <button className={`${styles.applyBtn} ${styles.applied}`} disabled>
-            <CheckCircle2 size={13} />
+            <CheckCircle2 size={14} />
             <span>Оптимизация активна</span>
           </button>
         )}

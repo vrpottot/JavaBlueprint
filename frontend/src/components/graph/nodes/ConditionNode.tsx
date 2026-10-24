@@ -10,45 +10,56 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
 
   return (
     <div
-      className={`${styles.baseNode} ${styles.conditionNode} ${isSelected ? styles.selected : ''} ${
-        nodeData.warning ? styles.hasWarning : ''
+      className={`${styles.flowNodeContainer} ${styles.decisionNode} ${
+        isSelected ? styles.selected : ''
       }`}
     >
       <Handle type="target" position={Position.Top} id="in" />
 
-      <div className={styles.nodeHeader}>
-        <div className={styles.headerLeft}>
-          <span className={styles.typeIndicator} />
-          <GitFork size={13} color="#F4A34B" />
-          <span>{nodeData.title}</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          {nodeData.badge && <span className={styles.badge}>{nodeData.badge}</span>}
-          {nodeData.line && <span className={styles.lineNum}>L{nodeData.line}</span>}
-        </div>
-      </div>
+      {/* 3. РЕШЕНИЕ: Классический ромб ветвления (ГОСТ / ISO 5807) */}
+      <svg
+        className={styles.shapeSvgBg}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <polygon
+          points="50,1 99,50 50,99 1,50"
+          className={styles.shapePath}
+        />
+      </svg>
 
-      <div className={styles.nodeBody}>
-        <div className={styles.codeSnippet}>{nodeData.codeSnippet}</div>
-        {nodeData.description && <div className={styles.description}>{nodeData.description}</div>}
+      <div className={styles.decisionContent}>
+        <div className={styles.decisionHeader}>
+          <GitFork size={12} color="#F59E0B" />
+          <span className={styles.shapeBadge}>Решение</span>
+          {nodeData.line && <span className={styles.lineBadge}>L{nodeData.line}</span>}
+        </div>
+
+        <div className={styles.decisionTitle}>{nodeData.title}</div>
+
+        <div className={styles.decisionCodeSnippet}>{nodeData.codeSnippet}</div>
+
+        {nodeData.description && (
+          <div className={styles.decisionDescription}>{nodeData.description}</div>
+        )}
 
         {nodeData.warning && (
-          <div className={styles.warningBox}>
-            <AlertTriangle size={12} />
+          <div className={styles.decisionWarning}>
+            <AlertTriangle size={11} />
             <span>{nodeData.warning}</span>
           </div>
         )}
-
-        <div className={styles.branchLabels}>
-          <span className={styles.yesLabel}>← Да</span>
-          <span className={styles.noLabel}>Нет ↓</span>
-        </div>
       </div>
 
-      {/* Two outputs: left/bottom for branches */}
-      <Handle type="source" position={Position.Left} id="out-left" />
-      <Handle type="source" position={Position.Bottom} id="out-bottom" />
-      <Handle type="source" position={Position.Right} id="out-right" />
+      {/* Connection Handles on vertices with external label indicators */}
+      <Handle type="source" position={Position.Left} id="out-left" title="Да (True)" />
+      <span className={styles.handleTipLeft}>Да</span>
+
+      <Handle type="source" position={Position.Bottom} id="out-bottom" title="Нет (False)" />
+      <span className={styles.handleTipBottom}>Нет</span>
+
+      <Handle type="source" position={Position.Right} id="out-right" title="Ветвление" />
     </div>
   );
 });

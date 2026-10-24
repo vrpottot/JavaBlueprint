@@ -10,27 +10,45 @@ export const VariableNode = memo(({ data, selected }: NodeProps) => {
 
   return (
     <div
-      className={`${styles.baseNode} ${styles.variableNode} ${isSelected ? styles.selected : ''} ${
-        nodeData.warning ? styles.hasWarning : ''
+      className={`${styles.flowNodeContainer} ${styles.dataNode} ${
+        isSelected ? styles.selected : ''
       }`}
     >
       <Handle type="target" position={Position.Top} id="in" />
 
-      <div className={styles.nodeHeader}>
-        <div className={styles.headerLeft}>
-          <span className={styles.typeIndicator} />
-          <Database size={13} color="#4294F7" />
-          <span>{nodeData.title}</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          {nodeData.badge && <span className={styles.badge}>{nodeData.badge}</span>}
-          {nodeData.line && <span className={styles.lineNum}>L{nodeData.line}</span>}
-        </div>
-      </div>
+      {/* 2. ДАННЫЕ: Параллелограмм со скошенными сторонами */}
+      <svg
+        className={styles.shapeSvgBg}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <polygon
+          points="7,1 99,1 93,99 1,99"
+          className={styles.shapePath}
+        />
+      </svg>
 
-      <div className={styles.nodeBody}>
+      <div className={styles.nodeContent}>
+        <div className={styles.nodeHeader}>
+          <div className={styles.headerLeft}>
+            <div className={styles.headerIcon}>
+              <Database size={13} color="#3B82F6" />
+            </div>
+            <span className={styles.nodeTitle}>{nodeData.title}</span>
+          </div>
+
+          <div className={styles.headerRight}>
+            <span className={styles.shapeBadge}>Данные</span>
+            {nodeData.line && <span className={styles.lineBadge}>L{nodeData.line}</span>}
+          </div>
+        </div>
+
         <div className={styles.codeSnippet}>{nodeData.codeSnippet}</div>
-        {nodeData.description && <div className={styles.description}>{nodeData.description}</div>}
+
+        {nodeData.description && (
+          <div className={styles.description}>{nodeData.description}</div>
+        )}
 
         {nodeData.warning && (
           <div className={styles.warningBox}>

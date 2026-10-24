@@ -1,71 +1,79 @@
-// JavaScope Design System Variables
-// Theme: Dark Professional Developer IDE
+// JavaBlueprint Design System Variables
+// Fully integrated with dynamic CSS variables for seamless Dark / Light modes
 
 // Backgrounds
-$bg-main: #10151E;
-$bg-canvas: #0B111B;
-$bg-panel: #151D29;
-$bg-panel-secondary: #1B2533;
-$bg-panel-hover: #222E3F;
-$bg-active: #253347;
-$bg-header: #131A24;
-$bg-input: #0E141D;
-$bg-card: #182230;
+$bg-main: var(--bg-main, #0D1117);
+$bg-canvas: var(--bg-canvas, #080C12);
+$bg-panel: var(--bg-panel, #161B22);
+$bg-panel-secondary: var(--bg-panel-secondary, #1C2128);
+$bg-panel-hover: var(--bg-panel-hover, #252C37);
+$bg-active: var(--bg-active, #1F2937);
+$bg-header: var(--bg-panel-secondary, #161B22);
+$bg-input: var(--bg-input, #0D1117);
+$bg-card: var(--bg-card, #161B22);
 
 // Borders & Dividers
-$border-color: #2A3647;
-$border-light: #344357;
-$border-focus: #4294F7;
+$border-color: var(--border-color, #30363D);
+$border-light: var(--border-light, #3D444D);
+$border-focus: var(--border-focus, #388BFD);
 
 // Typography Colors
-$text-primary: #E6EDF7;
-$text-secondary: #8D9BAF;
-$text-muted: #5E6D82;
-$text-disabled: #414D5E;
+$text-primary: var(--text-primary, #F0F6FC);
+$text-secondary: var(--text-secondary, #8B949E);
+$text-muted: var(--text-muted, #6E7681);
+$text-disabled: var(--text-muted, #484F58);
 
 // Accent & Semantic Colors
-$accent-blue: #4294F7;
-$accent-blue-hover: #5DA5F9;
-$accent-blue-glow: rgba(66, 148, 247, 0.2);
+$accent-blue: var(--accent-blue, #388BFD);
+$accent-blue-hover: var(--accent-blue-hover, #58A6FF);
+$accent-blue-glow: var(--accent-blue-subtle, rgba(56, 139, 253, 0.2));
 
-$accent-purple: #A879F8;
-$accent-purple-hover: #B992F9;
-$accent-purple-glow: rgba(168, 121, 248, 0.2);
+$accent-purple: var(--accent-purple, #A371F7);
+$accent-purple-hover: var(--accent-purple-hover, #BC8CFF);
+$accent-purple-glow: var(--accent-purple-subtle, rgba(163, 113, 247, 0.2));
 
-$accent-green: #39C98A;
-$accent-green-hover: #4ED197;
-$accent-green-glow: rgba(57, 201, 138, 0.2);
+$accent-green: var(--accent-green, #3FB950);
+$accent-green-hover: var(--accent-green-hover, #56D364);
+$accent-green-glow: var(--accent-green-subtle, rgba(63, 185, 80, 0.2));
 
-$accent-orange: #F4A34B;
-$accent-orange-hover: #F6B165;
-$accent-orange-glow: rgba(244, 163, 75, 0.2);
+$accent-orange: var(--accent-orange, #F0883E);
+$accent-orange-hover: var(--accent-orange-hover, #FFA657);
+$accent-orange-glow: var(--accent-orange-subtle, rgba(240, 136, 62, 0.2));
 
-$accent-red: #F16C70;
-$accent-red-hover: #F38185;
-$accent-red-glow: rgba(241, 108, 112, 0.2);
+$accent-red: var(--accent-red, #F85149);
+$accent-red-hover: var(--accent-red-hover, #FF7B72);
+$accent-red-glow: var(--accent-red-subtle, rgba(248, 81, 73, 0.2));
 
-// Block Type Colors
-$node-method: #A879F8;
-$node-variable: #4294F7;
-$node-condition: #F4A34B;
-$node-loop: #9366E8;
-$node-operation: #388BFD;
-$node-return: #39C98A;
-$node-error: #F16C70;
+// Block Type Semantic Colors
+$node-method: var(--node-method, #A371F7);
+$node-variable: var(--node-variable, #388BFD);
+$node-condition: var(--node-condition, #F0883E);
+$node-loop: var(--node-loop, #8957E5);
+$node-operation: var(--node-operation, #2EA043);
+$node-return: var(--node-return, #3FB950);
+$node-error: var(--accent-red, #F85149);
 
-// Sizing & Spacing
-$header-height: 46px;
-$sidebar-width: 220px;
-$analysis-width: 290px;
-$radius-xs: 3px;
-$radius-sm: 5px;
-$radius-md: 7px;
-$radius-lg: 9px;
+// Sizing & Spacing Scale (8pt grid system)
+$header-height: 48px;
+$sidebar-width: 236px;
+$analysis-width: 310px;
+
+$radius-xs: 4px;
+$radius-sm: 6px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-full: 9999px;
 
 // Fonts
 $font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 $font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 
-// Transitions
-$transition-fast: 0.15s ease;
-$transition-normal: 0.22s ease;
+// Transitions & Motion (GSAP / micro-interactions)
+$transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+$transition-normal: 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+$transition-bounce: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// Shadows & Elevation
+$shadow-sm: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.12));
+$shadow-md: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.18));
+$shadow-lg: var(--shadow-lg, 0 12px 32px rgba(0, 0, 0, 0.28));

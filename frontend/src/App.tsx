@@ -26,24 +26,28 @@ export function App() {
       {/* Top Application Toolbar */}
       <TopToolbar />
 
-      {/* Main Workspace: Left Sidebar, Visual Canvas, Right Sidebar */}
+      {/* Main Workspace Layout */}
       <main className={styles.mainLayout}>
+        {/* Left Sidebar (Full height from top toolbar to bottom of window) */}
         {isLeftSidebarOpen ? (
           <ProjectExplorer />
         ) : (
           <div
             className={styles.collapsedTrigger}
             onClick={toggleLeftSidebar}
-            title="Развернуть проводник проекта"
+            title="Развернуть проводник проекта (Ctrl+B)"
           >
             <span className={styles.verticalText}>Проект</span>
           </div>
         )}
 
+        {/* Center Area: Visual Flow Canvas (top) + Tabbed Bottom Workspace (bottom) */}
         <div className={styles.centerArea}>
           <VisualCanvas />
+          <BottomWorkspace />
         </div>
 
+        {/* Right Sidebar: Code Analysis & Metrics */}
         {isRightSidebarOpen ? (
           <AnalysisPanel />
         ) : (
@@ -56,9 +60,6 @@ export function App() {
           </div>
         )}
       </main>
-
-      {/* Bottom Workspace: Java Code Editor, Console, Tests */}
-      <BottomWorkspace />
 
       {/* Interactive Global Modals */}
       <OptimizationModal />

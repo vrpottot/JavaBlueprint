@@ -2,7 +2,7 @@
 @use '../../styles/mixins' as *;
 
 .toolbar {
-  height: $header-height;
+  height: 48px;
   background-color: var(--bg-panel);
   border-bottom: 1px solid var(--border-color);
   display: flex;
@@ -11,112 +11,124 @@
   padding: 0 14px;
   z-index: 50;
   user-select: none;
+  overflow-x: auto;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+  @include custom-scrollbar;
 }
 
-.leftSection {
+.leftGroup {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
-.iconButton {
+.iconBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   color: var(--text-secondary);
-  border-radius: $radius-sm;
+  border-radius: 6px;
   cursor: pointer;
+  background: none;
+  border: 1px solid transparent;
   transition: all $transition-fast;
+  flex-shrink: 0;
 
   &:hover {
     color: var(--text-primary);
     background-color: var(--bg-panel-hover);
+    border-color: var(--border-color);
   }
 
   &.active {
     color: var(--accent-blue);
     background-color: var(--bg-active);
+    border-color: var(--border-light);
   }
 }
 
-.brand {
+.sunIcon {
+  color: #F59E0B;
+}
+
+.moonIcon {
+  color: var(--accent-blue);
+}
+
+.breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding-right: 14px;
-  border-right: 1px solid var(--border-color);
-}
-
-.brandLogo {
-  width: 24px;
-  height: 24px;
-  background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #FFFFFF;
-  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
-}
-
-.brandTextGroup {
-  display: flex;
-  flex-direction: column;
-}
-
-.brandTitle {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  line-height: 1.2;
-}
-
-.brandSubtitle {
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
-
-.projectInfo {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--text-secondary);
+  flex-shrink: 0;
 }
 
 .projectName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.chevron {
+  color: var(--text-muted);
+}
+
+// File & method pill matching the screenshot: [ 📄 OrderService.java processOrders() ]
+.fileMethodPill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 4px 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.fileIcon {
+  color: #3B82F6;
+  flex-shrink: 0;
+}
+
+.fileName {
+  font-family: $font-mono;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
-.filePath {
+.methodBadge {
   font-family: $font-mono;
   font-size: 11px;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  font-weight: 500;
+  color: #8B5CF6;
+  background-color: rgba(139, 92, 246, 0.14);
+  padding: 1px 7px;
+  border-radius: 4px;
 }
 
-.centerSection {
+// Action Buttons in the center
+.actionsGroup {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
-.toolbarBtn {
+.actionBtn {
   @include ide-button;
+  padding: 5px 12px;
+  height: 31px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  box-shadow: var(--shadow-sm);
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  padding: 5px 12px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 
   &:hover {
     background-color: var(--bg-panel-hover);
@@ -124,42 +136,68 @@
   }
 }
 
+.vDivider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--border-color);
+  margin: 0 3px;
+  flex-shrink: 0;
+}
+
+// Vibrant Orange Optimize Button matching screenshot
 .optimizeBtn {
   @include ide-button;
-  background: linear-space-orange, #F97316;
-  background-color: #F97316;
+  height: 31px;
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
   border: 1px solid #EA580C;
   color: #FFFFFF;
   font-weight: 600;
+  font-size: 12px;
+  border-radius: 6px;
   padding: 5px 14px;
-  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
 
   &:hover {
-    background-color: #EA580C;
-    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.5);
+    background: linear-gradient(135deg, #FB923C 0%, #F97316 100%);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.55);
+    color: #FFFFFF;
   }
 
   &.revert {
-    background-color: transparent;
-    border-color: #F97316;
-    color: #F97316;
+    background: var(--bg-card);
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+    box-shadow: none;
+
+    &:hover {
+      background-color: var(--accent-orange-subtle);
+    }
   }
 }
 
+// Unified Run Button with Dropdown
 .runGroup {
   display: flex;
   align-items: center;
+  position: relative;
+  flex-shrink: 0;
 }
 
 .runBtn {
   @include ide-button;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
+  height: 31px;
+  padding: 5px 12px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
   color: var(--text-primary);
-  font-weight: 500;
-  padding: 5px 12px;
+  font-weight: 600;
+  font-size: 12px;
+
+  .playIcon {
+    color: #16A34A;
+  }
 
   &:hover {
     background-color: var(--bg-panel-hover);
@@ -167,24 +205,27 @@
   }
 
   &.running {
-    color: var(--accent-blue);
-    border-color: var(--accent-blue);
+    color: var(--accent-orange);
+    .playIcon {
+      color: var(--accent-orange);
+    }
   }
 }
 
-.runDropdownBtn {
+.runChevronBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 29px;
+  width: 22px;
+  height: 31px;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 1px solid var(--border-color);
-  border-top-right-radius: $radius-sm;
-  border-bottom-right-radius: $radius-sm;
+  border-left: none;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
   color: var(--text-secondary);
   cursor: pointer;
+  transition: all $transition-fast;
 
   &:hover {
     background-color: var(--bg-panel-hover);
@@ -192,15 +233,61 @@
   }
 }
 
-.rightSection {
+.runDropdownMenu {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 5px;
+  min-width: 210px;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: menuFade 0.12s ease-out;
+}
+
+@keyframes menuFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdownOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  border-radius: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: var(--bg-panel-hover);
+  }
+}
+
+.greenIcon {
+  color: #16A34A;
+}
+
+.blueIcon {
+  color: var(--accent-blue);
+}
+
+// Right Tools Group
+.toolsGroup {
   display: flex;
   align-items: center;
   gap: 6px;
-}
-
-.divider {
-  width: 1px;
-  height: 18px;
-  background-color: var(--border-color);
-  margin: 0 4px;
+  flex-shrink: 0;
 }

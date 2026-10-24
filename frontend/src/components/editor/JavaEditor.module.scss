@@ -6,19 +6,18 @@
   display: flex;
   flex-direction: column;
   background-color: var(--bg-canvas);
-  border-right: 1px solid var(--border-color);
   overflow: hidden;
 }
 
 .header {
-  height: 32px;
-  padding: 0 10px;
+  height: 36px;
+  padding: 0 12px;
   background-color: var(--bg-panel-secondary);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -32,29 +31,34 @@
 .fileName {
   font-family: $font-mono;
   font-size: 11.5px;
+  font-weight: 600;
   color: var(--text-primary);
 }
 
 .headerRight {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .toggleGroup {
   display: flex;
   background-color: var(--bg-input);
   border: 1px solid var(--border-color);
-  border-radius: $radius-xs;
-  padding: 1px;
+  border-radius: $radius-sm;
+  padding: 2px;
+  gap: 2px;
 }
 
 .toggleBtn {
-  font-size: 10.5px;
-  padding: 2px 7px;
-  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: $radius-xs;
   color: var(--text-secondary);
   cursor: pointer;
+  background: none;
+  border: none;
   transition: all $transition-fast;
 
   &:hover {
@@ -65,34 +69,41 @@
     background-color: var(--bg-active);
     color: var(--accent-blue);
     font-weight: 600;
+    box-shadow: var(--shadow-sm);
   }
 }
 
 .actionBtn {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 6px;
-  font-size: 11px;
+  gap: 5px;
+  padding: 4px 8px;
+  font-size: 11.5px;
+  font-weight: 500;
   color: var(--text-secondary);
   border-radius: $radius-xs;
+  border: 1px solid transparent;
   cursor: pointer;
+  background: none;
   transition: all $transition-fast;
 
   &:hover {
     color: var(--text-primary);
     background-color: var(--bg-panel-hover);
+    border-color: var(--border-color);
   }
 
   &.success {
     color: var(--accent-green);
+    background-color: var(--accent-green-subtle);
+    border-color: rgba(63, 185, 80, 0.3);
   }
 }
 
 .monacoWrapper {
   flex: 1;
   width: 100%;
-  height: calc(100% - 32px);
+  height: calc(100% - 36px);
   position: relative;
   background-color: var(--bg-panel);
 }

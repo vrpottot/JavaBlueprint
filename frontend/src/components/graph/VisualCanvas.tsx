@@ -1,9 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import {
   ReactFlow,
-  Controls,
   Background,
-  MiniMap,
   BackgroundVariant,
   useReactFlow,
   ReactFlowProvider,
@@ -187,26 +185,13 @@ const CanvasInner: React.FC = () => {
         minZoom={0.3}
         maxZoom={1.8}
         fitViewOptions={{ padding: 0.25 }}
+        proOptions={{ hideAttribution: true }}
       >
         <Background
           color={isLight ? '#CBD5E1' : '#2A3647'}
           gap={20}
           size={1}
           variant={BackgroundVariant.Dots}
-        />
-        <Controls showInteractive={false} position="bottom-right" />
-        <MiniMap
-          nodeColor={(n) => {
-            const t = (n.data as VisualBlockData)?.blockType;
-            if (t === 'method') return '#A855F7';
-            if (t === 'condition') return '#F97316';
-            if (t === 'loop') return '#9333EA';
-            if (t === 'return') return '#22C55E';
-            return '#3B82F6';
-          }}
-          maskColor={isLight ? 'rgba(241, 245, 249, 0.7)' : 'rgba(11, 17, 27, 0.75)'}
-          position="bottom-left"
-          style={{ width: 120, height: 80 }}
         />
       </ReactFlow>
 

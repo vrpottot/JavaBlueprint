@@ -4,7 +4,7 @@
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
@@ -13,13 +13,13 @@
 }
 
 .modalContent {
-  width: 720px;
+  width: 740px;
   max-width: 92vw;
-  max-height: 85vh;
+  max-height: 88vh;
   background-color: var(--bg-panel);
   border: 1px solid var(--border-color);
   border-radius: $radius-lg;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -41,7 +41,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 18px;
+  padding: 14px 20px;
   background-color: var(--bg-panel-secondary);
   border-bottom: 1px solid var(--border-color);
 }
@@ -50,7 +50,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -60,6 +60,12 @@
   cursor: pointer;
   padding: 4px;
   border-radius: $radius-sm;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-fast;
 
   &:hover {
     color: var(--text-primary);
@@ -68,46 +74,49 @@
 }
 
 .modalBody {
-  padding: 16px 18px;
+  padding: 18px 20px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   @include custom-scrollbar;
 }
 
 .statsBanner {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 12px;
   background-color: var(--bg-panel-secondary);
   border: 1px solid var(--border-color);
   border-radius: $radius-md;
-  padding: 12px;
+  padding: 14px;
 }
 
 .statItem {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .statLabel {
   font-size: 10.5px;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .statVal {
   font-family: $font-mono;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
+  color: var(--text-primary);
 }
 
 .comparisonView {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 14px;
 }
 
 .codeBox {
@@ -115,7 +124,7 @@
   flex-direction: column;
   background-color: var(--bg-canvas);
   border: 1px solid var(--border-color);
-  border-radius: $radius-sm;
+  border-radius: $radius-md;
   overflow: hidden;
 }
 
@@ -123,19 +132,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 10px;
+  padding: 8px 12px;
   background-color: var(--bg-panel-secondary);
   border-bottom: 1px solid var(--border-color);
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--text-secondary);
 }
 
 .codeContent {
-  padding: 10px;
+  padding: 12px;
   font-family: $font-mono;
-  font-size: 11px;
-  line-height: 1.45;
+  font-size: 11.5px;
+  line-height: 1.5;
   color: var(--text-primary);
   max-height: 220px;
   overflow-y: auto;
@@ -145,19 +154,19 @@
 .improvementsList {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  background-color: rgba(37, 99, 235, 0.05);
-  border: 1px solid rgba(37, 99, 235, 0.2);
-  border-radius: $radius-sm;
-  padding: 10px 12px;
-  font-size: 11.5px;
+  gap: 8px;
+  background-color: var(--accent-blue-subtle);
+  border: 1px solid rgba(56, 139, 253, 0.25);
+  border-radius: $radius-md;
+  padding: 12px 14px;
+  font-size: 12px;
   color: var(--text-primary);
 }
 
 .impItem {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .modalFooter {
@@ -165,7 +174,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-  padding: 12px 18px;
+  padding: 14px 20px;
   background-color: var(--bg-panel-secondary);
   border-top: 1px solid var(--border-color);
 }
@@ -184,13 +193,15 @@
 
 .applyBtn {
   @include ide-button;
-  background-color: #F97316;
-  border: 1px solid #EA580C;
+  background: linear-gradient(135deg, #F0883E 0%, #D96500 100%);
+  border: 1px solid #D96500;
   color: #FFFFFF;
   font-weight: 600;
+  padding: 7px 16px;
 
   &:hover {
-    background-color: #EA580C;
-    box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
+    background: linear-gradient(135deg, #FFA657 0%, #F0883E 100%);
+    box-shadow: 0 4px 14px rgba(240, 136, 62, 0.4);
+    color: #FFFFFF;
   }
 }

@@ -2,19 +2,19 @@ import { useState } from 'react';
 import {
   Folder,
   FolderOpen,
-  FileCode,
   ChevronRight,
   ChevronDown,
   Search,
-  Plus,
   GripVertical,
-  Code,
-  Database,
+  Crosshair,
+  MoreVertical,
+  Code2,
+  Box,
   GitFork,
   RefreshCw,
-  PlusCircle,
+  Plus,
   CornerDownLeft,
-  FilePlus,
+  Layers,
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import { PALETTE_ITEMS } from '../../lib/demo-data';
@@ -44,45 +44,46 @@ export const ProjectExplorer: React.FC = () => {
   };
 
   const filteredPalette = PALETTE_ITEMS.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const getBlockIcon = (type: BlockType) => {
     switch (type) {
-      case 'method':
-        return (
-          <div style={{ backgroundColor: '#F3E8FF', padding: 4, borderRadius: 4, display: 'flex' }}>
-            <Code size={14} color="#9333EA" />
-          </div>
-        );
       case 'variable':
         return (
-          <div style={{ backgroundColor: '#DBEAFE', padding: 4, borderRadius: 4, display: 'flex' }}>
-            <Database size={14} color="#2563EB" />
+          <div className={`${styles.blockIconBadge} ${styles.badgeVariable}`}>
+            <Box size={14} />
           </div>
         );
       case 'condition':
         return (
-          <div style={{ backgroundColor: '#FFEDD5', padding: 4, borderRadius: 4, display: 'flex' }}>
-            <GitFork size={14} color="#EA580C" />
+          <div className={`${styles.blockIconBadge} ${styles.badgeCondition}`}>
+            <GitFork size={14} />
           </div>
         );
       case 'loop':
         return (
-          <div style={{ backgroundColor: '#F3E8FF', padding: 4, borderRadius: 4, display: 'flex' }}>
-            <RefreshCw size={14} color="#9333EA" />
+          <div className={`${styles.blockIconBadge} ${styles.badgeLoop}`}>
+            <RefreshCw size={14} />
+          </div>
+        );
+      case 'method':
+        return (
+          <div className={`${styles.blockIconBadge} ${styles.badgeMethod}`}>
+            <Code2 size={14} />
           </div>
         );
       case 'operation':
         return (
-          <div style={{ backgroundColor: '#DCFCE7', padding: 4, borderRadius: 4, display: 'flex' }}>
-            <PlusCircle size={14} color="#16A34A" />
+          <div className={`${styles.blockIconBadge} ${styles.badgeOperation}`}>
+            <Plus size={14} />
           </div>
         );
       case 'return':
         return (
-          <div style={{ backgroundColor: '#FEE2E2', padding: 4, borderRadius: 4, display: 'flex' }}>
-            <CornerDownLeft size={14} color="#DC2626" />
+          <div className={`${styles.blockIconBadge} ${styles.badgeReturn}`}>
+            <CornerDownLeft size={14} />
           </div>
         );
     }
@@ -95,10 +96,10 @@ export const ProjectExplorer: React.FC = () => {
       const isActive = activeFileId === item.id;
 
       return (
-        <div key={item.id}>
+        <div key={item.id} className={styles.treeNode}>
           <div
             className={`${styles.treeItem} ${isActive ? styles.active : ''}`}
-            style={{ paddingLeft: `${depth * 14 + 8}px` }}
+            style={{ paddingLeft: `${depth * 14 + 10}px` }}
             onClick={() => {
               if (isDir) {
                 toggleFolder(item.id);
@@ -106,41 +107,39 @@ export const ProjectExplorer: React.FC = () => {
                 selectFile(item.id);
               }
             }}
+            role="treeitem"
+            aria-selected={isActive}
           >
             <div className={styles.itemLabel}>
               {isDir ? (
                 <>
-                  <span style={{ color: 'var(--text-muted)' }}>
+                  <span className={styles.chevron}>
                     {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
                   </span>
-                  <span className={styles.itemIcon}>
-                    {isExpanded ? (
-                      <FolderOpen size={14} color="#60A5FA" />
-                    ) : (
-                      <Folder size={14} color="#60A5FA" />
-                    )}
+                  <span className={styles.folderIcon}>
+                    {isExpanded ? <FolderOpen size={14} /> : <Folder size={14} />}
                   </span>
                 </>
               ) : (
                 <>
-                  <span style={{ width: 12 }} />
-                  <span className={styles.itemIcon}>
-                    <FileCode size={14} color={isActive ? '#2563EB' : '#94A3B8'} />
-                  </span>
+                  <span className={styles.treeIndentSpacer} />
+                  <div className={styles.javaFileIcon}>
+                    <span>Ja</span>
+                  </div>
                 </>
               )}
-              <span>{item.name}</span>
+              <span className={styles.fileNameText}>{item.name}</span>
             </div>
 
             {item.hasIssues && (
-              <span className={styles.issueDot} title="Обнаружены проблемы в коде">
+              <span className={styles.issueDot} title={`Обнаружены проблемы в коде (${item.issueCount})`}>
                 {item.issueCount || '!'}
               </span>
             )}
           </div>
 
           {isDir && isExpanded && item.children && (
-            <div>{renderFileTree(item.children, depth + 1)}</div>
+            <div role="group">{renderFileTree(item.children, depth + 1)}</div>
           )}
         </div>
       );
@@ -148,58 +147,61 @@ export const ProjectExplorer: React.FC = () => {
   };
 
   return (
-    <aside className={styles.explorer}>
-      {/* Top Card: Project Tree */}
-      <div className={styles.projectCard}>
+    <aside className={styles.sidebar}>
+      {/* Top Section: Проект */}
+      <div className={styles.projectSection}>
         <div className={styles.sectionHeader}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Folder size={14} color="var(--accent-blue)" />
-            <span>Project</span>
+          <div className={styles.headerLeft}>
+            <Layers size={14} className={styles.headerIcon} />
+            <span className={styles.headerTitle}>Проект</span>
           </div>
           <div className={styles.headerActions}>
-            <span className={styles.actionIcon} title="Новый файл">
-              <FilePlus size={13} />
-            </span>
+            <button className={styles.headerActionBtn} title="Сфокусировать текущий файл">
+              <Crosshair size={14} />
+            </button>
+            <button className={styles.headerActionBtn} title="Дополнительные действия">
+              <MoreVertical size={14} />
+            </button>
           </div>
         </div>
 
-        <div className={styles.treeContainer}>{renderFileTree(files)}</div>
+        <div className={styles.treeContainer} role="tree">
+          {renderFileTree(files)}
+        </div>
       </div>
 
-      {/* Bottom Card: Blocks Palette */}
-      <div className={styles.paletteCardSection}>
-        <div className={styles.sectionHeader}>
-          <span>Blocks</span>
+      {/* Horizontal Divider */}
+      <div className={styles.divider} />
+
+      {/* Bottom Section: Блоки */}
+      <div className={styles.blocksSection}>
+        <div className={styles.blocksHeader}>
+          <span className={styles.blocksTitle}>Блоки</span>
         </div>
 
         <div className={styles.searchBox}>
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            <Search
-              size={12}
-              color="var(--text-muted)"
-              style={{ position: 'absolute', left: 7, pointerEvents: 'none' }}
-            />
-            <input
-              type="text"
-              className={styles.searchInput}
-              placeholder="Поиск блока"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+          <Search size={14} className={styles.searchIcon} />
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Поиск блоков..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
 
-        <div className={styles.paletteList}>
+        <div className={styles.blockList}>
           {filteredPalette.map((item) => (
             <div
               key={item.type}
-              className={styles.paletteCard}
+              className={styles.blockCard}
               draggable
               onDragStart={(e) => {
                 e.dataTransfer.setData('application/javascope-block', item.type);
                 e.dataTransfer.effectAllowed = 'move';
               }}
-              title={`Перетащите на холст:\n${item.description}`}
+              onClick={() => addNode(item.type)}
+              title={`Перетащите или кликните для добавления:\n${item.description}`}
             >
               <div className={styles.cardLeft}>
                 {getBlockIcon(item.type)}
@@ -207,17 +209,7 @@ export const ProjectExplorer: React.FC = () => {
               </div>
 
               <div className={styles.cardRight}>
-                <button
-                  className={styles.addBtn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addNode(item.type);
-                  }}
-                  title="Добавить на canvas"
-                >
-                  <Plus size={12} />
-                </button>
-                <GripVertical size={12} color="var(--text-muted)" style={{ cursor: 'grab' }} />
+                <GripVertical size={14} className={styles.dragIcon} />
               </div>
             </div>
           ))}
