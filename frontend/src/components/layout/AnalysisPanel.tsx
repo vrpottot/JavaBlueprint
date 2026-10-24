@@ -212,14 +212,24 @@ export const AnalysisPanel: React.FC = () => {
 
         <p className={styles.explanation}>{complexity.explanation}</p>
         <div style={{ maxHeight: 260, overflowY: 'auto' }}>
-          {methodComplexities.map(method => <details key={method.methodId} style={{ marginBottom: 10 }}>
-            <summary style={{ cursor: 'pointer', fontSize: 12 }}>{method.method}: <strong>{method.estimate === 'unknown' ? 'Неизвестно' : method.estimate}</strong></summary>
-            <p className={styles.explanation}>{method.explanation}</p>
-            <p className={styles.explanation}>{method.file}:{method.line}</p>
-            {method.assumptions.map((a, i) => <p className={styles.explanation} key={`a${i}`}>{a}</p>)}
-            {method.evidence.map((e, i) => <p className={styles.explanation} key={`e${i}`}>L{e.line}: {e.estimate} — {e.rule}</p>)}
-            <button className={styles.jumpBtn} onClick={() => focusNodeFromIssue(method.methodId)}>К методу</button>
-          </details>)}
+          {(methodComplexities || []).map((method) => (
+            <details key={method.methodId} style={{ marginBottom: 10 }}>
+              <summary style={{ cursor: 'pointer', fontSize: 12 }}>
+                {method.method}: <strong>{method.estimate === 'unknown' ? 'Неизвестно' : method.estimate}</strong>
+              </summary>
+              {method.explanation && <p className={styles.explanation}>{method.explanation}</p>}
+              {method.file && <p className={styles.explanation}>{method.file}:{method.line}</p>}
+              {(method.assumptions || []).map((a, i) => (
+                <p className={styles.explanation} key={`a${i}`}>{a}</p>
+              ))}
+              {(method.evidence || []).map((e, i) => (
+                <p className={styles.explanation} key={`e${i}`}>L{e.line}: {e.estimate} — {e.rule}</p>
+              ))}
+              <button className={styles.jumpBtn} onClick={() => focusNodeFromIssue(method.methodId)}>
+                К методу
+              </button>
+            </details>
+          ))}
         </div>
 
         {!isOptimized ? (
