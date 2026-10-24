@@ -25,10 +25,13 @@ systemctl reset-failed javascope-candidate.service >/dev/null 2>&1 || true
 systemd-run --quiet --unit=javascope-candidate --property=User=javascope --property=Group=javascope \
   --property=SupplementaryGroups=docker --property=EnvironmentFile=/etc/javascope/candidate.env \
   --property=WorkingDirectory="$release/backend" --property=MemoryMax=1400M \
+  --property=UMask=0077 --property=NoNewPrivileges=yes --property=PrivateDevices=yes \
+  --property=ProtectSystem=strict --property=ProtectHome=yes --property=ReadWritePaths=/var/lib/javascope \
+  --property=TasksMax=256 \
   /usr/bin/node --max-old-space-size=384 "$release/backend/dist/server.js"
 trap 'systemctl stop javascope-candidate.service >/dev/null 2>&1 || true' EXIT
 for attempt in {1..30}; do
-  if curl -fsS http://127.0.0.1:3002/api/health >/dev/null; then break; fi
+  if curl -fsS http://127.0.0.1:3002/api/health >/dev/null 2>&1; then break; fi
   sleep 0.2
 done
 set -a
@@ -45,7 +48,7 @@ printf 'GIT_SHA=%s\nRUNNER_IMAGE=%s\n' "$revision" "$runner_image" > /etc/javasc
 systemctl restart javascope
 healthy=false
 for attempt in {1..30}; do
-  if curl -fsS http://127.0.0.1:3001/api/health >/dev/null; then healthy=true; break; fi
+  if curl -fsS http://127.0.0.1:3001/api/health >/dev/null 2>&1; then healthy=true; break; fi
   sleep 0.2
 done
 if [[ "$healthy" != true ]]; then

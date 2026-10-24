@@ -14,6 +14,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json",
     "test": "tsx --test --test-concurrency=1 tests/*.test.ts",
     "test:ci": "tsx --test --test-concurrency=1 tests/api.test.ts tests/complexity.test.ts",
+    "test:gateway": "tsx scripts/check-gateway.mjs",
     "test:browser": "playwright test --config=playwright.config.ts",
     "demo": "tsx scripts/demo.ts",
     "runner:build": "docker build -t javablueprint-runner:local -f runner/Dockerfile ."

@@ -20,7 +20,7 @@ try {
     revision: 1, mainClass: 'Main', inputs: [{ name: 'smoke', stdin: '', expectedStdout: '1\n' }],
     tests: [{ path: 'MainTest.java', content: 'import org.junit.jupiter.api.Test; import static org.junit.jupiter.api.Assertions.*; public class MainTest { @Test void positive(){ assertEquals(1,Main.f(3)); } }' }],
   });
-  assert.equal(result.current.compilation.exitCode, 0);
+  assert.equal(result.current.compilation.exitCode, 0, JSON.stringify(result.current.compilation));
   assert.equal(result.current.runs[0].passed, true);
   assert.equal(result.current.tests.status, 'passed');
   console.log(`Production smoke passed in ${(performance.now()-started).toFixed(0)} ms`);

@@ -17,13 +17,13 @@ export default async function handler(request: Request, response: ServerResponse
     response.statusCode = 404;
     return response.end(JSON.stringify({ error: { code: 'NOT_FOUND', message: 'Unknown API route' } }));
   }
-  if (!['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'].includes(request.method || '')) {
+  if (!['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'OPTIONS'].includes(request.method || '')) {
     response.statusCode = 405;
     return response.end();
   }
   try {
     let body: string | undefined;
-    if (!['GET', 'OPTIONS'].includes(request.method || '')) {
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method || '')) {
       if (request.body !== undefined) body = typeof request.body === 'string' ? request.body : JSON.stringify(request.body);
       else {
         const chunks: Buffer[] = []; let size = 0;
@@ -34,11 +34,12 @@ export default async function handler(request: Request, response: ServerResponse
         }
         body = Buffer.concat(chunks).toString('utf8') || undefined;
       }
+      body = body || undefined;
       if (body && Buffer.byteLength(body) > 4 * 1024 * 1024) { response.statusCode = 413; return response.end(); }
     }
     const result = await fetch(`${upstream.replace(/\/$/, '')}/api/${path}`, {
       method: request.method, body,
-      headers: { 'Content-Type': 'application/json', 'X-Backend-Key': key },
+      headers: { ...(body === undefined ? {} : { 'Content-Type': 'application/json' }), 'X-Backend-Key': key },
       signal: AbortSignal.timeout(240000), redirect: 'error',
     });
     response.statusCode = result.status;
