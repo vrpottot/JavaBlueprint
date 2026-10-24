@@ -15,6 +15,9 @@ export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) =>
   const activeFilePath = useProjectStore((s) => s.activeFilePath);
   const codeViewMode = useProjectStore((s) => s.codeViewMode);
   const setCodeViewMode = useProjectStore((s) => s.setCodeViewMode);
+  const isLoading = useProjectStore((s) => s.isLoading);
+  const isCompiling = useProjectStore((s) => s.isCompiling);
+  const isOptimized = useProjectStore((s) => s.isOptimized);
 
   const [copied, setCopied] = useState(false);
 
@@ -97,7 +100,7 @@ export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) =>
                 className={`${styles.toggleBtn} ${codeViewMode === 'optimized' ? styles.active : ''}`}
                 onClick={() => setCodeViewMode('optimized')}
               >
-                Оптимизированный
+                {isOptimized ? 'Текущий' : 'Оптимизированный'}
               </button>
             </div>
 
@@ -122,6 +125,7 @@ export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) =>
           beforeMount={handleEditorWillMount}
           onChange={(val) => updateJavaCode(val || '')}
           options={{
+            readOnly: isLoading || isCompiling || (codeViewMode === 'source' && isOptimized),
             fontSize: 12,
             fontFamily: "'JetBrains Mono', Consolas, monospace",
             lineHeight: 20,

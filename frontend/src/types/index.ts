@@ -56,8 +56,8 @@ export interface CodeMetrics {
   cyclomaticComplexity: number;
   linesOfCode: number;
   nestingDepth: number;
-  testCoverage: number;
-  maintainabilityIndex: number;
+  testCoverage: number | null;
+  maintainabilityIndex: number | null;
 }
 
 export interface ComplexityEstimate {

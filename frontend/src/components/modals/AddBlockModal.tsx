@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, Plus, Code, Database, GitFork, RefreshCw, PlayCircle, CheckCircle2 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
-import { PALETTE_ITEMS } from '../../lib/demo-data';
+import { PALETTE_ITEMS } from '../../lib/palette';
 import type { BlockType } from '../../types';
 import styles from './AddBlockModal.module.scss';
 

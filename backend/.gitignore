@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+java-engine/lib/*.jar
+java-engine/build/
+coverage/
+test-results/
+playwright-report/
