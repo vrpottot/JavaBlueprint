@@ -11,6 +11,15 @@ runuser -u javascope -- npm run setup
 runuser -u javascope -- npm run typecheck
 runuser -u javascope -- npm run test:ci
 runuser -u javascope -- npm run build
+cd "$release/frontend"
+runuser -u javascope -- npm ci --include=dev --no-audit --no-fund --loglevel=error
+runuser -u javascope -- npm run lint
+runuser -u javascope -- env VITE_API_URL=/api npm run build
+test -s dist/index.html
+printf '%s\n' "$revision" > dist/version.txt
+find dist -type d -exec chmod 755 {} +
+find dist -type f -exec chmod 644 {} +
+cd "$release/backend"
 runner_hash=$(cat runner/Dockerfile java-engine/lib/junit.jar | sha256sum | cut -c1-16)
 runner_image=javablueprint-runner:$runner_hash
 if ! docker image inspect "$runner_image" >/dev/null 2>&1; then
@@ -58,6 +67,20 @@ if [[ "$healthy" != true ]]; then
     systemctl restart javascope
   fi
   echo 'Release failed health check; rolled back'; exit 1
+fi
+# The same current symlink serves both frontend and backend. If the public web
+# site is configured, check its HTML, release marker and API before accepting.
+if [[ -L /etc/nginx/sites-enabled/javascope-web ]]; then
+  if ! curl -fsS --max-time 10 https://javascope.193-233-246-241.sslip.io/index.html >/dev/null \
+    || [[ $(curl -fsS --max-time 10 https://javascope.193-233-246-241.sslip.io/version.txt) != "$revision" ]] \
+    || ! curl -fsS --max-time 10 https://javascope.193-233-246-241.sslip.io/api/health >/dev/null; then
+    if [[ -n "$previous" && "$previous" != "$release" ]]; then
+      ln -sfn "$previous" /opt/javascope/current
+      if [[ -f /etc/javascope/previous-release.env ]]; then cp /etc/javascope/previous-release.env /etc/javascope/release.env; fi
+      systemctl restart javascope
+    fi
+    echo 'Frontend health check failed; rolled back'; exit 1
+  fi
 fi
 printf '%s\n' "$revision" > /var/lib/javascope/deployed-head
 systemctl try-restart javascope-deploy-receiver.service >/dev/null 2>&1 || true
