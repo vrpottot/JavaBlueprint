@@ -38,7 +38,7 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
 
         <div className={styles.decisionTitle}>{nodeData.title}</div>
 
-        <div className={styles.decisionCodeSnippet}>{nodeData.codeSnippet}</div>
+        <div className={styles.decisionCodeSnippet} title={nodeData.codeSnippet}>{nodeData.codeSnippet}</div>
 
         {nodeData.description && (
           <div className={styles.decisionDescription}>{nodeData.description}</div>
@@ -54,10 +54,10 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
 
       {/* Connection Handles on vertices with external label indicators */}
       <Handle type="source" position={Position.Left} id="out-left" title="Да (True)" />
-      <span className={styles.handleTipLeft}>Да</span>
+      {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipLeft}>Да</span>}
 
       <Handle type="source" position={Position.Bottom} id="out-bottom" title="Нет (False)" />
-      <span className={styles.handleTipBottom}>Нет</span>
+      {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipBottom}>Нет</span>}
 
       <Handle type="source" position={Position.Right} id="out-right" title="Ветвление" />
     </div>

@@ -13,13 +13,15 @@
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json",
     "test": "tsx --test --test-concurrency=1 tests/*.test.ts",
-    "test:ci": "tsx --test --test-concurrency=1 tests/api.test.ts tests/complexity.test.ts tests/deploy.test.ts tests/methods.test.ts tests/ai-context.test.ts",
+    "test:ci": "tsx --test --test-concurrency=1 tests/api.test.ts tests/complexity.test.ts tests/deploy.test.ts tests/methods.test.ts tests/ai-context.test.ts tests/editor.test.ts",
+    "test:frontend": "tsx --test ../frontend/tests/*.test.ts",
     "test:gateway": "tsx scripts/check-gateway.mjs",
     "test:browser": "playwright test --config=playwright.config.ts",
     "demo": "tsx scripts/demo.ts",
     "runner:build": "docker build -t javablueprint-runner:local -f runner/Dockerfile ."
   },
   "dependencies": {
+    "@dagrejs/dagre": "3.1.2",
     "@fastify/cors": "^11.0.1",
     "@sinclair/typebox": "^0.34.33",
     "fastify": "^5.3.3",

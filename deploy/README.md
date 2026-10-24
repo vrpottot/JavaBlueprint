@@ -63,13 +63,13 @@ An optional pull-based fallback is included in `javascope-update.timer`. It chec
 
 Each changed commit performs:
 
-1. Backend dependencies, Java engine setup, TypeScript checks, `npm run test:ci` and build; then frontend dependencies, lint and production build.
+1. Backend dependencies, Java engine setup, TypeScript checks, `npm run test:ci` and build; then frontend dependencies, lint, `npm --prefix ../backend run test:frontend` and production build.
 2. Build a content-tagged runner image **only if its Dockerfile/JUnit content changed**.
 3. Start the candidate on port 3002. Run one small real API → AST edit → Big O → javac → JUnit → expected-output smoke scenario.
 4. Switch the shared current symlink and restart production only after those checks pass. Check public frontend HTML, its commit marker and the same-origin API before accepting the release.
 5. Restore the previous frontend/backend release and runner image if a production health check fails. Keep five releases, including the active release and its predecessor.
 
-Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: the CI suite has 21 focused test groups, including method editing and bounded AI context, with complexity examples batched in one JVM call; the deployment smoke compiles one tiny project. CI never calls a real AI provider. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
+Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: 23 backend groups plus one frontend store/API group, including method editing, bounded AI context, graph layout and complexity counterexamples. Complexity examples are batched in one JVM call; the deployment smoke compiles one tiny project. CI never calls a real AI provider. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
 
 GitHub Actions runs short backend checks, frontend build/lint and a gateway smoke check, with a five-minute job limit and cancellation of superseded runs. VPS release checks are independent and remain mandatory even if Actions is unavailable. Builds typically take seconds to a few minutes on the first install; the updater times out after ten minutes rather than waiting indefinitely.
 

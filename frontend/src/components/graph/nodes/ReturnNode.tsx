@@ -49,7 +49,7 @@ export const ReturnNode = memo(({ data, selected }: NodeProps) => {
           </div>
         </div>
 
-        <div className={styles.codeSnippet}>{nodeData.codeSnippet}</div>
+        <div className={styles.codeSnippet} title={nodeData.codeSnippet}>{nodeData.displayCode ?? nodeData.codeSnippet}</div>
 
         {nodeData.description && (
           <div className={styles.description}>{nodeData.description}</div>

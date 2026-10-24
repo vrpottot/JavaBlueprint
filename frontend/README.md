@@ -8,6 +8,12 @@ Vite proxies `/api` to localhost:3001. Imports, AST block edits, source generati
 
 Click or drag **Метод** from the palette to add a method. Choose a class/file, enter its signature and body, optionally check syntax, then save. Empty classes and nested named types are supported. Double-click a method to edit; its context menu copies or deletes the declaration. Java and the graph update together, and the canvas focuses the new method. Syntax checks leave the project unchanged; **Run** performs actual compilation and JUnit verification. Signature changes do not automatically rewrite callers.
 
+The explorer selects the Java file; **Метод** selects a method or constructor, with search by method/class name. The initial view focuses its entry at a readable scale. Pan with the mouse wheel and use the zoom buttons or **Вписать в экран** for the whole method. **Весь файл — обзор** is a map of the file, not a readable view of every statement at once. **Автораскладка** resets deliberate drags in the current scope. Context menu **Открыть Java-код** opens the selected node's current source line.
+
+Loop blocks show their complete headers. Case statements accept full Java instructions, including semicolons. Invalid changes keep the edit dialog and show diagnostics; invalid source keeps the last successfully parsed graph with a visible notice. Exception/finally flow and opaque lambda/switch-expression internals have explicit limitations beside the method. AI suggestions are labeled and cannot overwrite AST metrics or complexity results.
+
+The [stress-test audit](../docs/audits/2026-10-25/README.md) records failures found on a 1,192-line Java project, fixes, screenshots and remaining limits. With both projects' dependencies installed, run `npm --prefix ../backend run test:frontend` for the store/API regression check; browser checks are documented in the backend README.
+
 ## Vite tooling
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.

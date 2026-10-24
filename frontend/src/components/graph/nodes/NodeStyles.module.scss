@@ -96,6 +96,11 @@
 
 // Code Snippet Box
 .codeSnippet {
+  white-space: pre-wrap;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
   font-family: $font-mono;
   font-size: 11.5px;
   background-color: var(--bg-canvas, #080C12);
@@ -273,6 +278,10 @@
 }
 
 .decisionCodeSnippet {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
   font-family: $font-mono;
   font-size: 12px;
   background-color: var(--bg-canvas);
@@ -281,9 +290,8 @@
   border-radius: 6px;
   border: 1px solid var(--border-color);
   max-width: 320px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   line-height: 1.4;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }

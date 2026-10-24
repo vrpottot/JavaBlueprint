@@ -44,7 +44,7 @@ export const LoopNode = memo(({ data, selected }: NodeProps) => {
           </div>
         </div>
 
-        <div className={styles.codeSnippet}>{nodeData.codeSnippet}</div>
+        <div className={styles.codeSnippet} title={nodeData.displayCode ?? nodeData.codeSnippet}>{nodeData.displayCode ?? nodeData.codeSnippet}</div>
 
         {nodeData.description && (
           <div className={styles.description}>{nodeData.description}</div>
@@ -59,7 +59,8 @@ export const LoopNode = memo(({ data, selected }: NodeProps) => {
       </div>
 
       <Handle type="source" position={Position.Bottom} id="out" />
-      <Handle type="target" position={Position.Right} id="loop-in" />
+      <Handle type="source" position={Position.Right} id="out-exit" title="Выход из цикла" />
+      <Handle type="target" position={Position.Left} id="loop-in" title="Следующая итерация" />
     </div>
   );
 });

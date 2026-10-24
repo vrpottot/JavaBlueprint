@@ -4,6 +4,8 @@ import {
   Background,
   BackgroundVariant,
   useReactFlow,
+  useViewport,
+  useNodesInitialized,
   ReactFlowProvider,
   type Node,
 } from '@xyflow/react';
@@ -32,6 +34,7 @@ import { OperationNode } from './nodes/OperationNode';
 import { ReturnNode } from './nodes/ReturnNode';
 import { NodeEditModal } from './NodeEditModal';
 import styles from './VisualCanvas.module.scss';
+import { scopeNodes } from '../../lib/graph-scope';
 
 interface ContextMenuState {
   x: number;
@@ -41,6 +44,7 @@ interface ContextMenuState {
 
 const CanvasInner: React.FC = () => {
   const theme = useProjectStore((s) => s.theme);
+  const projectId = useProjectStore(s => s.projectId);
   const activeFilePath = useProjectStore((s) => s.activeFilePath);
   const nodes = useProjectStore((s) => s.nodes);
   const edges = useProjectStore((s) => s.edges);
@@ -53,6 +57,18 @@ const CanvasInner: React.FC = () => {
   const deleteNode = useProjectStore((s) => s.deleteNode);
   const focusNodeRequest = useProjectStore((s) => s.focusNodeRequest);
   const methodDialog = useProjectStore((s) => s.methodDialog);
+  const editingNode = useProjectStore(s => s.editingNode);
+  const activeMethodId = useProjectStore(s => s.activeMethodId);
+  const setActiveMethodId = useProjectStore(s => s.setActiveMethodId);
+  const resetGraphLayout = useProjectStore(s => s.resetGraphLayout);
+  const openNodeSource = useProjectStore(s => s.openNodeSource);
+  const dirty = useProjectStore(s => s.dirty);
+  const [methodSearch, setMethodSearch] = useState('');
+  const methods = useMemo(() => nodes.filter(n => n.data.source?.file === activeFilePath && n.data.blockType === 'method'), [nodes, activeFilePath]);
+  const visibleNodes = useMemo(() => scopeNodes(nodes, activeFilePath, activeMethodId), [nodes, activeFilePath, activeMethodId]);
+  const visibleIds = useMemo(() => new Set(visibleNodes.map(n => n.id)), [visibleNodes]);
+  const visibleEdges = useMemo(() => edges.filter(e => visibleIds.has(e.source) && visibleIds.has(e.target)), [edges, visibleIds]);
+  const graphWarnings = useMemo(() => [...new Set(visibleNodes.flatMap(n => n.data.warning ? [n.data.warning] : []))], [visibleNodes]);
 
   const mainWorkspaceTab = useProjectStore((s) => s.mainWorkspaceTab);
   const setMainWorkspaceTab = useProjectStore((s) => s.setMainWorkspaceTab);
@@ -61,15 +77,29 @@ const CanvasInner: React.FC = () => {
   const javaCode = useProjectStore((s) => s.javaCode);
 
   const { fitView, zoomIn, zoomOut, zoomTo, screenToFlowPosition } = useReactFlow();
+  const { zoom } = useViewport();
+  const initialized = useNodesInitialized();
+  const focusedScope = useRef('');
   const focusedMethod = useRef('');
 
   useEffect(() => {
-    if (!focusNodeRequest || !nodes.some(n => n.id === focusNodeRequest.nodeId)) return;
+    const key = `${projectId}:${activeFilePath}:${activeMethodId}`;
+    if (!initialized || !visibleNodes.length || focusedScope.current === key) return;
+    const timer = setTimeout(() => {
+      focusedScope.current = key;
+      const first = activeMethodId === 'all' ? undefined : [{ id: visibleNodes.find(n => n.id === activeMethodId)?.id ?? visibleNodes[0].id }];
+      void fitView({ nodes: first, maxZoom: 0.9, padding: 0.3, duration: 150 });
+    }, 80);
+    return () => clearTimeout(timer);
+  }, [initialized, projectId, activeFilePath, activeMethodId, visibleNodes, fitView]);
+
+  useEffect(() => {
+    if (!focusNodeRequest || !visibleIds.has(focusNodeRequest.nodeId)) return;
     const key = `${focusNodeRequest.nodeId}:${focusNodeRequest.nonce}`;
     if (focusedMethod.current === key) return;
     const timer = setTimeout(() => { focusedMethod.current = key; void fitView({ nodes: [{ id: focusNodeRequest.nodeId }], padding: 0.6, duration: 250, maxZoom: 0.9 }); }, 80);
     return () => clearTimeout(timer);
-  }, [focusNodeRequest, nodes, fitView]);
+  }, [focusNodeRequest, visibleIds, fitView]);
 
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
   const [copied, setCopied] = useState(false);
@@ -218,7 +248,7 @@ const CanvasInner: React.FC = () => {
                 style={{ cursor: 'pointer' }}
                 title="Сбросить масштаб к 100%"
               >
-                100%
+                {zoom < 0.1 ? (zoom * 100).toFixed(1) : Math.round(zoom * 100)}%
               </span>
               <button
                 className={styles.pillBtn}
@@ -241,7 +271,7 @@ const CanvasInner: React.FC = () => {
                   className={`${styles.toggleBtn} ${codeViewMode === 'optimized' ? styles.active : ''}`}
                   onClick={() => setCodeViewMode('optimized')}
                 >
-                  Оптимизированный
+                  Текущий
                 </button>
               </div>
 
@@ -258,6 +288,20 @@ const CanvasInner: React.FC = () => {
         </div>
       </div>
 
+      <div className={styles.methodNavigation}>
+        <label htmlFor="graph-method">Метод</label>
+        <input aria-label="Поиск метода" placeholder="Найти метод…" value={methodSearch} onChange={e => setMethodSearch(e.target.value)} />
+        <select id="graph-method" aria-label="Метод схемы" value={activeMethodId} onChange={e => { setActiveMethodId(e.target.value); setMethodSearch(''); }}>
+          <option value="all">Весь файл — обзор</option>
+          <option value="members">Поля класса</option>
+          {methods.filter(n => n.id === activeMethodId || `${n.data.title} ${n.data.containerName ?? ''}`.toLowerCase().includes(methodSearch.toLowerCase())).map(n => <option key={n.id} value={n.id}>{n.data.title} — {n.data.containerName ?? ''} · L{n.data.line}</option>)}
+        </select>
+        <span>{visibleNodes.length} / {nodes.filter(n => n.data.source?.file === activeFilePath).length} блоков файла</span>
+        <button type="button" onClick={() => { resetGraphLayout(); setTimeout(() => void fitView({ padding: 0.25, duration: 150, maxZoom: 0.9 }), 50); }}>Автораскладка</button>
+      </div>
+      {dirty && <p role="status" className={styles.graphNotice}>Java-код изменён. На схеме последняя успешно разобранная версия; после исправления ошибок она обновится.</p>}
+      {graphWarnings.length > 0 && <details className={styles.graphNotice}><summary>Ограничения схемы этого метода ({graphWarnings.length})</summary>{graphWarnings.map(warning => <p key={warning}>{warning}</p>)}</details>}
+
       {/* Main Workspace Views */}
       <div className={styles.viewsContent}>
         <div
@@ -265,8 +309,8 @@ const CanvasInner: React.FC = () => {
           style={{ display: mainWorkspaceTab === 'graph' ? 'block' : 'none' }}
         >
           <ReactFlow
-            nodes={nodes}
-            edges={edges}
+            nodes={visibleNodes}
+            edges={visibleEdges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             nodeTypes={nodeTypes}
@@ -274,10 +318,12 @@ const CanvasInner: React.FC = () => {
             onNodeDoubleClick={onNodeDoubleClick}
             onNodeContextMenu={onNodeContextMenu}
             onPaneClick={onPaneClick}
-            deleteKeyCode={methodDialog ? null : 'Backspace'}
+            deleteKeyCode={methodDialog || editingNode ? null : 'Backspace'}
             defaultViewport={{ x: 80, y: 30, zoom: 0.9 }}
-            minZoom={0.3}
+            minZoom={0.005}
             maxZoom={1.8}
+            panOnScroll
+            zoomOnScroll={false}
             fitViewOptions={{ padding: 0.25 }}
             proOptions={{ hideAttribution: true }}
             colorMode={isLight ? 'light' : 'dark'}
@@ -289,6 +335,7 @@ const CanvasInner: React.FC = () => {
               variant={BackgroundVariant.Dots}
             />
           </ReactFlow>
+          {!visibleNodes.length && <div className={styles.emptyGraph}>В этом разделе нет блоков. Выберите метод или добавьте новый через панель слева.</div>}
         </div>
 
         <div
@@ -303,10 +350,12 @@ const CanvasInner: React.FC = () => {
       {contextMenu && (
         <div
           className={styles.contextMenu}
+          role="menu"
+          aria-label="Действия блока"
           style={{ top: contextMenu.y, left: contextMenu.x }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div
+          <button type="button" role="menuitem" disabled={!contextMenu.node.data.editable?.some(op => ['replaceMethod', 'updateCondition', 'updateExpression', 'updateVariable', 'replaceStatement'].includes(op))}
             className={styles.contextMenuItem}
             onClick={() => {
               setEditingNode(contextMenu.node);
@@ -315,9 +364,9 @@ const CanvasInner: React.FC = () => {
           >
             <Edit3 size={13} />
             <span>Редактировать</span>
-          </div>
+          </button>
 
-          <div
+          <button type="button" role="menuitem" disabled={!contextMenu.node.data.editable?.some(op => ['duplicateMethod', 'duplicateBlock'].includes(op))}
             className={styles.contextMenuItem}
             onClick={() => {
               duplicateNode(contextMenu.node.id);
@@ -326,22 +375,22 @@ const CanvasInner: React.FC = () => {
           >
             <Copy size={13} />
             <span>Дублировать</span>
-          </div>
+          </button>
 
-          <div
+          <button type="button" role="menuitem"
             className={styles.contextMenuItem}
             onClick={() => {
-              selectNode(contextMenu.node.id);
+              openNodeSource(contextMenu.node.id);
               setContextMenu(null);
             }}
           >
             <ArrowUpRight size={13} />
-            <span>Выделить блок</span>
-          </div>
+            <span>Открыть Java-код</span>
+          </button>
 
           <div className={styles.contextDivider} />
 
-          <div
+          <button type="button" role="menuitem" disabled={!contextMenu.node.data.editable?.some(op => ['deleteMethod', 'deleteBlock'].includes(op))}
             className={`${styles.contextMenuItem} ${styles.danger}`}
             onClick={() => {
               deleteNode(contextMenu.node.id);
@@ -350,7 +399,7 @@ const CanvasInner: React.FC = () => {
           >
             <Trash2 size={13} />
             <span>Удалить блок</span>
-          </div>
+          </button>
         </div>
       )}
 

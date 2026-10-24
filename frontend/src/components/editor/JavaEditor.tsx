@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import type { editor } from 'monaco-editor';
 import Editor, { type Monaco } from '@monaco-editor/react';
 import { Copy, Check, FileCode } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
@@ -18,6 +19,16 @@ export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) =>
   const isLoading = useProjectStore((s) => s.isLoading);
   const isCompiling = useProjectStore((s) => s.isCompiling);
   const isOptimized = useProjectStore((s) => s.isOptimized);
+  const selected = useProjectStore(s => s.nodes.find(node => node.id === s.selectedNodeId));
+  const tab = useProjectStore(s => s.mainWorkspaceTab);
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const selectedLine = !(codeViewMode === 'source' && isOptimized) && selected?.data.source?.file === activeFilePath ? selected.data.source.startLine : null;
+  const reveal = useCallback(() => { if (selectedLine) { editorRef.current?.revealLineInCenter(selectedLine); editorRef.current?.setPosition({ lineNumber: selectedLine, column: 1 }); } }, [selectedLine]);
+  useEffect(() => {
+    if (tab !== 'editor') return;
+    const timer = setTimeout(reveal, 50);
+    return () => clearTimeout(timer);
+  }, [reveal, tab, activeFilePath, codeViewMode]);
 
   const [copied, setCopied] = useState(false);
 
@@ -122,6 +133,8 @@ export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) =>
           language="java"
           theme={theme === 'light' ? 'javascope-light' : 'javascope-dark'}
           value={javaCode}
+          path={activeFilePath}
+          onMount={instance => { editorRef.current = instance; reveal(); }}
           beforeMount={handleEditorWillMount}
           onChange={(val) => updateJavaCode(val || '')}
           options={{

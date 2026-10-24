@@ -11,6 +11,26 @@
   flex-direction: column;
 }
 
+.methodNavigation {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-panel);
+  color: var(--text-secondary);
+  font-size: 11px;
+  flex-shrink: 0;
+  input, select, button { min-height: 30px; border: 1px solid var(--border-color); border-radius: 5px; background: var(--bg-card); color: var(--text-primary); font: inherit; padding: 4px 8px; }
+  input { width: 135px; }
+  select { min-width: 150px; max-width: 320px; flex: 1; }
+  button { cursor: pointer; }
+  :is(input, select, button):focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+}
+.graphNotice { padding: 7px 12px; margin: 0; font-size: 11px; color: var(--text-secondary); background: var(--bg-panel-secondary); border-bottom: 1px solid var(--border-color); summary { cursor: pointer; color: var(--accent-orange); } p { margin: 5px 0; } }
+.emptyGraph { position: absolute; inset: 30% 15% auto; text-align: center; color: var(--text-secondary); font-size: 13px; pointer-events: none; }
+
 .workspaceTabBar {
   height: 38px;
   background-color: var(--bg-panel-secondary);
@@ -301,6 +321,12 @@
 }
 
 .contextMenuItem {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  &:disabled { opacity: .45; cursor: not-allowed; }
   display: flex;
   align-items: center;
   gap: 8px;

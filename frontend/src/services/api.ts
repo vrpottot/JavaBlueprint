@@ -17,7 +17,7 @@ export interface Analysis {
 export interface Execution { stdout: string; stderr: string; exitCode: number | null; durationMs: number; timedOut: boolean; outputLimitExceeded: boolean }
 export interface VersionResult { compilation: Execution; runs: (Execution & { name: string; passed: boolean | null })[]; tests: { status: string; cases: TestCase[] } }
 export interface Verification { revision: number; current: VersionResult; original?: VersionResult; comparison: { status: string; explanation: string; provenEquivalent: false } }
-const base = import.meta.env.VITE_API_URL || '/api';
+const base = import.meta.env?.VITE_API_URL || '/api';
 export async function api<T>(path: string, body?: unknown, method = body === undefined ? 'GET' : 'POST'): Promise<T> {
   let response: Response;
   try {
@@ -47,8 +47,9 @@ export async function api<T>(path: string, body?: unknown, method = body === und
   }
 
   if (!response.ok) {
-    const parse = result?.errors?.map((e: { file: string; line?: number; message: string }) => `${e.file}:${e.line ?? '?'} ${e.message}`).join('\n');
-    throw new Error(result?.error?.message || parse || `HTTP ${response.status}`);
+    const diagnostics = Array.isArray(result?.errors) ? result.errors : Array.isArray(result?.error?.details) ? result.error.details : [];
+    const parse = diagnostics.filter((e: { file?: string; message?: string }) => typeof e.file === 'string' && typeof e.message === 'string').slice(0, 10).map((e: { file: string; line?: number; column?: number; message: string }) => `${e.file}:${e.line ?? '?'}:${e.column ?? '?'} ${e.message}`).join('\n');
+    throw new Error([result?.error?.message, parse].filter(Boolean).join('\n') || `HTTP ${response.status}`);
   }
 
   return result as T;

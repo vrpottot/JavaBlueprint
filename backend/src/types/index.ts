@@ -6,6 +6,7 @@ export interface IRNode {
   title: string; code: string; snippet: string; source: SourceRef; parentId?: string;
   depth: number; loopDepth: number; methodId?: string; editable: string[];
   containerId?: string; method?: { signature: string; body: string; hasBody: boolean };
+  displayCode?: string; warning?: string;
   complexity?: { estimate: string; status: 'estimated' | 'unknown'; kind: 'upper_bound'; confidence: string; assumptions: string[]; limitations: string[]; explanation: string; evidence: { line: number; nodeId: string; estimate: string; rule: string }[] };
 }
 export interface IREdge { source: string; target: string; label?: string; kind: string }

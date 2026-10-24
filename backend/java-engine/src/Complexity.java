@@ -121,10 +121,19 @@ final class Complexity {
     static boolean collection(String type) { return Set.of("List","Set","Map","Collection","Iterable","ArrayList","LinkedList","HashSet","TreeSet","HashMap","TreeMap").contains(baseType(type)); }
     String typeOf(Expression e, Context c) {
         e=unwrap(e);
+        if(e instanceof ArrayAccessExpr a) { String array=typeOf(a.getName(),c); return array.endsWith("[]")?array.substring(0,array.length()-2):""; }
         return e instanceof NameExpr n ? c.types.getOrDefault(n.getNameAsString(),"") : "";
     }
     Cost length(Expression e, Context c) {
         e=unwrap(e);
+        if(e instanceof ArrayAccessExpr a && typeOf(e,c).endsWith("[]")) {
+            Expression base=a.getName(); String suffix="[]";
+            while(base instanceof ArrayAccessExpr inner) { base=inner.getName(); suffix+="[]"; }
+            if(base instanceof NameExpr name) {
+                assumptions.add("Для многомерного массива используется максимальная длина вложенной строки; строки могут иметь разную длину.");
+                return Cost.variable("max(|"+name.getNameAsString()+suffix+"|)");
+            }
+        }
         if(e instanceof NameExpr name && (typeOf(e,c).endsWith("[]") || collection(typeOf(e,c)) || typeOf(e,c).equals("String"))) {
             if(collection(typeOf(e,c))) assumptions.add("Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.");
             Cost alias=c.sizes.get(name.getNameAsString());
@@ -135,6 +144,12 @@ final class Complexity {
     }
     Cost size(Expression raw, Context c) {
         Expression e=unwrap(raw);
+        if(e instanceof CastExpr cast) return size(cast.getExpression(),c);
+        if(e instanceof UnaryExpr unary && (unary.getOperator()==UnaryExpr.Operator.MINUS || unary.getOperator()==UnaryExpr.Operator.PLUS)) {
+            assumptions.add("Числовые размеры в оценке обозначают модуль значения.");
+            return size(unary.getExpression(),c);
+        }
+        if(e instanceof ConditionalExpr conditional) return size(conditional.getThenExpr(),c).plus(size(conditional.getElseExpr(),c));
         if(integer(e)!=null || e instanceof BooleanLiteralExpr || e instanceof CharLiteralExpr) return Cost.one();
         if(e instanceof NameExpr n) return c.sizes.getOrDefault(n.getNameAsString(),Cost.unknownCost());
         if(e instanceof ArrayCreationExpr a && !a.getLevels().isEmpty() && a.getLevels().get(0).getDimension().isPresent()) return size(a.getLevels().get(0).getDimension().get(),c);
@@ -175,7 +190,13 @@ final class Complexity {
             Cost iterations=length(f.getIterable(),c);
             if(iterations.unknown) return unknown(s,"Неизвестна стоимость обхода Iterable или размер коллекции.");
             if(mutates(f.getBody(),names(f.getIterable()))) return unknown(s,"Коллекция или её ссылка изменяется во время обхода.");
-            Context body=c.copy(); for(VariableDeclarator v:f.getVariable().getVariables()) body.types.put(v.getNameAsString(),v.getType().asString());
+            Context body=c.copy(); for(VariableDeclarator v:f.getVariable().getVariables()) {
+                body.types.put(v.getNameAsString(),v.getType().asString());
+                if(numeric(v.getType().asString())) {
+                    body.sizes.put(v.getNameAsString(),Cost.variable("max(|"+f.getIterable()+"[*]|)"));
+                    assumptions.add("Стоимость обработки числовых элементов может зависеть от их максимального модуля; для int число десятичных цифр ограничено 10.");
+                }
+            }
             Cost result=iterations.times(statement(f.getBody(),body)); invalidateBranchAssignments(f.getBody(),c);
             explain(s,result,"Число итераций равно длине массива/стандартной коллекции."); return result;
         }
@@ -234,13 +255,13 @@ final class Complexity {
         if(!updateInside && mutates(body,Set.of(step.variable))) return unknown(body,"Счётчик дополнительно изменяется в теле цикла.");
         Set<String> boundVariables=names(b.getRight());
         if(boundVariables.contains(step.variable) || mutates(body,boundVariables)) return unknown(body,"Граница цикла изменяется или зависит от изменяемого счётчика.");
-        for(String variable : boundVariables) if(collection(c.types.getOrDefault(variable,""))) {
+        for(String variable : boundVariables) if(collection(c.types.getOrDefault(variable,"")) || c.types.getOrDefault(variable,"").endsWith("[]")) {
             for(MethodCallExpr call : body.findAll(MethodCallExpr.class)) if(call.getArguments().stream().anyMatch(a -> names(a).contains(variable))) return unknown(call,"Коллекция из границы цикла передаётся в метод; её размер может измениться.");
         }
         Long lower=integer(b.getRight()), first=integer(start);
         if(step.logarithmic && (lower==null || lower<0)) return unknown(condition,"Делящийся счётчик должен уменьшаться до неотрицательной константы.");
         if(!step.logarithmic && step.amount!=1) return unknown(condition,"Шаг больше единицы требует проверки переполнения Java-счётчика.");
-        if(step.logarithmic) return size(start,c).logarithm();
+        if(step.logarithmic) { Cost magnitude=size(start,c); return magnitude.unknown?unknown(condition,"Не удалось ограничить начальный модуль счётчика."):magnitude.logarithm(); }
         if(first!=null && lower!=null) return Cost.one();
         // Sizes represent nonnegative magnitudes; a dynamic start and bound both contribute.
         Cost result=size(start,c).plus(size(b.getRight(),c));
@@ -258,27 +279,67 @@ final class Complexity {
         Cost count=iterations(f.getCompare().get(),start,step,f.getBody(),loop,false);
         if(count.unknown) return count;
         Cost setup=expression(start,loop), condition=expression(f.getCompare().get(),loop);
-        loop.sizes.put(variable,count);
+        loop.sizes.put(variable,size(start,c).plus(size(((BinaryExpr)unwrap(f.getCompare().get())).getRight(),c)));
         Cost result=setup.plus(count.times(condition.plus(statement(f.getBody(),loop))));
         invalidateBranchAssignments(f,c);
         explain(f,result,step.logarithmic?"Счётчик делится на постоянный множитель > 1.":count.format().equals("O(1)")?"Постоянные границы цикла.":"Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций.");
         return result;
     }
     Cost whileLoop(WhileStmt w, Context c) {
+        if(unwrap(w.getCondition()) instanceof BinaryExpr test && test.getOperator()==BinaryExpr.Operator.AND) return twoPointerLoop(w,test,c);
         if(!(unwrap(w.getCondition()) instanceof BinaryExpr b) || !(unwrap(b.getLeft()) instanceof NameExpr name)) return unknown(w,"Не распознан счётчик while.");
         List<Statement> body=w.getBody() instanceof BlockStmt block?new ArrayList<>(block.getStatements()):List.of(w.getBody());
-        if(body.isEmpty() || !(body.get(body.size()-1) instanceof ExpressionStmt tail)) return unknown(w,"while требует явного шага в конце тела.");
-        Update step=update(tail.getExpression()); String variable=name.getNameAsString();
-        if(step==null || !step.variable.equals(variable) || !w.findAll(ContinueStmt.class).isEmpty()) return unknown(w,"Шаг while может пропускаться или не распознан.");
-        for(int i=0;i<body.size()-1;i++) if(mutates(body.get(i),Set.of(variable))) return unknown(w,"Счётчик while имеет дополнительные изменения.");
+        String variable=name.getNameAsString(); Update step=null; int stepAt=-1;
+        for(int i=0;i<body.size();i++) if(body.get(i) instanceof ExpressionStmt expression) {
+            Update candidate=update(expression.getExpression());
+            if(candidate!=null && candidate.variable.equals(variable)) { if(step!=null) return unknown(w,"Несколько шагов счётчика while."); step=candidate; stepAt=i; }
+        }
+        if(step==null || !w.findAll(ContinueStmt.class).isEmpty()) return unknown(w,"Шаг while может пропускаться или не распознан.");
+        for(int i=0;i<body.size();i++) if(i!=stepAt && mutates(body.get(i),Set.of(variable))) return unknown(w,"Счётчик while имеет дополнительные изменения.");
         Expression start=c.initializers.get(variable);
         if(start==null && c.sizes.containsKey(variable)) start=new NameExpr(variable);
         if(start==null) return unknown(w,"Неизвестно начальное значение счётчика while.");
         Cost count=iterations(w.getCondition(),start,step,w.getBody(),c,true);
-        Context loop=c.copy(); loop.sizes.put(variable,count);
+        Context loop=c.copy(); loop.sizes.put(variable,size(start,c).plus(size(b.getRight(),c)));
         Cost bodyCost=Cost.one(); for(Statement child:body) bodyCost=bodyCost.plus(statement(child,loop));
         Cost result=count.times(expression(w.getCondition(),c).plus(bodyCost));
-        invalidateBranchAssignments(w,c); explain(w,result,"Шаг while выполняется в конце каждой полной итерации."); return result;
+        invalidateBranchAssignments(w,c); explain(w,result,"Шаг while выполняется безусловно в каждой полной итерации."); return result;
+    }
+    static boolean advances(Statement statement, Set<String> counters) {
+        if(statement instanceof ExpressionStmt expression) { Update step=update(expression.getExpression()); return step!=null && counters.contains(step.variable) && step.increasing && !step.logarithmic && step.amount==1; }
+        if(statement instanceof BlockStmt block) return block.getStatements().stream().anyMatch(s->advances(s,counters));
+        if(statement instanceof IfStmt branch) return advances(branch.getThenStmt(),counters) && branch.getElseStmt().map(s->advances(s,counters)).orElse(false);
+        return false;
+    }
+    static int maxIncrements(Statement statement, String counter) {
+        if(statement instanceof BlockStmt block) return block.getStatements().stream().mapToInt(s->maxIncrements(s,counter)).sum();
+        if(statement instanceof IfStmt branch) {
+            if(mutates(branch.getCondition(),Set.of(counter))) return 2;
+            return Math.max(maxIncrements(branch.getThenStmt(),counter),branch.getElseStmt().map(s->maxIncrements(s,counter)).orElse(0));
+        }
+        if(statement instanceof ExpressionStmt expression) { Update step=update(expression.getExpression()); if(step!=null && step.variable.equals(counter)) return 1; }
+        return mutates(statement,Set.of(counter))?2:0;
+    }
+    Cost twoPointerLoop(WhileStmt loop, BinaryExpr condition, Context c) {
+        if(!(unwrap(condition.getLeft()) instanceof BinaryExpr left) || !(unwrap(condition.getRight()) instanceof BinaryExpr right)) return unknown(loop,"Составная граница while не распознана.");
+        List<BinaryExpr> guards=List.of(left,right); Set<String> counters=new HashSet<>(); Cost count=Cost.one(); Context body=c.copy();
+        for(BinaryExpr guard:guards) {
+            if(guard.getOperator()!=BinaryExpr.Operator.LESS || !(unwrap(guard.getLeft()) instanceof NameExpr variable)) return unknown(loop,"Два указателя требуют строгих верхних границ.");
+            String name=variable.getNameAsString(); Expression start=c.initializers.get(name);
+            if(!counters.add(name) || !"int".equals(c.types.get(name)) || start==null || integer(start)==null || integer(start)!=0) return unknown(loop,"Два независимых указателя должны начинаться с нуля.");
+            if(!(unwrap(guard.getRight()) instanceof FieldAccessExpr length) || !length.getNameAsString().equals("length") || !typeOf(length.getScope(),c).endsWith("[]")) return unknown(loop,"Граница указателя должна быть неизменной длиной массива.");
+            Set<String> arrays=names(length.getScope());
+            if(mutates(loop.getBody(),arrays) || loop.getBody().findAll(MethodCallExpr.class).stream().anyMatch(call->call.getArguments().stream().anyMatch(arg->!Collections.disjoint(names(arg),arrays)))) return unknown(loop,"Массив из границы указателя может изменяться.");
+            Cost bound=size(guard.getRight(),c); count=count.plus(bound); body.sizes.put(name,bound);
+        }
+        if(!loop.getBody().findAll(ContinueStmt.class).isEmpty() || !loop.getBody().findAll(BreakStmt.class).isEmpty() || !loop.getBody().findAll(ReturnStmt.class).isEmpty() || !advances(loop.getBody(),counters)) return unknown(loop,"Не каждая ветка гарантирует продвижение хотя бы одного указателя.");
+        for(String counter:counters) if(maxIncrements(loop.getBody(),counter)>1) return unknown(loop,"Указатель может сделать несколько шагов за итерацию и переполниться.");
+        for(AssignExpr assignment:loop.getBody().findAll(AssignExpr.class)) if(!Collections.disjoint(names(assignment.getTarget()),counters)) return unknown(loop,"Присваивание может сбросить указатель.");
+        for(UnaryExpr unary:loop.getBody().findAll(UnaryExpr.class)) if(!Collections.disjoint(names(unary.getExpression()),counters) && (unary.getOperator().isPostfix() || unary.getOperator()==UnaryExpr.Operator.PREFIX_INCREMENT || unary.getOperator()==UnaryExpr.Operator.PREFIX_DECREMENT)) {
+            Update step=update(unary); if(step==null || !step.increasing) return unknown(loop,"Указатель может двигаться назад.");
+        }
+        Cost result=count.times(expression(condition,c).plus(statement(loop.getBody(),body)));
+        invalidateBranchAssignments(loop,c); explain(loop,result,"Каждая ветка продвигает хотя бы один из двух указателей; число шагов ограничено суммой длин массивов."); return result;
     }
     Cost expression(Expression raw, Context c) {
         Expression e=unwrap(raw);

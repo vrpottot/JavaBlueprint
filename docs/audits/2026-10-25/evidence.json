@@ -1,0 +1,1599 @@
+{
+  "date": "2026-10-25",
+  "baselineCommit": "aef25b716bdf91b05fc24b0be5b029ae4bbd270a",
+  "files": {
+    "Main.java": "3d9fa4a7d93f1c51bf7ad9ebb97339f7d60012382367ac0c2f88f1f0ac7cf64c",
+    "MainTest.java": "4ce0b590233d2475fad5c218b00e9f7ef5679176a1a14b488ea4d5db46cc600f"
+  },
+  "baseline": {
+    "compilation": {
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0,
+      "durationMs": 2618,
+      "timedOut": false,
+      "outputLimitExceeded": false
+    },
+    "runs": [
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 549,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "0:empty",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 541,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "1:0 1",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=1 seed=1\nproducts=3 orders=1\nstatus shipped=1\nrevenue=65.76 discounts=2.29 shipping=29.80\nreturns accepted=0 rejected=1 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\n  CLOTHING 38.25\ntop=CLO-848x3 crossSell=none\ncomplexity 355 177 1 0 0 0 1 177 0 15\nchecksum=3857764810\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 517,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "2:1 1",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 540,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "3:5 11",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 593,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "4:35 99",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2799.48 discounts=464.37 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.59\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1192465059\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 550,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "5:60 7",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=0 seed=3\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=221921452\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 565,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "6:-4 3",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 542,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "7:abc",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 557,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "8:35 99",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 584,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "9:35 99",
+        "passed": null
+      }
+    ],
+    "junit": {
+      "status": "passed",
+      "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 277 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n"
+    }
+  },
+  "variants": [
+    {
+      "name": "index for to foreach",
+      "expectedSame": true,
+      "compilation": 0,
+      "tests": "passed",
+      "changedInputs": [],
+      "verification": {
+        "compilation": {
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 2625,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "runs": [
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 540,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "empty",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 522,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "0 1",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 641,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "5 11",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 537,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "35 99",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2799.48 discounts=464.37 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.59\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1192465059\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 582,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "60 7",
+            "passed": null
+          }
+        ],
+        "junit": {
+          "status": "passed",
+          "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 203 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n"
+        }
+      }
+    },
+    {
+      "name": "shipping while to for",
+      "expectedSame": true,
+      "compilation": 0,
+      "tests": "passed",
+      "changedInputs": [],
+      "verification": {
+        "compilation": {
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 2573,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "runs": [
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 557,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "empty",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 517,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "0 1",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 530,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "5 11",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 501,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "35 99",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2799.48 discounts=464.37 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.59\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1192465059\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 582,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "60 7",
+            "passed": null
+          }
+        ],
+        "junit": {
+          "status": "passed",
+          "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 200 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n"
+        }
+      }
+    },
+    {
+      "name": "ternary to if/else",
+      "expectedSame": true,
+      "compilation": 0,
+      "tests": "passed",
+      "changedInputs": [],
+      "verification": {
+        "compilation": {
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 2410,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "runs": [
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 556,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "empty",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 508,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "0 1",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 562,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "5 11",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 547,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "35 99",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2799.48 discounts=464.37 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.59\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1192465059\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 576,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "60 7",
+            "passed": null
+          }
+        ],
+        "junit": {
+          "status": "passed",
+          "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 266 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n"
+        }
+      }
+    },
+    {
+      "name": "GOLD discount mutation",
+      "expectedSame": false,
+      "compilation": 0,
+      "tests": "failed",
+      "changedInputs": [
+        "empty",
+        "35 99",
+        "60 7"
+      ],
+      "verification": {
+        "compilation": {
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 2570,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "runs": [
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1624.37 discounts=76.93 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=7737987\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 544,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "empty",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 546,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "0 1",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 507,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "5 11",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2023.02 discounts=222.13 shipping=355.40\nreturns accepted=6 rejected=4 refunds=88.95\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=3614368013\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 520,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "35 99",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2796.10 discounts=467.75 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.34\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1859403512\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 573,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "60 7",
+            "passed": null
+          }
+        ],
+        "junit": {
+          "status": "failed",
+          "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✘ expected: <204064> but was: <202302>\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MainTest:normalScenarioKeepsInventoryAndMoneyConsistent()\n    MethodSource [className = 'MainTest', methodName = 'normalScenarioKeepsInventoryAndMoneyConsistent', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <204064> but was: <202302>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MainTest.normalScenarioKeepsInventoryAndMoneyConsistent(MainTest.java:92)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 271 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        11 tests successful      ]\n[         1 tests failed          ]\n\n"
+        }
+      }
+    },
+    {
+      "name": "SILVER partial reservation mutation",
+      "expectedSame": false,
+      "compilation": 0,
+      "tests": "failed",
+      "changedInputs": [
+        "empty",
+        "35 99",
+        "60 7"
+      ],
+      "verification": {
+        "compilation": {
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 2467,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "runs": [
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1724.67 discounts=87.08 shipping=241.00\nreturns accepted=2 rejected=3 refunds=75.72\nreservation failures=11 rollbacks=3 reservedLeft=0\nrestocked=12 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 331.00\n  FOOD 229.00\n  CLOTHING 753.75\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x15 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=3559341867\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 578,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "empty",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 505,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "0 1",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 538,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "5 11",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=17 shipped=17 returned=1\nrevenue=2051.64 discounts=206.71 shipping=368.60\nreturns accepted=6 rejected=4 refunds=114.23\nreservation failures=43 rollbacks=12 reservedLeft=0\nrestocked=39 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=1854549806\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 550,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "35 99",
+            "passed": null
+          },
+          {
+            "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=29 shipped=30 returned=1\nrevenue=2849.04 discounts=494.11 shipping=646.50\nreturns accepted=10 rejected=6 refunds=229.78\nreservation failures=95 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=2\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 339.75\n  FOOD 405.40\n  CLOTHING 506.75\n  TOYS 497.25\n  BOOKS 947.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=3870759027\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 553,
+            "timedOut": false,
+            "outputLimitExceeded": false,
+            "name": "60 7",
+            "passed": null
+          }
+        ],
+        "junit": {
+          "status": "failed",
+          "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✘ expected: <204064> but was: <205164>\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MainTest:normalScenarioKeepsInventoryAndMoneyConsistent()\n    MethodSource [className = 'MainTest', methodName = 'normalScenarioKeepsInventoryAndMoneyConsistent', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <204064> but was: <205164>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MainTest.normalScenarioKeepsInventoryAndMoneyConsistent(MainTest.java:92)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 220 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        11 tests successful      ]\n[         1 tests failed          ]\n\n"
+        }
+      }
+    }
+  ],
+  "roundTrip": {
+    "compilation": {
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0,
+      "durationMs": 2528,
+      "timedOut": false,
+      "outputLimitExceeded": false
+    },
+    "runs": [
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 568,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "empty",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 515,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "0 1",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 547,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "5 11",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 620,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "35 99",
+        "passed": null
+      },
+      {
+        "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2799.48 discounts=464.37 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.59\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1192465059\n",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 623,
+        "timedOut": false,
+        "outputLimitExceeded": false,
+        "name": "60 7",
+        "passed": null
+      }
+    ],
+    "junit": {
+      "status": "passed",
+      "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 199 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n"
+    }
+  },
+  "invalidExamples": [
+    {
+      "name": "Broken1.java",
+      "errors": [
+        {
+          "file": "Broken1.java",
+          "message": "Parse error. Found \"{\", expected one of  \"!=\" \"%\" \"%=\" \"&\" \"&&\" \"&=\" \")\" \"*\" \"*=\" \"+\" \"+=\" \"-\" \"-=\" \"->\" \"/\" \"/=\" \"::\" \"<\" \"<<=\" \"<=\" \"=\" \"==\" \">\" \">=\" \">>=\" \">>>=\" \"?\" \"^\" \"^=\" \"instanceof\" \"|\" \"|=\" \"||\"",
+          "line": 1,
+          "column": 47
+        }
+      ]
+    },
+    {
+      "name": "Broken2.java",
+      "errors": [
+        {
+          "file": "Broken2.java",
+          "message": "Parse error. Found \"return\", expected one of  \"!\" \"(\" \"+\" \"++\" \"-\" \"--\" \"@\" \"\\\"\\\"\\\"\" \"boolean\" \"byte\" \"char\" \"double\" \"enum\" \"exports\" \"false\" \"float\" \"int\" \"long\" \"module\" \"new\" \"null\" \"open\" \"opens\" \"permits\" \"provides\" \"record\" \"requires\" \"sealed\" \"short\" \"strictfp\" \"super\" \"switch\" \"this\" \"throw\" \"to\" \"transitive\" \"true\" \"uses\" \"void\" \"when\" \"with\" \"yield\" \"{\" \"~\" <CHARACTER_LITERAL> <FLOATING_POINT_LITERAL> <IDENTIFIER> <INTEGER_LITERAL> <LONG_LITERAL> <STRING_LITERAL>",
+          "line": 1,
+          "column": 58
+        },
+        {
+          "file": "Broken2.java",
+          "message": "Parse error. Found \"else\", expected one of  \";\" \"<\" \"@\" \"abstract\" \"boolean\" \"byte\" \"char\" \"class\" \"default\" \"double\" \"enum\" \"exports\" \"final\" \"float\" \"int\" \"interface\" \"long\" \"module\" \"native\" \"non-sealed\" \"open\" \"opens\" \"permits\" \"private\" \"protected\" \"provides\" \"public\" \"record\" \"requires\" \"sealed\" \"short\" \"static\" \"strictfp\" \"synchronized\" \"to\" \"transient\" \"transitive\" \"uses\" \"void\" \"volatile\" \"when\" \"with\" \"yield\" \"{\" \"}\" <IDENTIFIER>",
+          "line": 1,
+          "column": 71
+        }
+      ]
+    }
+  ],
+  "complexityBefore": [
+    {
+      "methodId": "d6a2e3fb-dd03-3bdf-b216-84435b3b6800",
+      "method": "constantAccess",
+      "file": "Main.java",
+      "line": 800,
+      "structuralBound": "O(1)",
+      "estimate": "O(1)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(1) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "8800a0a3-4e42-3d0a-93fa-f2c7dfdab41c",
+      "method": "linearSum",
+      "file": "Main.java",
+      "line": 812,
+      "structuralBound": "O(n)",
+      "estimate": "O(|a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "f0324ed2-8c40-3d5e-8bde-2d5ccf86b84a",
+      "method": "halvingSteps",
+      "file": "Main.java",
+      "line": 821,
+      "structuralBound": "O(n)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [
+        "L824: Шаг while может пропускаться или не распознан."
+      ],
+      "explanation": "Полная оценка неизвестна: L824: Шаг while может пропускаться или не распознан."
+    },
+    {
+      "methodId": "94a1282d-0b66-3270-b792-be918940de5f",
+      "method": "countInversions",
+      "file": "Main.java",
+      "line": 832,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(|a|^2)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|^2) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "b9a366d9-1e13-3b2d-b4fd-87d09397ae5f",
+      "method": "gridWeightedSum",
+      "file": "Main.java",
+      "line": 845,
+      "structuralBound": "O(n^2)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [
+        "L848: Не удалось выразить число итераций через размеры входов."
+      ],
+      "explanation": "Полная оценка неизвестна: L848: Не удалось выразить число итераций через размеры входов."
+    },
+    {
+      "methodId": "bdc9db44-8dd8-3530-b48f-a07c59fdbbcf",
+      "method": "countCommonSorted",
+      "file": "Main.java",
+      "line": 856,
+      "structuralBound": "O(n)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [
+        "L860: Не распознан счётчик while."
+      ],
+      "explanation": "Полная оценка неизвестна: L860: Не распознан счётчик while."
+    },
+    {
+      "methodId": "9941b9bf-3eea-37e9-a184-50c331bf36be",
+      "method": "halvingSpanScore",
+      "file": "Main.java",
+      "line": 875,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(|a| * log(|a|))",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a| * log(|a|)) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "2624171d-2752-309e-8f81-a1d332aaaec3",
+      "method": "fixedWindowScore",
+      "file": "Main.java",
+      "line": 889,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(|a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "4aa10025-05f3-3741-9079-18320d9b95de",
+      "method": "countAboveAverage",
+      "file": "Main.java",
+      "line": 905,
+      "structuralBound": "O(n)",
+      "estimate": "O(|a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "002a7de6-8245-32bc-86c3-2595f7719870",
+      "method": "totalDigitSum",
+      "file": "Main.java",
+      "line": 923,
+      "structuralBound": "O(n)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [
+        "Символьное выражение превысило лимит сложности анализа."
+      ],
+      "explanation": "Полная оценка неизвестна: Символьное выражение превысило лимит сложности анализа."
+    },
+    {
+      "methodId": "3347d00f-6659-384e-98e7-037817c97177",
+      "method": "digitSum",
+      "file": "Main.java",
+      "line": 932,
+      "structuralBound": "O(n)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [
+        "Символьное выражение превысило лимит сложности анализа."
+      ],
+      "explanation": "Полная оценка неизвестна: Символьное выражение превысило лимит сложности анализа."
+    }
+  ],
+  "complexityAfter": [
+    {
+      "methodId": "d6a2e3fb-dd03-3bdf-b216-84435b3b6800",
+      "method": "constantAccess",
+      "file": "Main.java",
+      "line": 800,
+      "structuralBound": "O(1)",
+      "estimate": "O(1)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(1) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "8800a0a3-4e42-3d0a-93fa-f2c7dfdab41c",
+      "method": "linearSum",
+      "file": "Main.java",
+      "line": 812,
+      "structuralBound": "O(n)",
+      "estimate": "O(|a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "f0324ed2-8c40-3d5e-8bde-2d5ccf86b84a",
+      "method": "halvingSteps",
+      "file": "Main.java",
+      "line": 821,
+      "structuralBound": "O(n)",
+      "estimate": "O(log(n))",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(log(n)) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "94a1282d-0b66-3270-b792-be918940de5f",
+      "method": "countInversions",
+      "file": "Main.java",
+      "line": 832,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(|a|^2)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|^2) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "b9a366d9-1e13-3b2d-b4fd-87d09397ae5f",
+      "method": "gridWeightedSum",
+      "file": "Main.java",
+      "line": 845,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(max(|grid[]|) * |grid|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Для многомерного массива используется максимальная длина вложенной строки; строки могут иметь разную длину."
+      ],
+      "limitations": [],
+      "explanation": "O(max(|grid[]|) * |grid|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "bdc9db44-8dd8-3530-b48f-a07c59fdbbcf",
+      "method": "countCommonSorted",
+      "file": "Main.java",
+      "line": 856,
+      "structuralBound": "O(n)",
+      "estimate": "O(|a| + |b|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a| + |b|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "9941b9bf-3eea-37e9-a184-50c331bf36be",
+      "method": "halvingSpanScore",
+      "file": "Main.java",
+      "line": 875,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(|a| * log(|a|))",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a| * log(|a|)) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "2624171d-2752-309e-8f81-a1d332aaaec3",
+      "method": "fixedWindowScore",
+      "file": "Main.java",
+      "line": 889,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(|a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "4aa10025-05f3-3741-9079-18320d9b95de",
+      "method": "countAboveAverage",
+      "file": "Main.java",
+      "line": 905,
+      "structuralBound": "O(n)",
+      "estimate": "O(|a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Стоимость обработки числовых элементов может зависеть от их максимального модуля; для int число десятичных цифр ограничено 10."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "002a7de6-8245-32bc-86c3-2595f7719870",
+      "method": "totalDigitSum",
+      "file": "Main.java",
+      "line": 923,
+      "structuralBound": "O(n)",
+      "estimate": "O(log(max(|a[*]|)) * |a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Стоимость обработки числовых элементов может зависеть от их максимального модуля; для int число десятичных цифр ограничено 10.",
+        "Числовые размеры в оценке обозначают модуль значения."
+      ],
+      "limitations": [],
+      "explanation": "O(log(max(|a[*]|)) * |a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "3347d00f-6659-384e-98e7-037817c97177",
+      "method": "digitSum",
+      "file": "Main.java",
+      "line": 932,
+      "structuralBound": "O(n)",
+      "estimate": "O(log(value))",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Числовые размеры в оценке обозначают модуль значения."
+      ],
+      "limitations": [],
+      "explanation": "O(log(value)) — верхняя граница для распознанных конструкций при указанных предположениях."
+    }
+  ],
+  "counterexample": {
+    "before": "O(log(n)^2)",
+    "after": "O(n * log(n))",
+    "actual": "Theta(n)",
+    "note": "After is a conservative upper bound; geometric amortization is not modeled"
+  },
+  "browserBefore": {
+    "nodesBeforeFit": 935,
+    "geometry": {
+      "totalNodes": 935,
+      "visibleNodes": 5,
+      "overlappingPairs": 80,
+      "examples": [
+        {
+          "first": "РешениеL117IfdaysToExpiry <= 1Main.java:117ДаНет",
+          "second": "ReturnТерминаторL118return basePriceCents / 2;Main.java:118",
+          "ids": [
+            "2d054cb0-6865-3a3c-955a-02cd0418bbc7",
+            "ffb744d8-82de-3619-ad7b-708c0588619a"
+          ]
+        },
+        {
+          "first": "РешениеL119IfdaysToExpiry <= 3Main.java:119ДаНет",
+          "second": "ReturnТерминаторL120return basePriceCents * 8 / 10;Main.java:120",
+          "ids": [
+            "9690efa6-0e36-333d-b206-4272655955a1",
+            "30ef4a9e-18e7-37ba-b85a-747566f2ee12"
+          ]
+        },
+        {
+          "first": "РешениеL140Ifcondition.test(item)Main.java:140ДаНет",
+          "second": "ReturnТерминаторL141return Optional.of(item);Main.java:141",
+          "ids": [
+            "814b69ce-bfbd-38fc-ab55-fb07399fcffe",
+            "f0f15bbf-3e8d-3734-84ac-31851b46f763"
+          ]
+        },
+        {
+          "first": "РешениеL205Ifproduct == nullMain.java:205ДаНет",
+          "second": "ThrowПроцессL206throw new InventoryException(FailureReason.UNKNOW",
+          "ids": [
+            "783f4d61-c451-3e44-b78f-914433d763a5",
+            "c6ac956e-e2a9-348b-867c-c99173c5681d"
+          ]
+        },
+        {
+          "first": "РешениеL220Ifquantity <= 0Main.java:220ДаНет",
+          "second": "ThrowПроцессL221throw new InventoryException(FailureReason.INVALI",
+          "ids": [
+            "e034c1e9-d99e-329a-9c4a-d76b64047e39",
+            "d7e9eb02-2601-3684-a118-9477bc60aee2"
+          ]
+        },
+        {
+          "first": "РешениеL223Ifquantity > MAX_PER_LINEMain.java:223ДаНет",
+          "second": "ThrowПроцессL224throw new InventoryException(FailureReason.LIMIT_",
+          "ids": [
+            "207b21b6-175f-39ad-99e9-87e38a8fed3a",
+            "e99a043e-1253-3cdf-aa14-184b17722ce8"
+          ]
+        },
+        {
+          "first": "РешениеL229Iffree >= quantityMain.java:229ДаНет",
+          "second": "ExpressionПроцессL230grantedNow = quantity;Main.java:230",
+          "ids": [
+            "03b791ae-24cb-31d4-9451-753f1e4ceb79",
+            "a041b575-d551-399f-8158-65bd8e6a4092"
+          ]
+        },
+        {
+          "first": "РешениеL231IfallowPartial && free > 0Main.java:231ДаНет",
+          "second": "ExpressionПроцессL232grantedNow = free;Main.java:232",
+          "ids": [
+            "0f59b956-1c39-3562-9360-48828615cac0",
+            "07ee8837-2a91-3870-9fe6-8fd7c96774e5"
+          ]
+        }
+      ],
+      "transform": "translate(-8047.25px, -1598.2px) scale(0.3)"
+    },
+    "nodesAfterFileSwitch": 935,
+    "caseEdit": {
+      "status": 422,
+      "response": {
+        "error": {
+          "code": "UNSUPPORTED_TRANSFORM",
+          "message": "Invalid Java fragment: [Encountered unexpected token: \";\" \";\"\n    at line 1, column 6.\n\nWas expecting one of:\n\n    \"!=\"\n    \"%\"\n    \"%=\"\n    \"&\"\n    \"&&\"\n    \"&=\"\n    \"*\"\n    \"*=\"\n    \"+\"\n    \"+=\"\n    \"-\"\n    \"-=\"\n    \"->\"\n    \"/\"\n    \"/=\"\n    \"::\"\n    \"<\"\n    \"<<=\"\n    \"<=\"\n    \"=\"\n    \"==\"\n    \">\"\n    \">=\"\n    \">>=\"\n    \">>>=\"\n    \"?\"\n    \"^\"\n    \"^=\"\n    \"instanceof\"\n    \"|\"\n    \"|=\"\n    \"||\"\n    <EOF>\n\nProblem stacktrace : \n  com.github.javaparser.GeneratedJavaParser.generateParseException(GeneratedJavaParser.java:14486)\n  com.github.javaparser.GeneratedJavaParser.jj_consume_token(GeneratedJavaParser.java:14331)\n  com.github.javaparser.GeneratedJavaParser.ExpressionParseStart(GeneratedJavaParser.java:8693)\n  com.github.javaparser.JavaParser.parse(JavaParser.java:125)\n  com.github.javaparser.JavaParser.parseExpression(JavaParser.java:342)\n  Engine.transform(Engine.java:250)\n  Engine.run(Engine.java:305)\n  Engine.main(Engine.java:363)]"
+        }
+      }
+    }
+  },
+  "browserAfter": {
+    "methods": [
+      {
+        "method": "Category — Main.Category · L31",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "totalCents — Main.PriceQuote · L48",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "unitPriceCents — Main.Priced · L63",
+        "total": 1,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "priceFor — Main.Priced · L65",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "InventoryException — Main.InventoryException · L75",
+        "total": 4,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "Product — Main.Product · L89",
+        "total": 6,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "unitPriceCents — Main.Product · L97",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "returnable — Main.Product · L102",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "PerishableProduct — Main.PerishableProduct · L110",
+        "total": 3,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "unitPriceCents — Main.PerishableProduct · L115",
+        "total": 6,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "returnable — Main.PerishableProduct · L125",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "add — Main.Repository · L134",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "findFirst — Main.Repository · L138",
+        "total": 5,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "all — Main.Repository · L147",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "size — Main.Repository · L151",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "Order — Main.Order · L170",
+        "total": 6,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "addLine — Main.Order · L178",
+        "total": 3,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "grantedUnits — Main.Order · L183",
+        "total": 5,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "addProduct — Main.Inventory · L198",
+        "total": 3,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "product — Main.Inventory · L203",
+        "total": 5,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "available — Main.Inventory · L211",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "onHand — Main.Inventory · L215",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "reserve — Main.Inventory · L219",
+        "total": 15,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "release — Main.Inventory · L240",
+        "total": 6,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "commit — Main.Inventory · L250",
+        "total": 3,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "restock — Main.Inventory · L255",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "reservedTotal — Main.Inventory · L259",
+        "total": 5,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "lowStockCount — Main.Inventory · L267",
+        "total": 6,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "products — Main.Inventory · L277",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "discountFor — Main.DiscountEngine · L285",
+        "total": 22,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "couponDiscount — Main.DiscountEngine · L318",
+        "total": 16,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "parseDigits — Main.DiscountEngine · L341",
+        "total": 14,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "cost — Main.ShippingCalculator · L364",
+        "total": 23,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "OrderProcessor — Main.OrderProcessor · L413",
+        "total": 4,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "priority — Main.OrderProcessor · L419",
+        "total": 20,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "sortByPriority — Main.OrderProcessor · L453",
+        "total": 11,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "reserve — Main.OrderProcessor · L468",
+        "total": 27,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "rollback — Main.OrderProcessor · L507",
+        "total": 5,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "price — Main.OrderProcessor · L515",
+        "total": 25,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "ship — Main.OrderProcessor · L547",
+        "total": 12,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "processAll — Main.OrderProcessor · L564",
+        "total": 15,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "processReturn — Main.OrderProcessor · L585",
+        "total": 31,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "processReturns — Main.OrderProcessor · L631",
+        "total": 14,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "replenish — Main.OrderProcessor · L651",
+        "total": 21,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "SeededRandom — Main.SeededRandom · L685",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "nextInt — Main.SeededRandom · L689",
+        "total": 4,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "ScenarioGenerator — Main.ScenarioGenerator · L708",
+        "total": 2,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "buildInventory — Main.ScenarioGenerator · L712",
+        "total": 21,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "buildOrders — Main.ScenarioGenerator · L739",
+        "total": 26,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "buildReturns — Main.ScenarioGenerator · L774",
+        "total": 14,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "ComplexityLab — Main.ComplexityLab · L796",
+        "total": 1,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "constantAccess — Main.ComplexityLab · L800",
+        "total": 7,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "linearSum — Main.ComplexityLab · L812",
+        "total": 5,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "halvingSteps — Main.ComplexityLab · L821",
+        "total": 7,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "countInversions — Main.ComplexityLab · L832",
+        "total": 7,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "gridWeightedSum — Main.ComplexityLab · L845",
+        "total": 6,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "countCommonSorted — Main.ComplexityLab · L856",
+        "total": 13,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "halvingSpanScore — Main.ComplexityLab · L875",
+        "total": 9,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "fixedWindowScore — Main.ComplexityLab · L889",
+        "total": 10,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "countAboveAverage — Main.ComplexityLab · L905",
+        "total": 11,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "totalDigitSum — Main.ComplexityLab · L923",
+        "total": 5,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "digitSum — Main.ComplexityLab · L932",
+        "total": 7,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "profile — Main.ComplexityLab · L943",
+        "total": 18,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "collect — Main.ScenarioReport · L1000",
+        "total": 38,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "findCrossSell — Main.ScenarioReport · L1053",
+        "total": 14,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "checksum — Main.ScenarioReport · L1074",
+        "total": 10,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "render — Main.ScenarioReport · L1090",
+        "total": 23,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "money — Main.ScenarioReport · L1127",
+        "total": 5,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "clampSize — Main · L1135",
+        "total": 6,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "parseInput — Main · L1145",
+        "total": 13,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "runScenario — Main · L1164",
+        "total": 14,
+        "visible": 0,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      },
+      {
+        "method": "main — Main · L1181",
+        "total": 8,
+        "visible": 2,
+        "overlaps": [],
+        "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+      }
+    ],
+    "errors": [],
+    "initial": {
+      "total": 8,
+      "visible": 2,
+      "overlaps": [],
+      "transform": "translate(-90157.2px, 227.9px) scale(0.9)"
+    },
+    "overlappingMethods": [],
+    "testsFile": {
+      "total": 4,
+      "visible": 2,
+      "overlaps": [],
+      "transform": "translate(-90624.6px, 236.621px) scale(0.89566)",
+      "descriptions": [
+        "inventoryWithМетодL18private static Main.Inventory inventoryWith(Main.Product product, int stock)MainTest · MainTest.java:18",
+        "inventoryДанныеL19Main.Inventory inventory = new Main.Inventory();MainTest · MainTest.java:19",
+        "ExpressionПроцессL20inventory.addProduct(product, stock);MainTest · MainTest.java:20",
+        "ReturnТерминаторL21return inventory;MainTest · MainTest.java:21"
+      ]
+    },
+    "overview": {
+      "total": 741,
+      "visible": 741,
+      "overlaps": [],
+      "transform": "translate(100px, 221.095px) scale(0.00794447)"
+    },
+    "caseEdit": {
+      "status": 200,
+      "verification": {
+        "compilation": 0,
+        "stdout": "8\n",
+        "comparison": "different"
+      }
+    }
+  }
+}

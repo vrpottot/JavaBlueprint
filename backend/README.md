@@ -166,6 +166,8 @@ RUN_DOCKER_TESTS=1 npm test
 
 The default suite uses the real JavaParser and skips the five Docker integration tests. `RUN_DOCKER_TESTS=1` enables compilation, successful/failing JUnit, behavior differences, timeout/output/filesystem/network isolation, AI acceptance/rejection and the complete API cycle. It requires a built runner image. The parser suite also edits a generated 1000-line Java monolith.
 
+`npm run test:ci` runs 23 focused backend groups, including AST edits, layout and complexity counterexamples. After installing frontend dependencies, `npm run test:frontend` runs one store/API regression group. The supplied warehouse stress files were also checked with real javac/JUnit, behavior-preserving edits and failing mutations; see the [audit and evidence](../docs/audits/2026-10-25/README.md).
+
 Browser end-to-end test (requires frontend dependencies, Docker and runner image):
 
 ```bash
@@ -174,6 +176,8 @@ npm run test:browser
 ```
 
 You can use an installed browser instead with `CHROME_PATH=/path/to/chrome npm run test:browser`. Playwright starts backend/frontend development servers automatically; it imports real sources/tests, edits graph blocks, runs Java and checks the visible JUnit and console results. The method workflow also creates a method in an empty class, previews without saving, edits its body, handles a conflicting signature, copies/deletes it and verifies it with javac and JUnit. Use `E2E_BASE_URL=https://your-site` to exercise a deployed frontend and gateway.
+
+The five browser scenarios also cover file/method navigation, case edits affecting real execution, and invalid source followed by recovery. They run manually, outside the per-push CI suite.
 
 With the API already running:
 
@@ -188,7 +192,7 @@ Validation includes the quick API/complexity/deployment identity suite, a gatewa
 ## Scope and limits
 
 - Java 21 syntax is parsed by JavaParser. Classes, interfaces, fields, constructors, methods, primitives, arrays, standard Java I/O, strings and collections are preserved. JDK 21 compiles the code. Record, enum, generics, lambdas and streams are accepted; not every construct is individually editable in the graph.
-- Graph flow covers if/else, switch statements, for/foreach/while/do, unlabeled break/continue, returns and throws. Exception/catch/finally/resource edges are structural approximations. Abrupt exits through finally, labeled jumps, lambda execution, switch expressions and interprocedural calls are not a complete Java CFG; graph warnings expose these limits.
+- Graph flow covers if/else, switch statements, for/foreach/while/do, lexical targets of labeled/unlabeled break/continue, returns and throws. Dagre lays out each method/constructor separately; the frontend scopes the graph by file and method. Exception/catch/finally/resource edges remain structural approximations, including abrupt jumps through finally. Lambda and switch-expression bodies stay in the AST but are not expanded as misleading disconnected statements. Warnings expose these limits. This is not a complete interprocedural Java CFG.
 - Long methods, exact duplicate operations, nested loops and calls in loop bounds are heuristic diagnostics. The AST complexity model composes sequential costs, branches, constant/linear/logarithmic `for` loops, recognized `while`, array/standard collection traversal, primitive array allocation, selected JDK operations and unambiguous local method calls. It retains independent input sizes, such as `O(n * m)` and `O(n + m)`, and emits assumptions plus line-linked evidence. Recursion, unmodeled I/O, unknown calls, mutated bounds and unsafe counter updates remain unknown. All recognized results are conditional upper bounds, not formal proofs. No invented speedup, maintainability score or coverage.
 - Projects are in memory and disappear on restart; inactive entries expire. Max 50 projects, 100 source files and 2 MiB source per project. Paths are relative ASCII `.java` paths; traversal/duplicates are rejected. At most four parser jobs and two verification jobs run concurrently; excess load returns 429.
 - Only JDK libraries and provided JUnit are available to submitted projects. Maven/Gradle dependency resolution, ZIP uploads, persistent storage, authentication, full behavioral proofs and advanced optimization are outside this implementation.

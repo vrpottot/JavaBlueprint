@@ -4,6 +4,7 @@ import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
 import type { FileItem, CodeIssue, CodeRecommendation, CodeMetrics, ComplexityEstimate, ConsoleLog, TestCase, BlockType, VisualBlockData, AIProposal, ChatMessage } from '../types';
 import { api, type ProjectSnapshot, type SourceFile, type Analysis, type Verification, submitAIProposal, type AIProposalResponse, type AIChatResponse, type MethodContainer } from '../services/api';
 import { PALETTE_ITEMS } from '../lib/palette';
+import { defaultMethod, scopeNodes } from '../lib/graph-scope';
 
 const SAMPLE = `import java.util.Scanner;
 
@@ -28,6 +29,12 @@ const emptyMetrics: CodeMetrics = { cyclomaticComplexity: 0, linesOfCode: 0, nes
 const INITIAL_CHAT_MESSAGES: ChatMessage[] = [];
 
 interface ProjectState {
+  activeMethodId: string;
+  setActiveMethodId: (id: string) => void;
+  resetGraphLayout: () => void;
+  openNodeSource: (id: string) => void;
+  manualPositions: Record<string, { x: number; y: number }>;
+  automaticPositions: Record<string, { x: number; y: number }>;
   containers: MethodContainer[];
   methodDialog: { mode: 'create' | 'edit'; containerId: string; nodeId?: string; revision: number; position?: { x: number; y: number }; initial?: NonNullable<VisualBlockData['method']> } | null;
   focusNodeRequest: { nodeId: string; nonce: number } | null;
@@ -125,7 +132,9 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
   const accept = (p: ProjectSnapshot, original = false) => {
     const path = p.files.some((f) => f.path === get().activeFilePath) ? get().activeFilePath : p.files[0]?.path || '';
-    const positions = !original && p.projectId === get().projectId ? new Map(get().nodes.map((n) => [n.id, n.position])) : new Map();
+    const positions = !original && p.projectId === get().projectId ? get().manualPositions : {};
+    const scope = get().activeMethodId;
+    const keepScope = !original && p.projectId === get().projectId && (scope === 'all' || scope === 'members' || p.graph.nodes.some(node => node.id === scope && node.data.source?.file === path));
     set({
       projectId: p.projectId,
       revision: p.revision,
@@ -137,8 +146,11 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       files: p.files.map((f) => ({ id: f.path, path: f.path, name: f.path, type: 'file' as const })),
       activeFileId: path,
       activeFilePath: path,
+      activeMethodId: keepScope ? scope : defaultMethod(p.graph.nodes, path),
+      automaticPositions: Object.fromEntries(p.graph.nodes.map(node => [node.id, node.position])),
+      manualPositions: Object.fromEntries(p.graph.nodes.filter(node => positions[node.id]).map(node => [node.id, positions[node.id]])),
       javaCode: p.files.find((f) => f.path === path)?.content || '',
-      nodes: p.graph.nodes.map((n) => ({ ...n, position: positions.get(n.id) || n.position })),
+      nodes: p.graph.nodes.map((n) => ({ ...n, position: positions[n.id] || n.position })),
       edges: p.graph.edges,
       selectedNodeId: null,
       editingNode: null,
@@ -205,18 +217,38 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     }
   };
 
-  const transform = async (operation: { type: string; nodeId: string; code?: string }) =>
-    busy(async () => {
+  const transform = async (operation: { type: string; nodeId: string; code?: string }) => {
+    let applied = false;
+    await busy(async () => {
       if (get().dirty) throw new Error('Дождитесь разбора изменений Java перед редактированием графа.');
       if (!get().projectId) throw new Error('Сначала импортируйте Java-файл.');
       const p = await api<ProjectSnapshot>(`/projects/${get().projectId}/transform`, { revision: get().revision, operations: [operation] });
       if (operation.type.endsWith('Method')) applyMethodSnapshot(p); else accept(p);
+      applied = true;
       set({ isOptimized: true, codeViewMode: 'optimized' });
       try { await analysis(); } catch { log('warn', 'Код сохранён. Анализ временно недоступен.'); }
       log('success', 'Java-код обновлён через AST. Запустите проверку компиляции и поведения.');
     });
+    return applied;
+  };
 
   return {
+    activeMethodId: 'members', manualPositions: {}, automaticPositions: {},
+    setActiveMethodId: (id) => {
+      if (id !== 'all' && id !== 'members' && !get().nodes.some(n => n.id === id && n.data.source?.file === get().activeFilePath && n.data.blockType === 'method')) return;
+      set({ activeMethodId: id, selectedNodeId: null, mainWorkspaceTab: 'graph' });
+    },
+    resetGraphLayout: () => {
+      const visible = new Set(scopeNodes(get().nodes, get().activeFilePath, get().activeMethodId).map(node => node.id));
+      set({ manualPositions: Object.fromEntries(Object.entries(get().manualPositions).filter(([id]) => !visible.has(id))), nodes: get().nodes.map(node => visible.has(node.id) ? { ...node, position: get().automaticPositions[node.id] ?? node.position } : node) });
+    },
+    openNodeSource: (id) => {
+      const node = get().nodes.find(n => n.id === id);
+      if (!node?.data.source) return;
+      const path = node.data.source.file;
+      get().selectNode(id);
+      set({ activeFileId: path, activeFilePath: path, javaCode: get().sourceFiles.find(file => file.path === path)?.content ?? '', codeViewMode: get().isOptimized ? 'optimized' : 'source', mainWorkspaceTab: 'editor' });
+    },
     containers: [], methodDialog: null, focusNodeRequest: null,
     closeMethodDialog: () => { if (!get().isLoading) set({ methodDialog: null }); },
     previewMethod: async (containerId, code) => {
@@ -284,7 +316,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     selectFile: (id) => {
       const file = (get().codeViewMode === 'source' && get().isOptimized ? get().originalFiles : get().sourceFiles).find((f) => f.path === id);
-      if (file) set({ activeFileId: id, activeFilePath: id, javaCode: file.content });
+      if (file) set({ activeFileId: id, activeFilePath: id, javaCode: file.content, activeMethodId: defaultMethod(get().nodes, id), selectedNodeId: null });
     },
 
     updateJavaCode: (code) => {
@@ -309,18 +341,25 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       changes.filter((c) => c.type === 'remove').forEach((c) => {
         void get().deleteNode(c.id);
       });
-      set({ nodes: applyNodeChanges(changes.filter((c) => c.type !== 'remove'), get().nodes) });
+      const positions = { ...get().manualPositions };
+      for (const change of changes) if (change.type === 'position' && change.position && change.dragging !== undefined) positions[change.id] = change.position;
+      set({ manualPositions: positions, nodes: applyNodeChanges(changes.filter((c) => c.type !== 'remove'), get().nodes) });
     },
 
     onEdgesChange: (changes) => set({ edges: applyEdgeChanges(changes.filter((c) => c.type !== 'remove'), get().edges) }),
 
-    selectNode: (id) => set({ selectedNodeId: id, nodes: get().nodes.map((n) => ({ ...n, data: { ...n.data, isHighlighted: n.id === id } })) }),
+    selectNode: (id) => {
+      const node = get().nodes.find(n => n.id === id);
+      const source = node?.data.source;
+      const outside = node && !scopeNodes([node], get().activeFilePath, get().activeMethodId).length;
+      set({ selectedNodeId: id, ...(outside && source ? { activeFileId: source.file, activeFilePath: source.file, activeMethodId: node.data.methodId ?? 'members', javaCode: get().sourceFiles.find(f => f.path === source.file)?.content ?? '', codeViewMode: 'optimized' as const } : {}), nodes: get().nodes.map(n => ({ ...n, data: { ...n.data, isHighlighted: n.id === id } })) });
+    },
 
     setEditingNode: (editingNode) => {
       if (editingNode?.data.astKind === 'MethodDeclaration' && editingNode.data.method && editingNode.data.editable?.includes('replaceMethod')) {
         if (get().dirty || get().isLoading) { fail(new Error('Дождитесь завершения разбора Java-кода.')); return; }
         set({ editingNode: null, error: null, methodDialog: { mode: 'edit', nodeId: editingNode.id, containerId: editingNode.data.containerId || '', revision: get().revision, initial: editingNode.data.method } });
-      } else set({ editingNode });
+      } else set({ editingNode, error: null });
     },
 
     updateNodeData: async (id, data) => {
@@ -331,7 +370,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         ? 'updateCondition'
         : n.data.astKind === 'FieldDeclaration'
         ? 'updateVariable'
-        : n.data.astKind === 'SwitchStmt'
+        : n.data.astKind === 'SwitchStmt' || n.data.astKind === 'ForEachStmt'
         ? 'updateExpression'
         : supported.includes('replaceStatement')
         ? 'replaceStatement'
@@ -340,7 +379,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         fail(new Error('Редактирование этого блока не поддерживается. Измените исходный Java-код.'));
         return;
       }
-      await transform({ type, nodeId: id, code: data.codeSnippet });
+      const code = type === 'updateExpression' && n.data.astKind === 'ExpressionStmt' ? data.codeSnippet.trim().replace(/;\s*$/, '') : data.codeSnippet;
+      if (await transform({ type, nodeId: id, code })) set({ editingNode: null });
     },
 
     addNode: async (type, position) => {
@@ -356,12 +396,19 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         });
         return;
       }
-      const selected = get().nodes.find((n) => n.id === get().selectedNodeId) || get().nodes.find((n) => n.data.blockType === 'method' && (n.data.editable as string[]).includes('addBlock'));
+      const selected = get().nodes.find((n) => n.id === get().selectedNodeId) || get().nodes.find(n => n.id === get().activeMethodId && n.data.editable?.includes('addBlock')) || get().nodes.find(n => n.data.source?.file === get().activeFilePath && n.data.blockType === 'method' && n.data.editable?.includes('addBlock'));
       if (!selected) {
         fail(new Error('Выберите метод или оператор, после которого добавить блок.'));
         return;
       }
-      const code = PALETTE_ITEMS.find((p) => p.type === type)?.defaultCode;
+      let code = PALETTE_ITEMS.find((p) => p.type === type)?.defaultCode;
+      if (type === 'variable' || type === 'loop') {
+        const used = new Set((get().sourceFiles.find(f => f.path === get().activeFilePath)?.content ?? '').match(/[A-Za-z_$][\w$]*/g));
+        const base = type === 'variable' ? 'value' : 'index';
+        let name = base, suffix = 2;
+        while (used.has(name)) name = `${base}${suffix++}`;
+        code = type === 'variable' ? `int ${name} = 0;` : `for (int ${name} = 0; ${name} < 10; ${name}++) { }`;
+      }
       if (!code) {
         fail(new Error('Выберите поддерживаемый тип блока.'));
         return;
@@ -369,9 +416,9 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       await transform({ type: 'addBlock', nodeId: selected.id, code });
     },
 
-    deleteNode: (id) => transform({ type: get().nodes.find(n => n.id === id)?.data.astKind === 'MethodDeclaration' ? 'deleteMethod' : 'deleteBlock', nodeId: id }),
+    deleteNode: async (id) => { await transform({ type: get().nodes.find(n => n.id === id)?.data.astKind === 'MethodDeclaration' ? 'deleteMethod' : 'deleteBlock', nodeId: id }); },
 
-    duplicateNode: (id) => transform({ type: get().nodes.find(n => n.id === id)?.data.astKind === 'MethodDeclaration' ? 'duplicateMethod' : 'duplicateBlock', nodeId: id }),
+    duplicateNode: async (id) => { await transform({ type: get().nodes.find(n => n.id === id)?.data.astKind === 'MethodDeclaration' ? 'duplicateMethod' : 'duplicateBlock', nodeId: id }); },
 
     applyOptimization: () =>
       busy(async () => {
@@ -547,47 +594,29 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     applyAIAnalysis: (analysis) => {
       if (!analysis) return;
       set((state) => {
-        const nextIssues = analysis.issues && analysis.issues.length > 0
-          ? analysis.issues.map((iss, idx) => ({
+        const aiIssues = analysis.issues?.map((iss, idx) => ({
               ...iss,
-              id: iss.id || `ai-issue-${idx + 1}-${Date.now()}`,
+              id: `ai:${iss.id || `issue-${idx + 1}`}`,
+              title: `ИИ: ${iss.title}`,
               level: iss.level || 'medium',
               file: iss.file || state.activeFilePath || 'Main.java',
               line: iss.line ?? 1,
               resolved: false,
-            }))
-          : state.issues;
+            })) ?? [];
 
-        const nextRecs = analysis.recommendations && analysis.recommendations.length > 0
-          ? analysis.recommendations.map((rec, idx) => ({
+        const aiRecs = analysis.recommendations?.map((rec, idx) => ({
               ...rec,
-              id: rec.id || `ai-rec-${idx + 1}-${Date.now()}`,
+              id: `ai:${rec.id || `rec-${idx + 1}`}`,
               impact: rec.impact || 'medium',
-              tag: rec.tag || 'ИИ-рекомендация',
-            }))
-          : state.recommendations;
-
-        const nextMetrics = analysis.metrics
-          ? { ...state.metrics, ...analysis.metrics }
-          : state.metrics;
-
-        const nextComplexity = analysis.complexity
-          ? {
-              current: analysis.complexity.current || state.complexity.current,
-              optimized: analysis.complexity.optimized || state.complexity.optimized,
-              speedup: analysis.complexity.speedup || state.complexity.speedup,
-              explanation: analysis.complexity.explanation || state.complexity.explanation,
-            }
-          : state.complexity;
+              tag: 'ИИ-рекомендация',
+            })) ?? [];
 
         return {
-          issues: nextIssues,
-          recommendations: nextRecs,
-          metrics: nextMetrics,
-          complexity: nextComplexity,
+          issues: [...state.issues.filter(issue => !issue.id.startsWith('ai:')), ...aiIssues],
+          recommendations: [...state.recommendations.filter(rec => !rec.id.startsWith('ai:')), ...aiRecs],
         };
       });
-      log('info', 'Вкладка «Сводка» (Проблемы, Рекомендации, Метрики) обновлена данными от ИИ');
+      log('info', 'Рекомендации ИИ добавлены. Метрики и Big O по методам остаются результатами AST-анализатора.');
     },
 
     chatMessages: INITIAL_CHAT_MESSAGES,

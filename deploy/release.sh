@@ -14,6 +14,7 @@ runuser -u javascope -- npm run build
 cd "$release/frontend"
 runuser -u javascope -- npm ci --include=dev --no-audit --no-fund --loglevel=error
 runuser -u javascope -- npm run lint
+runuser -u javascope -- npm --prefix ../backend run test:frontend
 runuser -u javascope -- env VITE_API_URL=/api npm run build
 test -s dist/index.html
 printf '%s\n' "$revision" > dist/version.txt

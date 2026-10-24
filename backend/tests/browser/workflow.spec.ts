@@ -5,6 +5,7 @@ test('real UI imports files, edits the AST, verifies Java and shows JUnit result
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
+  await page.getByLabel('Метод схемы').selectOption(await page.getByLabel('Метод схемы').locator('option').filter({ hasText: /^classify —/ }).getAttribute('value') as string);
   const branch = page.locator('.react-flow__node-conditionNode').first();
   await expect(branch).toBeVisible({ timeout: 20000 });
   await expect(branch).toContainText('value > 0');

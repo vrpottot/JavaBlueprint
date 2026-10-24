@@ -20,6 +20,9 @@ export interface VisualBlockData {
   outputs?: Array<{ id: string; label: string }>;
   containerId?: string;
   methodId?: string;
+  displayCode?: string;
+  containerName?: string;
+  source?: { file: string; startLine: number; endLine: number; startColumn: number; endColumn: number };
   astKind?: string;
   editable?: string[];
   method?: { signature: string; body: string; hasBody: boolean };

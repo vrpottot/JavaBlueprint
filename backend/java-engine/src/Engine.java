@@ -22,6 +22,8 @@ public final class Engine {
     final Set<String> warnings = new LinkedHashSet<>();
     final List<Map<String,Object>> changes = new ArrayList<>();
     final Set<CompilationUnit> changedUnits = Collections.newSetFromMap(new IdentityHashMap<>());
+    record JumpTargets(String breakTo, String continueTo) {}
+    final Map<String, JumpTargets> labels = new HashMap<>();
     final Map<String, Node> byId = new LinkedHashMap<>();
     final Map<String, String> paths = new HashMap<>();
 
@@ -77,6 +79,7 @@ public final class Engine {
         return parsed.getResult().orElseThrow();
     }
     static boolean shown(Node n) {
+        if (n.findAncestor(LambdaExpr.class).isPresent() || n.findAncestor(SwitchExpr.class).isPresent()) return false;
         return n instanceof CallableDeclaration || n instanceof FieldDeclaration ||
             n instanceof Statement && !(n instanceof BlockStmt);
     }
@@ -107,13 +110,33 @@ public final class Engine {
         if (n instanceof IfStmt || n instanceof WhileStmt || n instanceof DoStmt || n instanceof ForStmt) ops.add("updateCondition");
         if (n instanceof SwitchStmt || n instanceof ExpressionStmt || n instanceof ReturnStmt || n instanceof ThrowStmt || n instanceof ForEachStmt) ops.add("updateExpression");
         if (n instanceof FieldDeclaration || n instanceof ExpressionStmt e && e.getExpression() instanceof VariableDeclarationExpr) ops.add("updateVariable");
-        if (n instanceof Statement && n.getParentNode().orElse(null) instanceof BlockStmt) {
+        if (n instanceof Statement && statements(n) != null) {
             ops.addAll(List.of("replaceStatement", "deleteBlock", "duplicateBlock", "addBlock"));
         }
+        if (n instanceof Statement && !(n instanceof BlockStmt) && !ops.contains("replaceStatement")) ops.add("replaceStatement");
         if (n instanceof MethodDeclaration m && m.getBody().isPresent() || n instanceof ConstructorDeclaration) ops.add("addBlock");
         if (Methods.accepts(n)) ops.add("addMethod");
         if (n instanceof MethodDeclaration && n.getParentNode().orElse(null) instanceof TypeDeclaration<?> owner && Methods.accepts(owner)) ops.addAll(List.of("replaceMethod", "deleteMethod", "duplicateMethod"));
         return ops;
+    }
+    static NodeList<Statement> statements(Node n) {
+        Node parent = n.getParentNode().orElse(null);
+        return parent instanceof BlockStmt b ? b.getStatements() : parent instanceof SwitchEntry entry ? entry.getStatements() : null;
+    }
+    static String displayCode(Node n) {
+        if (n instanceof ForStmt f) return "for ("+f.getInitialization().stream().map(Object::toString).collect(java.util.stream.Collectors.joining(", "))+"; "+f.getCompare().map(Object::toString).orElse("")+"; "+f.getUpdate().stream().map(Object::toString).collect(java.util.stream.Collectors.joining(", "))+")";
+        if (n instanceof ForEachStmt f) return "for ("+f.getVariable()+" : "+f.getIterable()+")";
+        if (n instanceof WhileStmt w) return "while ("+w.getCondition()+")";
+        if (n instanceof DoStmt d) return "do … while ("+d.getCondition()+")";
+        if (n instanceof TryStmt t) return t.getResources().isEmpty() ? "try / catch / finally" : "try ("+t.getResources()+")";
+        if (n instanceof LabeledStmt l) return l.getLabel()+":";
+        if (n instanceof FieldDeclaration) return n.toString();
+        return snippet(n);
+    }
+    static String graphWarning(Node n) {
+        if (n instanceof TryStmt) return "Структурная схема: переходы исключений и выходы через finally показаны неполно.";
+        if (!(n instanceof CallableDeclaration) && (n.findFirst(LambdaExpr.class).isPresent() || n.findFirst(SwitchExpr.class).isPresent())) return "Тело лямбды / switch-выражения сохранено в Java; внутренний поток не развёрнут на схеме.";
+        return "";
     }
     void describe(Node n, Unit u, String parent, String method, int depth, int loopDepth) {
         boolean display = shown(n);
@@ -122,8 +145,8 @@ public final class Engine {
             Range range = n.getRange().orElse(new Range(new Position(1,1),new Position(1,1)));
             Map<String,Object> row = obj("id", n.getData(ID), "astPath", paths.get(n.getData(ID)),
                 "astKind", n.getClass().getSimpleName(), "kind", kind(n),
-                "title", n instanceof CallableDeclaration<?> c ? c.getNameAsString() : n.getClass().getSimpleName().replace("Stmt", ""),
-                "code", n.toString(), "snippet", snippet(n), "depth", depth, "loopDepth", loopDepth,
+                "title", n instanceof CallableDeclaration<?> c ? c.getNameAsString() : n instanceof FieldDeclaration f ? f.getVariables().stream().map(VariableDeclarator::getNameAsString).collect(java.util.stream.Collectors.joining(", ")) : n instanceof ExpressionStmt e && e.getExpression() instanceof VariableDeclarationExpr v ? v.getVariables().stream().map(VariableDeclarator::getNameAsString).collect(java.util.stream.Collectors.joining(", ")) : n.getClass().getSimpleName().replace("Stmt", ""),
+                "code", n.toString(), "snippet", snippet(n), "displayCode", displayCode(n), "warning", graphWarning(n), "depth", depth, "loopDepth", loopDepth,
                 "editable", editable(n), "source", obj("file", u.path, "startLine", range.begin.line,
                     "endLine", range.end.line, "startColumn", range.begin.column, "endColumn", range.end.column));
             if (parent != null) row.put("parentId", parent);
@@ -177,13 +200,24 @@ public final class Engine {
             edge(id, flow(v.getTryBlock(), after, breakTo, continueTo), "flow", "try");
             v.getCatchClauses().forEach(c -> edge(id, flow(c.getBody(), after, breakTo, continueTo), "exception", c.getParameter().getType().toString()));
         } else if (s instanceof BreakStmt b) {
-            if (b.getLabel().isPresent()) warnings.add("Labeled break/continue targets are not resolved in the visual graph.");
+            if (b.getLabel().isPresent()) {
+                JumpTargets target = labels.get(b.getLabel().get().asString());
+                if (target != null) edge(id,target.breakTo(),"jump","break "+b.getLabel().get());
+                else warnings.add("Unresolved labeled break: "+b.getLabel().get());
+            }
             else edge(id, breakTo, "jump", "break");
         } else if (s instanceof ContinueStmt c) {
-            if (c.getLabel().isPresent()) warnings.add("Labeled break/continue targets are not resolved in the visual graph.");
+            if (c.getLabel().isPresent()) {
+                JumpTargets target = labels.get(c.getLabel().get().asString());
+                if (target != null && target.continueTo()!=null) edge(id,target.continueTo(),"jump","continue "+c.getLabel().get());
+                else warnings.add("Unresolved labeled continue: "+c.getLabel().get());
+            }
             else edge(id, continueTo, "jump", "continue");
         } else if (s instanceof LabeledStmt l) {
-            edge(id, flow(l.getStatement(), next, breakTo, continueTo), "flow", "label");
+            String label = l.getLabel().asString();
+            JumpTargets previous = labels.put(label,new JumpTargets(next,loop(l.getStatement())?l.getStatement().getData(ID):null));
+            try { edge(id, flow(l.getStatement(), next, breakTo, continueTo), "flow", "label"); }
+            finally { if(previous==null) labels.remove(label); else labels.put(label,previous); }
         } else if (s instanceof SynchronizedStmt sync) {
             edge(id, flow(sync.getBody(), next, breakTo, continueTo), "flow", "synchronized");
         } else if (!(s instanceof ReturnStmt || s instanceof ThrowStmt || s instanceof YieldStmt)) {
@@ -270,18 +304,25 @@ public final class Engine {
             case "addBlock", "duplicateBlock" -> {
                 Statement added = type.equals("duplicateBlock") ? ((Statement)n).clone() : required(parser.parseStatement(code));
                 added.walk(x -> x.setData(ID, UUID.randomUUID().toString()));
-                if (n instanceof MethodDeclaration m) m.getBody().orElseThrow().addStatement(added);
-                else if (n instanceof ConstructorDeclaration c) c.getBody().addStatement(added);
+                if (n instanceof MethodDeclaration m) insertBeforeExit(m.getBody().orElseThrow().getStatements(),added);
+                else if (n instanceof ConstructorDeclaration c) insertBeforeExit(c.getBody().getStatements(),added);
                 else {
-                    BlockStmt parent = (BlockStmt)n.getParentNode().orElseThrow();
-                    parent.getStatements().add(parent.getStatements().indexOf(n)+1, added);
+                    NodeList<Statement> siblings = statements(n);
+                    int at = siblings.indexOf(n);
+                    siblings.add(at+(type.equals("addBlock") && abrupt(n)?0:1), added);
                 }
             }
             default -> throw new IllegalArgumentException("Unsupported transform: "+type);
         }
     }
+    static boolean abrupt(Node n) { return n instanceof ReturnStmt || n instanceof ThrowStmt || n instanceof BreakStmt || n instanceof ContinueStmt; }
+    static void insertBeforeExit(NodeList<Statement> statements, Statement added) {
+        int at=statements.size();
+        if(at>0 && abrupt(statements.get(at-1))) at--;
+        statements.add(at,added);
+    }
     static <T> T required(ParseResult<T> parsed) {
-        if (!parsed.isSuccessful()) throw new IllegalArgumentException("Invalid Java fragment: "+parsed.getProblems());
+        if (!parsed.isSuccessful()) throw new IllegalArgumentException("Invalid Java fragment: "+parsed.getProblems().stream().limit(3).map(p -> p.getLocation().flatMap(TokenRange::toRange).map(r -> "line "+r.begin.line+", column "+r.begin.column+": ").orElse("")+p.getMessage()).collect(java.util.stream.Collectors.joining("\n")));
         return parsed.getResult().orElseThrow();
     }
     Object run(JsonObject request) {
@@ -351,8 +392,8 @@ public final class Engine {
             }
             structure.add(obj("path",u.path,"packageName",pkg,"types",u.ast.getTypes().stream().map(TypeDeclaration::getNameAsString).toList(),"mainClasses",mains));
             files.add(obj("path",u.path,"content",u.content));
-            for (MethodDeclaration m : u.ast.findAll(MethodDeclaration.class)) m.getBody().ifPresent(b -> edge(m.getData(ID),flow(b,null,null,null),"flow",null));
-            for (ConstructorDeclaration c : u.ast.findAll(ConstructorDeclaration.class)) edge(c.getData(ID),flow(c.getBody(),null,null,null),"flow",null);
+            for (MethodDeclaration m : u.ast.findAll(MethodDeclaration.class)) if(shown(m)) m.getBody().ifPresent(b -> edge(m.getData(ID),flow(b,null,null,null),"flow",null));
+            for (ConstructorDeclaration c : u.ast.findAll(ConstructorDeclaration.class)) if(shown(c)) edge(c.getData(ID),flow(c.getBody(),null,null,null),"flow",null);
             if (!u.ast.findAll(LambdaExpr.class).isEmpty() || !u.ast.findAll(SwitchExpr.class).isEmpty()) warnings.add("Lambda bodies and switch expressions are preserved in the AST; their internal execution is not expanded into a complete control-flow graph.");
         }
         return obj("files",files,"nodes",nodes,"edges",edges,"identities",identities,"structure",structure,"containers",containers,"changes",changes,"warnings",warnings,"errors",errors);
