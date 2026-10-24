@@ -1,10 +1,13 @@
 import type { Node, Edge } from '@xyflow/react';
 import type { VisualBlockData, CodeIssue, CodeMetrics, TestCase } from '../types';
 export interface SourceFile { path: string; content: string }
+export interface MethodContainer { id: string; name: string; file: string; kind: string; canAddMethods: boolean; isAbstract: boolean; methodNames: string[] }
 export interface ProjectSnapshot {
   projectId: string; revision: number; files: SourceFile[];
   structure: { path: string; mainClasses: string[] }[];
   graph: { nodes: Node<VisualBlockData>[]; edges: Edge[]; warnings: string[] };
+  containers?: MethodContainer[];
+  changes?: { operation: string; nodeId: string; containerId: string }[];
 }
 export interface Analysis {
   diagnostics: (Omit<CodeIssue, 'level'> & { severity: 'high' | 'medium' | 'low'; recommendation: string })[];

@@ -45,7 +45,7 @@ export const MethodNode = memo(({ data, selected }: NodeProps) => {
           </div>
 
           <div className={styles.headerRight}>
-            <span className={styles.shapeBadge}>Терминатор</span>
+            <span className={styles.shapeBadge}>{nodeData.astKind === 'ConstructorDeclaration' ? 'Конструктор' : 'Метод'}</span>
             {nodeData.line && <span className={styles.lineBadge}>L{nodeData.line}</span>}
           </div>
         </div>

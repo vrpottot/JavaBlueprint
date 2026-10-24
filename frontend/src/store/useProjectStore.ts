@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import type { Node, Edge, NodeChange, EdgeChange } from '@xyflow/react';
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
 import type { FileItem, CodeIssue, CodeRecommendation, CodeMetrics, ComplexityEstimate, ConsoleLog, TestCase, BlockType, VisualBlockData, AIProposal, ChatMessage } from '../types';
-import { api, type ProjectSnapshot, type SourceFile, type Analysis, type Verification, submitAIProposal, type AIProposalResponse, type AIChatResponse } from '../services/api';
+import { api, type ProjectSnapshot, type SourceFile, type Analysis, type Verification, submitAIProposal, type AIProposalResponse, type AIChatResponse, type MethodContainer } from '../services/api';
 import { PALETTE_ITEMS } from '../lib/palette';
 
 const SAMPLE = `import java.util.Scanner;
@@ -28,6 +28,12 @@ const emptyMetrics: CodeMetrics = { cyclomaticComplexity: 0, linesOfCode: 0, nes
 const INITIAL_CHAT_MESSAGES: ChatMessage[] = [];
 
 interface ProjectState {
+  containers: MethodContainer[];
+  methodDialog: { mode: 'create' | 'edit'; containerId: string; nodeId?: string; revision: number; position?: { x: number; y: number }; initial?: NonNullable<VisualBlockData['method']> } | null;
+  focusNodeRequest: { nodeId: string; nonce: number } | null;
+  closeMethodDialog: () => void;
+  saveMethod: (containerId: string, code: string) => Promise<void>;
+  previewMethod: (containerId: string, code: string) => Promise<void>;
   projectId: string | null;
   revision: number;
   sourceFiles: SourceFile[];
@@ -124,6 +130,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       projectId: p.projectId,
       revision: p.revision,
       sourceFiles: p.files,
+      containers: p.containers ?? [],
       ...(original ? { originalFiles: p.files, isOptimized: false, codeViewMode: 'source' as const } : {}),
       mainClasses: p.structure.flatMap((f) => f.mainClasses),
       projectName: p.files[0]?.path.split('/').pop()?.replace('.java', '') || 'JavaBlueprint',
@@ -179,17 +186,57 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     }
   };
 
+  const applyMethodSnapshot = (p: ProjectSnapshot, position?: { x: number; y: number }) => {
+    const change = p.changes?.find(c => ['addMethod', 'replaceMethod', 'duplicateMethod'].includes(c.operation));
+    const method = p.graph.nodes.find(n => n.id === change?.nodeId);
+    if (method) {
+      const existing = get().nodes.find(n => n.id === method.id);
+      const anchor = position ?? existing?.position ?? { x: Math.max(0, ...get().nodes.map(n => n.position.x)) + 500, y: 0 };
+      const delta = { x: anchor.x - method.position.x, y: anchor.y - method.position.y };
+      p.graph.nodes = p.graph.nodes.map(n => n.data.methodId === method.id ? { ...n, position: { x: n.position.x + delta.x, y: n.position.y + delta.y } } : n);
+    }
+    accept(p);
+    set({ isOptimized: true, codeViewMode: 'optimized', mainWorkspaceTab: 'graph' });
+    if (method) {
+      const file = p.files.find(f => f.path === (method.data.source as { file: string }).file);
+      if (file) set({ activeFileId: file.path, activeFilePath: file.path, javaCode: file.content });
+      get().selectNode(method.id);
+      set({ focusNodeRequest: { nodeId: method.id, nonce: Date.now() } });
+    }
+  };
+
   const transform = async (operation: { type: string; nodeId: string; code?: string }) =>
     busy(async () => {
       if (get().dirty) throw new Error('Дождитесь разбора изменений Java перед редактированием графа.');
       if (!get().projectId) throw new Error('Сначала импортируйте Java-файл.');
-      accept(await api<ProjectSnapshot>(`/projects/${get().projectId}/transform`, { revision: get().revision, operations: [operation] }));
+      const p = await api<ProjectSnapshot>(`/projects/${get().projectId}/transform`, { revision: get().revision, operations: [operation] });
+      if (operation.type.endsWith('Method')) applyMethodSnapshot(p); else accept(p);
       set({ isOptimized: true, codeViewMode: 'optimized' });
-      await analysis();
+      try { await analysis(); } catch { log('warn', 'Код сохранён. Анализ временно недоступен.'); }
       log('success', 'Java-код обновлён через AST. Запустите проверку компиляции и поведения.');
     });
 
   return {
+    containers: [], methodDialog: null, focusNodeRequest: null,
+    closeMethodDialog: () => { if (!get().isLoading) set({ methodDialog: null }); },
+    previewMethod: async (containerId, code) => {
+      const dialog = get().methodDialog;
+      if (!dialog || get().isLoading) throw new Error('Дождитесь завершения текущей операции.');
+      await api(`/projects/${get().projectId}/transform/preview`, { revision: dialog.revision, operations: [{ type: dialog.mode === 'edit' ? 'replaceMethod' : 'addMethod', nodeId: dialog.nodeId ?? containerId, code }] });
+    },
+    saveMethod: async (containerId, code) => {
+      const dialog = get().methodDialog;
+      if (!dialog || get().isLoading) throw new Error('Дождитесь завершения текущей операции.');
+      if (get().dirty) throw new Error('Дождитесь разбора Java-кода перед сохранением метода.');
+      set({ isLoading: true, error: null });
+      try {
+        const p = await api<ProjectSnapshot>(`/projects/${get().projectId}/transform`, { revision: dialog.revision, operations: [{ type: dialog.mode === 'edit' ? 'replaceMethod' : 'addMethod', nodeId: dialog.nodeId ?? containerId, code }] });
+        applyMethodSnapshot(p, dialog.position);
+        log('success', dialog.mode === 'edit' ? 'Метод обновлён в Java-коде и на схеме.' : 'Метод добавлен в Java-код и на схему.');
+        try { await analysis(); } catch { log('warn', 'Метод сохранён. Анализ временно недоступен.'); }
+        set({ methodDialog: null, editingNode: null, showAddBlockModal: false });
+      } finally { set({ isLoading: false }); }
+    },
     projectId: null,
     revision: 0,
     sourceFiles: [],
@@ -269,7 +316,12 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     selectNode: (id) => set({ selectedNodeId: id, nodes: get().nodes.map((n) => ({ ...n, data: { ...n.data, isHighlighted: n.id === id } })) }),
 
-    setEditingNode: (editingNode) => set({ editingNode }),
+    setEditingNode: (editingNode) => {
+      if (editingNode?.data.astKind === 'MethodDeclaration' && editingNode.data.method && editingNode.data.editable?.includes('replaceMethod')) {
+        if (get().dirty || get().isLoading) { fail(new Error('Дождитесь завершения разбора Java-кода.')); return; }
+        set({ editingNode: null, error: null, methodDialog: { mode: 'edit', nodeId: editingNode.id, containerId: editingNode.data.containerId || '', revision: get().revision, initial: editingNode.data.method } });
+      } else set({ editingNode });
+    },
 
     updateNodeData: async (id, data) => {
       const n = get().nodes.find((node) => node.id === id);
@@ -291,7 +343,19 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       await transform({ type, nodeId: id, code: data.codeSnippet });
     },
 
-    addNode: async (type) => {
+    addNode: async (type, position) => {
+      if (type === 'method') {
+        await busy(async () => {
+          await sync();
+          const selected = get().nodes.find(n => n.id === get().selectedNodeId);
+          const target = get().containers.find(c => c.id === selected?.data.containerId && c.canAddMethods)
+            ?? get().containers.find(c => c.file === get().activeFilePath && c.canAddMethods)
+            ?? get().containers.find(c => c.canAddMethods);
+          if (!target) throw new Error('Импортируйте Java-класс или интерфейс, в который можно добавить метод.');
+          set({ error: null, showAddBlockModal: false, methodDialog: { mode: 'create', containerId: target.id, revision: get().revision, position } });
+        });
+        return;
+      }
       const selected = get().nodes.find((n) => n.id === get().selectedNodeId) || get().nodes.find((n) => n.data.blockType === 'method' && (n.data.editable as string[]).includes('addBlock'));
       if (!selected) {
         fail(new Error('Выберите метод или оператор, после которого добавить блок.'));
@@ -299,15 +363,15 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       }
       const code = PALETTE_ITEMS.find((p) => p.type === type)?.defaultCode;
       if (!code) {
-        fail(new Error('Новые методы добавляются в редакторе Java.'));
+        fail(new Error('Выберите поддерживаемый тип блока.'));
         return;
       }
       await transform({ type: 'addBlock', nodeId: selected.id, code });
     },
 
-    deleteNode: (id) => transform({ type: 'deleteBlock', nodeId: id }),
+    deleteNode: (id) => transform({ type: get().nodes.find(n => n.id === id)?.data.astKind === 'MethodDeclaration' ? 'deleteMethod' : 'deleteBlock', nodeId: id }),
 
-    duplicateNode: (id) => transform({ type: 'duplicateBlock', nodeId: id }),
+    duplicateNode: (id) => transform({ type: get().nodes.find(n => n.id === id)?.data.astKind === 'MethodDeclaration' ? 'duplicateMethod' : 'duplicateBlock', nodeId: id }),
 
     applyOptimization: () =>
       busy(async () => {

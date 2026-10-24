@@ -8,6 +8,7 @@ import { BottomWorkspace } from './components/layout/BottomWorkspace';
 import { OptimizationModal } from './components/modals/OptimizationModal';
 import { ImportJavaModal } from './components/modals/ImportJavaModal';
 import { AddBlockModal } from './components/modals/AddBlockModal';
+import { MethodModal } from './components/modals/MethodModal';
 import styles from './App.module.scss';
 
 export function App() {
@@ -70,6 +71,7 @@ export function App() {
       <OptimizationModal />
       <ImportJavaModal />
       <AddBlockModal />
+      <MethodModal />
     </div>
   );
 }

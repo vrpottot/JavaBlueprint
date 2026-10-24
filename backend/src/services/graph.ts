@@ -14,6 +14,7 @@ export function graph(result: EngineResult) {
       data: {
         title: n.title, codeSnippet: n.snippet, blockType: n.kind, line: n.source.startLine,
         source: n.source, astKind: n.astKind, editable: n.editable, methodId: n.methodId,
+        containerId: n.containerId, method: n.method,
         description: `${n.source.file}:${n.source.startLine}`, badge: n.astKind,
       },
     };

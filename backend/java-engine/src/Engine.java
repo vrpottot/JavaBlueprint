@@ -20,6 +20,8 @@ public final class Engine {
     final List<Map<String,Object>> nodes = new ArrayList<>();
     final List<Map<String,Object>> edges = new ArrayList<>();
     final Set<String> warnings = new LinkedHashSet<>();
+    final List<Map<String,Object>> changes = new ArrayList<>();
+    final Set<CompilationUnit> changedUnits = Collections.newSetFromMap(new IdentityHashMap<>());
     final Map<String, Node> byId = new LinkedHashMap<>();
     final Map<String, String> paths = new HashMap<>();
 
@@ -109,6 +111,8 @@ public final class Engine {
             ops.addAll(List.of("replaceStatement", "deleteBlock", "duplicateBlock", "addBlock"));
         }
         if (n instanceof MethodDeclaration m && m.getBody().isPresent() || n instanceof ConstructorDeclaration) ops.add("addBlock");
+        if (Methods.accepts(n)) ops.add("addMethod");
+        if (n instanceof MethodDeclaration && n.getParentNode().orElse(null) instanceof TypeDeclaration<?> owner && Methods.accepts(owner)) ops.addAll(List.of("replaceMethod", "deleteMethod", "duplicateMethod"));
         return ops;
     }
     void describe(Node n, Unit u, String parent, String method, int depth, int loopDepth) {
@@ -124,6 +128,8 @@ public final class Engine {
                     "endLine", range.end.line, "startColumn", range.begin.column, "endColumn", range.end.column));
             if (parent != null) row.put("parentId", parent);
             if (nextMethod != null) row.put("methodId", nextMethod);
+            n.findAncestor(TypeDeclaration.class).ifPresent(owner -> row.put("containerId", owner.getData(ID)));
+            if (n instanceof MethodDeclaration declaration) row.put("method", Methods.metadata(declaration));
             if (n instanceof CallableDeclaration<?> callable) row.put("complexity", Complexity.inspect(callable));
             nodes.add(row);
         }
@@ -190,9 +196,49 @@ public final class Engine {
         Node n = byId.get(str(op, "nodeId"));
         if (n == null) throw new IllegalArgumentException("Unknown nodeId");
         if (!editable(n).contains(type)) throw new IllegalArgumentException(type+" is not supported for "+n.getClass().getSimpleName());
+        changedUnits.add(n.findCompilationUnit().orElseThrow());
         JavaParser parser = new JavaParser(CONFIG);
         String code = str(op, "code");
         switch (type) {
+            case "addMethod" -> {
+                TypeDeclaration<?> owner = (TypeDeclaration<?>)n;
+                MethodDeclaration method = Methods.parse(code,owner);
+                Methods.validate(owner,method,null);
+                Methods.fresh(method);
+                owner.addMember(method);
+                changes.add(obj("operation",type,"nodeId",method.getData(ID),"containerId",owner.getData(ID)));
+            }
+            case "replaceMethod" -> {
+                MethodDeclaration current = (MethodDeclaration)n;
+                TypeDeclaration<?> owner = (TypeDeclaration<?>)current.getParentNode().orElseThrow();
+                MethodDeclaration method = Methods.parse(code,owner);
+                Methods.validate(owner,method,current);
+                Methods.fresh(method);
+                method.setData(ID,current.getData(ID));
+                if (current.getBody().isPresent() && method.getBody().isPresent() && current.getBody().get().toString().equals(method.getBody().get().toString())) method.setBody(current.getBody().get().clone());
+                if (method.getComment().isEmpty()) current.getComment().ifPresent(comment -> method.setComment(comment.clone()));
+                if (!current.replace(method)) throw new IllegalArgumentException("Не удалось заменить метод.");
+                changes.add(obj("operation",type,"nodeId",method.getData(ID),"containerId",owner.getData(ID)));
+            }
+            case "deleteMethod" -> {
+                String containerId = n.getParentNode().orElseThrow().getData(ID);
+                if (!n.remove()) throw new IllegalArgumentException("Не удалось удалить метод.");
+                changes.add(obj("operation",type,"nodeId",n.getData(ID),"containerId",containerId));
+            }
+            case "duplicateMethod" -> {
+                MethodDeclaration current=(MethodDeclaration)n;
+                TypeDeclaration<?> owner=(TypeDeclaration<?>)current.getParentNode().orElseThrow();
+                MethodDeclaration copy=current.clone();
+                copy.getAnnotations().removeIf(annotation -> Set.of("Override","java.lang.Override").contains(annotation.getNameAsString()));
+                String base=current.getNameAsString()+"Copy", candidate=base;
+                int suffix=2;
+                while (!owner.getMethodsByName(candidate).isEmpty()) candidate=base+suffix++;
+                copy.setName(candidate);
+                Methods.validate(owner,copy,null);
+                Methods.fresh(copy);
+                owner.getMembers().add(owner.getMembers().indexOf(current)+1,copy);
+                changes.add(obj("operation",type,"nodeId",copy.getData(ID),"containerId",owner.getData(ID)));
+            }
             case "updateCondition" -> {
                 Expression e = required(parser.parseExpression(code));
                 if (n instanceof IfStmt v) v.setCondition(e);
@@ -267,6 +313,7 @@ public final class Engine {
             // This refreshes source ranges without deriving semantics from coordinates.
             for (int i=0; i<units.size(); i++) {
                 Unit u = units.get(i);
+                if (!changedUnits.contains(u.ast)) continue;
                 String generated = u.ast.toString();
                 CompilationUnit fresh = parse(u.path, generated);
                 if (fresh == null) throw new IllegalArgumentException("Generated Java did not reparse");
@@ -281,9 +328,10 @@ public final class Engine {
             byId.clear(); paths.clear();
             for (Unit u : units) assign(u.ast,u.path,"0",Collections.emptyMap());
         }
-        List<Object> identities = new ArrayList<>(), structure = new ArrayList<>(), files = new ArrayList<>();
+        List<Object> identities = new ArrayList<>(), structure = new ArrayList<>(), files = new ArrayList<>(), containers = new ArrayList<>();
         for (Unit u : units) {
             describe(u.ast,u,null,null,0,0);
+            for (TypeDeclaration<?> type : u.ast.findAll(TypeDeclaration.class)) containers.add(Methods.container(type,u.path));
             for (Node n : preorder(u.ast)) identities.add(obj("file",u.path,"astPath",paths.get(n.getData(ID)),"id",n.getData(ID)));
             String pkg = u.ast.getPackageDeclaration().map(p -> p.getNameAsString()).orElse("");
             List<String> mains = new ArrayList<>();
@@ -307,7 +355,7 @@ public final class Engine {
             for (ConstructorDeclaration c : u.ast.findAll(ConstructorDeclaration.class)) edge(c.getData(ID),flow(c.getBody(),null,null,null),"flow",null);
             if (!u.ast.findAll(LambdaExpr.class).isEmpty() || !u.ast.findAll(SwitchExpr.class).isEmpty()) warnings.add("Lambda bodies and switch expressions are preserved in the AST; their internal execution is not expanded into a complete control-flow graph.");
         }
-        return obj("files",files,"nodes",nodes,"edges",edges,"identities",identities,"structure",structure,"warnings",warnings,"errors",errors);
+        return obj("files",files,"nodes",nodes,"edges",edges,"identities",identities,"structure",structure,"containers",containers,"changes",changes,"warnings",warnings,"errors",errors);
     }
     public static void main(String[] args) throws Exception {
         try {

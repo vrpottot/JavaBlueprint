@@ -229,6 +229,9 @@ export const ProjectExplorer: React.FC = () => {
           {filteredPalette.map((item) => (
             <div
               key={item.type}
+              role="button"
+              tabIndex={0}
+              aria-label={`Добавить блок ${item.name}`}
               className={styles.blockCard}
               draggable
               onDragStart={(e) => {
@@ -236,6 +239,7 @@ export const ProjectExplorer: React.FC = () => {
                 e.dataTransfer.effectAllowed = 'move';
               }}
               onClick={() => addNode(item.type)}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); void addNode(item.type); } }}
               title={`Перетащите или кликните для добавления:\n${item.description}`}
             >
               <div className={styles.cardLeft}>

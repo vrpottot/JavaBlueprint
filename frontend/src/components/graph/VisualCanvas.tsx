@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   ReactFlow,
   Background,
@@ -51,6 +51,8 @@ const CanvasInner: React.FC = () => {
   const addNode = useProjectStore((s) => s.addNode);
   const duplicateNode = useProjectStore((s) => s.duplicateNode);
   const deleteNode = useProjectStore((s) => s.deleteNode);
+  const focusNodeRequest = useProjectStore((s) => s.focusNodeRequest);
+  const methodDialog = useProjectStore((s) => s.methodDialog);
 
   const mainWorkspaceTab = useProjectStore((s) => s.mainWorkspaceTab);
   const setMainWorkspaceTab = useProjectStore((s) => s.setMainWorkspaceTab);
@@ -59,6 +61,15 @@ const CanvasInner: React.FC = () => {
   const javaCode = useProjectStore((s) => s.javaCode);
 
   const { fitView, zoomIn, zoomOut, zoomTo, screenToFlowPosition } = useReactFlow();
+  const focusedMethod = useRef('');
+
+  useEffect(() => {
+    if (!focusNodeRequest || !nodes.some(n => n.id === focusNodeRequest.nodeId)) return;
+    const key = `${focusNodeRequest.nodeId}:${focusNodeRequest.nonce}`;
+    if (focusedMethod.current === key) return;
+    const timer = setTimeout(() => { focusedMethod.current = key; void fitView({ nodes: [{ id: focusNodeRequest.nodeId }], padding: 0.6, duration: 250, maxZoom: 0.9 }); }, 80);
+    return () => clearTimeout(timer);
+  }, [focusNodeRequest, nodes, fitView]);
 
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
   const [copied, setCopied] = useState(false);
@@ -263,6 +274,7 @@ const CanvasInner: React.FC = () => {
             onNodeDoubleClick={onNodeDoubleClick}
             onNodeContextMenu={onNodeContextMenu}
             onPaneClick={onPaneClick}
+            deleteKeyCode={methodDialog ? null : 'Backspace'}
             defaultViewport={{ x: 80, y: 30, zoom: 0.9 }}
             minZoom={0.3}
             maxZoom={1.8}

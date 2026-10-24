@@ -62,6 +62,7 @@ All JSON routes reject unknown fields. Errors use `{ "error": { "code", "message
 | GET | `/api/projects/:id/ir` | Source-linked semantic IR and flow edges |
 | PUT | `/api/projects/:id/sources` | Atomically replace sources after a successful parse |
 | POST | `/api/projects/:id/transform` | Apply supported AST operations atomically |
+| POST | `/api/projects/:id/transform/preview` | Validate a candidate without changing sources or revision |
 | POST | `/api/projects/:id/generate` | Return Java sources after syntax revalidation |
 | POST | `/api/projects/:id/analyze` | Diagnostics, structural metrics, conditional complexity bounds |
 | POST | `/api/projects/:id/verify` | Isolated compilation, main inputs, JUnit and optional original comparison |
@@ -69,7 +70,7 @@ All JSON routes reject unknown fields. Errors use `{ "error": { "code", "message
 | GET | `/api/projects/:id/ai-context` | Source/IR/analysis/latest verification for the AI module |
 | POST | `/api/projects/:id/ai-proposals` | Verify candidate AST changes before committing them |
 
-Generation and analysis accept `{}`. Graph/parse responses contain `projectId`, `revision`, `files`, `structure`, `graph`, `errors`. Structure includes packages, top-level types and discovered main class names. Node `data.source` contains file, line and column ranges; `data.editable` lists supported semantic operations.
+Generation and analysis accept `{}`. Graph/parse responses contain `projectId`, `revision`, `files`, `structure`, `containers`, `changes`, `graph`, `errors`. Structure includes packages, top-level types and discovered main class names. `containers` lists named classes, interfaces, records and enums, including nested types and types without methods, with stable IDs and filenames. `changes` identifies method roots created, replaced, copied or deleted by the latest request. Node `data.source` contains file, line and column ranges; `data.editable` lists supported semantic operations.
 
 ### Parse and transform
 
@@ -103,8 +104,16 @@ Select a node from the returned graph, then submit:
 | `addBlock` | Append inside method/constructor, or insert after statement directly in a block; complete statement |
 | `deleteBlock` | Remove statement directly inside a block |
 | `duplicateBlock` | Copy statement directly inside a block |
+| `addMethod` | Named type ID from `containers`; one complete method declaration |
+| `replaceMethod` | Method ID; one complete replacement declaration in the same type |
+| `duplicateMethod` | Method ID; no code; generates an unused `nameCopy`, `nameCopy2`, etc. |
+| `deleteMethod` | Method ID; no code; removes the method and its body |
 
 No operation edits semantics through React Flow coordinates. Unsupported targets return 422. A failed batch leaves the whole project unchanged. Writes require the current `revision`; stale writes return 409. Generation reparses AST-produced sources; syntax success does not imply successful Java type checking. Run verification separately.
+
+For a method, send `{"revision":0,"operations":[{"type":"addMethod","nodeId":"TYPE_ID","code":"public static int square(int value) { return value * value; }"}]}`. The preview route accepts the same body and returns a candidate snapshot with `preview: true`, `syntaxValid: true` and the unchanged revision. Preview does not reserve IDs or save a candidate; save reparses and validates the actual operation.
+
+Method editing preserves the method ID; a signature-only change preserves unchanged body IDs. Copies get fresh IDs and omit `@Override`. Constructors, annotation members and methods in anonymous class bodies are outside these declaration operations. Checks cover modifier/body rules, duplicate parameter names, varargs placement and common erased signature collisions (generic arguments, type variables, arrays/varargs and explicit imports). This is not a full Java symbol resolver: external types, inherited contracts, return types and call sites are checked by javac through Run. Renaming/deleting a method does not rewrite callers.
 
 For source editing use `{ "revision": 0, "files": [...] }` with `PUT /sources`. It preserves the original upload. IDs persist through supported AST edits, additions and deletions; arbitrary source rewrites rebuild structural identities. Ranges are refreshed after generated code is reparsed. Formatting is normalized by JavaParser; comments and imports are retained in the tested cases, without a byte-for-byte formatting guarantee.
 
@@ -164,7 +173,7 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-You can use an installed browser instead with `CHROME_PATH=/path/to/chrome npm run test:browser`. Playwright starts backend/frontend development servers automatically; it imports real sources/tests, edits a graph block, runs Java and checks the visible JUnit and console results.
+You can use an installed browser instead with `CHROME_PATH=/path/to/chrome npm run test:browser`. Playwright starts backend/frontend development servers automatically; it imports real sources/tests, edits graph blocks, runs Java and checks the visible JUnit and console results. The method workflow also creates a method in an empty class, previews without saving, edits its body, handles a conflicting signature, copies/deletes it and verifies it with javac and JUnit. Use `E2E_BASE_URL=https://your-site` to exercise a deployed frontend and gateway.
 
 With the API already running:
 

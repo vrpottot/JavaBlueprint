@@ -59,7 +59,7 @@ Each changed commit performs:
 4. Switch the shared current symlink and restart production only after those checks pass. Check public frontend HTML, its commit marker and the same-origin API before accepting the release.
 5. Restore the previous frontend/backend release and runner image if a production health check fails. Keep five releases, including the active release and its predecessor.
 
-Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: the CI suite has 17 focused test groups, with complexity examples batched in one JVM call; the deployment smoke compiles one tiny project. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
+Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: the CI suite has 20 focused test groups, including three method-editing groups and complexity examples batched in one JVM call; the deployment smoke compiles one tiny project. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
 
 GitHub Actions runs short backend checks, frontend build/lint and a gateway smoke check, with a five-minute job limit and cancellation of superseded runs. VPS release checks are independent and remain mandatory even if Actions is unavailable. Builds typically take seconds to a few minutes on the first install; the updater times out after ten minutes rather than waiting indefinitely.
 

@@ -20,7 +20,7 @@ const Parse = Type.Union([
   Type.Object({ code: Type.String({ maxLength: 2097152 }), filename: Type.Optional(Type.String({ maxLength: 240 })) }, Strict),
 ]);
 const Operation = Type.Object({
-  type: Type.Union([Type.Literal('updateCondition'), Type.Literal('updateExpression'), Type.Literal('updateVariable'), Type.Literal('replaceStatement'), Type.Literal('addBlock'), Type.Literal('deleteBlock'), Type.Literal('duplicateBlock')]),
+  type: Type.Union([Type.Literal('updateCondition'), Type.Literal('updateExpression'), Type.Literal('updateVariable'), Type.Literal('replaceStatement'), Type.Literal('addBlock'), Type.Literal('deleteBlock'), Type.Literal('duplicateBlock'), Type.Literal('addMethod'), Type.Literal('replaceMethod'), Type.Literal('deleteMethod'), Type.Literal('duplicateMethod')]),
   nodeId: Type.String({ minLength: 1, maxLength: 80 }),
   code: Type.Optional(Type.String({ minLength: 1, maxLength: 100000 })), variable: Type.Optional(Type.String({ maxLength: 100 })),
 }, Strict);
@@ -60,7 +60,7 @@ export function buildApp(options: { engine?: JavaEngine; runner?: Runner; store?
     parsing++;
     try { return await engine.process(...args); } finally { parsing--; }
   };
-  const snapshot = (p: Project) => ({ projectId: p.id, revision: p.revision, files: p.result.files, structure: p.result.structure, graph: graph(p.result), errors: p.result.errors });
+  const snapshot = (p: Project) => ({ projectId: p.id, revision: p.revision, files: p.result.files, structure: p.result.structure, containers: p.result.containers ?? [], changes: p.result.changes ?? [], graph: graph(p.result), errors: p.result.errors });
   const revisionCheck = (p: Project, revision?: number) => {
     if (revision !== undefined && revision !== p.revision) throw new ApiError(409, 'REVISION_CONFLICT', 'Project changed; reload before editing');
   };
@@ -98,11 +98,21 @@ export function buildApp(options: { engine?: JavaEngine; runner?: Runner; store?
   app.post<{ Params: Static<typeof Params>; Body: Static<typeof TransformBody> }>('/api/projects/:id/transform', { schema: { params: Params, body: TransformBody } }, async request => {
     const p = store.get(request.params.id);
     revisionCheck(p, request.body.revision);
-    for (const op of request.body.operations) if (!['deleteBlock', 'duplicateBlock'].includes(op.type) && !op.code) throw new ApiError(400, 'CODE_REQUIRED', `${op.type} requires code`);
+    for (const op of request.body.operations) if (!['deleteBlock', 'duplicateBlock', 'deleteMethod', 'duplicateMethod'].includes(op.type) && !op.code) throw new ApiError(400, 'CODE_REQUIRED', `${op.type} requires code`);
     const result = await processJava(p.result.files, p.result.identities, request.body.operations);
     if (result.errors.length) throw new ApiError(422, 'INVALID_JAVA', 'Transformation produced invalid Java', result.errors);
     validateFiles(result.files);
     return snapshot(store.update(p.id, request.body.revision, result));
+  });
+  app.post<{ Params: Static<typeof Params>; Body: Static<typeof TransformBody> }>('/api/projects/:id/transform/preview', { schema: { params: Params, body: TransformBody } }, async request => {
+    const p = store.get(request.params.id);
+    revisionCheck(p, request.body.revision);
+    for (const op of request.body.operations) if (!['deleteBlock', 'duplicateBlock', 'deleteMethod', 'duplicateMethod'].includes(op.type) && !op.code) throw new ApiError(400, 'CODE_REQUIRED', `${op.type} requires code`);
+    const result = await processJava(p.result.files, p.result.identities, request.body.operations);
+    if (result.errors.length) throw new ApiError(422, 'INVALID_JAVA', 'Transformation produced invalid Java', result.errors);
+    validateFiles(result.files);
+    revisionCheck(store.get(p.id), request.body.revision);
+    return { ...snapshot({ ...p, result }), preview: true, syntaxValid: true };
   });
   app.post<{ Params: Static<typeof Params> }>('/api/projects/:id/generate', { schema: { params: Params, body: Type.Object({}, Strict) } }, async request => {
     const p = store.get(request.params.id);

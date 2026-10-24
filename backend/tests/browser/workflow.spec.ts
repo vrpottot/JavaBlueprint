@@ -8,6 +8,7 @@ test('real UI imports files, edits the AST, verifies Java and shows JUnit result
   const branch = page.locator('.react-flow__node-conditionNode').first();
   await expect(branch).toBeVisible({ timeout: 20000 });
   await expect(branch).toContainText('value > 0');
+  await page.getByRole('button', { name: 'Сводка', exact: true }).click();
   await expect(page.getByText('classify: O(1)', { exact: false })).toBeVisible();
   await branch.dblclick();
   const dialog = page.getByRole('dialog');
@@ -16,8 +17,9 @@ test('real UI imports files, edits the AST, verifies Java and shows JUnit result
   await expect(page.locator('.react-flow__node-conditionNode').first()).toContainText('value >= 1');
 
   await page.getByRole('button', { name: 'Импорт', exact: true }).click();
+  await page.getByLabel('Добавить к текущему проекту (сохранить существующие файлы)', { exact: true }).uncheck();
   const imported = page.waitForResponse(r => r.url().endsWith('/projects/parse') && r.status() === 201);
-  await page.locator('input[type=file]').setInputFiles([
+  await page.locator('input[type=file]').last().setInputFiles([
     fileURLToPath(new URL('../../examples/Main.java', import.meta.url)),
     fileURLToPath(new URL('../../examples/MainTest.java', import.meta.url)),
   ]);

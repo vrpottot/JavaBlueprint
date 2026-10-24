@@ -6,6 +6,8 @@ The main workflow uses the Fastify backend. Start it first using [backend instru
 
 Vite proxies `/api` to localhost:3001. Imports, AST block edits, source generation, static analysis and Java/JUnit verification use real API results. Select multiple `.java` files to import a project together with its tests. Program stdin is editable in the test panel. AI recommendations currently use static analysis; the model adapter is documented in [AI_CONTRACT.md](../backend/AI_CONTRACT.md).
 
+Click or drag **Метод** from the palette to add a method. Choose a class/file, enter its signature and body, optionally check syntax, then save. Empty classes and nested named types are supported. Double-click a method to edit; its context menu copies or deletes the declaration. Java and the graph update together, and the canvas focuses the new method. Syntax checks leave the project unchanged; **Run** performs actual compilation and JUnit verification. Signature changes do not automatically rewrite callers.
+
 ## Vite tooling
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.

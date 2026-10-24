@@ -18,6 +18,11 @@ export interface VisualBlockData {
   isHighlighted?: boolean;
   inputs?: Array<{ id: string; label: string }>;
   outputs?: Array<{ id: string; label: string }>;
+  containerId?: string;
+  methodId?: string;
+  astKind?: string;
+  editable?: string[];
+  method?: { signature: string; body: string; hasBody: boolean };
   [key: string]: unknown;
 }
 
