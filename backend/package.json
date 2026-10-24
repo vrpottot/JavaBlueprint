@@ -8,9 +8,9 @@
   },
   "scripts": {
     "setup": "node scripts/setup.mjs",
-    "dev": "node --env-file-if-exists=.env --import tsx --watch src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc -p tsconfig.json",
-    "start": "node --env-file-if-exists=.env dist/server.js",
+    "start": "node dist/server.js",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json",
     "test": "tsx --test --test-concurrency=1 tests/*.test.ts",
     "test:browser": "playwright test --config=playwright.config.ts",
