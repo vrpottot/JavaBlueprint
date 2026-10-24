@@ -25,6 +25,16 @@ Leave `VITE_API_URL` unset. The browser calls its own HTTPS `/api`, and Vercel's
 
 Connect Vercel's Git integration to this repository to build/deploy after pushes to `main`. The gateway caps request/response bodies at 4 MiB; very large graphs must be split into smaller projects. Long Java jobs are bounded separately by the backend runner; the gateway's maximum is 240 seconds.
 
+## AI gateway
+
+AI chat uses a separate [OmniRoute](https://github.com/cheaper-inference/OmniRoute) container on the VPS. The backend connects to `http://127.0.0.1:20128/v1` with `AI_MODEL=ddgw/claude-haiku-4-5`. `AI_API_KEY` authenticates the backend to this gateway; upstream credentials depend on the selected provider. DuckDuckGo anonymous access worked in the verified deployment; provider quotas and availability still apply.
+
+Set `AI_API_KEY`, `AI_BASE_URL` and `AI_MODEL` in `/etc/javascope/backend.env`, then run `bash deploy/install-ai-gateway.sh` as root on the VPS. The installer pins OmniRoute 3.8.52 by image digest, reuses the backend's gateway key, generates private dashboard/encryption secrets once, and stores them in `/etc/javascope/omniroute.env` with mode 600. It preserves these secrets on reruns. Restart `javascope` after changing its environment.
+
+Only loopback port 20128 is published. The dashboard and AI key are not exposed through nginx or bundled into the frontend. The container has a one-core quota, a 1 GiB memory limit, no extra capabilities and `restart: unless-stopped`. The `javascope-ai-data` volume keeps its database across container replacement. Application releases do not replace its configuration or volume. Rerunning the installer with unchanged configuration leaves the existing container running. Large projects use bounded prompt context; naming methods in a question prioritizes their code and source-linked AST nodes. The model is told when other code is omitted.
+
+Check it with `docker ps --filter name=javascope-ai` and `docker stats --no-stream javascope-ai`. Use the website's **Чат с ИИ** panel to exercise the full frontend → backend → gateway → model path. Browser verification confirmed a real streamed Russian response and a structured analysis update in **Сводка**. The two supplied Java stress-test files separately compiled and passed all 12 JUnit tests.
+
 ## VPS layout
 
 - `/opt/javascope/releases/<commit>/`: independently installed and tested releases.
@@ -59,7 +69,7 @@ Each changed commit performs:
 4. Switch the shared current symlink and restart production only after those checks pass. Check public frontend HTML, its commit marker and the same-origin API before accepting the release.
 5. Restore the previous frontend/backend release and runner image if a production health check fails. Keep five releases, including the active release and its predecessor.
 
-Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: the CI suite has 20 focused test groups, including three method-editing groups and complexity examples batched in one JVM call; the deployment smoke compiles one tiny project. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
+Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: the CI suite has 21 focused test groups, including method editing and bounded AI context, with complexity examples batched in one JVM call; the deployment smoke compiles one tiny project. CI never calls a real AI provider. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
 
 GitHub Actions runs short backend checks, frontend build/lint and a gateway smoke check, with a five-minute job limit and cancellation of superseded runs. VPS release checks are independent and remain mandatory even if Actions is unavailable. Builds typically take seconds to a few minutes on the first install; the updater times out after ten minutes rather than waiting indefinitely.
 

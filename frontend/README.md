@@ -4,7 +4,7 @@ Live site: https://javascope.193-233-246-241.sslip.io. Frontend and backend depl
 
 The main workflow uses the Fastify backend. Start it first using [backend instructions](../backend/README.md), then run `npm ci` and `npm run dev` here with Node.js 22.12+.
 
-Vite proxies `/api` to localhost:3001. Imports, AST block edits, source generation, static analysis and Java/JUnit verification use real API results. Select multiple `.java` files to import a project together with its tests. Program stdin is editable in the test panel. AI recommendations currently use static analysis; the model adapter is documented in [AI_CONTRACT.md](../backend/AI_CONTRACT.md).
+Vite proxies `/api` to localhost:3001. Imports, AST block edits, source generation, static analysis and Java/JUnit verification use real API results. Select multiple `.java` files to import a project together with its tests. Program stdin is editable in the test panel. **Чат с ИИ** uses the server's configured model; the **Сводка** panel displays analysis. Verified model proposals are documented in [AI_CONTRACT.md](../backend/AI_CONTRACT.md). No AI key is needed in the browser.
 
 Click or drag **Метод** from the palette to add a method. Choose a class/file, enter its signature and body, optionally check syntax, then save. Empty classes and nested named types are supported. Double-click a method to edit; its context menu copies or deletes the declaration. Java and the graph update together, and the canvas focuses the new method. Syntax checks leave the project unchanged; **Run** performs actual compilation and JUnit verification. Signature changes do not automatically rewrite callers.
 
