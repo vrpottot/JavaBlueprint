@@ -24,11 +24,9 @@ export function analyze(result: EngineResult) {
     const loops = body.filter(n => n.kind === 'loop');
     const depth = Math.max(0, ...loops.map(n => n.loopDepth + 1));
     return {
-      methodId: m.id, method: m.title, estimate: 'unknown',
+      methodId: m.id, method: m.title, file: m.source.file, line: m.source.startLine,
       structuralBound: depth ? depth === 1 ? 'O(n)' : `O(n^${depth})` : 'O(1)',
-      explanation: depth
-        ? `Условная оценка по вложенности: ${depth}. Предполагает n итераций каждого цикла и O(1) для каждой операции. Границы, вызовы, рекурсия и Stream API не анализируются; полная Big O неизвестна.`
-        : 'Явных циклов нет. Стоимость вызовов, рекурсия и Stream API не анализируются; полная Big O неизвестна.',
+      ...(m.complexity ?? { estimate: 'unknown', status: 'unknown', assumptions: [], limitations: ['AST cost model unavailable'], evidence: [], explanation: 'Модель стоимости AST недоступна.' }),
     };
   });
   return {

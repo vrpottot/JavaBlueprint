@@ -5,6 +5,7 @@ export interface IRNode {
   id: string; astPath: string; astKind: string; kind: 'method' | 'variable' | 'condition' | 'loop' | 'operation' | 'return';
   title: string; code: string; snippet: string; source: SourceRef; parentId?: string;
   depth: number; loopDepth: number; methodId?: string; editable: string[];
+  complexity?: { estimate: string; status: 'estimated' | 'unknown'; kind: 'upper_bound'; confidence: string; assumptions: string[]; limitations: string[]; explanation: string; evidence: { line: number; nodeId: string; estimate: string; rule: string }[] };
 }
 export interface IREdge { source: string; target: string; label?: string; kind: string }
 export interface ParseError { file: string; message: string; line?: number; column?: number }

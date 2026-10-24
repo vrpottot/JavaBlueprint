@@ -8,7 +8,7 @@ export interface ProjectSnapshot {
 }
 export interface Analysis {
   diagnostics: (Omit<CodeIssue, 'level'> & { severity: 'high' | 'medium' | 'low'; recommendation: string })[];
-  complexity: { estimate: string; structuralBound: string; explanation: string }[];
+  complexity: { methodId: string; method: string; file: string; line: number; estimate: string; status: 'estimated' | 'unknown'; structuralBound: string; explanation: string; assumptions: string[]; limitations: string[]; evidence: { line: number; estimate: string; rule: string }[] }[];
   metrics: CodeMetrics;
 }
 export interface Execution { stdout: string; stderr: string; exitCode: number | null; durationMs: number; timedOut: boolean; outputLimitExceeded: boolean }

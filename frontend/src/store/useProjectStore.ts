@@ -30,6 +30,7 @@ interface ProjectState {
   isOptimized: boolean; codeViewMode: 'source' | 'optimized'; nodes: Node<VisualBlockData>[]; edges: Edge[];
   selectedNodeId: string | null; editingNode: Node<VisualBlockData> | null;
   issues: CodeIssue[]; recommendations: CodeRecommendation[]; metrics: CodeMetrics; complexity: ComplexityEstimate;
+  methodComplexities: Analysis['complexity'];
   activeAnalysisTab: 'issues' | 'recommendations' | 'metrics'; consoleLogs: ConsoleLog[]; testCases: TestCase[];
   isRunning: boolean; isCompiling: boolean; runStdin: string;
   theme: 'light' | 'dark'; showOptimizationModal: boolean; showImportModal: boolean; showAddBlockModal: boolean;
@@ -74,7 +75,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     set({ issues: result.diagnostics.map(d => ({ ...d, level: d.severity })),
       recommendations: result.diagnostics.map(d => ({ id: d.id, title: d.title, description: d.recommendation, impact: d.severity, tag: 'Статический анализ' })),
       metrics: result.metrics,
-      complexity: { current: 'Неизвестно', optimized: '—', speedup: 'Не измерено', explanation: result.complexity.map(c => c.explanation).join('\n') || 'Исполняемые методы не найдены.' },
+      methodComplexities: result.complexity,
+      complexity: { current: result.complexity.length === 1 ? result.complexity[0].estimate === 'unknown' ? 'Неизвестно' : result.complexity[0].estimate : 'По методам', optimized: '—', speedup: 'Не измерено', explanation: 'Оценки верхней границы по AST. Предположения и ограничения указаны для каждого метода.' },
     });
   };
   const sync = async () => {
@@ -100,7 +102,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     projectId: null, revision: 0, sourceFiles: [], originalFiles: [], mainClasses: [], dirty: false, isLoading: false, error: null,
     projectName: 'JavaBlueprint', files: [], activeFileId: '', activeFilePath: '', javaCode: '',
     isOptimized: false, codeViewMode: 'source', nodes: [], edges: [], selectedNodeId: null, editingNode: null,
-    issues: [], recommendations: [], metrics: emptyMetrics, complexity: { current: 'Неизвестно', optimized: '—', speedup: 'Не измерено', explanation: 'Загрузите Java-код для анализа.' }, activeAnalysisTab: 'issues',
+    issues: [], recommendations: [], metrics: emptyMetrics, methodComplexities: [], complexity: { current: 'Неизвестно', optimized: '—', speedup: 'Не измерено', explanation: 'Загрузите Java-код для анализа.' }, activeAnalysisTab: 'issues',
     consoleLogs: [], testCases: [], isRunning: false, isCompiling: false, runStdin: '5\n',
     theme: 'light', showOptimizationModal: false, showImportModal: false, showAddBlockModal: false,
     isLeftSidebarOpen: true, isRightSidebarOpen: true, bottomPanelHeight: 270,
