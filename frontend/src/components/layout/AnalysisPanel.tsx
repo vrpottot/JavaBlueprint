@@ -151,7 +151,7 @@ export const AnalysisPanel: React.FC = () => {
             <div className={styles.metricCard}>
               <span className={styles.metricLabel}>Строк кода (LOC)</span>
               <span className={styles.metricValue}>{metrics.linesOfCode}</span>
-              <span className={styles.metricSub}>В текущем файле</span>
+              <span className={styles.metricSub}>Во всём проекте</span>
             </div>
 
             <div className={styles.metricCard}>
@@ -159,15 +159,15 @@ export const AnalysisPanel: React.FC = () => {
               <span className={`${styles.metricValue} ${styles.valAlert}`}>
                 {metrics.nestingDepth}
               </span>
-              <span className={styles.metricSub}>Уровень 4: вложенный цикл</span>
+              <span className={styles.metricSub}>По структуре AST</span>
             </div>
 
             <div className={styles.metricCard}>
               <span className={styles.metricLabel}>Покрытие тестами</span>
               <span className={`${styles.metricValue} ${styles.valSuccess}`}>
-                {metrics.testCoverage}%
+                {metrics.testCoverage === null ? 'Не измерено' : `${metrics.testCoverage}%`}
               </span>
-              <span className={styles.metricSub}>12 из 14 сценариев</span>
+              <span className={styles.metricSub}>Запуск JUnit не измеряет покрытие</span>
             </div>
           </div>
         )}
@@ -214,12 +214,12 @@ export const AnalysisPanel: React.FC = () => {
         {!isOptimized ? (
           <button className={styles.applyBtn} onClick={applyOptimization}>
             <Sparkles size={14} />
-            <span>Применить оптимизацию</span>
+            <span>Рекомендации</span>
           </button>
         ) : (
           <button className={`${styles.applyBtn} ${styles.applied}`} disabled>
             <CheckCircle2 size={14} />
-            <span>Оптимизация активна</span>
+            <span>Код изменён</span>
           </button>
         )}
       </div>

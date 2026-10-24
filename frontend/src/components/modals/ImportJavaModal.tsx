@@ -7,6 +7,10 @@ export const ImportJavaModal: React.FC = () => {
   const showImportModal = useProjectStore((s) => s.showImportModal);
   const setShowImportModal = useProjectStore((s) => s.setShowImportModal);
   const importJavaFile = useProjectStore((s) => s.importJavaFile);
+  const importJavaFiles = useProjectStore((s) => s.importJavaFiles);
+  const isLoading = useProjectStore((s) => s.isLoading);
+  const error = useProjectStore((s) => s.error);
+  const [fileError, setFileError] = useState<string | null>(null);
 
   const [filename, setFilename] = useState('PaymentGateway.java');
   const [content, setContent] = useState(`package com.example;
@@ -30,7 +34,13 @@ public class PaymentGateway {
   if (!showImportModal) return null;
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    setFileError(null);
+    const uploaded = Array.from(e.target.files || []);
+    if (uploaded.length > 1) {
+      void Promise.all(uploaded.map(async f => ({ path: f.name, content: await f.text() }))).then(importJavaFiles).catch(() => setFileError('Не удалось прочитать файлы. Выберите их повторно.'));
+      return;
+    }
+    const file = uploaded[0];
     if (!file) return;
 
     setFilename(file.name);
@@ -40,6 +50,7 @@ public class PaymentGateway {
       if (text) setContent(text);
     };
     reader.readAsText(file);
+    reader.onerror = () => setFileError('Не удалось прочитать файл. Выберите его повторно.');
   };
 
   const handleImport = () => {
@@ -68,7 +79,7 @@ public class PaymentGateway {
             <input
               type="file"
               ref={fileInputRef}
-              accept=".java"
+              accept=".java" multiple
               style={{ display: 'none' }}
               onChange={handleFileUpload}
             />
@@ -101,7 +112,8 @@ public class PaymentGateway {
           <button className={styles.cancelBtn} onClick={() => setShowImportModal(false)}>
             Отмена
           </button>
-          <button className={styles.submitBtn} onClick={handleImport}>
+          {(fileError || error) && <p role="alert">{fileError || error}</p>}
+          <button className={styles.submitBtn} onClick={handleImport} disabled={isLoading}>
             <Check size={14} />
             <span>Импортировать в проект</span>
           </button>

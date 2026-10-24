@@ -32,6 +32,8 @@ export const TopToolbar: React.FC = () => {
   const isOptimized = useProjectStore((s) => s.isOptimized);
   const isRunning = useProjectStore((s) => s.isRunning);
   const isCompiling = useProjectStore((s) => s.isCompiling);
+  const isLoading = useProjectStore((s) => s.isLoading);
+  const error = useProjectStore((s) => s.error);
 
   const setShowOptimizationModal = useProjectStore((s) => s.setShowOptimizationModal);
   const revertOptimization = useProjectStore((s) => s.revertOptimization);
@@ -69,13 +71,13 @@ export const TopToolbar: React.FC = () => {
           <Sidebar size={15} />
         </button>
 
-        <div className={styles.breadcrumb}>
+        <div className={styles.breadcrumb} title={error || undefined}>
           <span className={styles.projectName}>{projectName || 'OrderProcessingService'}</span>
           <ChevronRight size={13} className={styles.chevron} />
           <div className={styles.fileMethodPill}>
             <FileText size={14} className={styles.fileIcon} />
             <span className={styles.fileName}>{fileName}</span>
-            <span className={styles.methodBadge}>processOrders()</span>
+            <span className={styles.methodBadge}>{error ? 'Ошибка API' : isLoading ? 'Обработка...' : 'Java'}</span>
           </div>
         </div>
       </div>
@@ -107,10 +109,10 @@ export const TopToolbar: React.FC = () => {
           <button
             className={styles.optimizeBtn}
             onClick={() => setShowOptimizationModal(true)}
-            title="Автоматическая оптимизация алгоритма O(N²) -> O(N)"
+            title="Статический анализ и рекомендации"
           >
             <Sparkles size={13} />
-            <span>Оптимизировать</span>
+            <span>Анализ</span>
           </button>
         ) : (
           <button
@@ -119,7 +121,7 @@ export const TopToolbar: React.FC = () => {
             title="Вернуться к исходному коду"
           >
             <RotateCcw size={13} />
-            <span>Исходный код</span>
+            <span>Отменить изменения</span>
           </button>
         )}
 
@@ -128,7 +130,7 @@ export const TopToolbar: React.FC = () => {
           <button
             className={`${styles.runBtn} ${isRunning || isCompiling ? styles.running : ''}`}
             onClick={runProgram}
-            disabled={isRunning || isCompiling}
+            disabled={isRunning || isCompiling || isLoading}
             title="Запустить программу (F5)"
           >
             <Play size={13} className={styles.playIcon} fill="currentColor" />
@@ -153,7 +155,7 @@ export const TopToolbar: React.FC = () => {
                 }}
               >
                 <Activity size={13} className={styles.greenIcon} />
-                <span>Запуск с бенчмарком</span>
+                <span>Компиляция и запуск</span>
               </button>
               <button
                 className={styles.dropdownOption}
@@ -163,7 +165,7 @@ export const TopToolbar: React.FC = () => {
                 }}
               >
                 <Terminal size={13} className={styles.blueIcon} />
-                <span>Параллельный ForkJoinPool</span>
+                <span>Проверка поведения</span>
               </button>
             </div>
           )}
@@ -173,10 +175,11 @@ export const TopToolbar: React.FC = () => {
         <button
           className={styles.actionBtn}
           onClick={runProgram}
-          title="Запуск в режиме отладки"
+          disabled={isLoading || isRunning || isCompiling}
+          title="Компиляция и проверка"
         >
           <Bug size={13} />
-          <span>Debug</span>
+          <span>Проверить</span>
         </button>
       </div>
 

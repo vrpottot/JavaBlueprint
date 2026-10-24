@@ -11,6 +11,8 @@ import { AddBlockModal } from './components/modals/AddBlockModal';
 import styles from './App.module.scss';
 
 export function App() {
+  const initialize = useProjectStore((s) => s.initialize);
+  const error = useProjectStore((s) => s.error);
   const theme = useProjectStore((s) => s.theme);
   const isLeftSidebarOpen = useProjectStore((s) => s.isLeftSidebarOpen);
   const toggleLeftSidebar = useProjectStore((s) => s.toggleLeftSidebar);
@@ -21,10 +23,13 @@ export function App() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  useEffect(() => { void initialize(); }, [initialize]);
+
   return (
     <div className={styles.appContainer} data-theme={theme}>
       {/* Top Application Toolbar */}
       <TopToolbar />
+      {error && <div role="alert" style={{ padding: '8px 16px', color: 'var(--accent-red, #d14343)' }}>{error}</div>}
 
       {/* Main Workspace Layout */}
       <main className={styles.mainLayout}>

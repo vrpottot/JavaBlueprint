@@ -9,6 +9,8 @@ export const TestResults: React.FC = () => {
   const runProgram = useProjectStore((s) => s.runProgram);
   const isRunning = useProjectStore((s) => s.isRunning);
   const isCompiling = useProjectStore((s) => s.isCompiling);
+  const runStdin = useProjectStore((s) => s.runStdin);
+  const setRunStdin = useProjectStore((s) => s.setRunStdin);
 
   const passedCount = testCases.filter((t) => t.status === 'success').length;
   const isAllPassed = passedCount === testCases.length && testCases.length > 0;
@@ -46,6 +48,9 @@ export const TestResults: React.FC = () => {
         </button>
       </div>
 
+      <label style={{ padding: '8px 16px' }}>Ввод программы (stdin)
+        <textarea aria-label="Ввод программы" value={runStdin} onChange={e => setRunStdin(e.target.value)} disabled={isBusy} rows={2} style={{ display: 'block', width: '100%' }} />
+      </label>
       <div className={styles.summaryCard}>
         <div className={styles.summaryRow}>
           <div className={`${styles.summaryLeft} ${isBusy ? styles.running : ''}`}>
@@ -60,7 +65,7 @@ export const TestResults: React.FC = () => {
                 <span>Все тесты пройдены</span>
               </>
             ) : (
-              <span>Тесты завершены</span>
+              <span>{testCases.length ? 'Есть ошибки' : 'Тесты ещё не запускались'}</span>
             )}
           </div>
 

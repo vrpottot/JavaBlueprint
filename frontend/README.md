@@ -1,4 +1,10 @@
-# React + TypeScript + Vite
+# JavaBlueprint frontend
+
+The main workflow uses the Fastify backend. Start it first using [backend instructions](../backend/README.md), then run `npm ci` and `npm run dev` here with Node.js 22.12+.
+
+Vite proxies `/api` to localhost:3001. Imports, AST block edits, source generation, static analysis and Java/JUnit verification use real API results. Select multiple `.java` files to import a project together with its tests. Program stdin is editable in the test panel. AI recommendations currently use static analysis; the model adapter is documented in [AI_CONTRACT.md](../backend/AI_CONTRACT.md).
+
+## Vite tooling
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 

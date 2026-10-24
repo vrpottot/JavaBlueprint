@@ -48,6 +48,7 @@ const NodeEditForm: React.FC<NodeEditFormProps> = ({ node, onClose, onSave, onDe
             type="text"
             className={styles.input}
             value={title}
+            readOnly
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Название действия или условия"
           />
@@ -71,6 +72,7 @@ const NodeEditForm: React.FC<NodeEditFormProps> = ({ node, onClose, onSave, onDe
               type="text"
               className={styles.input}
               value={badge}
+              readOnly
               onChange={(e) => setBadge(e.target.value)}
               placeholder="boolean, List<Order>, etc."
             />
@@ -83,6 +85,7 @@ const NodeEditForm: React.FC<NodeEditFormProps> = ({ node, onClose, onSave, onDe
             type="text"
             className={styles.input}
             value={description}
+            readOnly
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Краткое назначение шага"
           />
