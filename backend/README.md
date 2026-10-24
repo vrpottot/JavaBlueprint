@@ -155,7 +155,7 @@ npm test
 RUN_DOCKER_TESTS=1 npm test
 ```
 
-The default suite uses the real JavaParser and skips the four Docker integration tests. `RUN_DOCKER_TESTS=1` enables compilation, successful/failing JUnit, behavior differences, timeout/output/filesystem/network isolation, AI acceptance/rejection and the complete API cycle. It requires a built runner image. The parser suite also edits a generated 1000-line Java monolith.
+The default suite uses the real JavaParser and skips the five Docker integration tests. `RUN_DOCKER_TESTS=1` enables compilation, successful/failing JUnit, behavior differences, timeout/output/filesystem/network isolation, AI acceptance/rejection and the complete API cycle. It requires a built runner image. The parser suite also edits a generated 1000-line Java monolith.
 
 Browser end-to-end test (requires frontend dependencies, Docker and runner image):
 
@@ -174,7 +174,7 @@ npm run demo
 
 The demo uses `examples/Main.java` and `MainTest.java`, changes `value > 0` to `value >= 1`, generates Java, compiles, runs three JUnit tests and compares three identical inputs. It asserts real outcomes and removes its temporary project afterward. In the UI, select both example files in the import dialog, double-click the condition to edit it, and press Run. Stdin can be edited in the test panel.
 
-Validation on the implementation machine: 19 backend tests passed with Docker integration enabled; the Playwright browser workflow passed; backend/frontend TypeScript and builds passed, and frontend lint passed. The Java runner image was built and exercised. Building the separate API image could not be validated because this Docker daemon could not fetch its Node base image; host API execution was validated instead.
+Validation includes the quick API/complexity/deployment identity suite, a gateway check, the Playwright workflow, and a real HTTPS API/javac/JUnit smoke run on the VPS. Backend/frontend TypeScript, builds and frontend lint pass. The broader Docker isolation suite is available separately. The Java runner image was built and exercised. Building the separate API image could not be validated because this Docker daemon could not fetch its Node base image; host API execution was validated instead.
 
 ## Scope and limits
 

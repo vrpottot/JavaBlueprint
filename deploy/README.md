@@ -35,15 +35,13 @@ The API user belongs to the Docker group to launch trusted runner configurations
 
 ## Automatic updates and short checks
 
-Register `/root/.ssh/javascope_github.pub` as a **read-only repository Deploy key** in GitHub. The personal developer private key is never copied to the VPS. `/etc/javascope/deploy.env` contains:
+The primary path is GitHub Actions, with no VPS password, SSH private key or long-lived deployment token stored in GitHub. After short checks pass on a push to `main`, the workflow requests a short-lived GitHub OIDC identity and uploads a Git archive to `/_deploy` over HTTPS.
 
-```bash
-GIT_REPOSITORY=git@github.com:vrpottot/JavaBlueprint.git
-GIT_BRANCH=main
-GIT_SSH_KEY=/root/.ssh/javascope_github
-```
+The receiver listens only on `127.0.0.1:3003`, behind nginx. It verifies GitHub's RS256 signature against its fixed JWKS endpoint, issuer, audience, expiry, maximum token age, repository owner/name, `main` ref, push event, exact workflow path and commit SHA. It rejects stale workflow run numbers and replayed identities. Branch/PR checks cannot deploy. Uploads are limited to 8 MiB; Python's data extraction filter and expanded-size/member limits protect source extraction. A deployment lock serializes releases.
 
-Then enable `systemctl enable --now javascope-update.timer`. The timer checks Git roughly once a minute; unchanged commits do not trigger builds. Updates run under a deployment lock, so builds cannot overlap.
+Install `javascope-deploy-receiver.service`, create `/opt/javascope/incoming` with mode 700, and enable the receiver. It uses the active release's compiled `backend/dist/deploy-receiver.js`; successful releases restart it. GitHub must have Actions enabled; the workflow grants only `contents: read` and `id-token: write`.
+
+An optional pull-based fallback is included in `javascope-update.timer`. It checks Git roughly once a minute and needs a read-only repository Deploy key at `/root/.ssh/javascope_github`. This fallback is **disabled** when the key has not been registered; it is not required for the primary Actions deployment path. `/etc/javascope/deploy.env` selects the repository and `main` branch. Personal developer private keys are never copied to the VPS.
 
 Each changed commit performs:
 
@@ -53,17 +51,19 @@ Each changed commit performs:
 4. Switch the current symlink and restart production only after those checks pass.
 5. Restore the previous release/image if the production health check fails. Keep five releases, including the active release and its predecessor.
 
-Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: the CI suite has 16 focused test groups, with complexity examples batched in one JVM call; the deployment smoke compiles one tiny project. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
+Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: the CI suite has 17 focused test groups, with complexity examples batched in one JVM call; the deployment smoke compiles one tiny project. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
 
-GitHub Actions also runs short backend checks and frontend build/lint, with a five-minute job limit and cancellation of superseded runs. VPS release checks are independent and remain mandatory even if Actions is unavailable. Builds typically take seconds to a few minutes on the first install; the updater times out after ten minutes rather than waiting indefinitely.
+GitHub Actions runs short backend checks, frontend build/lint and a gateway smoke check, with a five-minute job limit and cancellation of superseded runs. VPS release checks are independent and remain mandatory even if Actions is unavailable. Builds typically take seconds to a few minutes on the first install; the updater times out after ten minutes rather than waiting indefinitely.
 
 ## Operations
 
 ```bash
 systemctl status javascope
+systemctl status javascope-deploy-receiver
 systemctl list-timers javascope-update.timer
 journalctl -u javascope -n 50
-journalctl -u javascope-update -n 80
+journalctl -u javascope-deploy-receiver -n 30
+journalctl -u 'javascope-release-*' -n 80
 curl -fsS https://javascope-api.193-233-246-241.sslip.io/api/health
 systemctl start javascope-update.service
 certbot certificates
@@ -78,4 +78,4 @@ set +a
 API_URL=http://127.0.0.1:3001/api node /opt/javascope/current/backend/scripts/smoke.mjs
 ```
 
-An initial release can be uploaded as a Git archive from an authenticated development machine, then installed with `bash /opt/javascope/releases/<commit>/deploy/release.sh /opt/javascope/releases/<commit> <commit>`. This does not remove the read-only Git key requirement for future automatic updates.
+An initial release can be uploaded as a Git archive from an authenticated development machine, then installed with `bash /opt/javascope/releases/<commit>/deploy/release.sh /opt/javascope/releases/<commit> <commit>`. Future automatic updates use Actions/OIDC; a Git key is needed only for the optional polling fallback.

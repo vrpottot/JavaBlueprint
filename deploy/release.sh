@@ -60,6 +60,7 @@ if [[ "$healthy" != true ]]; then
   echo 'Release failed health check; rolled back'; exit 1
 fi
 printf '%s\n' "$revision" > /var/lib/javascope/deployed-head
+systemctl try-restart javascope-deploy-receiver.service >/dev/null 2>&1 || true
 echo "Deployed $revision in $((SECONDS-started)) seconds"
 # Keep five releases; never delete the active release or its predecessor.
 find /opt/javascope/releases -mindepth 1 -maxdepth 1 -type d -printf '%T@ %p\n' | sort -nr | tail -n +6 | cut -d' ' -f2- | while IFS= read -r old; do

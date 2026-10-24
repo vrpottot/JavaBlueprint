@@ -13,7 +13,7 @@
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json",
     "test": "tsx --test --test-concurrency=1 tests/*.test.ts",
-    "test:ci": "tsx --test --test-concurrency=1 tests/api.test.ts tests/complexity.test.ts",
+    "test:ci": "tsx --test --test-concurrency=1 tests/api.test.ts tests/complexity.test.ts tests/deploy.test.ts",
     "test:gateway": "tsx scripts/check-gateway.mjs",
     "test:browser": "playwright test --config=playwright.config.ts",
     "demo": "tsx scripts/demo.ts",
@@ -22,7 +22,8 @@
   "dependencies": {
     "@fastify/cors": "^11.0.1",
     "@sinclair/typebox": "^0.34.33",
-    "fastify": "^5.3.3"
+    "fastify": "^5.3.3",
+    "jose": "^6.2.13"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
