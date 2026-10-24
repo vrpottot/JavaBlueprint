@@ -89,7 +89,7 @@ export class DockerRunner implements Runner {
     }
   }
   async verify(original: SourceFile[], current: SourceFile[], request: VerifyRequest, revision: number): Promise<Verification> {
-    if (this.active >= 2) throw new ApiError(429, 'RUNNER_BUSY', 'Two verification jobs are already running');
+    if (this.active >= Number(process.env.MAX_RUNNER_JOBS || 2)) throw new ApiError(429, 'RUNNER_BUSY', 'Verification capacity reached; retry shortly');
     this.active++;
     try {
       await this.requireReady();
