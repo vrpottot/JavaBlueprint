@@ -8,6 +8,7 @@ import { graph } from './services/graph.js';
 import { analyze } from './services/analyzer.js';
 import { ApiError } from './services/errors.js';
 import type { VerifyRequest } from './types/index.js';
+import { timingSafeEqual } from 'node:crypto';
 
 const Strict = { additionalProperties: false };
 const File = Type.Object({ path: Type.String({ minLength: 6, maxLength: 240 }), content: Type.String({ maxLength: 2097152 }) }, Strict);
@@ -41,12 +42,20 @@ export function buildApp(options: { engine?: JavaEngine; runner?: Runner; store?
   const runner = options.runner ?? new DockerRunner();
   const store = options.store ?? new ProjectStore(Number(process.env.PROJECT_TTL_MS || 7200000), Number(process.env.MAX_PROJECTS || 50));
   app.register(cors, { origin: (process.env.CORS_ORIGIN || 'http://localhost:5173').split(',') });
+  const apiKey = process.env.BACKEND_API_KEY;
+  app.addHook('onRequest', async (request) => {
+    if (!apiKey || request.url.split('?')[0] === '/api/health') return;
+    const supplied = request.headers['x-backend-key'];
+    const bytes = Buffer.from(typeof supplied === 'string' ? supplied : '');
+    const expected = Buffer.from(apiKey);
+    if (bytes.length !== expected.length || !timingSafeEqual(bytes, expected)) throw new ApiError(401, 'UNAUTHORIZED', 'Use the application API gateway');
+  });
   const cleanup = setInterval(() => store.clean(), 60000);
   cleanup.unref();
   app.addHook('onClose', async () => { clearInterval(cleanup); });
   let parsing = 0;
   const processJava: JavaEngine['process'] = async (...args) => {
-    if (parsing >= 4) throw new ApiError(429, 'PARSER_BUSY', 'Java parser is busy; try again shortly');
+    if (parsing >= Number(process.env.MAX_PARSER_JOBS || 4)) throw new ApiError(429, 'PARSER_BUSY', 'Java parser is busy; try again shortly');
     parsing++;
     try { return await engine.process(...args); } finally { parsing--; }
   };
@@ -62,7 +71,7 @@ export function buildApp(options: { engine?: JavaEngine; runner?: Runner; store?
     request.log.error(error);
     return reply.code(500).send({ error: { code: 'INTERNAL_ERROR', message: 'Unexpected server error' } });
   });
-  app.get('/api/health', async () => ({ status: 'ok', java: 'JavaParser CLI', execution: 'docker-only' }));
+  app.get('/api/health', async () => ({ status: 'ok', version: process.env.GIT_SHA || 'development', java: 'JavaParser CLI', execution: 'docker-only' }));
   app.post<{ Body: Static<typeof Parse> }>('/api/projects/parse', { schema: { body: Parse } }, async (request, reply) => {
     const files = 'files' in request.body ? request.body.files : [{ path: request.body.filename ?? 'Main.java', content: request.body.code }];
     validateFiles(files);

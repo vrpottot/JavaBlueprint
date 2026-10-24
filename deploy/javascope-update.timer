@@ -1,0 +1,11 @@
+[Unit]
+Description=Check JavaScope Git updates every minute
+
+[Timer]
+OnBootSec=90
+OnUnitInactiveSec=60
+RandomizedDelaySec=10
+Unit=javascope-update.service
+
+[Install]
+WantedBy=timers.target

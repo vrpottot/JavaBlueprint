@@ -2,6 +2,8 @@
 
 Fastify + TypeScript API, JavaParser CLI, AST/IR, React Flow graph and isolated javac/JUnit 5 runner. The current frontend uses this API; its old demo results are no longer used by the main workflow.
 
+Production deployment, Vercel gateway and automatic tested releases: [deployment guide](../deploy/README.md).
+
 ## Local launch
 
 Requirements: Node.js **22.12+**, JDK **21** (`java` and `javac` in PATH), Docker Engine with working CPU/memory/PID cgroups. Internet is needed for npm dependencies, Maven artifacts and the initial Docker image build. After setup, Java jobs run without network access.
@@ -153,7 +155,7 @@ npm test
 RUN_DOCKER_TESTS=1 npm test
 ```
 
-The default suite uses the real JavaParser and skips the four Docker integration tests. `RUN_DOCKER_TESTS=1` enables compilation, successful/failing JUnit, behavior differences, timeout/output/filesystem/network isolation, AI acceptance/rejection and the complete API cycle. It requires a built runner image. The parser suite also edits a generated 1000-line Java monolith.
+The default suite uses the real JavaParser and skips the five Docker integration tests. `RUN_DOCKER_TESTS=1` enables compilation, successful/failing JUnit, behavior differences, timeout/output/filesystem/network isolation, AI acceptance/rejection and the complete API cycle. It requires a built runner image. The parser suite also edits a generated 1000-line Java monolith.
 
 Browser end-to-end test (requires frontend dependencies, Docker and runner image):
 
@@ -172,13 +174,13 @@ npm run demo
 
 The demo uses `examples/Main.java` and `MainTest.java`, changes `value > 0` to `value >= 1`, generates Java, compiles, runs three JUnit tests and compares three identical inputs. It asserts real outcomes and removes its temporary project afterward. In the UI, select both example files in the import dialog, double-click the condition to edit it, and press Run. Stdin can be edited in the test panel.
 
-Validation on the implementation machine: 19 backend tests passed with Docker integration enabled; the Playwright browser workflow passed; backend/frontend TypeScript and builds passed, and frontend lint passed. The Java runner image was built and exercised. Building the separate API image could not be validated because this Docker daemon could not fetch its Node base image; host API execution was validated instead.
+Validation includes the quick API/complexity/deployment identity suite, a gateway check, the Playwright workflow, and a real HTTPS API/javac/JUnit smoke run on the VPS. Backend/frontend TypeScript, builds and frontend lint pass. The broader Docker isolation suite is available separately. The Java runner image was built and exercised. Building the separate API image could not be validated because this Docker daemon could not fetch its Node base image; host API execution was validated instead.
 
 ## Scope and limits
 
 - Java 21 syntax is parsed by JavaParser. Classes, interfaces, fields, constructors, methods, primitives, arrays, standard Java I/O, strings and collections are preserved. JDK 21 compiles the code. Record, enum, generics, lambdas and streams are accepted; not every construct is individually editable in the graph.
 - Graph flow covers if/else, switch statements, for/foreach/while/do, unlabeled break/continue, returns and throws. Exception/catch/finally/resource edges are structural approximations. Abrupt exits through finally, labeled jumps, lambda execution, switch expressions and interprocedural calls are not a complete Java CFG; graph warnings expose these limits.
-- Long methods, exact duplicate operations, nested loops and calls in loop bounds are heuristic diagnostics. Complexity reports conditional bounds by loop nesting and explicitly leaves full Big O unknown when calls, bounds or recursion are unresolved. No invented speedup, maintainability score or coverage.
+- Long methods, exact duplicate operations, nested loops and calls in loop bounds are heuristic diagnostics. The AST complexity model composes sequential costs, branches, constant/linear/logarithmic `for` loops, recognized `while`, array/standard collection traversal, primitive array allocation, selected JDK operations and unambiguous local method calls. It retains independent input sizes, such as `O(n * m)` and `O(n + m)`, and emits assumptions plus line-linked evidence. Recursion, unmodeled I/O, unknown calls, mutated bounds and unsafe counter updates remain unknown. All recognized results are conditional upper bounds, not formal proofs. No invented speedup, maintainability score or coverage.
 - Projects are in memory and disappear on restart; inactive entries expire. Max 50 projects, 100 source files and 2 MiB source per project. Paths are relative ASCII `.java` paths; traversal/duplicates are rejected. At most four parser jobs and two verification jobs run concurrently; excess load returns 429.
 - Only JDK libraries and provided JUnit are available to submitted projects. Maven/Gradle dependency resolution, ZIP uploads, persistent storage, authentication, full behavioral proofs and advanced optimization are outside this implementation.
 - AI integration is an adapter contract, not an AI agent. See [AI_CONTRACT.md](AI_CONTRACT.md) for the handoff. No external AI endpoint or credential is configured.

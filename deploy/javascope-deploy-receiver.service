@@ -1,0 +1,22 @@
+[Unit]
+Description=GitHub OIDC authenticated JavaScope deployment receiver
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/javascope/current/backend
+ExecStart=/usr/bin/node dist/deploy-receiver.js
+Restart=on-failure
+RestartSec=3
+UMask=0077
+MemoryMax=192M
+TasksMax=32
+NoNewPrivileges=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/javascope/incoming
+
+[Install]
+WantedBy=multi-user.target

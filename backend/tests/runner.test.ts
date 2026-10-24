@@ -95,3 +95,13 @@ test('missing Docker returns a service error, never a local execution fallback',
   const unavailable = new DockerRunner('/nonexistent/docker');
   await assert.rejects(unavailable.verify(files, files, { mainClass: 'Main' }, 0), /Cannot start/);
 });
+
+test('packaged source remains readable to the container with a restrictive service umask', { skip: !enabled, timeout: 60000 }, async () => {
+  const previous = process.umask(0o077);
+  try {
+    const sources = [{ path: 'pkg/Main.java', content: 'package pkg; public class Main { public static void main(String[] args) { System.out.println("ok"); } }' }];
+    const result = await runner.verify(sources, sources, { mainClass: 'pkg.Main' }, 0);
+    assert.equal(result.current.compilation.exitCode, 0, JSON.stringify(result.current.compilation));
+    assert.equal(result.current.runs[0]!.stdout, 'ok\n');
+  } finally { process.umask(previous); }
+});

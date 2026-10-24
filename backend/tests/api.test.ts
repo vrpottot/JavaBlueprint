@@ -156,7 +156,7 @@ test('analysis reports long methods and nested loops without fabricated complexi
   const result = analyze(await engine.process([{ path: 'Big.java', content: code }]));
   assert.ok(result.diagnostics.some(d => d.type === 'long_method'));
   assert.ok(result.diagnostics.some(d => d.type === 'nested_loop'));
-  assert.equal(result.complexity[0]!.estimate, 'unknown');
+  assert.equal(result.complexity[0]!.estimate, 'unknown'); // println has unmodeled I/O cost.
   assert.equal(result.complexity[0]!.structuralBound, 'O(n^2)');
   assert.equal(result.metrics.testCoverage, null);
 });
@@ -212,4 +212,18 @@ test('AI proposal cannot bypass verification or mutate on missing evidence', asy
   const context = await app.inject(`/api/projects/${p.projectId}/ai-context`);
   assert.equal(context.json().revision, 0);
   assert.ok(context.json().analysis);
+});
+
+test('production gateway key protects processing routes and leaves health public', async () => {
+  const previous = process.env.BACKEND_API_KEY;
+  process.env.BACKEND_API_KEY = 'integration-gateway-key';
+  const secured = buildApp();
+  if (previous === undefined) delete process.env.BACKEND_API_KEY; else process.env.BACKEND_API_KEY = previous;
+  try {
+    assert.equal((await secured.inject('/api/health')).statusCode, 200);
+    const options = { method: 'POST' as const, url: '/api/projects/parse', payload: { code: 'class A {}', filename: 'A.java' } };
+    assert.equal((await secured.inject(options)).statusCode, 401);
+    assert.equal((await secured.inject({ ...options, headers: { 'x-backend-key': 'wrong' } })).statusCode, 401);
+    assert.equal((await secured.inject({ ...options, headers: { 'x-backend-key': 'integration-gateway-key' } })).statusCode, 201);
+  } finally { await secured.close(); }
 });

@@ -124,6 +124,7 @@ public final class Engine {
                     "endLine", range.end.line, "startColumn", range.begin.column, "endColumn", range.end.column));
             if (parent != null) row.put("parentId", parent);
             if (nextMethod != null) row.put("methodId", nextMethod);
+            if (n instanceof CallableDeclaration<?> callable) row.put("complexity", Complexity.inspect(callable));
             nodes.add(row);
         }
         for (Node c : n.getChildNodes()) describe(c, u, display ? n.getData(ID) : parent,

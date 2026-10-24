@@ -1,0 +1,31 @@
+[Unit]
+Description=JavaScope backend
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+User=javascope
+Group=javascope
+SupplementaryGroups=docker
+WorkingDirectory=/opt/javascope/current/backend
+EnvironmentFile=/etc/javascope/backend.env
+EnvironmentFile=-/etc/javascope/release.env
+ExecStart=/usr/bin/node --max-old-space-size=384 dist/server.js
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=30
+KillMode=mixed
+MemoryMax=1400M
+TasksMax=256
+LimitNOFILE=4096
+UMask=0077
+NoNewPrivileges=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/javascope
+
+[Install]
+WantedBy=multi-user.target

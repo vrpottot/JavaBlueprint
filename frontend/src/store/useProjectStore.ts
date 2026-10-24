@@ -49,6 +49,7 @@ interface ProjectState {
   recommendations: CodeRecommendation[];
   metrics: CodeMetrics;
   complexity: ComplexityEstimate;
+  methodComplexities: Analysis['complexity'];
   activeAnalysisTab: 'issues' | 'recommendations' | 'metrics';
   consoleLogs: ConsoleLog[];
   testCases: TestCase[];
@@ -140,7 +141,13 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       issues: result.diagnostics.map((d) => ({ ...d, level: d.severity })),
       recommendations: result.diagnostics.map((d) => ({ id: d.id, title: d.title, description: d.recommendation, impact: d.severity, tag: 'Статический анализ' })),
       metrics: result.metrics,
-      complexity: { current: 'Неизвестно', optimized: '—', speedup: 'Не измерено', explanation: result.complexity.map((c) => c.explanation).join('\n') || 'Исполняемые методы не найдены.' },
+      methodComplexities: result.complexity,
+      complexity: {
+        current: result.complexity.length === 1 ? (result.complexity[0].estimate === 'unknown' ? 'Неизвестно' : result.complexity[0].estimate) : 'По методам',
+        optimized: '—',
+        speedup: 'Не измерено',
+        explanation: 'Оценки верхней границы по AST. Предположения и ограничения указаны для каждого метода.',
+      },
     });
   };
 
@@ -197,6 +204,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     issues: [],
     recommendations: [],
     metrics: emptyMetrics,
+    methodComplexities: [],
     complexity: { current: 'Неизвестно', optimized: '—', speedup: 'Не измерено', explanation: 'Загрузите Java-код для анализа.' },
     activeAnalysisTab: 'issues',
     consoleLogs: [],

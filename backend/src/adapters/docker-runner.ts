@@ -1,6 +1,6 @@
 import { mkdtemp, mkdir, writeFile, chmod, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join, dirname } from 'node:path';
+import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { runProcess } from './process.js';
 import { ApiError } from '../services/errors.js';
@@ -49,8 +49,15 @@ export class DockerRunner implements Runner {
       await chmod(staging, 0o755);
       for (const file of allFiles) {
         const destination = join(staging, file.path);
-        await mkdir(dirname(destination), { recursive: true, mode: 0o755 });
+        let directory = staging;
+        for (const segment of file.path.split('/').slice(0, -1)) {
+          directory = join(directory, segment);
+          await mkdir(directory, { recursive: true, mode: 0o755 });
+          await chmod(directory, 0o755);
+        }
         await writeFile(destination, file.content, { mode: 0o644 });
+        // Production umask is 0077; the isolated UID 10001 still needs read access.
+        await chmod(destination, 0o644);
       }
       const created = await this.command(['volume', 'create', volume]);
       if (created.exitCode !== 0) throw new ApiError(503, 'RUNNER_FAILED', 'Cannot create compilation volume');
@@ -89,7 +96,7 @@ export class DockerRunner implements Runner {
     }
   }
   async verify(original: SourceFile[], current: SourceFile[], request: VerifyRequest, revision: number): Promise<Verification> {
-    if (this.active >= 2) throw new ApiError(429, 'RUNNER_BUSY', 'Two verification jobs are already running');
+    if (this.active >= Number(process.env.MAX_RUNNER_JOBS || 2)) throw new ApiError(429, 'RUNNER_BUSY', 'Verification capacity reached; retry shortly');
     this.active++;
     try {
       await this.requireReady();

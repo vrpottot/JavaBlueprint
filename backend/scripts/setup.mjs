@@ -1,4 +1,4 @@
-import { mkdir, writeFile, readFile } from 'node:fs/promises';
+import { mkdir, writeFile, readFile, readdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -28,7 +28,8 @@ for (const [artifact, name] of artifacts) {
   console.log(`Ready: ${name}`);
 }
 const javac = process.env.JAVAC_BIN || 'javac';
-const result = spawnSync(javac, ['-encoding', 'UTF-8', '-cp', 'java-engine/lib/*', '-d', 'java-engine/build', 'java-engine/src/Engine.java'], { cwd: root, stdio: 'inherit' });
+const sources = (await readdir(`${root}java-engine/src`)).filter(name => name.endsWith('.java')).map(name => `java-engine/src/${name}`);
+const result = spawnSync(javac, ['-encoding', 'UTF-8', '-cp', 'java-engine/lib/*', '-d', 'java-engine/build', ...sources], { cwd: root, stdio: 'inherit' });
 if (result.error) throw result.error;
 if (result.status !== 0) process.exit(result.status || 1);
 console.log('Java engine compiled');

@@ -17,6 +17,7 @@ export const AnalysisPanel: React.FC = () => {
   const recommendations = useProjectStore((s) => s.recommendations);
   const metrics = useProjectStore((s) => s.metrics);
   const complexity = useProjectStore((s) => s.complexity);
+  const methodComplexities = useProjectStore((s) => s.methodComplexities);
   const isOptimized = useProjectStore((s) => s.isOptimized);
   const activeTab = useProjectStore((s) => s.activeAnalysisTab);
   const setActiveTab = useProjectStore((s) => s.setActiveAnalysisTab);
@@ -210,6 +211,16 @@ export const AnalysisPanel: React.FC = () => {
         </div>
 
         <p className={styles.explanation}>{complexity.explanation}</p>
+        <div style={{ maxHeight: 260, overflowY: 'auto' }}>
+          {methodComplexities.map(method => <details key={method.methodId} style={{ marginBottom: 10 }}>
+            <summary style={{ cursor: 'pointer', fontSize: 12 }}>{method.method}: <strong>{method.estimate === 'unknown' ? 'Неизвестно' : method.estimate}</strong></summary>
+            <p className={styles.explanation}>{method.explanation}</p>
+            <p className={styles.explanation}>{method.file}:{method.line}</p>
+            {method.assumptions.map((a, i) => <p className={styles.explanation} key={`a${i}`}>{a}</p>)}
+            {method.evidence.map((e, i) => <p className={styles.explanation} key={`e${i}`}>L{e.line}: {e.estimate} — {e.rule}</p>)}
+            <button className={styles.jumpBtn} onClick={() => focusNodeFromIssue(method.methodId)}>К методу</button>
+          </details>)}
+        </div>
 
         {!isOptimized ? (
           <button className={styles.applyBtn} onClick={applyOptimization}>
