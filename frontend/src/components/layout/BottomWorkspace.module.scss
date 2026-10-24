@@ -86,6 +86,16 @@
     .tabIcon {
       color: #60A5FA;
     }
+
+    :global([data-theme="light"]) & {
+      background-color: #DDF4FF;
+      color: #0969DA;
+      border-color: rgba(9, 105, 218, 0.35);
+
+      .tabIcon {
+        color: #0969DA;
+      }
+    }
   }
 }
 

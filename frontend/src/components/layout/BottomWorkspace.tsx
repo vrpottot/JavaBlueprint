@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FileCode, Terminal, CheckCircle2 } from 'lucide-react';
+import { Terminal, CheckCircle2 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
-import { JavaEditor } from '../editor/JavaEditor';
 import { ConsolePanel } from '../console/ConsolePanel';
 import { TestResults } from '../tests/TestResults';
 import styles from './BottomWorkspace.module.scss';
@@ -10,7 +9,7 @@ export const BottomWorkspace: React.FC = () => {
   const bottomPanelHeight = useProjectStore((s) => s.bottomPanelHeight);
   const setBottomPanelHeight = useProjectStore((s) => s.setBottomPanelHeight);
 
-  const [activeTab, setActiveTab] = useState<'editor' | 'console' | 'tests'>('editor');
+  const [activeTab, setActiveTab] = useState<'console' | 'tests'>('console');
   const [isResizing, setIsResizing] = useState(false);
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -57,14 +56,6 @@ export const BottomWorkspace: React.FC = () => {
       <div className={styles.tabBar}>
         <div className={styles.tabsGroup}>
           <button
-            className={`${styles.tabBtn} ${activeTab === 'editor' ? styles.active : ''}`}
-            onClick={() => setActiveTab('editor')}
-          >
-            <FileCode size={14} className={styles.tabIcon} />
-            <span>Код Java</span>
-          </button>
-
-          <button
             className={`${styles.tabBtn} ${activeTab === 'console' ? styles.active : ''}`}
             onClick={() => setActiveTab('console')}
           >
@@ -84,7 +75,6 @@ export const BottomWorkspace: React.FC = () => {
 
       {/* Tab Panels */}
       <div className={styles.tabContentArea}>
-        {activeTab === 'editor' && <JavaEditor />}
         {activeTab === 'console' && <ConsolePanel />}
         {activeTab === 'tests' && <TestResults />}
       </div>

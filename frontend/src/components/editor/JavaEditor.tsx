@@ -4,7 +4,11 @@ import { Copy, Check, FileCode } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import styles from './JavaEditor.module.scss';
 
-export const JavaEditor: React.FC = () => {
+interface JavaEditorProps {
+  hideHeader?: boolean;
+}
+
+export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) => {
   const theme = useProjectStore((s) => s.theme);
   const javaCode = useProjectStore((s) => s.javaCode);
   const updateJavaCode = useProjectStore((s) => s.updateJavaCode);
@@ -74,38 +78,40 @@ export const JavaEditor: React.FC = () => {
 
   return (
     <div className={styles.editorContainer}>
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <FileCode size={13} color="var(--accent-blue)" />
-          <span className={styles.fileName}>{activeFilePath.split('/').pop()}</span>
-        </div>
-
-        <div className={styles.headerRight}>
-          <div className={styles.toggleGroup}>
-            <button
-              className={`${styles.toggleBtn} ${codeViewMode === 'source' ? styles.active : ''}`}
-              onClick={() => setCodeViewMode('source')}
-            >
-              Исходный
-            </button>
-            <button
-              className={`${styles.toggleBtn} ${codeViewMode === 'optimized' ? styles.active : ''}`}
-              onClick={() => setCodeViewMode('optimized')}
-            >
-              Оптимизированный
-            </button>
+      {!hideHeader && (
+        <div className={styles.header}>
+          <div className={styles.headerLeft}>
+            <FileCode size={13} color="var(--accent-blue)" />
+            <span className={styles.fileName}>{activeFilePath.split('/').pop()}</span>
           </div>
 
-          <button
-            className={`${styles.actionBtn} ${copied ? styles.success : ''}`}
-            onClick={handleCopy}
-            title="Копировать код в буфер"
-          >
-            {copied ? <Check size={12} /> : <Copy size={12} />}
-            <span>{copied ? 'Скопировано' : 'Копировать'}</span>
-          </button>
+          <div className={styles.headerRight}>
+            <div className={styles.toggleGroup}>
+              <button
+                className={`${styles.toggleBtn} ${codeViewMode === 'source' ? styles.active : ''}`}
+                onClick={() => setCodeViewMode('source')}
+              >
+                Исходный
+              </button>
+              <button
+                className={`${styles.toggleBtn} ${codeViewMode === 'optimized' ? styles.active : ''}`}
+                onClick={() => setCodeViewMode('optimized')}
+              >
+                Оптимизированный
+              </button>
+            </div>
+
+            <button
+              className={`${styles.actionBtn} ${copied ? styles.success : ''}`}
+              onClick={handleCopy}
+              title="Копировать код в буфер"
+            >
+              {copied ? <Check size={12} /> : <Copy size={12} />}
+              <span>{copied ? 'Скопировано' : 'Копировать'}</span>
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className={styles.monacoWrapper}>
         <Editor

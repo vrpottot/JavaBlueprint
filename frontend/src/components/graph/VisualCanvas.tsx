@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   ReactFlow,
   Background,
@@ -13,14 +13,17 @@ import {
   ZoomOut,
   X,
   Plus,
+  Workflow,
   FileCode,
   Edit3,
   Copy,
+  Check,
   Trash2,
   ArrowUpRight,
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import type { VisualBlockData, BlockType } from '../../types';
+import { JavaEditor } from '../editor/JavaEditor';
 import { MethodNode } from './nodes/MethodNode';
 import { VariableNode } from './nodes/VariableNode';
 import { ConditionNode } from './nodes/ConditionNode';
@@ -49,9 +52,31 @@ const CanvasInner: React.FC = () => {
   const duplicateNode = useProjectStore((s) => s.duplicateNode);
   const deleteNode = useProjectStore((s) => s.deleteNode);
 
+  const mainWorkspaceTab = useProjectStore((s) => s.mainWorkspaceTab);
+  const setMainWorkspaceTab = useProjectStore((s) => s.setMainWorkspaceTab);
+  const codeViewMode = useProjectStore((s) => s.codeViewMode);
+  const setCodeViewMode = useProjectStore((s) => s.setCodeViewMode);
+  const javaCode = useProjectStore((s) => s.javaCode);
+
   const { fitView, zoomIn, zoomOut, zoomTo, screenToFlowPosition } = useReactFlow();
 
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(javaCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  useEffect(() => {
+    if (mainWorkspaceTab === 'graph') {
+      const timer = setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [mainWorkspaceTab]);
 
   const nodeTypes = useMemo(
     () => ({
@@ -129,9 +154,30 @@ const CanvasInner: React.FC = () => {
       onDrop={onDrop}
       onClick={() => setContextMenu(null)}
     >
-      {/* Top Floating Bar matching reference photo */}
-      <div className={styles.canvasTopBar}>
-        <div className={styles.fileTabsGroup}>
+      {/* Workspace Switcher Header matching reference screenshot */}
+      <div className={styles.workspaceTabBar}>
+        <div className={styles.leftGroup}>
+          <div className={styles.tabsGroup}>
+            <button
+              className={`${styles.tabBtn} ${mainWorkspaceTab === 'graph' ? styles.active : ''}`}
+              onClick={() => setMainWorkspaceTab('graph')}
+            >
+              <Workflow size={14} className={styles.tabIcon} />
+              <span>Блок-схема</span>
+            </button>
+
+            <button
+              className={`${styles.tabBtn} ${mainWorkspaceTab === 'editor' ? styles.active : ''}`}
+              onClick={() => setMainWorkspaceTab('editor')}
+            >
+              <FileCode size={14} className={styles.tabIcon} />
+              <span>Код Java</span>
+            </button>
+          </div>
+
+          <div className={styles.tabDivider} />
+
+          {/* Active file tab */}
           <div className={styles.fileTab}>
             <FileCode size={13} color="var(--accent-blue)" />
             <span>{activeFilePath.split('/').pop()}</span>
@@ -145,55 +191,101 @@ const CanvasInner: React.FC = () => {
           </button>
         </div>
 
-        {/* Floating pill zoom controls matching screenshot */}
-        <div className={styles.canvasControlsPill}>
-          <button className={styles.pillBtn} onClick={() => zoomIn()} title="Увеличить">
-            <ZoomIn size={14} />
-          </button>
-          <button className={styles.pillBtn} onClick={() => zoomOut()} title="Уменьшить">
-            <ZoomOut size={14} />
-          </button>
-          <span
-            className={styles.zoomText}
-            onClick={() => zoomTo(1)}
-            style={{ cursor: 'pointer' }}
-            title="Сбросить масштаб к 100%"
-          >
-            100%
-          </span>
-          <button
-            className={styles.pillBtn}
-            onClick={() => fitView({ duration: 300, padding: 0.25 })}
-            title="Вписать в экран"
-          >
-            <Maximize2 size={13} />
-          </button>
+        {/* Right side controls based on active workspace */}
+        <div className={styles.rightGroup}>
+          {mainWorkspaceTab === 'graph' ? (
+            <div className={styles.canvasControlsPill}>
+              <button className={styles.pillBtn} onClick={() => zoomIn()} title="Увеличить">
+                <ZoomIn size={14} />
+              </button>
+              <button className={styles.pillBtn} onClick={() => zoomOut()} title="Уменьшить">
+                <ZoomOut size={14} />
+              </button>
+              <span
+                className={styles.zoomText}
+                onClick={() => zoomTo(1)}
+                style={{ cursor: 'pointer' }}
+                title="Сбросить масштаб к 100%"
+              >
+                100%
+              </span>
+              <button
+                className={styles.pillBtn}
+                onClick={() => fitView({ duration: 300, padding: 0.25 })}
+                title="Вписать в экран"
+              >
+                <Maximize2 size={13} />
+              </button>
+            </div>
+          ) : (
+            <div className={styles.editorControlsGroup}>
+              <div className={styles.toggleGroup}>
+                <button
+                  className={`${styles.toggleBtn} ${codeViewMode === 'source' ? styles.active : ''}`}
+                  onClick={() => setCodeViewMode('source')}
+                >
+                  Исходный
+                </button>
+                <button
+                  className={`${styles.toggleBtn} ${codeViewMode === 'optimized' ? styles.active : ''}`}
+                  onClick={() => setCodeViewMode('optimized')}
+                >
+                  Оптимизированный
+                </button>
+              </div>
+
+              <button
+                className={`${styles.actionBtn} ${copied ? styles.success : ''}`}
+                onClick={handleCopy}
+                title="Копировать код в буфер"
+              >
+                {copied ? <Check size={12} /> : <Copy size={12} />}
+                <span>{copied ? 'Скопировано' : 'Копировать'}</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        nodeTypes={nodeTypes}
-        onNodeClick={onNodeClick}
-        onNodeDoubleClick={onNodeDoubleClick}
-        onNodeContextMenu={onNodeContextMenu}
-        onPaneClick={onPaneClick}
-        defaultViewport={{ x: 80, y: 30, zoom: 0.9 }}
-        minZoom={0.3}
-        maxZoom={1.8}
-        fitViewOptions={{ padding: 0.25 }}
-        proOptions={{ hideAttribution: true }}
-      >
-        <Background
-          color={isLight ? '#CBD5E1' : '#2A3647'}
-          gap={20}
-          size={1}
-          variant={BackgroundVariant.Dots}
-        />
-      </ReactFlow>
+      {/* Main Workspace Views */}
+      <div className={styles.viewsContent}>
+        <div
+          className={styles.graphView}
+          style={{ display: mainWorkspaceTab === 'graph' ? 'block' : 'none' }}
+        >
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            nodeTypes={nodeTypes}
+            onNodeClick={onNodeClick}
+            onNodeDoubleClick={onNodeDoubleClick}
+            onNodeContextMenu={onNodeContextMenu}
+            onPaneClick={onPaneClick}
+            defaultViewport={{ x: 80, y: 30, zoom: 0.9 }}
+            minZoom={0.3}
+            maxZoom={1.8}
+            fitViewOptions={{ padding: 0.25 }}
+            proOptions={{ hideAttribution: true }}
+            colorMode={isLight ? 'light' : 'dark'}
+          >
+            <Background
+              color={isLight ? '#CBD5E1' : '#2A3647'}
+              gap={20}
+              size={1}
+              variant={BackgroundVariant.Dots}
+            />
+          </ReactFlow>
+        </div>
+
+        <div
+          className={styles.editorView}
+          style={{ display: mainWorkspaceTab === 'editor' ? 'block' : 'none' }}
+        >
+          <JavaEditor hideHeader />
+        </div>
+      </div>
 
       {/* Context Menu */}
       {contextMenu && (

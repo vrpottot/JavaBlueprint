@@ -7,36 +7,96 @@
   position: relative;
   background-color: var(--bg-canvas);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.canvasTopBar {
-  position: absolute;
-  top: 12px;
-  left: 14px;
-  right: 14px;
-  z-index: 10;
+.workspaceTabBar {
+  height: 38px;
+  background-color: var(--bg-panel-secondary);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  pointer-events: none;
+  padding: 0 12px;
+  user-select: none;
+  z-index: 20;
+  flex-shrink: 0;
 }
 
-.fileTabsGroup {
-  pointer-events: auto;
+.leftGroup {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+}
+
+.tabsGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tabBtn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 6px;
+  background: none;
+  border: 1px solid transparent;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-panel-hover);
+  }
+
+  &.active {
+    background-color: #0D3868;
+    color: #FFFFFF;
+    font-weight: 600;
+    border-color: rgba(56, 139, 253, 0.35);
+
+    .tabIcon {
+      color: #60A5FA;
+    }
+
+    :global([data-theme="light"]) & {
+      background-color: #DDF4FF;
+      color: #0969DA;
+      border-color: rgba(9, 105, 218, 0.35);
+
+      .tabIcon {
+        color: #0969DA;
+      }
+    }
+  }
+}
+
+.tabIcon {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.tabDivider {
+  width: 1px;
+  height: 18px;
+  background-color: var(--border-color);
 }
 
 .fileTab {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background-color: var(--bg-glass);
-  backdrop-filter: blur(8px);
+  gap: 7px;
+  background-color: var(--bg-panel);
   border: 1px solid var(--border-color);
   border-radius: $radius-sm;
-  padding: 6px 12px;
+  padding: 4px 10px;
   font-family: $font-mono;
   font-size: 12px;
   color: var(--text-primary);
@@ -54,7 +114,7 @@
   display: flex;
   align-items: center;
   border-radius: $radius-xs;
-  padding: 2px;
+  padding: 1px;
   transition: all $transition-fast;
 
   &:hover {
@@ -67,10 +127,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  background-color: var(--bg-glass);
-  backdrop-filter: blur(8px);
+  width: 26px;
+  height: 26px;
+  background-color: var(--bg-panel);
   border: 1px solid var(--border-color);
   border-radius: $radius-sm;
   color: var(--text-muted);
@@ -84,17 +143,86 @@
   }
 }
 
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editorControlsGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggleGroup {
+  display: flex;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-sm;
+  padding: 2px;
+  gap: 2px;
+}
+
+.toggleBtn {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: $radius-xs;
+  color: var(--text-secondary);
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+
+  &.active {
+    background-color: var(--bg-active);
+    color: var(--accent-blue);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: $radius-xs;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  background-color: var(--bg-panel);
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-panel-hover);
+    border-color: var(--border-light);
+  }
+
+  &.success {
+    color: var(--accent-green);
+    background-color: var(--accent-green-subtle);
+    border-color: rgba(63, 185, 80, 0.3);
+  }
+}
+
 .canvasControlsPill {
-  pointer-events: auto;
   display: flex;
   align-items: center;
   gap: 6px;
-  background-color: var(--bg-glass);
-  backdrop-filter: blur(8px);
+  background-color: var(--bg-panel);
   border: 1px solid var(--border-color);
   border-radius: $radius-full;
-  padding: 4px 10px;
-  box-shadow: var(--shadow-md);
+  padding: 3px 10px;
+  box-shadow: var(--shadow-sm);
 }
 
 .pillBtn {
@@ -114,10 +242,6 @@
     color: var(--text-primary);
     background-color: var(--bg-panel-hover);
   }
-
-  &:active {
-    transform: scale(0.92);
-  }
 }
 
 .zoomText {
@@ -127,12 +251,29 @@
   color: var(--text-secondary);
   padding: 0 4px;
   user-select: none;
-  cursor: pointer;
-  transition: color $transition-fast;
 
   &:hover {
-    color: var(--text-primary);
+    color: var(--accent-blue);
   }
+}
+
+.viewsContent {
+  flex: 1;
+  height: calc(100% - 38px);
+  position: relative;
+  overflow: hidden;
+}
+
+.graphView {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.editorView {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 // Context Menu

@@ -15,6 +15,7 @@ export const OperationNode = memo(({ data, selected }: NodeProps) => {
       }`}
     >
       <Handle type="target" position={Position.Top} id="in" />
+      <Handle type="target" position={Position.Left} id="in-left" />
 
       {/* 5. ПРОЦЕСС: Четкий прямоугольник (ГОСТ 19.701-90 / ISO 5807) */}
       <svg
@@ -64,6 +65,7 @@ export const OperationNode = memo(({ data, selected }: NodeProps) => {
       </div>
 
       <Handle type="source" position={Position.Bottom} id="out" />
+      <Handle type="source" position={Position.Right} id="out-right" />
     </div>
   );
 });

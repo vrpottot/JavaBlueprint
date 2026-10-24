@@ -67,6 +67,8 @@ interface ProjectState {
   showAddBlockModal: boolean;
   isLeftSidebarOpen: boolean;
   isRightSidebarOpen: boolean;
+  mainWorkspaceTab: 'graph' | 'editor';
+  setMainWorkspaceTab: (tab: 'graph' | 'editor') => void;
   bottomPanelHeight: number;
 
   // Actions
@@ -144,7 +146,12 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   showAddBlockModal: false,
   isLeftSidebarOpen: true,
   isRightSidebarOpen: true,
-  bottomPanelHeight: 270,
+  mainWorkspaceTab: 'graph',
+  bottomPanelHeight: 220,
+
+  setMainWorkspaceTab: (tab) => {
+    set({ mainWorkspaceTab: tab });
+  },
 
   selectFile: (fileId) => {
     const findPath = (items: FileItem[]): { path: string; name: string } | null => {
@@ -428,6 +435,7 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   },
 
   focusNodeFromIssue: (nodeId) => {
+    set({ mainWorkspaceTab: 'graph' });
     get().selectNode(nodeId);
     get().addConsoleLog('info', `Фокус на блоке проблемы: ${nodeId}`);
   },

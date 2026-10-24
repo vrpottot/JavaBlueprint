@@ -14,6 +14,9 @@ export const MethodNode = memo(({ data, selected }: NodeProps) => {
         isSelected ? styles.selected : ''
       }`}
     >
+      <Handle type="target" position={Position.Top} id="in" />
+      <Handle type="target" position={Position.Left} id="in-left" />
+
       {/* 1. ТЕРМИНАТОР: Скругленный овал / капсула */}
       <svg
         className={styles.shapeSvgBg}

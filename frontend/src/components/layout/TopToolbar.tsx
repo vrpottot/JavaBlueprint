@@ -16,8 +16,11 @@ import {
   Sparkles,
   FileText,
   Sidebar,
+  Image,
+  Loader2,
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
+import { exportGraphToPng } from '../../lib/export-image';
 import styles from './TopToolbar.module.scss';
 
 export const TopToolbar: React.FC = () => {
@@ -38,9 +41,24 @@ export const TopToolbar: React.FC = () => {
   const setShowImportModal = useProjectStore((s) => s.setShowImportModal);
   const exportJavaFile = useProjectStore((s) => s.exportJavaFile);
   const runProgram = useProjectStore((s) => s.runProgram);
+  const addConsoleLog = useProjectStore((s) => s.addConsoleLog);
 
+  const [isExportingPng, setIsExportingPng] = useState(false);
   const [runDropdownOpen, setRunDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleExportPng = async () => {
+    try {
+      setIsExportingPng(true);
+      await exportGraphToPng(theme === 'dark', projectName);
+      addConsoleLog('success', 'Снимок графа успешно сохранен в формате PNG');
+    } catch (error) {
+      console.error(error);
+      addConsoleLog('error', 'Не удалось экспортировать граф в PNG');
+    } finally {
+      setIsExportingPng(false);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -94,10 +112,24 @@ export const TopToolbar: React.FC = () => {
         <button
           className={styles.actionBtn}
           onClick={exportJavaFile}
-          title="Экспортировать текущий файл"
+          title="Экспортировать текущий файл .java"
         >
           <Download size={13} />
-          <span>Экспорт</span>
+          <span>Экспорт .java</span>
+        </button>
+
+        <button
+          className={`${styles.actionBtn} ${isExportingPng ? styles.loading : ''}`}
+          onClick={handleExportPng}
+          disabled={isExportingPng}
+          title="Скачать фото графа в формате PNG"
+        >
+          {isExportingPng ? (
+            <Loader2 size={13} className={styles.spinner} />
+          ) : (
+            <Image size={13} />
+          )}
+          <span>{isExportingPng ? 'Экспорт...' : 'Экспорт в PNG'}</span>
         </button>
 
         <div className={styles.vDivider} />

@@ -156,6 +156,22 @@ code, pre {
   font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 }
 
+/* Custom flowchart nodes: eliminate default React Flow white node wrappers */
+.react-flow,
+.react-flow__viewport {
+  --xy-node-background-color: transparent !important;
+  --xy-node-background-color-default: transparent !important;
+  --xy-node-border-default: none !important;
+  --xy-node-boxshadow-selected-default: none !important;
+}
+
+.react-flow__node {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
 /* React Flow Theming */
 [data-theme="dark"] .react-flow,
 :root:not([data-theme="light"]) .react-flow {

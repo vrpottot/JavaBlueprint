@@ -420,6 +420,7 @@ export const INITIAL_EDGES: Edge[] = [
     source: 'node-cond-valid',
     sourceHandle: 'out-right',
     target: 'node-op-continue',
+    targetHandle: 'in-left',
     label: 'Нет',
     labelStyle: { fill: '#DC2626', fontWeight: 600, fontSize: 11 },
     labelBgStyle: { fill: '#FEF2F2', rx: 4, ry: 4, stroke: '#FCA5A5' },
@@ -428,7 +429,9 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-external-call',
     source: 'node-op-process',
+    sourceHandle: 'out-right',
     target: 'node-method-external',
+    targetHandle: 'in-left',
     style: { stroke: '#94A3B8', strokeWidth: 1.5, strokeDasharray: '4 4' },
   },
   {
