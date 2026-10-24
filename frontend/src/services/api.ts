@@ -16,12 +16,37 @@ export interface VersionResult { compilation: Execution; runs: (Execution & { na
 export interface Verification { revision: number; current: VersionResult; original?: VersionResult; comparison: { status: string; explanation: string; provenEquivalent: false } }
 const base = import.meta.env.VITE_API_URL || '/api';
 export async function api<T>(path: string, body?: unknown, method = body === undefined ? 'GET' : 'POST'): Promise<T> {
-  const response = await fetch(`${base}${path}`, { method, headers: body === undefined ? undefined : { 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body), signal: AbortSignal.timeout(180000) });
-  if (response.status === 204) return undefined as T;
-  const result = await response.json();
-  if (!response.ok) {
-    const parse = result.errors?.map((e: { file: string; line?: number; message: string }) => `${e.file}:${e.line ?? '?'} ${e.message}`).join('\n');
-    throw new Error(result.error?.message || parse || `HTTP ${response.status}`);
+  let response: Response;
+  try {
+    response = await fetch(`${base}${path}`, {
+      method,
+      headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
+      body: body === undefined ? undefined : JSON.stringify(body),
+      signal: AbortSignal.timeout(180000),
+    });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    throw new Error(`Не удалось подключиться к бэкенду (${path}): ${msg}. Убедитесь, что бэкенд запущен на порту 3001.`);
   }
+
+  if (response.status === 204) return undefined as T;
+
+  const text = await response.text();
+  let result: any = null;
+  if (text) {
+    try {
+      result = JSON.parse(text);
+    } catch {
+      throw new Error(`Бэкенд вернул не-JSON ответ (HTTP ${response.status}): ${text.slice(0, 120)}`);
+    }
+  } else if (!response.ok) {
+    throw new Error(`Бэкенд недоступен (HTTP ${response.status}). Запустите бэкенд-сервер на порту 3001.`);
+  }
+
+  if (!response.ok) {
+    const parse = result?.errors?.map((e: { file: string; line?: number; message: string }) => `${e.file}:${e.line ?? '?'} ${e.message}`).join('\n');
+    throw new Error(result?.error?.message || parse || `HTTP ${response.status}`);
+  }
+
   return result as T;
 }
