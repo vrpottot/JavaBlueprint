@@ -1,473 +1,202 @@
 import { create } from 'zustand';
 import type { Node, Edge, NodeChange, EdgeChange } from '@xyflow/react';
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
-import type {
-  FileItem,
-  CodeIssue,
-  CodeRecommendation,
-  CodeMetrics,
-  ComplexityEstimate,
-  ConsoleLog,
-  TestCase,
-  BlockType,
-  VisualBlockData,
-} from '../types';
-import {
-  INITIAL_FILES,
-  INITIAL_JAVA_CODE,
-  OPTIMIZED_JAVA_CODE,
-  INITIAL_NODES,
-  INITIAL_EDGES,
-  OPTIMIZED_NODES,
-  OPTIMIZED_EDGES,
-  INITIAL_ISSUES,
-  INITIAL_RECOMMENDATIONS,
-  INITIAL_METRICS,
-  INITIAL_COMPLEXITY,
-  INITIAL_CONSOLE_LOGS,
-  INITIAL_TEST_CASES,
-  PALETTE_ITEMS,
-} from '../lib/demo-data';
+import type { FileItem, CodeIssue, CodeRecommendation, CodeMetrics, ComplexityEstimate, ConsoleLog, TestCase, BlockType, VisualBlockData } from '../types';
+import { api, type ProjectSnapshot, type SourceFile, type Analysis, type Verification } from '../services/api';
+import { PALETTE_ITEMS } from '../lib/palette';
 
-interface ProjectState {
-  projectName: string;
-  files: FileItem[];
-  activeFileId: string;
-  activeFilePath: string;
-  javaCode: string;
-  isOptimized: boolean;
-  codeViewMode: 'source' | 'optimized';
+const SAMPLE = `import java.util.Scanner;
 
-  // React Flow Nodes & Edges
-  nodes: Node<VisualBlockData>[];
-  edges: Edge[];
-  selectedNodeId: string | null;
-  editingNode: Node<VisualBlockData> | null;
-
-  // Analysis
-  issues: CodeIssue[];
-  recommendations: CodeRecommendation[];
-  metrics: CodeMetrics;
-  complexity: ComplexityEstimate;
-  activeAnalysisTab: 'issues' | 'recommendations' | 'metrics';
-
-  // Console & Tests
-  consoleLogs: ConsoleLog[];
-  testCases: TestCase[];
-  isRunning: boolean;
-  isCompiling: boolean;
-
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
-  setTheme: (theme: 'light' | 'dark') => void;
-
-  // Modals & Panels
-  showOptimizationModal: boolean;
-  showImportModal: boolean;
-  showAddBlockModal: boolean;
-  isLeftSidebarOpen: boolean;
-  isRightSidebarOpen: boolean;
-  bottomPanelHeight: number;
-
-  // Actions
-  selectFile: (fileId: string) => void;
-  updateJavaCode: (code: string) => void;
-  setCodeViewMode: (mode: 'source' | 'optimized') => void;
-  onNodesChange: (changes: NodeChange<Node<VisualBlockData>>[]) => void;
-  onEdgesChange: (changes: EdgeChange[]) => void;
-  selectNode: (nodeId: string | null) => void;
-  setEditingNode: (node: Node<VisualBlockData> | null) => void;
-  updateNodeData: (nodeId: string, updatedData: Partial<VisualBlockData>) => void;
-  addNode: (blockType: BlockType, position?: { x: number; y: number }) => void;
-  deleteNode: (nodeId: string) => void;
-  duplicateNode: (nodeId: string) => void;
-  applyOptimization: () => void;
-  revertOptimization: () => void;
-  runProgram: () => void;
-  importJavaFile: (filename: string, content: string) => void;
-  exportJavaFile: () => void;
-  setActiveAnalysisTab: (tab: 'issues' | 'recommendations' | 'metrics') => void;
-  focusNodeFromIssue: (nodeId: string) => void;
-  toggleLeftSidebar: () => void;
-  toggleRightSidebar: () => void;
-  setBottomPanelHeight: (height: number) => void;
-  setShowOptimizationModal: (show: boolean) => void;
-  setShowImportModal: (show: boolean) => void;
-  setShowAddBlockModal: (show: boolean) => void;
-  clearConsole: () => void;
-  addConsoleLog: (type: 'info' | 'success' | 'warn' | 'error', message: string) => void;
-}
-
-const getCurrentTimestamp = () => {
-  const d = new Date();
-  return d.toTimeString().split(' ')[0];
-};
-
-export const useProjectStore = create<ProjectState>((set, get) => ({
-  projectName: 'OrderProcessingService',
-  files: INITIAL_FILES,
-  activeFileId: 'f-main-java',
-  activeFilePath: 'src/com.example/Main.java',
-  javaCode: INITIAL_JAVA_CODE,
-  isOptimized: false,
-  codeViewMode: 'source',
-
-  nodes: INITIAL_NODES,
-  edges: INITIAL_EDGES,
-  selectedNodeId: null,
-  editingNode: null,
-
-  issues: INITIAL_ISSUES,
-  recommendations: INITIAL_RECOMMENDATIONS,
-  metrics: INITIAL_METRICS,
-  complexity: INITIAL_COMPLEXITY,
-  activeAnalysisTab: 'issues',
-
-  consoleLogs: INITIAL_CONSOLE_LOGS,
-  testCases: INITIAL_TEST_CASES,
-  isRunning: false,
-  isCompiling: false,
-
-  theme: 'light',
-  toggleTheme: () => {
-    const next = get().theme === 'dark' ? 'light' : 'dark';
-    set({ theme: next });
-    document.documentElement.setAttribute('data-theme', next);
-  },
-  setTheme: (theme) => {
-    set({ theme });
-    document.documentElement.setAttribute('data-theme', theme);
-  },
-
-  showOptimizationModal: false,
-  showImportModal: false,
-  showAddBlockModal: false,
-  isLeftSidebarOpen: true,
-  isRightSidebarOpen: true,
-  bottomPanelHeight: 270,
-
-  selectFile: (fileId) => {
-    const findPath = (items: FileItem[]): { path: string; name: string } | null => {
-      for (const item of items) {
-        if (item.id === fileId) return { path: item.path, name: item.name };
-        if (item.children) {
-          const res = findPath(item.children);
-          if (res) return res;
+public class Main {
+    public static int classify(int value) {
+        if (value > 0) {
+            return 1;
         }
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int value = scanner.hasNextInt() ? scanner.nextInt() : 5;
+        System.out.println(classify(value));
+    }
+}
+`;
+const emptyMetrics: CodeMetrics = { cyclomaticComplexity: 0, linesOfCode: 0, nestingDepth: 0, testCoverage: null, maintainabilityIndex: null };
+interface ProjectState {
+  projectId: string | null; revision: number; sourceFiles: SourceFile[]; originalFiles: SourceFile[];
+  mainClasses: string[]; dirty: boolean; isLoading: boolean; error: string | null;
+  projectName: string; files: FileItem[]; activeFileId: string; activeFilePath: string; javaCode: string;
+  isOptimized: boolean; codeViewMode: 'source' | 'optimized'; nodes: Node<VisualBlockData>[]; edges: Edge[];
+  selectedNodeId: string | null; editingNode: Node<VisualBlockData> | null;
+  issues: CodeIssue[]; recommendations: CodeRecommendation[]; metrics: CodeMetrics; complexity: ComplexityEstimate;
+  activeAnalysisTab: 'issues' | 'recommendations' | 'metrics'; consoleLogs: ConsoleLog[]; testCases: TestCase[];
+  isRunning: boolean; isCompiling: boolean; runStdin: string;
+  theme: 'light' | 'dark'; showOptimizationModal: boolean; showImportModal: boolean; showAddBlockModal: boolean;
+  isLeftSidebarOpen: boolean; isRightSidebarOpen: boolean; bottomPanelHeight: number;
+  initialize: () => Promise<void>; syncSources: () => Promise<void>;
+  selectFile: (id: string) => void; updateJavaCode: (code: string) => void;
+  setCodeViewMode: (mode: 'source' | 'optimized') => void;
+  onNodesChange: (changes: NodeChange<Node<VisualBlockData>>[]) => void; onEdgesChange: (changes: EdgeChange[]) => void;
+  selectNode: (id: string | null) => void; setEditingNode: (node: Node<VisualBlockData> | null) => void;
+  updateNodeData: (id: string, data: Partial<VisualBlockData>) => Promise<void>;
+  addNode: (type: BlockType, position?: { x: number; y: number }) => Promise<void>;
+  deleteNode: (id: string) => Promise<void>; duplicateNode: (id: string) => Promise<void>;
+  applyOptimization: () => Promise<void>; revertOptimization: () => Promise<void>; runProgram: () => Promise<void>;
+  importJavaFile: (name: string, content: string) => Promise<void>; importJavaFiles: (files: SourceFile[]) => Promise<void>;
+  exportJavaFile: () => Promise<void>; setRunStdin: (value: string) => void;
+  toggleTheme: () => void; setTheme: (theme: 'light' | 'dark') => void;
+  setActiveAnalysisTab: (tab: 'issues' | 'recommendations' | 'metrics') => void;
+  focusNodeFromIssue: (id: string) => void; toggleLeftSidebar: () => void; toggleRightSidebar: () => void;
+  setBottomPanelHeight: (height: number) => void; setShowOptimizationModal: (v: boolean) => void;
+  setShowImportModal: (v: boolean) => void; setShowAddBlockModal: (v: boolean) => void;
+  clearConsole: () => void; addConsoleLog: (type: ConsoleLog['type'], message: string) => void;
+}
+let debounce: ReturnType<typeof setTimeout> | undefined;
+export const useProjectStore = create<ProjectState>((set, get) => {
+  const log = (type: ConsoleLog['type'], message: string) => get().addConsoleLog(type, message);
+  const fail = (error: unknown) => { const message = error instanceof Error ? error.message : String(error); set({ error: message }); log('error', message); };
+  const accept = (p: ProjectSnapshot, original = false) => {
+    const path = p.files.some(f => f.path === get().activeFilePath) ? get().activeFilePath : p.files[0]?.path || '';
+    const positions = !original && p.projectId === get().projectId ? new Map(get().nodes.map(n => [n.id, n.position])) : new Map();
+    set({ projectId: p.projectId, revision: p.revision, sourceFiles: p.files,
+      ...(original ? { originalFiles: p.files, isOptimized: false, codeViewMode: 'source' as const } : {}),
+      mainClasses: p.structure.flatMap(f => f.mainClasses), projectName: p.files[0]?.path.split('/').pop()?.replace('.java', '') || 'JavaBlueprint',
+      files: p.files.map(f => ({ id: f.path, path: f.path, name: f.path, type: 'file' as const })),
+      activeFileId: path, activeFilePath: path, javaCode: p.files.find(f => f.path === path)?.content || '',
+      nodes: p.graph.nodes.map(n => ({ ...n, position: positions.get(n.id) || n.position })), edges: p.graph.edges, selectedNodeId: null, editingNode: null, dirty: false, error: null, testCases: [],
+    });
+    p.graph.warnings.forEach(w => log('warn', w));
+  };
+  const analysis = async () => {
+    if (!get().projectId) return;
+    const result = await api<Analysis>(`/projects/${get().projectId}/analyze`, {});
+    set({ issues: result.diagnostics.map(d => ({ ...d, level: d.severity })),
+      recommendations: result.diagnostics.map(d => ({ id: d.id, title: d.title, description: d.recommendation, impact: d.severity, tag: 'Статический анализ' })),
+      metrics: result.metrics,
+      complexity: { current: 'Неизвестно', optimized: '—', speedup: 'Не измерено', explanation: result.complexity.map(c => c.explanation).join('\n') || 'Исполняемые методы не найдены.' },
+    });
+  };
+  const sync = async () => {
+    clearTimeout(debounce);
+    if (!get().dirty || !get().projectId) return;
+    accept(await api<ProjectSnapshot>(`/projects/${get().projectId}/sources`, { revision: get().revision, files: get().sourceFiles }, 'PUT'));
+    set({ isOptimized: true, codeViewMode: 'optimized' });
+    await analysis();
+  };
+  const busy = async (work: () => Promise<void>) => {
+    if (get().isLoading || get().isRunning || get().isCompiling) return;
+    set({ isLoading: true, error: null });
+    try { await work(); } catch (error) { fail(error); } finally { set({ isLoading: false }); }
+  };
+  const transform = async (operation: { type: string; nodeId: string; code?: string }) => busy(async () => {
+    if (get().dirty) throw new Error('Дождитесь разбора изменений Java перед редактированием графа.');
+    if (!get().projectId) throw new Error('Сначала импортируйте Java-файл.');
+    accept(await api<ProjectSnapshot>(`/projects/${get().projectId}/transform`, { revision: get().revision, operations: [operation] }));
+    set({ isOptimized: true, codeViewMode: 'optimized' }); await analysis();
+    log('success', 'Java-код обновлён через AST. Запустите проверку компиляции и поведения.');
+  });
+  return {
+    projectId: null, revision: 0, sourceFiles: [], originalFiles: [], mainClasses: [], dirty: false, isLoading: false, error: null,
+    projectName: 'JavaBlueprint', files: [], activeFileId: '', activeFilePath: '', javaCode: '',
+    isOptimized: false, codeViewMode: 'source', nodes: [], edges: [], selectedNodeId: null, editingNode: null,
+    issues: [], recommendations: [], metrics: emptyMetrics, complexity: { current: 'Неизвестно', optimized: '—', speedup: 'Не измерено', explanation: 'Загрузите Java-код для анализа.' }, activeAnalysisTab: 'issues',
+    consoleLogs: [], testCases: [], isRunning: false, isCompiling: false, runStdin: '5\n',
+    theme: 'light', showOptimizationModal: false, showImportModal: false, showAddBlockModal: false,
+    isLeftSidebarOpen: true, isRightSidebarOpen: true, bottomPanelHeight: 270,
+    initialize: async () => { if (!get().projectId && !get().isLoading) await get().importJavaFiles([{ path: 'Main.java', content: SAMPLE }]); },
+    syncSources: () => busy(sync),
+    selectFile: id => {
+      const file = (get().codeViewMode === 'source' && get().isOptimized ? get().originalFiles : get().sourceFiles).find(f => f.path === id);
+      if (file) set({ activeFileId: id, activeFilePath: id, javaCode: file.content });
+    },
+    updateJavaCode: code => {
+      if (get().isLoading || get().isRunning || get().isCompiling || get().codeViewMode === 'source' && get().isOptimized) return;
+      set({ javaCode: code, sourceFiles: get().sourceFiles.map(f => f.path === get().activeFilePath ? { ...f, content: code } : f), dirty: true, testCases: [] });
+      clearTimeout(debounce); debounce = setTimeout(() => { void get().syncSources(); }, 700);
+    },
+    setCodeViewMode: mode => {
+      const files = mode === 'source' && get().isOptimized ? get().originalFiles : get().sourceFiles;
+      set({ codeViewMode: mode, javaCode: files.find(f => f.path === get().activeFilePath)?.content || '' });
+    },
+    onNodesChange: changes => {
+      changes.filter(c => c.type === 'remove').forEach(c => { void get().deleteNode(c.id); });
+      set({ nodes: applyNodeChanges(changes.filter(c => c.type !== 'remove'), get().nodes) });
+    },
+    onEdgesChange: changes => set({ edges: applyEdgeChanges(changes.filter(c => c.type !== 'remove'), get().edges) }),
+    selectNode: id => set({ selectedNodeId: id, nodes: get().nodes.map(n => ({ ...n, data: { ...n.data, isHighlighted: n.id === id } })) }),
+    setEditingNode: editingNode => set({ editingNode }),
+    updateNodeData: async (id, data) => {
+      const n = get().nodes.find(n => n.id === id);
+      if (!n || data.codeSnippet === undefined) return;
+      const supported = n.data.editable as string[] || [];
+      const type = supported.includes('updateCondition') ? 'updateCondition' : n.data.astKind === 'FieldDeclaration' ? 'updateVariable' : n.data.astKind === 'SwitchStmt' ? 'updateExpression' : supported.includes('replaceStatement') ? 'replaceStatement' : 'updateExpression';
+      if (!supported.includes(type)) { fail(new Error('Редактирование этого блока не поддерживается. Измените исходный Java-код.')); return; }
+      await transform({ type, nodeId: id, code: data.codeSnippet });
+    },
+    addNode: async type => {
+      const selected = get().nodes.find(n => n.id === get().selectedNodeId) || get().nodes.find(n => n.data.blockType === 'method' && (n.data.editable as string[]).includes('addBlock'));
+      if (!selected) { fail(new Error('Выберите метод или оператор, после которого добавить блок.')); return; }
+      const code = PALETTE_ITEMS.find(p => p.type === type)?.defaultCode;
+      if (!code) { fail(new Error('Новые методы добавляются в редакторе Java.')); return; }
+      await transform({ type: 'addBlock', nodeId: selected.id, code });
+    },
+    deleteNode: id => transform({ type: 'deleteBlock', nodeId: id }),
+    duplicateNode: id => transform({ type: 'duplicateBlock', nodeId: id }),
+    applyOptimization: () => busy(async () => { await sync(); await analysis(); set({ showOptimizationModal: true }); }),
+    revertOptimization: () => busy(async () => {
+      if (!get().projectId) return;
+      accept(await api<ProjectSnapshot>(`/projects/${get().projectId}/sources`, { revision: get().revision, files: get().originalFiles }, 'PUT'));
+      set({ isOptimized: false, codeViewMode: 'source' }); await analysis();
+    }),
+    runProgram: () => busy(async () => {
+      await sync();
+      if (!get().projectId) throw new Error('Сначала импортируйте Java-файл.');
+      set({ isCompiling: true }); log('info', 'Компиляция javac и проверка в Docker...');
+      const mainClass = get().mainClasses[0];
+      const result = await api<Verification>(`/projects/${get().projectId}/verify`, { revision: get().revision, compare: true, ...(mainClass ? { mainClass, inputs: [{ name: 'stdin', stdin: get().runStdin }] } : {}) });
+      const compilation = result.current.compilation;
+      log(compilation.exitCode === 0 ? 'success' : 'error', `javac: exit=${compilation.exitCode}; ${compilation.durationMs} мс${compilation.timedOut ? '; timeout' : ''}`);
+      if (compilation.stdout) log('info', compilation.stdout);
+      if (compilation.stderr) log(compilation.exitCode === 0 ? 'warn' : 'error', compilation.stderr);
+      for (const run of result.current.runs) {
+        if (run.stdout) log('info', run.stdout);
+        if (run.stderr) log('error', run.stderr);
+        log(run.exitCode === 0 && !run.timedOut && !run.outputLimitExceeded ? 'success' : 'error', `${run.name}: exit=${run.exitCode}; ${run.durationMs} мс${run.timedOut ? '; timeout' : ''}`);
       }
-      return null;
-    };
-
-    const target = findPath(get().files);
-    if (!target) return;
-
-    if (fileId === 'f-main-java') {
-      set({
-        activeFileId: fileId,
-        activeFilePath: target.path,
-        javaCode: get().isOptimized ? OPTIMIZED_JAVA_CODE : INITIAL_JAVA_CODE,
-      });
-    } else {
-      set({
-        activeFileId: fileId,
-        activeFilePath: target.path,
-        javaCode: `package ${target.path.split('/')[1] || 'com.example'};\n\n/**\n * Исходный файл ${target.name}\n * JavaScope: Анализ синтаксической структуры\n */\npublic class ${target.name.replace('.java', '')} {\n\n    public void execute() {\n        // TODO: реализация сервиса\n    }\n}\n`,
-      });
-    }
-  },
-
-  updateJavaCode: (code) => {
-    set({ javaCode: code });
-  },
-
-  setCodeViewMode: (mode) => {
-    set({
-      codeViewMode: mode,
-      javaCode: mode === 'optimized' ? OPTIMIZED_JAVA_CODE : INITIAL_JAVA_CODE,
-    });
-  },
-
-  onNodesChange: (changes) => {
-    set({
-      nodes: applyNodeChanges(changes, get().nodes),
-    });
-  },
-
-  onEdgesChange: (changes) => {
-    set({
-      edges: applyEdgeChanges(changes, get().edges),
-    });
-  },
-
-  selectNode: (nodeId) => {
-    set({
-      selectedNodeId: nodeId,
-      nodes: get().nodes.map((node) => ({
-        ...node,
-        data: {
-          ...node.data,
-          isHighlighted: node.id === nodeId,
-        },
-      })),
-    });
-  },
-
-  setEditingNode: (node) => {
-    set({ editingNode: node });
-  },
-
-  updateNodeData: (nodeId, updatedData) => {
-    set({
-      nodes: get().nodes.map((node) =>
-        node.id === nodeId
-          ? {
-              ...node,
-              data: {
-                ...node.data,
-                ...updatedData,
-              },
-            }
-          : node
-      ),
-      editingNode: null,
-    });
-    get().addConsoleLog('info', `Обновлён блок ${nodeId} (${updatedData.codeSnippet || updatedData.title})`);
-  },
-
-  addNode: (blockType, position) => {
-    const paletteInfo = PALETTE_ITEMS.find((p) => p.type === blockType) || PALETTE_ITEMS[0];
-    const newId = `node-${blockType}-${Date.now()}`;
-    const newNode: Node<VisualBlockData> = {
-      id: newId,
-      type: `${blockType}Node`,
-      position: position || { x: 300, y: (get().nodes.length + 1) * 90 },
-      data: {
-        title: paletteInfo.name,
-        codeSnippet: paletteInfo.defaultCode,
-        blockType,
-        description: paletteInfo.description,
-        badge: 'custom',
-        isHighlighted: true,
-      },
-    };
-
-    set({
-      nodes: [...get().nodes, newNode],
-      selectedNodeId: newId,
-      showAddBlockModal: false,
-    });
-
-    get().addConsoleLog('info', `Добавлен новый блок: ${paletteInfo.name}`);
-  },
-
-  deleteNode: (nodeId) => {
-    set({
-      nodes: get().nodes.filter((node) => node.id !== nodeId),
-      edges: get().edges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId),
-      selectedNodeId: null,
-    });
-    get().addConsoleLog('warn', `Блок ${nodeId} удален из графа`);
-  },
-
-  duplicateNode: (nodeId) => {
-    const target = get().nodes.find((n) => n.id === nodeId);
-    if (!target) return;
-
-    const newId = `${target.id}-copy-${Date.now()}`;
-    const clonedNode: Node<VisualBlockData> = {
-      ...target,
-      id: newId,
-      position: { x: target.position.x + 30, y: target.position.y + 30 },
-      data: {
-        ...target.data,
-        title: `${target.data.title} (Копия)`,
-        isHighlighted: true,
-      },
-    };
-
-    set({
-      nodes: [...get().nodes, clonedNode],
-      selectedNodeId: newId,
-    });
-    get().addConsoleLog('info', `Блок ${target.data.title} скопирован`);
-  },
-
-  applyOptimization: () => {
-    set({
-      isOptimized: true,
-      codeViewMode: 'optimized',
-      javaCode: OPTIMIZED_JAVA_CODE,
-      nodes: OPTIMIZED_NODES,
-      edges: OPTIMIZED_EDGES,
-      selectedNodeId: null,
-      issues: INITIAL_ISSUES.map((issue) =>
-        issue.id === 'issue-2' || issue.id === 'issue-3'
-          ? { ...issue, resolved: true, description: `${issue.description} [РЕШЕНО ОПТИМИЗАЦИЕЙ]` }
-          : issue
-      ),
-      metrics: {
-        cyclomaticComplexity: 2,
-        linesOfCode: 24,
-        nestingDepth: 1,
-        testCoverage: 98,
-        maintainabilityIndex: 94,
-      },
-      complexity: {
-        current: 'O(n log n)',
-        optimized: 'O(n log n)',
-        speedup: '5.2x достигнуто',
-        explanation: 'Оптимизация успешно применена: задействован параллельный стрим, исключены лишние вложенные вызовы и дублирование.',
-      },
-      showOptimizationModal: false,
-      testCases: [
-        { id: 't-1', name: 'testEmptyList', status: 'success', durationMs: 1, details: 'Быстрый возврат List.of()' },
-        { id: 't-2', name: 'testSingleOrder', status: 'success', durationMs: 3, details: 'Ускорение в 2.6x' },
-        { id: 't-3', name: 'testInvalidOrder', status: 'success', durationMs: 2, details: 'Параллельная фильтрация' },
-        { id: 't-4', name: 'testLargeDataset', status: 'success', durationMs: 27, details: 'Ускорение со 142ms до 27ms (5.25x)' },
-      ],
-    });
-
-    get().addConsoleLog('success', 'Оптимизация алгоритма успешно применена!');
-    get().addConsoleLog('info', 'Сложность снижена с O(n²) до O(n log n). Длина кода: 24 строки.');
-  },
-
-  revertOptimization: () => {
-    set({
-      isOptimized: false,
-      codeViewMode: 'source',
-      javaCode: INITIAL_JAVA_CODE,
-      nodes: INITIAL_NODES,
-      edges: INITIAL_EDGES,
-      issues: INITIAL_ISSUES,
-      metrics: INITIAL_METRICS,
-      complexity: INITIAL_COMPLEXITY,
-      testCases: INITIAL_TEST_CASES,
-    });
-    get().addConsoleLog('info', 'Возврат к исходной версии кода и графа');
-  },
-
-  runProgram: () => {
-    if (get().isRunning || get().isCompiling) return;
-
-    set({ isCompiling: true, isRunning: false });
-    get().addConsoleLog('info', 'Начата компиляция JavaScope...');
-
-    setTimeout(() => {
-      set({ isCompiling: false, isRunning: true });
-      get().addConsoleLog('success', 'Компиляция успешна (javac 21.0.2 target=21)');
-      get().addConsoleLog('info', 'Запуск программы и профилирование потоков...');
-
-      // Mark test cases as running
-      set({
-        testCases: get().testCases.map((tc) => ({ ...tc, status: 'running' })),
-      });
-
-      setTimeout(() => {
-        get().addConsoleLog('info', 'Обработка данных (1523 элементов)...');
-
-        setTimeout(() => {
-          const duration = get().isOptimized ? '0.24 сек' : '1.24 сек';
-          get().addConsoleLog('success', `Готово. Время выполнения: ${duration}`);
-          get().addConsoleLog('info', 'Сравнение исходной и оптимизированной версии...');
-          get().addConsoleLog('success', 'Поведение совпадает (100% покрытие проверок)');
-
-          set({
-            isRunning: false,
-            testCases: get().testCases.map((tc) => ({ ...tc, status: 'success' })),
-          });
-        }, 600);
-      }, 500);
-    }, 600);
-  },
-
-  importJavaFile: (filename, content) => {
-    const fileId = `f-imported-${Date.now()}`;
-    const newFile: FileItem = {
-      id: fileId,
-      name: filename,
-      path: `src/com.example/${filename}`,
-      type: 'file',
-      hasIssues: false,
-    };
-
-    const updatedFiles = [...get().files];
-    const srcDir = updatedFiles[0];
-    if (srcDir && srcDir.children && srcDir.children[0] && srcDir.children[0].children) {
-      srcDir.children[0].children.push(newFile);
-    }
-
-    set({
-      files: updatedFiles,
-      activeFileId: fileId,
-      activeFilePath: newFile.path,
-      javaCode: content,
-      showImportModal: false,
-    });
-
-    get().addConsoleLog('success', `Файл ${filename} успешно импортирован`);
-  },
-
-  exportJavaFile: () => {
-    const code = get().javaCode;
-    const filename = get().activeFilePath.split('/').pop() || 'Exported.java';
-    const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    get().addConsoleLog('info', `Файл ${filename} экспортирован`);
-  },
-
-  setActiveAnalysisTab: (tab) => {
-    set({ activeAnalysisTab: tab });
-  },
-
-  focusNodeFromIssue: (nodeId) => {
-    get().selectNode(nodeId);
-    get().addConsoleLog('info', `Фокус на блоке проблемы: ${nodeId}`);
-  },
-
-  toggleLeftSidebar: () => {
-    set({ isLeftSidebarOpen: !get().isLeftSidebarOpen });
-  },
-
-  toggleRightSidebar: () => {
-    set({ isRightSidebarOpen: !get().isRightSidebarOpen });
-  },
-
-  setBottomPanelHeight: (height) => {
-    const clamped = Math.max(140, Math.min(height, 500));
-    set({ bottomPanelHeight: clamped });
-  },
-
-  setShowOptimizationModal: (show) => {
-    set({ showOptimizationModal: show });
-  },
-
-  setShowImportModal: (show) => {
-    set({ showImportModal: show });
-  },
-
-  setShowAddBlockModal: (show) => {
-    set({ showAddBlockModal: show });
-  },
-
-  clearConsole: () => {
-    set({ consoleLogs: [] });
-  },
-
-  addConsoleLog: (type, message) => {
-    const newLog: ConsoleLog = {
-      id: `log-${Date.now()}-${Math.random()}`,
-      timestamp: getCurrentTimestamp(),
-      type,
-      message,
-    };
-    set({ consoleLogs: [...get().consoleLogs, newLog] });
-  },
-}));
+      set({ testCases: result.current.tests.cases });
+      if (result.current.tests.status === 'not_run') log('warn', 'JUnit-тесты не найдены. Импортируйте тестовые .java-файлы вместе с проектом.');
+      log(result.comparison.status === 'matched_on_inputs' ? 'success' : 'warn', result.comparison.explanation);
+      set({ isCompiling: false, isRunning: false });
+    }).finally(() => { if (!get().isLoading) set({ isCompiling: false, isRunning: false }); }),
+    importJavaFile: (name, content) => get().importJavaFiles([{ path: name, content }]),
+    importJavaFiles: files => busy(async () => {
+      const oldId = get().projectId;
+      const p = await api<ProjectSnapshot>('/projects/parse', { files });
+      accept(p, true); set({ showImportModal: false }); await analysis();
+      if (oldId) void api(`/projects/${oldId}`, undefined, 'DELETE').catch(() => {});
+      log('success', `JavaParser: загружено файлов ${files.length}, узлов ${p.graph.nodes.length}.`);
+    }),
+    exportJavaFile: () => busy(async () => {
+      await sync();
+      const generated = await api<{ files: SourceFile[] }>(`/projects/${get().projectId}/generate`, {});
+      const file = generated.files.find(f => f.path === get().activeFilePath);
+      if (!file) return;
+      const url = URL.createObjectURL(new Blob([file.content], { type: 'text/plain;charset=utf-8' }));
+      const link = document.createElement('a'); link.href = url; link.download = file.path.split('/').pop() || 'Main.java'; link.click(); URL.revokeObjectURL(url);
+    }),
+    setRunStdin: runStdin => set({ runStdin }),
+    toggleTheme: () => get().setTheme(get().theme === 'light' ? 'dark' : 'light'),
+    setTheme: theme => { set({ theme }); document.documentElement.setAttribute('data-theme', theme); },
+    setActiveAnalysisTab: activeAnalysisTab => set({ activeAnalysisTab }),
+    focusNodeFromIssue: id => { const node = get().nodes.find(n => n.id === id); const source = node?.data.source as { file?: string } | undefined; if (source?.file) get().selectFile(source.file); get().selectNode(id); },
+    toggleLeftSidebar: () => set({ isLeftSidebarOpen: !get().isLeftSidebarOpen }),
+    toggleRightSidebar: () => set({ isRightSidebarOpen: !get().isRightSidebarOpen }),
+    setBottomPanelHeight: height => set({ bottomPanelHeight: Math.max(140, Math.min(height, 500)) }),
+    setShowOptimizationModal: showOptimizationModal => set({ showOptimizationModal }),
+    setShowImportModal: showImportModal => set({ showImportModal }),
+    setShowAddBlockModal: showAddBlockModal => set({ showAddBlockModal }),
+    clearConsole: () => set({ consoleLogs: [] }),
+    addConsoleLog: (type, message) => set({ consoleLogs: [...get().consoleLogs.slice(-299), { id: crypto.randomUUID(), timestamp: new Date().toLocaleTimeString(), type, message }] }),
+  };
+});

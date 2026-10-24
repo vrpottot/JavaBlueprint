@@ -17,7 +17,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
-import { PALETTE_ITEMS } from '../../lib/demo-data';
+import { PALETTE_ITEMS } from '../../lib/palette';
 import type { FileItem, BlockType } from '../../types';
 import styles from './ProjectExplorer.module.scss';
 
