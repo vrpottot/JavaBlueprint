@@ -8,7 +8,7 @@ export const MethodNode = memo(({ data, selected }: NodeProps) => {
   const nodeData = data as VisualBlockData;
   const isSelected = selected || nodeData.isHighlighted;
 
-  const isConstructor = nodeData.astKind === 'ConstructorDeclaration';
+  const isConstructor = nodeData.astKind === 'ConstructorDeclaration' || nodeData.astKind === 'CompactConstructorDeclaration';
   const prefix = isConstructor ? 'Конструктор' : 'Метод';
   let methodName = nodeData.method?.name;
   if (!methodName && nodeData.title) {

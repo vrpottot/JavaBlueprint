@@ -31,6 +31,7 @@ test('graph resolves labeled jumps, hides opaque expression internals and separa
     int lambda() { java.util.function.IntUnaryOperator op = v -> { if(v<0) return 0; return v; }; return op.applyAsInt(1); }
     int expression(int x) { return switch(x) { case 1 -> { int v=1; yield v; } default -> 0; }; }
     int cleanup() { try { return 1; } finally { System.out.println(1); } }
+    record Coordinate(int row, int column) { Coordinate { if(row<0) throw new IllegalArgumentException("row"); } }
   }` }]);
   const stop = parsed.nodes.find(n => n.code === 'break search;')!;
   const next = parsed.nodes.find(n => n.code === 'continue search;')!;
@@ -41,6 +42,16 @@ test('graph resolves labeled jumps, hides opaque expression internals and separa
   assert.ok(!parsed.nodes.some(n => n.astKind === 'YieldStmt' || n.code === 'return v;'));
   assert.ok(parsed.nodes.some(n => n.astKind === 'TryStmt' && n.warning?.includes('finally')));
   assert.ok(outer.displayCode?.includes('int i = 0; i < n; i++'));
+  const compact = parsed.nodes.find(n => n.astKind === 'CompactConstructorDeclaration')!;
+  const validation = parsed.nodes.find(n => n.snippet === 'row < 0')!;
+  assert.equal(compact.kind, 'method');
+  assert.equal(compact.methodId, compact.id);
+  assert.equal(validation.methodId, compact.id);
+  assert.ok(compact.warning?.includes('неявные присваивания'));
+  assert.ok(parsed.edges.some(e => e.source === compact.id && e.target === validation.id));
+  const edited = await new JavaParserEngine().process(parsed.files, parsed.identities, [{ type: 'addBlock', nodeId: compact.id, code: 'column = Math.max(column, 0);' }]);
+  assert.deepEqual(edited.errors, []);
+  assert.ok(edited.nodes.some(n => n.methodId === compact.id && n.code === 'column = Math.max(column, 0);'));
   const result = graph(parsed);
   assert.ok(result.edges.some(e => e.source === next.id && e.targetHandle === 'loop-in'));
   assert.ok(result.edges.every(e => result.nodes.some(n => n.id === e.source) && result.nodes.some(n => n.id === e.target)));

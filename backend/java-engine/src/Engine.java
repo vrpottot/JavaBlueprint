@@ -80,11 +80,11 @@ public final class Engine {
     }
     static boolean shown(Node n) {
         if (n.findAncestor(LambdaExpr.class).isPresent() || n.findAncestor(SwitchExpr.class).isPresent()) return false;
-        return n instanceof CallableDeclaration || n instanceof FieldDeclaration ||
+        return n instanceof CallableDeclaration || n instanceof CompactConstructorDeclaration || n instanceof FieldDeclaration ||
             n instanceof Statement && !(n instanceof BlockStmt);
     }
     static String kind(Node n) {
-        if (n instanceof CallableDeclaration) return "method";
+        if (n instanceof CallableDeclaration || n instanceof CompactConstructorDeclaration) return "method";
         if (n instanceof FieldDeclaration || n instanceof ExpressionStmt e && e.getExpression() instanceof VariableDeclarationExpr) return "variable";
         if (n instanceof IfStmt || n instanceof SwitchStmt) return "condition";
         if (loop(n)) return "loop";
@@ -103,6 +103,7 @@ public final class Engine {
         if (n instanceof ForEachStmt s) return s.getIterable().toString();
         if (n instanceof FieldDeclaration f && f.getVariables().size() == 1) return f.getVariable(0).getInitializer().map(Object::toString).orElse("");
         if (n instanceof CallableDeclaration<?> c) return c.getDeclarationAsString();
+        if (n instanceof CompactConstructorDeclaration c) return c.getNameAsString() + " { … }";
         return n.toString();
     }
     static List<String> editable(Node n) {
@@ -114,7 +115,7 @@ public final class Engine {
             ops.addAll(List.of("replaceStatement", "deleteBlock", "duplicateBlock", "addBlock"));
         }
         if (n instanceof Statement && !(n instanceof BlockStmt) && !ops.contains("replaceStatement")) ops.add("replaceStatement");
-        if (n instanceof MethodDeclaration m && m.getBody().isPresent() || n instanceof ConstructorDeclaration) ops.add("addBlock");
+        if (n instanceof MethodDeclaration m && m.getBody().isPresent() || n instanceof ConstructorDeclaration || n instanceof CompactConstructorDeclaration) ops.add("addBlock");
         if (Methods.accepts(n)) ops.add("addMethod");
         if (n instanceof MethodDeclaration && n.getParentNode().orElse(null) instanceof TypeDeclaration<?> owner && Methods.accepts(owner)) ops.addAll(List.of("replaceMethod", "deleteMethod", "duplicateMethod"));
         return ops;
@@ -134,18 +135,19 @@ public final class Engine {
         return snippet(n);
     }
     static String graphWarning(Node n) {
+        if (n instanceof CompactConstructorDeclaration) return "Компактный конструктор record: показано явное тело; неявные присваивания компонент не развёрнуты.";
         if (n instanceof TryStmt) return "Структурная схема: переходы исключений и выходы через finally показаны неполно.";
         if (!(n instanceof CallableDeclaration) && (n.findFirst(LambdaExpr.class).isPresent() || n.findFirst(SwitchExpr.class).isPresent())) return "Тело лямбды / switch-выражения сохранено в Java; внутренний поток не развёрнут на схеме.";
         return "";
     }
     void describe(Node n, Unit u, String parent, String method, int depth, int loopDepth) {
         boolean display = shown(n);
-        String nextMethod = n instanceof CallableDeclaration ? n.getData(ID) : method;
+        String nextMethod = n instanceof CallableDeclaration || n instanceof CompactConstructorDeclaration ? n.getData(ID) : method;
         if (display) {
             Range range = n.getRange().orElse(new Range(new Position(1,1),new Position(1,1)));
             Map<String,Object> row = obj("id", n.getData(ID), "astPath", paths.get(n.getData(ID)),
                 "astKind", n.getClass().getSimpleName(), "kind", kind(n),
-                "title", n instanceof CallableDeclaration<?> c ? c.getNameAsString() : n instanceof FieldDeclaration f ? f.getVariables().stream().map(VariableDeclarator::getNameAsString).collect(java.util.stream.Collectors.joining(", ")) : n instanceof ExpressionStmt e && e.getExpression() instanceof VariableDeclarationExpr v ? v.getVariables().stream().map(VariableDeclarator::getNameAsString).collect(java.util.stream.Collectors.joining(", ")) : n.getClass().getSimpleName().replace("Stmt", ""),
+                "title", n instanceof CallableDeclaration<?> c ? c.getNameAsString() : n instanceof CompactConstructorDeclaration c ? c.getNameAsString() : n instanceof FieldDeclaration f ? f.getVariables().stream().map(VariableDeclarator::getNameAsString).collect(java.util.stream.Collectors.joining(", ")) : n instanceof ExpressionStmt e && e.getExpression() instanceof VariableDeclarationExpr v ? v.getVariables().stream().map(VariableDeclarator::getNameAsString).collect(java.util.stream.Collectors.joining(", ")) : n.getClass().getSimpleName().replace("Stmt", ""),
                 "code", n.toString(), "snippet", snippet(n), "displayCode", displayCode(n), "warning", graphWarning(n), "depth", depth, "loopDepth", loopDepth,
                 "editable", editable(n), "source", obj("file", u.path, "startLine", range.begin.line,
                     "endLine", range.end.line, "startColumn", range.begin.column, "endColumn", range.end.column));
@@ -306,6 +308,7 @@ public final class Engine {
                 added.walk(x -> x.setData(ID, UUID.randomUUID().toString()));
                 if (n instanceof MethodDeclaration m) insertBeforeExit(m.getBody().orElseThrow().getStatements(),added);
                 else if (n instanceof ConstructorDeclaration c) insertBeforeExit(c.getBody().getStatements(),added);
+                else if (n instanceof CompactConstructorDeclaration c) insertBeforeExit(c.getBody().getStatements(),added);
                 else {
                     NodeList<Statement> siblings = statements(n);
                     int at = siblings.indexOf(n);
@@ -394,6 +397,7 @@ public final class Engine {
             files.add(obj("path",u.path,"content",u.content));
             for (MethodDeclaration m : u.ast.findAll(MethodDeclaration.class)) if(shown(m)) m.getBody().ifPresent(b -> edge(m.getData(ID),flow(b,null,null,null),"flow",null));
             for (ConstructorDeclaration c : u.ast.findAll(ConstructorDeclaration.class)) if(shown(c)) edge(c.getData(ID),flow(c.getBody(),null,null,null),"flow",null);
+            for (CompactConstructorDeclaration c : u.ast.findAll(CompactConstructorDeclaration.class)) if(shown(c)) edge(c.getData(ID),flow(c.getBody(),null,null,null),"flow",null);
             if (!u.ast.findAll(LambdaExpr.class).isEmpty() || !u.ast.findAll(SwitchExpr.class).isEmpty()) warnings.add("Lambda bodies and switch expressions are preserved in the AST; their internal execution is not expanded into a complete control-flow graph.");
         }
         return obj("files",files,"nodes",nodes,"edges",edges,"identities",identities,"structure",structure,"containers",containers,"changes",changes,"warnings",warnings,"errors",errors);

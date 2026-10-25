@@ -8,7 +8,7 @@ import styles from './NodeEditModal.module.scss';
 const getBlockDisplayTitle = (node: Node<VisualBlockData>) => {
   const type = node.data.blockType || node.type?.replace('Node', '');
   if (type === 'method') {
-    const prefix = node.data.astKind === 'ConstructorDeclaration' ? 'Конструктор' : 'Метод';
+    const prefix = node.data.astKind === 'ConstructorDeclaration' || node.data.astKind === 'CompactConstructorDeclaration' ? 'Конструктор' : 'Метод';
     const name = node.data.method?.name || node.data.title;
     return name && !name.startsWith('Метод') && !name.startsWith('Конструктор') ? `${prefix}: ${name}` : (name || prefix);
   }
