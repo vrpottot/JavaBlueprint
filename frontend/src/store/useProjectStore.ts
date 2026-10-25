@@ -71,6 +71,7 @@ interface ProjectState {
   isRunning: boolean;
   isCompiling: boolean;
   waitingForInput: boolean;
+  sessionPrintedStdoutLength: number;
   runStdin: string;
   theme: 'light' | 'dark';
   showOptimizationModal: boolean;
@@ -308,6 +309,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     isRunning: false,
     isCompiling: false,
     waitingForInput: false,
+    sessionPrintedStdoutLength: 0,
     runStdin: '',
     theme: 'light',
     showOptimizationModal: false,
@@ -468,39 +470,59 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         await sync();
         if (!get().projectId) throw new Error('Сначала импортируйте Java-файл.');
 
-        const stdinToUse = customStdin !== undefined ? customStdin : get().runStdin;
-        if (customStdin !== undefined) {
-          set({ runStdin: customStdin });
-        }
+        const isInteractiveContinuation = customStdin !== undefined && get().waitingForInput;
 
-        const requiresInput = get().codeRequiresInput();
-        if (requiresInput && (!stdinToUse || stdinToUse.trim() === '')) {
-          set({ waitingForInput: true });
-          log('prompt', '⚠️ Программа запрашивает ввод данных (Scanner / System.in). Введите значение в консоли ниже и нажмите Enter:');
-          return;
+        let stdinToUse: string;
+        if (customStdin !== undefined) {
+          stdinToUse = customStdin;
+          set({ runStdin: customStdin });
+        } else {
+          set({ sessionPrintedStdoutLength: 0, runStdin: '' });
+          stdinToUse = '';
         }
 
         set({ isCompiling: true, waitingForInput: false });
-        log('info', 'Компиляция javac и проверка в Docker...');
+        if (!isInteractiveContinuation) {
+          log('info', 'Компиляция javac и проверка в Docker...');
+        }
+
         const mainClass = get().mainClasses[0];
         const result = await api<Verification>(`/projects/${get().projectId}/verify`, {
           revision: get().revision,
           compare: true,
           ...(mainClass ? { mainClass, inputs: [{ name: 'stdin', stdin: stdinToUse }] } : {}),
         });
+
         const compilation = result.current.compilation;
-        log(compilation.exitCode === 0 ? 'success' : 'error', `javac: exit=${compilation.exitCode}; ${compilation.durationMs} мс${compilation.timedOut ? '; timeout' : ''}`);
-        if (compilation.stdout) log('info', compilation.stdout);
-        if (compilation.stderr) log(compilation.exitCode === 0 ? 'warn' : 'error', compilation.stderr);
-        
+        if (compilation.exitCode !== 0) {
+          log('error', `javac: exit=${compilation.exitCode}; ${compilation.durationMs} мс${compilation.timedOut ? '; timeout' : ''}`);
+          if (compilation.stderr) log('error', compilation.stderr);
+          set({ isCompiling: false, isRunning: false, sessionPrintedStdoutLength: 0, waitingForInput: false });
+          return;
+        } else if (!isInteractiveContinuation) {
+          log('success', `javac: exit=0; ${compilation.durationMs} мс`);
+        }
+
         let needsMoreInput = false;
-        let lastPromptLine = '';
+        let lastPrintedChunk = '';
+
         for (const run of result.current.runs) {
-          if (run.stdout) {
-            log('info', run.stdout);
-            const lines = run.stdout.trim().split('\n');
-            lastPromptLine = lines[lines.length - 1] || '';
+          const fullStdout = run.stdout || '';
+          const prevLen = get().sessionPrintedStdoutLength;
+          const newChunk = fullStdout.slice(prevLen);
+          set({ sessionPrintedStdoutLength: fullStdout.length });
+
+          if (newChunk.length > 0) {
+            lastPrintedChunk = newChunk;
+            const lines = newChunk.split(/\r?\n/);
+            for (let i = 0; i < lines.length; i++) {
+              const line = lines[i];
+              if (line.length > 0) {
+                log('info', line);
+              }
+            }
           }
+
           if (run.stderr) {
             if (
               run.stderr.includes('NoSuchElementException') ||
@@ -511,6 +533,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
               log('error', run.stderr);
             }
           }
+
           if (!needsMoreInput) {
             log(
               run.exitCode === 0 && !run.timedOut && !run.outputLimitExceeded ? 'success' : 'error',
@@ -521,12 +544,11 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
         if (needsMoreInput) {
           set({ waitingForInput: true });
-          const promptText = lastPromptLine
-            ? `⚠️ Программа ожидает ввод для: "${lastPromptLine.trim()}". Введите значение в консоли ниже и нажмите Enter:`
-            : '⚠️ Scanner ожидает следующие данные ввода. Введите значение в консоли ниже и нажмите Enter:';
-          log('prompt', promptText);
+          if (!lastPrintedChunk.trim()) {
+            log('prompt', '⚠️ Программа ожидает ввод данных в консоли:');
+          }
         } else {
-          set({ waitingForInput: false });
+          set({ waitingForInput: false, sessionPrintedStdoutLength: 0 });
         }
 
         set({ testCases: result.current.tests.cases });
@@ -548,7 +570,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
           const oldId = currentProjectId;
           const p = await api<ProjectSnapshot>('/projects/parse', { files });
           accept(p, true);
-          set({ showImportModal: false, runStdin: '', waitingForInput: false });
+          set({ showImportModal: false, runStdin: '', waitingForInput: false, sessionPrintedStdoutLength: 0 });
           await analysis();
           if (oldId && oldId !== p.projectId) void api(`/projects/${oldId}`, undefined, 'DELETE').catch(() => { });
           log('success', `Создан проект: загружено файлов ${files.length}, узлов ${p.graph.nodes.length}.`);
@@ -662,7 +684,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     setShowAddBlockModal: (showAddBlockModal) => set({ showAddBlockModal }),
 
-    clearConsole: () => set({ consoleLogs: [], waitingForInput: false, runStdin: '' }),
+    clearConsole: () => set({ consoleLogs: [], waitingForInput: false, runStdin: '', sessionPrintedStdoutLength: 0 }),
 
     addConsoleLog: (type, message) =>
       set({

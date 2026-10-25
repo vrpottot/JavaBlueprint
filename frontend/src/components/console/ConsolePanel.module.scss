@@ -181,11 +181,11 @@
   }
 
   &.input {
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.05);
-    padding: 3px 6px;
+    color: var(--accent-blue, #0284c7);
+    background: var(--accent-blue-glow, rgba(56, 189, 248, 0.08));
+    padding: 3px 8px;
     border-radius: $radius-xs;
-    border-left: 2px solid #38bdf8;
+    border-left: 3px solid var(--accent-blue, #0284c7);
   }
 
   &.prompt {
@@ -199,14 +199,15 @@
 }
 
 .inputPrefix {
-  color: #38bdf8;
-  font-weight: bold;
+  color: var(--accent-blue, #0284c7);
+  font-weight: 800;
   user-select: none;
 }
 
 .inputMessage {
-  color: #e0f2fe;
-  font-weight: 600;
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 12px;
 }
 
 .promptMessage {
