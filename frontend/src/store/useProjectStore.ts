@@ -482,9 +482,6 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         }
 
         set({ isCompiling: true, waitingForInput: false });
-        if (!isInteractiveContinuation) {
-          log('info', 'Компиляция javac и проверка в Docker...');
-        }
 
         const mainClass = get().mainClasses[0];
         const result = await api<Verification>(`/projects/${get().projectId}/verify`, {
