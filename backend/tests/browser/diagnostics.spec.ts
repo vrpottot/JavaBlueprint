@@ -1,0 +1,32 @@
+import { test, expect } from '@playwright/test';
+import { fileURLToPath } from 'node:url';
+
+test('complexity follows the selected method and diagnostic colors link the graph to Monaco source', async ({ page }) => {
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await page.goto('/');
+  await expect(page.getByRole('button', { name: 'Run', exact: true })).toBeEnabled();
+  await page.getByRole('button', { name: 'Импорт', exact: true }).click();
+  await page.getByLabel('Добавить к текущему проекту (сохранить существующие файлы)', { exact: true }).uncheck();
+  const imported = page.waitForResponse(response => response.url().endsWith('/projects/parse') && response.status() === 201);
+  await page.locator('input[type=file]').last().setInputFiles(['BigODemo.java', 'BigODemoTest.java'].map(file => fileURLToPath(new URL(`../../examples/${file}`, import.meta.url))));
+  const snapshot = await (await imported).json();
+  await expect(page.getByRole('button', { name: 'Run', exact: true })).toBeEnabled();
+  const pair = snapshot.graph.nodes.find((node: any) => node.data.title === 'quadratic');
+  await page.getByLabel('Метод схемы').selectOption(pair.id);
+  await expect(page.getByTestId('complexity-summary')).toContainText('O(n²)');
+  await expect(page.locator('.react-flow__node.diagnostic-medium')).toHaveCount(1);
+  await page.getByRole('button', { name: 'К коду', exact: true }).first().click();
+  await expect(page.getByRole('textbox', { name: 'Editor content', exact: true })).toBeVisible();
+  await expect(page.locator('.monaco-editor .diagnostic-line-medium').first()).toBeVisible();
+  await page.getByText('BigODemoTest.java', { exact: true }).first().click();
+  await expect(page.locator('.monaco-editor .diagnostic-line-medium')).toHaveCount(0);
+  await page.getByText('BigODemo.java', { exact: true }).first().click();
+  await expect(page.locator('.monaco-editor .diagnostic-line-medium').first()).toBeVisible();
+  await page.getByRole('button', { name: 'Toggle theme', exact: true }).click();
+  await expect(page.locator('.monaco-editor .diagnostic-line-medium').first()).toBeVisible();
+  const optimized = snapshot.graph.nodes.find((node: any) => node.data.title === 'pairsOptimized');
+  await page.getByRole('button', { name: 'Блок-схема', exact: true }).click();
+  await page.getByLabel('Метод схемы').selectOption(optimized.id);
+  await expect(page.getByTestId('complexity-summary')).toContainText('O(1)');
+  await expect(page.locator('.react-flow__node.diagnostic-node')).toHaveCount(0);
+});

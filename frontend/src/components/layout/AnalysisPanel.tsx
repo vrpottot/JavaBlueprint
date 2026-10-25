@@ -4,11 +4,9 @@ import {
   ExternalLink,
   Sparkles,
   CheckCircle2,
-  ArrowRight,
   TrendingUp,
   BarChart2,
   ShieldAlert,
-  ArrowUpRight,
   Bot,
   MessageSquare,
 } from 'lucide-react';
@@ -17,7 +15,7 @@ import { AIChat } from '../chat/AIChat';
 import styles from './AnalysisPanel.module.scss';
 
 export const AnalysisPanel: React.FC = () => {
-  const [panelMode, setPanelMode] = useState<'chat' | 'summary'>('chat');
+  const [panelMode, setPanelMode] = useState<'chat' | 'summary'>('summary');
   const issues = useProjectStore((s) => s.issues);
   const recommendations = useProjectStore((s) => s.recommendations);
   const metrics = useProjectStore((s) => s.metrics);
@@ -29,6 +27,12 @@ export const AnalysisPanel: React.FC = () => {
   const focusNodeFromIssue = useProjectStore((s) => s.focusNodeFromIssue);
   const applyOptimization = useProjectStore((s) => s.applyOptimization);
 
+  const activeFilePath = useProjectStore(s => s.activeFilePath);
+  const activeMethodId = useProjectStore(s => s.activeMethodId);
+  const openNodeSource = useProjectStore(s => s.openNodeSource);
+  const fileMethods = methodComplexities.filter(method => method.file === activeFilePath);
+  const focusedMethod = fileMethods.find(method => method.methodId === activeMethodId);
+  const visibleMethods = focusedMethod ? [focusedMethod] : fileMethods;
   const activeIssuesCount = issues.filter((i) => !i.resolved).length;
 
   return (
@@ -102,7 +106,7 @@ export const AnalysisPanel: React.FC = () => {
               <CheckCircle2 size={32} className={styles.emptyIconSuccess} />
               <div className={styles.emptyTitle}>Проблем не обнаружено</div>
               <div className={styles.emptySubtitle}>
-                Статический анализ не выявил критических дефектов. Попросите ИИ сделать глубокую сводку в чате.
+                Проверенные правила не нашли замечаний. Это не гарантирует отсутствие ошибок; дополнительные проверки доступны в чате с ИИ.
               </div>
               <button
                 className={styles.emptyActionBtn}
@@ -142,10 +146,12 @@ export const AnalysisPanel: React.FC = () => {
                   </div>
 
                   <p className={styles.cardDesc}>{issue.description}</p>
+                  {recommendations.find(item => item.id === issue.id) && <p className={styles.issueRemedy}><strong>Рекомендация:</strong> {recommendations.find(item => item.id === issue.id)!.description}</p>}
 
                   <div className={styles.cardFooter}>
-                    <span className={styles.cardFile}>{issue.file}</span>
+                    <span className={styles.cardFile}>{issue.file}:L{issue.line}</span>
 
+                    {issue.nodeId && <button className={styles.jumpBtn} onClick={() => issue.nodeId && openNodeSource(issue.nodeId)} title="Открыть строку с подсветкой">К коду</button>}
                     {issue.nodeId && (
                       <button
                         className={styles.jumpBtn}
@@ -240,42 +246,18 @@ export const AnalysisPanel: React.FC = () => {
           <span>Вычислительная сложность</span>
         </div>
 
-        <div className={styles.complexityComparison}>
-          <div className={styles.compBox}>
-            <span className={styles.compLabel}>Текущая</span>
-            <span className={styles.compRed}>{complexity.current}</span>
-          </div>
-
-          <ArrowRight size={14} className={styles.arrow} />
-
-          <div className={styles.compBox}>
-            <span className={styles.compLabel}>Оптимизированная</span>
-            <span className={styles.compGreen}>{complexity.optimized}</span>
-          </div>
+        <div className={styles.costHero} data-testid="complexity-summary">
+          <span className={styles.costEyebrow}>СТАТИЧЕСКИЙ АНАЛИЗ · BIG O</span>
+          <span className={styles.costMethod}>{focusedMethod?.method ?? activeFilePath}</span>
+          <strong className={styles.costValue}>{focusedMethod ? focusedMethod.estimate === 'unknown' ? 'Неизвестно' : focusedMethod.estimate.length > 80 ? 'Составная оценка' : focusedMethod.estimate.replace(/\^2(?!\d)/g, '²').replace(/\^3(?!\d)/g, '³') : 'По методам'}</strong>
+          <span className={styles.costHint}>Условная верхняя граница времени. Размеры входов указаны в формуле.</span>
         </div>
-
-        {/* Performance Estimation Card */}
-        <div className={styles.perfEstimationCard}>
-          <div className={styles.perfTop}>
-            <CheckCircle2 size={14} />
-            <span>Оценка прироста производительности</span>
-          </div>
-          <div className={styles.perfMain}>
-            <span className={styles.perfSubText}>Ускорение обработки:</span>
-            <div className={styles.speedupPill}>
-              <span className={styles.highlight}>{complexity.speedup}</span>
-              <ArrowUpRight size={14} />
-            </div>
-          </div>
-        </div>
-
-        <p className={styles.explanation}>{complexity.explanation}</p>
         <p className={styles.explanation}>
-          Оценено: {methodComplexities.filter(method => method.estimate !== 'unknown').length} из {methodComplexities.length}. Верхние границы зависят от указанных предположений.
+          Оценено: {fileMethods.filter(method => method.estimate !== 'unknown').length} из {fileMethods.length} в этом файле. {complexity.speedup === 'Не измерено' ? 'Ускорение не измерялось.' : complexity.explanation}
         </p>
         <div style={{ maxHeight: 260, overflowY: 'auto' }}>
-          {(methodComplexities || []).map((method) => (
-            <details key={method.methodId} style={{ marginBottom: 10 }}>
+          {visibleMethods.map((method) => (
+            <details key={method.methodId} open={Boolean(focusedMethod)} style={{ marginBottom: 10 }}>
               <summary style={{ cursor: 'pointer', fontSize: 12 }}>
                 {method.method}: <strong>{method.estimate === 'unknown' ? 'Неизвестно' : method.estimate.length > 100 ? 'Составная оценка — раскрыть' : method.estimate}</strong>
               </summary>

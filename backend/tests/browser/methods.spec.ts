@@ -19,7 +19,7 @@ test('method palette creates, validates, edits, copies and deletes real Java met
   await expect(page.getByRole('button', { name: 'Run', exact: true })).toBeEnabled();
 
   // An empty class is a valid target even without any existing method node.
-  const palette = page.getByRole('button', { name: 'Добавить блок Метод / Конструктор', exact: true });
+  const palette = page.getByRole('button', { name: 'Добавить блок Метод', exact: true });
   await palette.focus();
   await palette.press('Enter');
   const dialog = page.getByRole('dialog', { name: 'Добавить метод', exact: true });
@@ -118,7 +118,7 @@ test('dragging the method block supports interface declarations and keyboard nav
   await page.getByRole('button', { name: 'Toggle theme', exact: true }).click();
 
   const dataTransfer = await page.evaluateHandle(() => new DataTransfer());
-  await page.getByRole('button', { name: 'Добавить блок Метод / Конструктор', exact: true }).dispatchEvent('dragstart', { dataTransfer });
+  await page.getByRole('button', { name: 'Добавить блок Метод', exact: true }).dispatchEvent('dragstart', { dataTransfer });
   const canvas = page.locator('.react-flow');
   const bounds = (await canvas.boundingBox())!;
   await canvas.dispatchEvent('drop', { dataTransfer, clientX: bounds.x + 200, clientY: bounds.y + 200 });

@@ -13,9 +13,9 @@ export const PALETTE_ITEMS: BlockPaletteItem[] = [
   {
     id: 'method',
     type: 'method',
-    name: 'Метод / Конструктор',
+    name: 'Метод',
     category: 'Язык и java.lang',
-    description: 'Добавить метод, конструктор или static-метод в класс',
+    description: 'Добавить обычный или static-метод в класс. Конструкторы редактируются в Java-коде.',
     defaultCode: '',
     color: 'var(--node-method, #0EA5E9)',
   },

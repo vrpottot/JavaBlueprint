@@ -21,6 +21,10 @@ export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) =>
   const isOptimized = useProjectStore((s) => s.isOptimized);
   const selected = useProjectStore(s => s.nodes.find(node => node.id === s.selectedNodeId));
   const tab = useProjectStore(s => s.mainWorkspaceTab);
+  const issues = useProjectStore(s => s.issues);
+  const dirty = useProjectStore(s => s.dirty);
+  const monacoRef = useRef<Monaco | null>(null);
+  const decorationsRef = useRef<editor.IEditorDecorationsCollection | null>(null);
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const selectedLine = !(codeViewMode === 'source' && isOptimized) && selected?.data.source?.file === activeFilePath ? selected.data.source.startLine : null;
   const reveal = useCallback(() => { if (selectedLine) { editorRef.current?.revealLineInCenter(selectedLine); editorRef.current?.setPosition({ lineNumber: selectedLine, column: 1 }); } }, [selectedLine]);
@@ -31,6 +35,22 @@ export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) =>
   }, [reveal, tab, activeFilePath, codeViewMode]);
 
   const [copied, setCopied] = useState(false);
+  const decorate = useCallback(() => {
+    const instance = editorRef.current, monaco = monacoRef.current;
+    if (!instance || !monaco) return;
+    const model = instance.getModel();
+    if (!model) return;
+    const visible = dirty || codeViewMode === 'source' && isOptimized ? [] : issues.filter(issue => !issue.resolved && issue.file === activeFilePath && issue.line <= model.getLineCount());
+    decorationsRef.current?.set(visible.map(issue => ({ range: new monaco.Range(issue.line, 1, issue.line, model.getLineMaxColumn(issue.line)),
+      options: { isWholeLine: true, className: `diagnostic-line-${issue.level}`, glyphMarginClassName: `diagnostic-glyph-${issue.level}`,
+        hoverMessage: { value: `${issue.title}\n\n${issue.description}` } } })));
+    monaco.editor.setModelMarkers(model, 'javascope-analysis', visible.map(issue => ({
+      startLineNumber: issue.line, endLineNumber: issue.line, startColumn: 1, endColumn: model.getLineMaxColumn(issue.line),
+      message: `${issue.title}: ${issue.description}`, severity: issue.level === 'high' ? monaco.MarkerSeverity.Error : issue.level === 'medium' ? monaco.MarkerSeverity.Warning : monaco.MarkerSeverity.Info,
+    })));
+  }, [issues, dirty, codeViewMode, isOptimized, activeFilePath]);
+  useEffect(() => { decorate(); }, [decorate, javaCode]);
+  useEffect(() => () => { decorationsRef.current?.clear(); }, []);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(javaCode);
@@ -134,7 +154,7 @@ export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) =>
           theme={theme === 'light' ? 'javascope-light' : 'javascope-dark'}
           value={javaCode}
           path={activeFilePath}
-          onMount={instance => { editorRef.current = instance; reveal(); }}
+          onMount={(instance, monaco) => { editorRef.current = instance; monacoRef.current = monaco; decorationsRef.current = instance.createDecorationsCollection(); decorate(); reveal(); }}
           beforeMount={handleEditorWillMount}
           onChange={(val) => updateJavaCode(val || '')}
           options={{
@@ -143,6 +163,7 @@ export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) =>
             fontFamily: "'JetBrains Mono', Consolas, monospace",
             lineHeight: 20,
             minimap: { enabled: false },
+            glyphMargin: true,
             scrollBeyondLastLine: false,
             wordWrap: 'on',
             automaticLayout: true,

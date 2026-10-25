@@ -531,3 +531,14 @@
   }
 }
 
+
+.costHero {
+  display: flex; flex-direction: column; gap: 7px; padding: 16px;
+  border: 1px solid var(--border-color); border-left: 3px solid #f97316;
+  border-radius: 10px; background: var(--bg-panel);
+}
+.costEyebrow { font-size: 9px; font-weight: 700; letter-spacing: .08em; color: var(--text-muted); }
+.costMethod { font-size: 12px; font-weight: 600; overflow-wrap: anywhere; }
+.costValue { font-family: $font-mono; font-size: 24px; color: #ea580c; overflow-wrap: anywhere; line-height: 1.25; }
+.costHint { font-size: 10px; line-height: 1.5; color: var(--text-secondary); }
+.issueRemedy { border-left: 2px solid #2563eb; padding-left: 8px; font-size: 11px; line-height: 1.5; color: var(--text-secondary); }

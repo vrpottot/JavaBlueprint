@@ -92,7 +92,7 @@ try {
         assert.ok(report.png.width > 100 && report.png.height > 100);
       });
       await check('method palette adds and deletes a real method', async () => {
-        await page.getByRole('button', { name: 'Добавить блок Метод / Конструктор', exact: true }).click();
+        await page.getByRole('button', { name: 'Добавить блок Метод', exact: true }).click();
         const dialog = page.getByRole('dialog', { name: 'Добавить метод', exact: true });
         const owner = snapshot.containers!.find(container => container.name === scenario.name)!;
         await dialog.getByLabel('Класс и файл', { exact: true }).selectOption(owner.id);

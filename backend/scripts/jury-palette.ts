@@ -25,7 +25,7 @@ try {
  report.verification=await(await verified).json();
  report.duplicateVariable=report.verification.current.compilation.exitCode!==0;
  await page.screenshot({path:'/tmp/javascope-jury/palette-duplicate.png'});
- await page.getByRole('button',{name:'Добавить блок Метод / Конструктор',exact:true}).click();
+ await page.getByRole('button',{name:'Добавить блок Метод',exact:true}).click();
  const dialog=page.getByRole('dialog',{name:'Добавить метод',exact:true});
  await dialog.getByLabel('Сигнатура метода',{exact:true}).fill('public PaletteProbe()');
  await dialog.getByLabel('Тело метода',{exact:true}).fill('');
@@ -33,7 +33,8 @@ try {
  await dialog.getByRole('button',{name:'Добавить метод',exact:true}).click();
  const r=await rejected;report.constructor={status:r.status(),body:await r.json()};
  await page.screenshot({path:'/tmp/javascope-jury/palette-constructor.png'});
- if(report.duplicateVariable||report.constructor.status!==200)process.exitCode=1;
+ report.accurateMethodLabel=await page.getByRole('button',{name:'Добавить блок Метод',exact:true}).count()===1;
+ if(report.duplicateVariable||report.constructor.status!==422||!report.accurateMethodLabel)process.exitCode=1;
  console.log({duplicateVariable:report.duplicateVariable,stderr:report.verification.current.compilation.stderr,constructor:report.constructor});
 }catch(error){report.failure=String(error);await page.screenshot({path:'/tmp/javascope-jury/palette-failure.png'});throw error;}finally{
  await writeFile('/tmp/javascope-jury/palette.json',JSON.stringify(report,null,2));

@@ -25,6 +25,8 @@ test('editor scopes files and methods, preserves deliberate drags, inserts uniqu
     await store.getState().addNode('variable');
     assert.equal(store.getState().error, null);
     assert.ok(store.getState().sourceFiles[0].content.includes('int value2 = 0;'));
+    await store.getState().addNode('variable', undefined, 'int value = 0;');
+    assert.ok(store.getState().sourceFiles[0].content.includes('int value3 = 0;'));
     assert.ok(store.getState().sourceFiles[0].content.indexOf('int value2') < store.getState().sourceFiles[0].content.indexOf('return value'));
     assert.deepEqual(store.getState().nodes.find((n: any) => n.id === calculate.id).position, dragged);
     store.getState().resetGraphLayout();

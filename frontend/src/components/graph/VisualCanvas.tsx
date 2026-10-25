@@ -35,6 +35,7 @@ import { ReturnNode } from './nodes/ReturnNode';
 import { NodeEditModal } from './NodeEditModal';
 import styles from './VisualCanvas.module.scss';
 import { scopeNodes } from '../../lib/graph-scope';
+import { decorateDiagnostics } from '../../lib/diagnostics';
 
 interface ContextMenuState {
   x: number;
@@ -63,9 +64,10 @@ const CanvasInner: React.FC = () => {
   const resetGraphLayout = useProjectStore(s => s.resetGraphLayout);
   const openNodeSource = useProjectStore(s => s.openNodeSource);
   const dirty = useProjectStore(s => s.dirty);
+  const issues = useProjectStore(s => s.issues);
   const [methodSearch, setMethodSearch] = useState('');
   const methods = useMemo(() => nodes.filter(n => n.data.source?.file === activeFilePath && n.data.blockType === 'method'), [nodes, activeFilePath]);
-  const visibleNodes = useMemo(() => scopeNodes(nodes, activeFilePath, activeMethodId), [nodes, activeFilePath, activeMethodId]);
+  const visibleNodes = useMemo(() => decorateDiagnostics(scopeNodes(nodes, activeFilePath, activeMethodId), issues), [nodes, activeFilePath, activeMethodId, issues]);
   const visibleIds = useMemo(() => new Set(visibleNodes.map(n => n.id)), [visibleNodes]);
   const visibleEdges = useMemo(() => edges.filter(e => visibleIds.has(e.source) && visibleIds.has(e.target)), [edges, visibleIds]);
   const graphWarnings = useMemo(() => [...new Set(visibleNodes.flatMap(n => n.data.warning ? [n.data.warning] : []))], [visibleNodes]);

@@ -431,7 +431,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         return;
       }
       let code = customCode ?? PALETTE_ITEMS.find((p) => p.type === type)?.defaultCode;
-      if (!customCode && (type === 'variable' || type === 'loop')) {
+      if (((!customCode || customCode === 'int value = 0;') && type === 'variable') || (!customCode && type === 'loop')) {
         const used = new Set((get().sourceFiles.find(f => f.path === get().activeFilePath)?.content ?? '').match(/[A-Za-z_$][\w$]*/g));
         const base = type === 'variable' ? 'value' : 'index';
         let name = base, suffix = 2;

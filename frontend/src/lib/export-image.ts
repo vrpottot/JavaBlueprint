@@ -111,6 +111,7 @@ export async function exportGraphToPng(isDark: boolean, projectName: string): Pr
     strokeAttr: shape.getAttribute('stroke'),
     fillCss: shape.style.fill,
     strokeCss: shape.style.stroke,
+    strokeWidthCss: shape.style.strokeWidth,
   }));
 
   const shapeFill = isDark ? '#161B22' : '#FFFFFF';
@@ -120,6 +121,14 @@ export async function exportGraphToPng(isDark: boolean, projectName: string): Pr
     const parentClass = shape.parentElement?.getAttribute('class') || '';
     const isBackgroundShape = className.includes('shapePath') || parentClass.includes('shapeSvgBg');
 
+    if (shape.classList.contains('react-flow__edge-path')) {
+      const computed = window.getComputedStyle(shape);
+      shape.style.stroke = computed.stroke;
+      shape.style.strokeWidth = computed.strokeWidth;
+      shape.style.fill = 'none';
+      shape.setAttribute('stroke', computed.stroke);
+      shape.setAttribute('fill', 'none');
+    }
     if (isBackgroundShape) {
       const computed = window.getComputedStyle(shape);
       const stroke = computed.stroke && computed.stroke !== 'none' && computed.stroke !== 'rgba(0, 0, 0, 0)'
@@ -184,7 +193,7 @@ export async function exportGraphToPng(isDark: boolean, projectName: string): Pr
     Object.keys(themeProps).forEach((prop) => {
       viewportElement.style.removeProperty(prop);
     });
-    originalSvgStyles.forEach(({ shape, fillAttr, strokeAttr, fillCss, strokeCss }) => {
+    originalSvgStyles.forEach(({ shape, fillAttr, strokeAttr, fillCss, strokeCss, strokeWidthCss }) => {
       if (fillAttr !== null) shape.setAttribute('fill', fillAttr);
       else shape.removeAttribute('fill');
 
@@ -193,6 +202,7 @@ export async function exportGraphToPng(isDark: boolean, projectName: string): Pr
 
       shape.style.fill = fillCss;
       shape.style.stroke = strokeCss;
+      shape.style.strokeWidth = strokeWidthCss;
     });
   }
 }
