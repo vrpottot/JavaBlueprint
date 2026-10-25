@@ -71,6 +71,7 @@ interface ProjectState {
   activeAnalysisTab: 'issues' | 'recommendations' | 'metrics';
   consoleLogs: ConsoleLog[];
   testCases: TestCase[];
+  testsNoticeLogged: boolean;
   isRunning: boolean;
   isCompiling: boolean;
   waitingForInput: boolean;
@@ -382,6 +383,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     activeAnalysisTab: initialAnalysisTab,
     consoleLogs: [],
     testCases: [],
+    testsNoticeLogged: false,
     isRunning: false,
     isCompiling: false,
     waitingForInput: false,
@@ -709,7 +711,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         await sync();
         if (!get().projectId) throw new Error('Сначала импортируйте Java-файл.');
 
-        const isInteractiveContinuation = customStdin !== undefined && get().waitingForInput;
+        const isInteractiveContinuation = customStdin !== undefined;
 
         let stdinToUse: string;
         if (customStdin !== undefined) {
@@ -745,14 +747,16 @@ export const useProjectStore = create<ProjectState>((set, get) => {
           isFallback = Boolean(mainClassToRun);
         }
 
-        if (mainClassToRun) {
-          if (isFallback) {
-            log('info', `Запуск: в выбранном файле "${activeFileName}" нет метода main, запускается главный класс проекта: ${mainClassToRun}`);
+        if (!isInteractiveContinuation) {
+          if (mainClassToRun) {
+            if (isFallback) {
+              log('info', `Запуск: в выбранном файле "${activeFileName}" нет метода main, запускается главный класс проекта: ${mainClassToRun}`);
+            } else {
+              log('info', `Запуск выбранного файла: ${activeFileName} (класс ${mainClassToRun})`);
+            }
           } else {
-            log('info', `Запуск выбранного файла: ${activeFileName} (класс ${mainClassToRun})`);
+            log('info', `Компиляция и проверка проекта (активный файл: ${activeFileName})...`);
           }
-        } else {
-          log('info', `Компиляция и проверка проекта (активный файл: ${activeFileName})...`);
         }
 
         const mainClass = mainClassToRun;
@@ -821,8 +825,6 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         }
 
         set({ testCases: result.current.tests.cases });
-        if (result.current.tests.status === 'not_run') log('warn', 'JUnit-тесты не найдены. Импортируйте тестовые .java-файлы вместе с проектом.');
-        log(result.comparison.status === 'matched_on_inputs' ? 'success' : 'warn', result.comparison.explanation);
         set({ isCompiling: false, isRunning: false });
       }).finally(() => {
         if (!get().isLoading) set({ isCompiling: false, isRunning: false });
@@ -839,7 +841,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
           const oldId = currentProjectId;
           const p = await api<ProjectSnapshot>('/projects/parse', { files });
           accept(p, true);
-          set({ showImportModal: false, runStdin: '', waitingForInput: false, sessionPrintedStdoutLength: 0 });
+          set({ showImportModal: false, runStdin: '', waitingForInput: false, sessionPrintedStdoutLength: 0, testsNoticeLogged: false });
           await analysis();
           if (oldId && oldId !== p.projectId) void api(`/projects/${oldId}`, undefined, 'DELETE').catch(() => { });
           log('success', `Создан проект: загружено файлов ${files.length}, узлов ${p.graph.nodes.length}.`);
