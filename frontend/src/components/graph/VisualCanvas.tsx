@@ -87,8 +87,7 @@ const CanvasInner: React.FC = () => {
     if (!initialized || !visibleNodes.length || focusedScope.current === key) return;
     const timer = setTimeout(() => {
       focusedScope.current = key;
-      const first = activeMethodId === 'all' ? undefined : [{ id: visibleNodes.find(n => n.id === activeMethodId)?.id ?? visibleNodes[0].id }];
-      void fitView({ nodes: first, maxZoom: 0.9, padding: 0.3, duration: 150 });
+      void fitView({ maxZoom: 0.9, padding: 0.25, duration: 150 });
     }, 80);
     return () => clearTimeout(timer);
   }, [initialized, projectId, activeFilePath, activeMethodId, visibleNodes, fitView]);

@@ -33,6 +33,7 @@ export const AddBlockModal: React.FC = () => {
 
   const handleAdd = () => {
     addNode(selectedType);
+    setShowAddBlockModal(false);
   };
 
   return (

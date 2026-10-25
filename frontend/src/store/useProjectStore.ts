@@ -134,7 +134,10 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     const path = p.files.some((f) => f.path === get().activeFilePath) ? get().activeFilePath : p.files[0]?.path || '';
     const positions = !original && p.projectId === get().projectId ? get().manualPositions : {};
     const scope = get().activeMethodId;
-    const keepScope = !original && p.projectId === get().projectId && (scope === 'all' || scope === 'members' || p.graph.nodes.some(node => node.id === scope && node.data.source?.file === path));
+    const prevMethodTitle = get().nodes.find(n => n.id === scope)?.data.title;
+    const matchingMethod = p.graph.nodes.find(node => (node.id === scope || (prevMethodTitle && node.data.blockType === 'method' && node.data.title === prevMethodTitle)) && node.data.source?.file === path);
+    const keepScope = !original && p.projectId === get().projectId && (scope === 'all' || scope === 'members' || Boolean(matchingMethod));
+    const nextMethodId = keepScope ? (scope === 'all' || scope === 'members' ? scope : (matchingMethod?.id ?? defaultMethod(p.graph.nodes, path))) : defaultMethod(p.graph.nodes, path);
     set({
       projectId: p.projectId,
       revision: p.revision,
@@ -146,7 +149,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       files: p.files.map((f) => ({ id: f.path, path: f.path, name: f.path, type: 'file' as const })),
       activeFileId: path,
       activeFilePath: path,
-      activeMethodId: keepScope ? scope : defaultMethod(p.graph.nodes, path),
+      activeMethodId: nextMethodId,
       automaticPositions: Object.fromEntries(p.graph.nodes.map(node => [node.id, node.position])),
       manualPositions: Object.fromEntries(p.graph.nodes.filter(node => positions[node.id]).map(node => [node.id, positions[node.id]])),
       javaCode: p.files.find((f) => f.path === path)?.content || '',
