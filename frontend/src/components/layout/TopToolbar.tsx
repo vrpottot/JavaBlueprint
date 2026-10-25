@@ -5,7 +5,6 @@ import {
   Play,
   Moon,
   Sun,
-  Bug,
   RotateCcw,
   Bot,
   ChevronRight,
@@ -166,17 +165,6 @@ export const TopToolbar: React.FC = () => {
             <span>{isCompiling ? 'Компиляция...' : isRunning ? 'Выполнение...' : 'Run'}</span>
           </button>
         </div>
-
-        {/* Debug button */}
-        <button
-          className={styles.actionBtn}
-          onClick={() => void runProgram()}
-          disabled={isLoading || isRunning || isCompiling}
-          title={activeFileName ? `Компиляция и проверка (${activeFileName})` : 'Компиляция и проверка'}
-        >
-          <Bug size={13} />
-          <span>Проверить</span>
-        </button>
       </div>
 
       <div className={styles.vDivider} />

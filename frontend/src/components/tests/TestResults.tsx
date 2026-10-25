@@ -1,5 +1,14 @@
-import React from 'react';
-import { CheckCircle2, RotateCw, Clock, AlertCircle, Loader2 } from 'lucide-react';
+import React, { useRef } from 'react';
+import {
+  CheckCircle2,
+  RotateCw,
+  Clock,
+  AlertCircle,
+  Loader2,
+  FlaskConical,
+  FilePlus,
+  Sparkles,
+} from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import type { TestCase } from '../../types';
 import styles from './TestResults.module.scss';
@@ -9,12 +18,43 @@ export const TestResults: React.FC = () => {
   const runProgram = useProjectStore((s) => s.runProgram);
   const isRunning = useProjectStore((s) => s.isRunning);
   const isCompiling = useProjectStore((s) => s.isCompiling);
-  const runStdin = useProjectStore((s) => s.runStdin);
-  const setRunStdin = useProjectStore((s) => s.setRunStdin);
+  const importJavaFiles = useProjectStore((s) => s.importJavaFiles);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const passedCount = testCases.filter((t) => t.status === 'success').length;
-  const isAllPassed = passedCount === testCases.length && testCases.length > 0;
   const isBusy = isRunning || isCompiling;
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const uploaded = Array.from(e.target.files || []);
+    if (!uploaded.length) return;
+    try {
+      const parsedFiles = await Promise.all(
+        uploaded.map(async (f) => ({ path: f.name, content: await f.text() }))
+      );
+      await importJavaFiles(parsedFiles, false);
+      await runProgram();
+    } catch (err) {
+      console.error('Ошибка добавления файла тестов:', err);
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleAddSampleTest = async () => {
+    const sampleCode = `import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class AppTest {
+    @Test
+    void testExecution() {
+        assertTrue(true, "Пример успешного выполнения теста");
+    }
+}
+`;
+    await importJavaFiles([{ path: 'AppTest.java', content: sampleCode }], false);
+    await runProgram();
+  };
 
   const renderStatusIcon = (tc: TestCase) => {
     switch (tc.status) {
@@ -31,111 +71,114 @@ export const TestResults: React.FC = () => {
 
   return (
     <div className={styles.testsContainer}>
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept=".java"
+        multiple
+        style={{ display: 'none' }}
+        onChange={handleFileUpload}
+      />
+
       <div className={styles.header}>
         <div className={styles.headerLeft}>
-          <CheckCircle2 size={14} className={styles.iconSuccess} />
+          <FlaskConical size={14} className={testCases.length > 0 ? styles.iconSuccess : styles.iconPending} />
           <span>Результаты тестов</span>
         </div>
 
-        <button
-          className={styles.rerunBtn}
-          onClick={() => void runProgram()}
-          disabled={isBusy}
-          title="Запустить повторный прогон тестов"
-        >
-          <RotateCw size={12} className={isBusy ? styles.spin : ''} />
-          <span>{isBusy ? 'Выполняются...' : 'Перезапустить'}</span>
-        </button>
+        <div className={styles.headerActions}>
+          <button
+            className={styles.addTestBtn}
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isBusy}
+            title="Добавить тестовый файл в проект"
+          >
+            <FilePlus size={12} />
+            <span>Добавить тесты</span>
+          </button>
+
+          <button
+            className={styles.rerunBtn}
+            onClick={() => void runProgram()}
+            disabled={isBusy}
+            title="Запустить повторный прогон тестов"
+          >
+            <RotateCw size={12} className={isBusy ? styles.spin : ''} />
+            <span>{isBusy ? 'Выполняются...' : 'Перезапустить'}</span>
+          </button>
+        </div>
       </div>
 
-      <label style={{ padding: '8px 16px' }}>Ввод программы (stdin)
-        <textarea aria-label="Ввод программы" value={runStdin} onChange={e => setRunStdin(e.target.value)} disabled={isBusy} rows={2} style={{ display: 'block', width: '100%' }} />
-      </label>
-      <div className={styles.summaryCard}>
-        <div className={styles.summaryRow}>
-          <div className={`${styles.summaryLeft} ${isBusy ? styles.running : ''}`}>
-            {isBusy ? (
-              <>
-                <Loader2 size={15} className={styles.spin} />
-                <span>Выполнение тестов...</span>
-              </>
-            ) : isAllPassed ? (
-              <>
-                <CheckCircle2 size={15} className={styles.iconSuccess} />
-                <span>Все тесты пройдены</span>
-              </>
-            ) : (
-              <span>{testCases.length ? 'Есть ошибки' : 'Тесты ещё не запускались'}</span>
-            )}
+      {testCases.length > 0 ? (
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+
+            <tbody>
+              {testCases.map((tc) => (
+                <tr key={tc.id} className={styles.tableRow} title={tc.details}>
+                  <td>
+                    <div className={styles.testNameCell}>
+                      {renderStatusIcon(tc)}
+                      <span className={styles.testNameText}>{tc.name}</span>
+                    </div>
+                    {tc.details && tc.status === 'failure' && (
+                      <div className={styles.failureDetails}>
+                        {tc.details}
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        /* Empty State: Описание того, как запустить тесты */
+        <div className={styles.emptyStateContainer}>
+          <div className={styles.emptyStateIconWrap}>
+            <FlaskConical size={28} className={styles.emptyIcon} />
           </div>
 
-          <span className={styles.summaryRight}>
-            {passedCount} из {testCases.length}
-          </span>
-        </div>
+          <h3 className={styles.emptyTitle}>Тесты не обнаружены</h3>
 
-        <div className={styles.progressBarTrack}>
-          <div
-            className={`${styles.progressBarFill} ${isBusy ? styles.running : ''}`}
-            style={{ width: isBusy ? '60%' : `${(passedCount / Math.max(testCases.length, 1)) * 100}%` }}
-          />
-        </div>
-      </div>
+          <p className={styles.emptyDescription}>
+            Чтобы запустить тестирование программы с помощью тестов, добавьте файл тестов в общий список файлов проекта.
+          </p>
 
-      {/* Test Table */}
-      <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead className={styles.tableHead}>
-            <tr>
-              <th>Тест</th>
-              <th>Результат</th>
-              <th style={{ textAlign: 'right' }}>Время</th>
-            </tr>
-          </thead>
-          <tbody>
-            {testCases.map((tc) => (
-              <tr key={tc.id} className={styles.tableRow} title={tc.details}>
-                <td>
-                  <div className={styles.testNameCell}>
-                    {renderStatusIcon(tc)}
-                    <span>{tc.name}</span>
-                  </div>
-                </td>
-                <td>
-                  <span
-                    className={
-                      tc.status === 'success'
-                        ? styles.statusSuccess
-                        : tc.status === 'running'
-                        ? styles.statusRunning
-                        : tc.status === 'failure'
-                        ? styles.statusFailure
-                        : styles.statusPending
-                    }
-                  >
-                    {tc.status === 'success'
-                      ? 'Успешно'
-                      : tc.status === 'running'
-                      ? 'Выполняется'
-                      : tc.status === 'failure'
-                      ? 'Ошибка'
-                      : 'Ожидание'}
-                  </span>
-                </td>
-                <td style={{ textAlign: 'right' }}>
-                  <span className={styles.durationCell}>
-                    {tc.status === 'running'
-                      ? '...'
-                      : tc.status === 'success'
-                      ? `${tc.durationMs} мс`
-                      : '—'}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          <div className={styles.guideCard}>
+            <div className={styles.guideTitle}>Как запустить тестирование:</div>
+            <ol className={styles.guideSteps}>
+              <li>
+                Добавьте файл с тестами (например, <code>MainTest.java</code> с аннотациями <code>@Test</code>) через панель «Файлы проекта» слева или по кнопке ниже.
+              </li>
+              <li>
+                Нажмите <strong>«Run»</strong> или <strong>«Перезапустить»</strong> — система автоматически обнаружит JUnit-тесты, скомпилирует и запустит их в изолированном окружении.
+              </li>
+            </ol>
+          </div>
+
+          <div className={styles.emptyActions}>
+            <button
+              className={styles.primaryActionBtn}
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isBusy}
+            >
+              <FilePlus size={14} />
+              <span>Загрузить .java файл тестов</span>
+            </button>
+
+            <button
+              className={styles.secondaryActionBtn}
+              onClick={handleAddSampleTest}
+              disabled={isBusy}
+              title="Создать готовый пример JUnit 5 теста"
+            >
+              <Sparkles size={14} />
+              <span>Создать пример теста (AppTest.java)</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
