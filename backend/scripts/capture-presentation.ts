@@ -6,7 +6,7 @@ import { chromium, expect } from '@playwright/test';
 import type { Verification } from '../src/types/index.js';
 
 const arg = (key: string, fallback: string) => process.argv.includes(key) ? process.argv[process.argv.indexOf(key) + 1]! : fallback;
-const base = arg('--url', 'http://127.0.0.1:5173');
+const base = arg('--url', 'http://127.0.0.1:5173').replace(/\/+$/, '');
 const output = resolve(arg('--output', '../docs/screenshots'));
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ headless: true, ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}) });
