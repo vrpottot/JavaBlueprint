@@ -72,9 +72,8 @@ export function graph(result: EngineResult) {
       const isCondition = source?.kind === 'condition';
       const isIfBlock = isCondition && source?.astKind !== 'SwitchStmt';
       // В блоке если («IfStmt») стрелка истинного условия (ведущая к результату) ВСЕГДА выходит из правой части блока (out-right)
-      const isYes = e.label === 'true' || e.label === 'Да' || e.label === 'да' ||
-        (isIfBlock && !isNo) ||
-        (isCondition && target?.kind === 'return' && !isNo);
+      // A switch case keeps its Java label even when its first statement returns.
+      const isYes = isIfBlock && !isNo;
       return {
         id: `${e.source}:${e.target}:${i}`, ...e,
         sourceHandle: isCondition

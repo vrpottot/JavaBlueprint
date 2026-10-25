@@ -32,6 +32,7 @@ test('graph resolves labeled jumps, hides opaque expression internals and separa
     int expression(int x) { return switch(x) { case 1 -> { int v=1; yield v; } default -> 0; }; }
     int cleanup() { try { return 1; } finally { System.out.println(1); } }
     record Coordinate(int row, int column) { Coordinate { if(row<0) throw new IllegalArgumentException("row"); } }
+    int choose(int x) { switch(x) { case 0: return 7; default: return 9; } }
   }` }]);
   const stop = parsed.nodes.find(n => n.code === 'break search;')!;
   const next = parsed.nodes.find(n => n.code === 'continue search;')!;
@@ -53,6 +54,10 @@ test('graph resolves labeled jumps, hides opaque expression internals and separa
   assert.deepEqual(edited.errors, []);
   assert.ok(edited.nodes.some(n => n.methodId === compact.id && n.code === 'column = Math.max(column, 0);'));
   const result = graph(parsed);
+  const switchNode = parsed.nodes.find(n => n.astKind === 'SwitchStmt')!;
+  const cases = result.edges.filter(e => e.source === switchNode.id);
+  assert.deepEqual(cases.map(e => e.label).sort(), ['[0]', 'default']);
+  assert.ok(cases.every(e => e.sourceHandle === 'out-bottom'));
   assert.ok(result.edges.some(e => e.source === next.id && e.targetHandle === 'loop-in'));
   assert.ok(result.edges.every(e => result.nodes.some(n => n.id === e.source) && result.nodes.some(n => n.id === e.target)));
   for (let i=0;i<result.nodes.length;i++) for(let j=i+1;j<result.nodes.length;j++) {

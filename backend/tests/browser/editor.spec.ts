@@ -25,12 +25,12 @@ test('file and method navigation keeps graphs separate and case edits change rea
   const response = await edited;
   expect(response.status(), await response.text()).toBe(200);
   await expect(page.getByRole('dialog')).toBeHidden();
-  await page.getByRole('treeitem', { name: 'Ja Tools.java', exact: true }).click();
+  await page.getByRole('treeitem', { name: /Tools\.java$/ }).click();
   await expect(page.locator('.react-flow__node-methodNode')).toHaveCount(1);
   await expect(page.locator('.react-flow__node-methodNode')).toContainText('linear');
   await expect(page.locator('.react-flow__node')).not.toContainText(['Main.java']);
   await expect(page.locator('.react-flow__node-loopNode')).toContainText('int value : a');
-  await page.getByRole('treeitem', { name: 'Ja Main.java', exact: true }).click();
+  await page.getByRole('treeitem', { name: /Main\.java$/ }).click();
   await expect(page.getByRole('button', { name: 'Run', exact: true })).toBeEnabled();
   const verified = page.waitForResponse(r => r.url().endsWith('/verify'));
   await page.getByRole('button', { name: 'Run', exact: true }).click();
@@ -65,5 +65,5 @@ test('invalid source retains the last graph, displays file diagnostics and recov
   await restored;
   await expect(page.getByRole('status').filter({ hasText: 'последняя успешно разобранная версия' })).toHaveCount(0);
   await page.getByRole('button', { name: 'Блок-схема', exact: true }).click();
-  await expect(page.locator('.react-flow__node-methodNode')).toContainText('main');
+  await expect(page.locator('.react-flow__node-methodNode').filter({ hasText: /main/ })).toHaveCount(1);
 });

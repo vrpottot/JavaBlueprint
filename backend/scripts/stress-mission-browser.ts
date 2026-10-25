@@ -99,10 +99,12 @@ try {
   await expect(page.locator('.monaco-editor .view-lines')).toContainText('Config {');
   report.sourceNavigation = true;
   await page.getByRole('button', { name: 'Блок-схема', exact: true }).click();
-  await page.getByRole('treeitem', { name: 'Ja MissionControlTest.java', exact: true }).click();
-  assert.ok((await page.locator('.react-flow__node').allTextContents()).every(text => text.includes('MissionControlTest.java:')));
+  await page.getByRole('treeitem', { name: /MissionControlTest\.java$/ }).click();
+  const testIds = new Set(snapshot.graph.nodes.filter(node => node.data.source.file === 'MissionControlTest.java').map(node => node.id));
+  const visibleIds = await page.locator('.react-flow__node').evaluateAll(nodes => nodes.map(node => (node as HTMLElement).dataset.id));
+  assert.ok(visibleIds.length > 0 && visibleIds.every(id => id && testIds.has(id)));
   report.fileNavigation = true;
-  await page.getByRole('treeitem', { name: 'Ja MissionControl.java', exact: true }).click();
+  await page.getByRole('treeitem', { name: /MissionControl\.java$/ }).click();
   const shortest = options.find(option => option.title?.startsWith('shortest —'))!;
   await page.getByLabel('Метод схемы').selectOption(shortest.id);
   await page.getByRole('button', { name: 'Вписать в экран', exact: true }).click();
