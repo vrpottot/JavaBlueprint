@@ -11,6 +11,9 @@ import {
   Plus,
   CornerDownLeft,
   FilePlus,
+  FolderPlus,
+  Folder,
+  FolderOpen,
   ShieldAlert,
   Terminal,
   Layers,
@@ -18,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import { PALETTE_ITEMS } from '../../lib/palette';
+import { normalizeRelativePath } from '../../lib/file-tree';
 import type { FileItem, BlockPaletteItem } from '../../types';
 import styles from './ProjectExplorer.module.scss';
 
@@ -29,25 +33,23 @@ export const ProjectTreePanel: React.FC = () => {
   const importJavaFiles = useProjectStore((s) => s.importJavaFiles);
   const issues = useProjectStore((s) => s.issues);
   const addFileInputRef = useRef<HTMLInputElement>(null);
+  const addFolderInputRef = useRef<HTMLInputElement>(null);
 
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>(() => {
     try {
       const saved = localStorage.getItem('javablueprint_expanded_folders');
       if (saved) return JSON.parse(saved);
     } catch {}
-    return {
-      'f-src': true,
-      'f-com-example': true,
-      'f-model': false,
-      'f-util': false,
-    };
+    return {};
   });
 
   const toggleFolder = (folderId: string) => {
     setExpandedFolders((prev) => {
+      // Open by default if not set
+      const current = prev[folderId] !== false;
       const next = {
         ...prev,
-        [folderId]: !prev[folderId],
+        [folderId]: !current,
       };
       try {
         localStorage.setItem('javablueprint_expanded_folders', JSON.stringify(next));
@@ -61,7 +63,7 @@ export const ProjectTreePanel: React.FC = () => {
     if (uploaded.length === 0) return;
     try {
       const parsedFiles = await Promise.all(
-        uploaded.map(async (f) => ({ path: f.name, content: await f.text() }))
+        uploaded.map(async (f) => ({ path: normalizeRelativePath(f.name), content: await f.text() }))
       );
       await importJavaFiles(parsedFiles, false);
     } catch (err) {
@@ -73,13 +75,42 @@ export const ProjectTreePanel: React.FC = () => {
     }
   };
 
+  const handleAddFolder = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawFiles = Array.from(e.target.files || []);
+    if (rawFiles.length === 0) return;
+    try {
+      const javaFiles = rawFiles.filter((f) => f.name.endsWith('.java'));
+      if (javaFiles.length === 0) {
+        alert('В выбранной папке не найдено ни одного файла .java');
+        return;
+      }
+      const parsedFiles = await Promise.all(
+        javaFiles.map(async (f) => {
+          const relativePath = (f as any).webkitRelativePath || f.name;
+          return {
+            path: normalizeRelativePath(relativePath),
+            content: await f.text(),
+          };
+        })
+      );
+      await importJavaFiles(parsedFiles, false);
+    } catch (err) {
+      console.error('Ошибка добавления папки проекта:', err);
+    } finally {
+      if (addFolderInputRef.current) {
+        addFolderInputRef.current.value = '';
+      }
+    }
+  };
+
   const renderFileTree = (items: FileItem[], depth = 0) => {
     const canDelete = files.length > 1;
 
     return items.map((item) => {
       const isDir = item.type === 'directory';
-      const isExpanded = expandedFolders[item.id];
-      const isActive = activeFileId === item.id;
+      // Folders are open by default
+      const isExpanded = expandedFolders[item.id] !== false;
+      const isActive = activeFileId === item.path || activeFileId === item.id;
       const itemIssues = issues.filter(
         (issue) => issue.file === item.path || issue.file.endsWith(item.path) || item.path.endsWith(issue.file)
       );
@@ -94,18 +125,25 @@ export const ProjectTreePanel: React.FC = () => {
               if (isDir) {
                 toggleFolder(item.id);
               } else {
-                selectFile(item.id);
+                selectFile(item.path);
               }
             }}
             role="treeitem"
             aria-selected={isActive}
-            title={isDir ? item.name : `${item.name} (${item.path})`}
+            title={isDir ? `Папка: ${item.name}` : `${item.name} (${item.path})`}
           >
             <div className={styles.itemLabel}>
               {isDir ? (
-                <span className={styles.chevron}>
-                  {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
-                </span>
+                <>
+                  <span className={styles.chevron}>
+                    {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+                  </span>
+                  {isExpanded ? (
+                    <FolderOpen size={14} className={styles.folderIcon} />
+                  ) : (
+                    <Folder size={14} className={styles.folderIcon} />
+                  )}
+                </>
               ) : (
                 <span className={styles.javaFileIcon}>Ja</span>
               )}
@@ -166,10 +204,27 @@ export const ProjectTreePanel: React.FC = () => {
             style={{ display: 'none' }}
             onChange={handleAddFiles}
           />
+          <input
+            type="file"
+            ref={addFolderInputRef}
+            // @ts-expect-error webkitdirectory is standard in browsers
+            webkitdirectory=""
+            directory=""
+            multiple
+            style={{ display: 'none' }}
+            onChange={handleAddFolder}
+          />
+          <button
+            className={styles.headerActionBtn}
+            onClick={() => addFolderInputRef.current?.click()}
+            title="Загрузить папку проекта (рекурсивно найдет все .java)"
+          >
+            <FolderPlus size={14} />
+          </button>
           <button
             className={styles.headerActionBtn}
             onClick={() => addFileInputRef.current?.click()}
-            title="Добавить .java файл в проект (сохраняя текущие)"
+            title="Добавить отдельные .java файлы в проект"
           >
             <FilePlus size={14} />
           </button>

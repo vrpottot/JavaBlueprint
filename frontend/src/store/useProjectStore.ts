@@ -6,6 +6,7 @@ import { api, type ProjectSnapshot, type SourceFile, type Analysis, type Verific
 import { PALETTE_ITEMS } from '../lib/palette';
 import { defaultMethod, scopeNodes } from '../lib/graph-scope';
 import { generateJavaCodeFromGraph } from '../lib/graph-to-code';
+import { buildFileTree } from '../lib/file-tree';
 
 const SAMPLE = `import java.util.Scanner;
 
@@ -227,7 +228,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       structure: p.structure ?? [],
       mainClasses: p.structure.flatMap((f) => f.mainClasses),
       projectName: p.files[0]?.path.split('/').pop()?.replace('.java', '') || 'JavaBlueprint',
-      files: p.files.map((f) => ({ id: f.path, path: f.path, name: f.path, type: 'file' as const })),
+      files: buildFileTree(p.files),
       activeFileId: path,
       activeFilePath: path,
       activeMethodId: nextMethodId,

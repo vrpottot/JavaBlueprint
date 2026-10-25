@@ -79,7 +79,8 @@ export const DockLayout: React.FC = () => {
 
     // Try restoring saved layout from localStorage
     let isLayoutRestored = false;
-    const savedLayoutStr = localStorage.getItem('javablueprint_dockview_layout');
+    const DOCK_LAYOUT_KEY = 'javablueprint_dockview_layout_v6_normal_width';
+    const savedLayoutStr = localStorage.getItem(DOCK_LAYOUT_KEY);
     if (savedLayoutStr) {
       try {
         const layoutObj = JSON.parse(savedLayoutStr);
@@ -110,7 +111,21 @@ export const DockLayout: React.FC = () => {
         position: { direction: 'within', referencePanel: canvasPanel },
       });
 
-      // 3. Left Top: Project Tree
+      // 3. Right Sidebar: Code Analysis & AI (FULL HEIGHT OF PAGE & COMFORTABLE WIDTH)
+      // Placed to the right of the grid root without referencePanel so it spans 100% height
+      if (useProjectStore.getState().isRightSidebarOpen) {
+        const analysisPanel = event.api.addPanel({
+          id: 'analysis_panel',
+          component: 'analysis_panel',
+          title: 'Анализ кода',
+          position: { direction: 'right' },
+          initialWidth: 420,
+        });
+        analysisPanel.api.setSize({ width: 420 });
+        analysisPanel.api.setConstraints({ minimumWidth: 350 });
+      }
+
+      // 4. Left Top: Project Tree
       if (useProjectStore.getState().isLeftSidebarOpen) {
         const projectPanel = event.api.addPanel({
           id: 'project_tree',
@@ -119,8 +134,9 @@ export const DockLayout: React.FC = () => {
           position: { direction: 'left', referencePanel: canvasPanel },
           initialWidth: 260,
         });
+        projectPanel.api.setConstraints({ minimumWidth: 220 });
 
-        // 4. Left Bottom: Block Palette
+        // 5. Left Bottom: Block Palette
         event.api.addPanel({
           id: 'block_palette',
           component: 'block_palette',
@@ -130,16 +146,16 @@ export const DockLayout: React.FC = () => {
         });
       }
 
-      // 5. Bottom: Console
+      // 6. Bottom: Console (positioned strictly below canvasPanel, shifted to not go under AI panel)
       const consolePanel = event.api.addPanel({
         id: 'console_panel',
         component: 'console_panel',
         title: 'Консоль',
         position: { direction: 'below', referencePanel: canvasPanel },
-        initialHeight: 220,
+        initialHeight: 240,
       });
 
-      // 6. Bottom: Test Results (tabbed with console)
+      // 7. Bottom: Test Results (tabbed with console)
       event.api.addPanel({
         id: 'test_results',
         component: 'test_results',
@@ -147,20 +163,18 @@ export const DockLayout: React.FC = () => {
         position: { direction: 'within', referencePanel: consolePanel },
       });
 
-      // 7. Right Sidebar: Code Analysis & AI
-      if (useProjectStore.getState().isRightSidebarOpen) {
-        event.api.addPanel({
-          id: 'analysis_panel',
-          component: 'analysis_panel',
-          title: 'Анализ кода',
-          position: { direction: 'right', referencePanel: canvasPanel },
-          initialWidth: 320,
-        });
-      }
-
       // Set initial active tabs
       canvasPanel.api.setActive();
       consolePanel.api.setActive();
+    } else {
+      // Ensure restored layout has comfortable width constraints
+      const restoredAnalysis = event.api.getPanel('analysis_panel');
+      if (restoredAnalysis) {
+        restoredAnalysis.api.setConstraints({ minimumWidth: 350 });
+        if ((restoredAnalysis.api.width ?? 0) < 350) {
+          restoredAnalysis.api.setSize({ width: 420 });
+        }
+      }
     }
 
     // Persist layout changes to localStorage
@@ -171,7 +185,7 @@ export const DockLayout: React.FC = () => {
         try {
           if (apiRef.current) {
             const json = apiRef.current.toJSON();
-            localStorage.setItem('javablueprint_dockview_layout', JSON.stringify(json));
+            localStorage.setItem(DOCK_LAYOUT_KEY, JSON.stringify(json));
           }
         } catch (e) {
           console.warn('Failed to save dockview layout to localStorage:', e);
@@ -259,14 +273,15 @@ export const DockLayout: React.FC = () => {
     const panel = api.getPanel('analysis_panel');
     if (isRightSidebarOpen && !panel) {
       isInternalChangeRef.current = true;
-      const refPanel = api.getPanel('visual_canvas') || api.panels[0];
-      api.addPanel({
+      const newPanel = api.addPanel({
         id: 'analysis_panel',
         component: 'analysis_panel',
         title: 'Анализ кода',
-        position: refPanel ? { direction: 'right', referencePanel: refPanel } : undefined,
-        initialWidth: 320,
+        position: { direction: 'right' },
+        initialWidth: 420,
       });
+      newPanel.api.setSize({ width: 420 });
+      newPanel.api.setConstraints({ minimumWidth: 350 });
       isInternalChangeRef.current = false;
     } else if (!isRightSidebarOpen && panel) {
       isInternalChangeRef.current = true;
