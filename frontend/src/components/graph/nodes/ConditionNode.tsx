@@ -35,7 +35,7 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
               <GitFork size={13} />
             </div>
             <span className={styles.nodeTitle}>
-              {nodeData.astKind === 'SwitchStmt' ? 'Переключатель (switch)' : 'Условие (if)'}
+              {nodeData.synthetic ? nodeData.title : nodeData.astKind === 'SwitchStmt' ? 'Переключатель (switch)' : 'Условие (if)'}
             </span>
           </div>
 

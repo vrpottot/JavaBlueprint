@@ -7,6 +7,11 @@ import java.util.*;
 /** Structural rules, independent of method names; every rule states its input invariants. */
 final class AlgorithmRules {
     static boolean same(Node a,Node b) { return a.toString().replace(" ","").equals(b.toString().replace(" ","")); }
+    static boolean requiresUnseen(Expression condition,ArrayAccessExpr access) {
+        condition=Complexity.unwrap(condition);
+        if(condition instanceof UnaryExpr not&&not.getOperator()==UnaryExpr.Operator.LOGICAL_COMPLEMENT)return same(Complexity.unwrap(not.getExpression()),access);
+        return condition instanceof BinaryExpr both&&both.getOperator()==BinaryExpr.Operator.AND&&(requiresUnseen(both.getLeft(),access)||requiresUnseen(both.getRight(),access));
+    }
     static List<MethodCallExpr> calls(Node node,String receiver,Set<String> names) {
         return node.findAll(MethodCallExpr.class).stream().filter(call->call.getScope().map(Object::toString).orElse("").equals(receiver)&&names.contains(call.getNameAsString())).toList();
     }
@@ -40,7 +45,7 @@ final class AlgorithmRules {
         if(method.findAll(AssignExpr.class).stream().anyMatch(write->write.getTarget() instanceof NameExpr name&&parameters.contains(name.getNameAsString()))||method.findAll(UnaryExpr.class).stream().anyMatch(write->Complexity.update(write)!=null&&parameters.contains(Complexity.update(write).variable())))return model.unknown(method,"Параметр рекурсии изменяется: структурная рекуррентная оценка неприменима.");
         Complexity.Cost traversal=recursiveTraversal(model,method,c,recursive); if(traversal!=null)return traversal;
         for(IfStmt branch:method.getBody().get().findAll(IfStmt.class)) {
-            if(!Complexity.terminates(branch.getThenStmt())||!(branch.getCondition() instanceof BinaryExpr test))continue;
+            if(!Complexity.terminates(branch.getThenStmt())||!(branch.getCondition() instanceof BinaryExpr test)||!unconditional(branch,method.getBody().get())||recursive.stream().anyMatch(call->!branch.getBegin().orElseThrow().isBefore(call.getBegin().orElseThrow())))continue;
             // Half-open range recurrence: two disjoint halves, safe midpoint, explicit base case.
             if(test.getLeft() instanceof BinaryExpr distance&&distance.getOperator()==BinaryExpr.Operator.MINUS&&test.getRight() instanceof IntegerLiteralExpr&&Set.of(BinaryExpr.Operator.LESS_EQUALS,BinaryExpr.Operator.LESS).contains(test.getOperator())) {
                 String end=distance.getLeft().toString(),begin=distance.getRight().toString();
@@ -65,7 +70,7 @@ final class AlgorithmRules {
         }
         for(int parameterAt=0;parameterAt<method.getParameters().size();parameterAt++) {
             String variable=method.getParameter(parameterAt).getNameAsString();
-            boolean base=method.getBody().get().findAll(IfStmt.class).stream().anyMatch(branch->Complexity.terminates(branch.getThenStmt())&&branch.getCondition() instanceof BinaryExpr test&&test.getLeft().toString().equals(variable)&&Complexity.integer(test.getRight())!=null&&Set.of(BinaryExpr.Operator.LESS_EQUALS,BinaryExpr.Operator.LESS).contains(test.getOperator()));
+            boolean base=method.getBody().get().findAll(IfStmt.class).stream().anyMatch(branch->unconditional(branch,method.getBody().get())&&recursive.stream().allMatch(call->branch.getBegin().orElseThrow().isBefore(call.getBegin().orElseThrow()))&&Complexity.terminates(branch.getThenStmt())&&branch.getCondition() instanceof BinaryExpr test&&test.getLeft().toString().equals(variable)&&Complexity.integer(test.getRight())!=null&&Set.of(BinaryExpr.Operator.LESS_EQUALS,BinaryExpr.Operator.LESS).contains(test.getOperator()));
             base|=method.getBody().get().findAll(ConditionalExpr.class).stream().anyMatch(conditional->conditional.getCondition() instanceof BinaryExpr test&&test.getLeft().toString().equals(variable)&&Long.valueOf(0).equals(Complexity.integer(test.getRight()))&&test.getOperator()==BinaryExpr.Operator.GREATER&&conditional.getElseExpr().findAll(MethodCallExpr.class).isEmpty());
             if(!base)continue;
             boolean decreasing=true,halving=true;
@@ -79,7 +84,7 @@ final class AlgorithmRules {
             for(Parameter cache:method.getParameters()) if(cache.getType().isArrayType()) {
                 String name=cache.getNameAsString();
                 List<AssignExpr> writes=method.getBody().get().findAll(AssignExpr.class).stream().filter(write->write.getTarget() instanceof ArrayAccessExpr access&&access.getName().toString().equals(name)).toList();
-                boolean lookup=method.getBody().get().findAll(IfStmt.class).stream().anyMatch(branch->Complexity.terminates(branch.getThenStmt())&&branch.getCondition().toString().contains(name+"["+variable+"]")&&branch.getThenStmt().toString().contains("return "+name+"["+variable+"]"));
+                boolean lookup=method.getBody().get().findAll(IfStmt.class).stream().anyMatch(branch->unconditional(branch,method.getBody().get())&&recursive.stream().allMatch(call->branch.getBegin().orElseThrow().isBefore(call.getBegin().orElseThrow()))&&Complexity.terminates(branch.getThenStmt())&&branch.getCondition().toString().contains(name+"["+variable+"]")&&branch.getThenStmt().toString().contains("return "+name+"["+variable+"]"));
                 int index=method.getParameters().indexOf(cache);
                 boolean shared=recursive.stream().allMatch(call->call.getArgument(index).toString().equals(name));
                 boolean boundedValues=c.maximum.getOrDefault(variable,Long.MAX_VALUE)<=45;
@@ -171,6 +176,7 @@ final class AlgorithmRules {
     static Complexity.Cost worklist(Complexity model,WhileStmt loop,Complexity.Context c) {
         List<MethodCallExpr> empty=loop.getCondition().findAll(MethodCallExpr.class).stream().filter(call->call.getNameAsString().equals("isEmpty")&&call.getScope().isPresent()).toList();
         if(empty.size()!=1||!(loop.getBody() instanceof BlockStmt block))return null;
+        if(!(loop.getCondition() instanceof UnaryExpr not)||not.getOperator()!=UnaryExpr.Operator.LOGICAL_COMPLEMENT||!same(Complexity.unwrap(not.getExpression()),empty.get(0)))return null;
         String queue=empty.get(0).getScope().get().toString(); String type=Complexity.baseType(c.concrete.getOrDefault(queue,c.types.getOrDefault(queue,"")));
         if(!Set.of("ArrayDeque","Deque","PriorityQueue","Queue").contains(type))return null;
         List<ForEachStmt> scans=block.getStatements().stream().filter(statement->statement instanceof ForEachStmt).map(statement->(ForEachStmt)statement).toList();
@@ -186,11 +192,11 @@ final class AlgorithmRules {
         boolean bounded=false,priority=type.equals("PriorityQueue"); String state="";
         if(!priority) {
             for(AssignExpr write:guard.getThenStmt().findAll(AssignExpr.class)) if(write.getTarget() instanceof ArrayAccessExpr array&&write.getValue().isBooleanLiteralExpr()&&write.getValue().asBooleanLiteralExpr().getValue()) {
-                if(guard.getCondition().toString().contains("!"+array)&&enqueue.getArguments().size()==1&&same(enqueue.getArgument(0),array.getIndex())) { bounded=true; state=array.getName().toString(); }
+                if(requiresUnseen(guard.getCondition(),array)&&unconditional(write,guard.getThenStmt())&&write.getBegin().orElseThrow().isBefore(enqueue.getBegin().orElseThrow())&&guard.getThenStmt().isAncestorOf(enqueue)&&enqueue.getArguments().size()==1&&same(enqueue.getArgument(0),array.getIndex())) { bounded=true; state=array.getName().toString(); }
             }
         } else if(guard.getCondition() instanceof BinaryExpr comparison&&comparison.getOperator()==BinaryExpr.Operator.LESS&&comparison.getRight() instanceof ArrayAccessExpr array) {
             String candidate=comparison.getLeft().toString();
-            boolean writes=guard.getThenStmt().findAll(AssignExpr.class).stream().anyMatch(write->same(write.getTarget(),array)&&write.getValue().toString().equals(candidate));
+            boolean writes=guard.getThenStmt().isAncestorOf(enqueue)&&guard.getThenStmt().findAll(AssignExpr.class).stream().anyMatch(write->unconditional(write,guard.getThenStmt())&&write.getBegin().orElseThrow().isBefore(enqueue.getBegin().orElseThrow())&&same(write.getTarget(),array)&&write.getValue().toString().equals(candidate));
             boolean stale=block.findAll(IfStmt.class).stream().anyMatch(branch->branch.getCondition() instanceof BinaryExpr comparison2&&comparison2.getOperator()==BinaryExpr.Operator.NOT_EQUALS&&comparison2.findAll(ArrayAccessExpr.class).stream().anyMatch(access->access.getName().toString().equals(array.getName().toString()))&&!branch.getThenStmt().findAll(ContinueStmt.class).isEmpty());
             bounded=writes&&stale; state=array.getName().toString();
             if(!(enqueue.getArgument(0) instanceof ObjectCreationExpr entry)||!(model.symbols.type(entry.getType().asString()) instanceof RecordDeclaration record))return null;

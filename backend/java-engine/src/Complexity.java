@@ -932,12 +932,17 @@ final class Complexity {
         if(owner instanceof EnumDeclaration && Set.of("values","name","ordinal","toString","valueOf").contains(name))return arguments.plus(name.equals("valueOf")&&!call.getArguments().isEmpty()?textLength(call.getArgument(0),c):Cost.one());
         if(Set.of("Math","java.lang.Math","StrictMath","java.lang.StrictMath").contains(scope)&&Set.of("abs","min","max","floor","ceil","round","sqrt","signum").contains(name))return arguments;
         if(Set.of("Integer","Long","Double","Boolean","Character").contains(scope)&&Set.of("sum","min","max","compare","toUnsignedLong","toUnsignedString","valueOf","parseInt","parseLong","toString").contains(name))return arguments.plus(call.getArguments().isEmpty()?Cost.one():textLength(call.getArgument(0),c));
-        if(scope.equals("Objects")&&Set.of("requireNonNull","equals","hash").contains(name))return arguments;
+        if(scope.equals("Objects")&&name.equals("requireNonNull"))return arguments.plus(call.getArguments().size()>1&&!(call.getArgument(1) instanceof StringLiteralExpr)?callback(call.getArgument(1),"List<Object>",c):Cost.one());
+        if(scope.equals("Objects")&&Set.of("equals","hash").contains(name))return arguments.plus(Cost.variable("C("+name+" elements)"));
         if(scope.equals("Comparator")||raw.equals("Comparator"))return arguments;
         if(scope.equals("Collectors")||scope.equals("java.util.stream.Collectors"))return arguments;
         if(Set.of("List","Set","Map","Optional").contains(scope)&&Set.of("of","ofNullable","empty","copyOf").contains(name))return arguments.plus(name.equals("copyOf")?length(call.getArgument(0),c):Cost.one());
         if(Set.of("Arrays","java.util.Arrays","Collections","java.util.Collections").contains(scope)) {
-            if(Set.of("fill","copyOf","copyOfRange","toString","equals").contains(name)&&!call.getArguments().isEmpty())return arguments.plus(length(call.getArgument(0),c));
+            if(Set.of("fill","copyOf","copyOfRange","toString","equals").contains(name)&&!call.getArguments().isEmpty()) {
+                String element=typeOf(call.getArgument(0),c).replaceFirst("\\[\\]$","");
+                Cost each=Set.of("toString","equals").contains(name)&&!numeric(element)?Cost.variable("C("+name+" element)"):Cost.one();
+                return arguments.plus(length(call.getArgument(0),c).times(each));
+            }
             if(name.equals("sort")&&!call.getArguments().isEmpty()) {
                 Cost n=length(call.getArgument(0),c), comparator=call.getArguments().size()>1?callback(call.getArgument(call.getArguments().size()-1),"List<Object>",c):Cost.one();
                 return arguments.plus(n.times(n.logarithm()).times(comparator));
@@ -981,10 +986,15 @@ final class Complexity {
             Cost n=length(receiverExpression,c), upstream=receiverExpression instanceof MethodCallExpr chain?methodCall(chain,c):Cost.one();
             if(Set.of("filter","map","mapToInt","mapToLong","peek").contains(name))return upstream.plus(arguments).plus(n.times(callback(call.getArgument(0),receiver,c)));
             if(name.equals("sorted"))return upstream.plus(n.times(n.logarithm()).times(call.getArguments().isEmpty()?Cost.one():callback(call.getArgument(0),receiver,c)));
-            if(Set.of("findFirst","findAny","toList","toArray","sum","count","max","min","average").contains(name))return upstream.plus(arguments).plus(n);
+            if(Set.of("findFirst","findAny","toList","toArray","sum","count","max","min","average").contains(name))return upstream.plus(arguments).plus(n.times(call.getArguments().isEmpty()?Cost.one():callback(call.getArgument(0),receiver,c)));
             if(Set.of("anyMatch","allMatch","noneMatch","forEach","collect","reduce").contains(name)) {
                 Cost callback=Cost.one(); for(Expression argument:call.getArguments())callback=callback.plus(argument instanceof LambdaExpr||argument instanceof MethodReferenceExpr?callback(argument,receiver,c):Cost.one());
                 if(name.equals("collect")&&baseType(typeOf(call,c)).equals("String"))callback=callback.plus(Cost.variable("max(|stream text element|)"));
+                else if(name.equals("collect")) {
+                    boolean standard=call.getArguments().size()==1&&call.getArgument(0) instanceof MethodCallExpr collector&&collector.getScope().map(Object::toString).orElse("").endsWith("Collectors")&&(Set.of("toList","toUnmodifiableList").contains(collector.getNameAsString())||collector.getNameAsString().equals("toCollection")&&collector.getArguments().size()==1&&collector.getArgument(0) instanceof MethodReferenceExpr factory&&factory.getIdentifier().equals("new")&&Set.of("ArrayList","LinkedList","ArrayDeque").contains(factory.getScope().toString()));
+                    if(!standard)callback=callback.plus(Cost.variable("C(collector accumulator/combiner)"));
+                }
+                if(name.equals("reduce"))callback=callback.plus(Cost.variable("C(reducer at maximum accumulator size)"));
                 return upstream.plus(arguments).plus(n.times(callback));
             }
         }

@@ -43,8 +43,8 @@ export function graph(result: EngineResult) {
         if (srcNode?.kind === 'condition') {
           const aIsNo = a.label === 'false' || a.label === 'Нет' || a.label === 'нет';
           const bIsNo = b.label === 'false' || b.label === 'Нет' || b.label === 'нет';
-          const aIsYes = a.label === 'true' || a.label === 'Да' || a.label === 'да' || (srcNode.astKind !== 'SwitchStmt' && !aIsNo);
-          const bIsYes = b.label === 'true' || b.label === 'Да' || b.label === 'да' || (srcNode.astKind !== 'SwitchStmt' && !bIsNo);
+          const aIsYes = a.kind === 'branch' && (a.label === 'true' || a.label === 'Да' || a.label === 'да');
+          const bIsYes = b.kind === 'branch' && (b.label === 'true' || b.label === 'Да' || b.label === 'да');
           if (aIsNo && bIsYes) return -1;
           if (aIsYes && bIsNo) return 1;
         }
@@ -64,6 +64,7 @@ export function graph(result: EngineResult) {
       if (!yesEdge) continue;
       const yesNode = group.find(n => n.id === yesEdge.target);
       const noNode = noEdge ? group.find(n => n.id === noEdge.target) : null;
+      const before = new Map([yesNode, noNode].filter(node => node != null).map(node => [node.id, node.position.x]));
       if (yesNode && noNode && yesNode.id !== noNode.id) {
         if (yesNode.position.x >= noNode.position.x) {
           const temp = yesNode.position.x;
@@ -72,9 +73,18 @@ export function graph(result: EngineResult) {
         }
       } else if (yesNode && (!noNode || yesNode.id === noNode?.id)) {
         if (yesNode.position.x >= cond.position.x) {
-          yesNode.position.x = cond.position.x - 450;
+          yesNode.position.x = Math.max(offset + 40, cond.position.x - 450);
         }
       }
+      // Reordering branch roots must preserve Dagre's nonoverlap guarantee.
+      const moved = group.filter(node => before.has(node.id));
+      const collides = moved.some(first => group.some(second => {
+        if (first.id === second.id) return false;
+        const a = layout.node(first.id), b = layout.node(second.id);
+        return Math.min(first.position.x + a.width, second.position.x + b.width) > Math.max(first.position.x, second.position.x) &&
+          Math.min(first.position.y + a.height, second.position.y + b.height) > Math.max(first.position.y, second.position.y);
+      }));
+      if (collides) for (const node of moved) node.position.x = before.get(node.id)!;
     }
     offset += (layout.graph().width ?? 650) + 250;
   }
@@ -87,7 +97,7 @@ export function graph(result: EngineResult) {
     nodes,
     edges: result.edges.filter(edge => byId.has(edge.source) && byId.has(edge.target)).map((e, i) => {
       const source = byId.get(e.source), target = byId.get(e.target);
-      const back = target?.kind === 'loop' && within(e.source, e.target);
+      const back = target?.kind === 'loop' && (within(e.source, e.target) || e.kind === 'resume' && e.label?.startsWith('continue'));
       const isNo = e.kind === 'branch' && (e.label === 'false' || e.label === 'Нет' || e.label === 'нет');
       const isCondition = source?.kind === 'condition';
       const isIfBlock = isCondition && source?.astKind !== 'SwitchStmt';

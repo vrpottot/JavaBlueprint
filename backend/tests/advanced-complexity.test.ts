@@ -35,6 +35,11 @@ class Advanced {
   int fieldGrowth(int n) { fill(n); int x=0; for(int i=0;i<n;i++)x+=buffer.toString().length(); return x; }
   int mutatedRecursion(int n) { if(n<=1)return 1; n++; return mutatedRecursion(n-1); }
   String joined(List<String> texts) { return texts.stream().collect(java.util.stream.Collectors.joining()); }
+  int maxWithWork(List<Integer> values,int n) { return values.stream().max((a,b)->{ int x=0; for(int i=0;i<n;i++)for(int j=0;j<n;j++)x++; return Integer.compare(a,b); }).orElse(0); }
+  int lateBase(int n) { int x=lateBase(n-1); if(n<=1)return 0; return x; }
+  int conditionalBase(int n,boolean flag) { if(flag) { if(n<=1)return 0; } return conditionalBase(n-1,flag); }
+  void unsafeQueue(List<List<Integer>> graph,boolean[] seen) { ArrayDeque<Integer> q=new ArrayDeque<>(); q.add(0); while(!q.isEmpty() || true) { int u=q.remove(); for(int v:graph.get(u)) { if(!seen[v]) { seen[v]=true; q.add(v); } } } }
+  void conditionalMark(List<List<Integer>> graph,boolean[] seen,boolean flag) { ArrayDeque<Integer> q=new ArrayDeque<>(); q.add(0); while(!q.isEmpty()) { int u=q.remove(); for(int v:graph.get(u)) { if(!seen[v]) { if(flag)seen[v]=true; q.add(v); } } } }
 }` }]);
   assert.deepEqual(result.errors, []);
   const costs = new Map(result.nodes.filter(node => node.kind === 'method').map(node => [node.title, node.complexity!]));
@@ -44,7 +49,8 @@ class Advanced {
   assert.match(costs.get('printing')!.estimate, /value.n\^2/);
   assert.match(costs.get('fieldGrowth')!.estimate, /n\^2/);
   assert.match(costs.get('joined')!.estimate, /max\(\|stream text element\|\)/);
-  for (const name of ['arbitrary', 'arrayBound', 'inclusive', 'skip', 'badMidpoint', 'growing', 'mutatedRecursion']) {
+  assert.equal(costs.get('maxWithWork')!.estimate, 'O(n^2 * |values|)');
+  for (const name of ['arbitrary', 'arrayBound', 'inclusive', 'skip', 'badMidpoint', 'growing', 'mutatedRecursion', 'lateBase', 'conditionalBase', 'unsafeQueue', 'conditionalMark']) {
     assert.equal(costs.get(name)!.status, 'unknown', `${name}: ${JSON.stringify(costs.get(name))}`);
     assert.ok(costs.get(name)!.limitations.length);
   }

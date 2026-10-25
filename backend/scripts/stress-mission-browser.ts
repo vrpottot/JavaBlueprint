@@ -91,6 +91,7 @@ try {
   assert.equal(verification.current.tests.status, 'passed');
   assert.equal(verification.comparison.status, 'matched_on_inputs');
   assert.match(verification.current.tests.report ?? '', /16 tests successful/);
+  await page.getByRole('button', { name: 'Результат тестов', exact: true }).click();
   await expect(page.getByText('JUnit 5 (16 tests found)', { exact: true })).toBeVisible();
   await page.screenshot({ path: join(output, 'java-and-junit.png') });
   await page.locator('.react-flow__node-methodNode').click({ button: 'right' });

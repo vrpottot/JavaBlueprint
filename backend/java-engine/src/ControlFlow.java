@@ -29,7 +29,7 @@ final class ControlFlow {
     final Set<String> generated = new HashSet<>();
     final Map<String,String> parents = new HashMap<>();
     static final Map<String,String> EXCEPTIONS = Map.ofEntries(
-        Map.entry("Exception","Throwable"), Map.entry("Error","Throwable"),
+        Map.entry("Exception","Throwable"), Map.entry("Error","Throwable"), Map.entry("AssertionError","Error"),
         Map.entry("RuntimeException","Exception"), Map.entry("IOException","Exception"),
         Map.entry("IllegalArgumentException","RuntimeException"), Map.entry("NumberFormatException","IllegalArgumentException"),
         Map.entry("IllegalStateException","RuntimeException"), Map.entry("NullPointerException","RuntimeException"),
@@ -103,11 +103,18 @@ final class ControlFlow {
         if(expression instanceof MethodCallExpr || expression instanceof ObjectCreationExpr || expression instanceof ArrayAccessExpr) return true;
         if(expression instanceof FieldAccessExpr f && !(f.getScope() instanceof ThisExpr)) return true;
         if(expression instanceof CastExpr cast && !cast.getType().isPrimitiveType()) return true;
+        if(expression instanceof SwitchExpr select&&select.getEntries().stream().anyMatch(this::nestedMayThrow))return true;
         if(expression instanceof BinaryExpr b && (b.getOperator()==BinaryExpr.Operator.DIVIDE || b.getOperator()==BinaryExpr.Operator.REMAINDER)) {
             Long divisor=Complexity.integer(b.getRight()); if(divisor==null || divisor==0) return true;
         }
         for(Node child:expression.getChildNodes()) if(child instanceof Expression e && mayThrow(e)) return true;
         return false;
+    }
+    boolean nestedMayThrow(Node node) {
+        if(node instanceof LambdaExpr||node instanceof TypeDeclaration<?>)return false;
+        if(node instanceof ThrowStmt)return true;
+        if(node instanceof Expression expression)return mayThrow(expression);
+        return node.getChildNodes().stream().anyMatch(this::nestedMayThrow);
     }
     void implicit(String source,Expression expression,Context c) {
         if(mayThrow(expression)) edge(source,c.throwing.apply(new Thrown("?")),"exception","может бросить");
@@ -163,8 +170,13 @@ final class ControlFlow {
         } else if(statement instanceof SynchronizedStmt monitor) {
             implicit(node,monitor.getExpression(),c);
             edge(node,flow(monitor.getBody(),next,c),"flow","monitor");
+        } else if(statement instanceof AssertStmt assertion) {
+            implicit(node,assertion.getCheck(),c); assertion.getMessage().ifPresent(message->implicit(node,message,c));
+            edge(node,c.throwing.apply(new Thrown("AssertionError")),"exception","assert: ошибка при включённых assertions");
+            edge(node,next,"flow","assert: успех или assertions отключены");
         } else {
             if(statement instanceof ExpressionStmt expression) implicit(node,expression.getExpression(),c);
+            if(statement instanceof ExplicitConstructorInvocationStmt)edge(node,c.throwing.apply(new Thrown("?")),"exception","ошибка конструктора");
             edge(node,next,"flow",null);
         }
         return node;
