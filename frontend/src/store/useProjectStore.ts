@@ -1,10 +1,11 @@
 import { create } from 'zustand';
-import type { Node, Edge, NodeChange, EdgeChange } from '@xyflow/react';
-import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
+import type { Node, Edge, NodeChange, EdgeChange, Connection } from '@xyflow/react';
+import { applyNodeChanges, applyEdgeChanges, reconnectEdge } from '@xyflow/react';
 import type { FileItem, CodeIssue, CodeRecommendation, CodeMetrics, ComplexityEstimate, ConsoleLog, TestCase, BlockType, VisualBlockData, AIProposal, ChatMessage } from '../types';
 import { api, type ProjectSnapshot, type SourceFile, type Analysis, type Verification, submitAIProposal, type AIProposalResponse, type AIChatResponse, type MethodContainer } from '../services/api';
 import { PALETTE_ITEMS } from '../lib/palette';
 import { defaultMethod, scopeNodes } from '../lib/graph-scope';
+import { generateJavaCodeFromGraph } from '../lib/graph-to-code';
 
 const SAMPLE = `import java.util.Scanner;
 
@@ -92,6 +93,11 @@ interface ProjectState {
   setWaitingForInput: (waiting: boolean) => void;
   onNodesChange: (changes: NodeChange<Node<VisualBlockData>>[]) => void;
   onEdgesChange: (changes: EdgeChange[]) => void;
+  onConnect: (connection: Connection) => void;
+  onReconnect: (oldEdge: Edge, newConnection: Connection) => void;
+  regenerateCodeFromEdges: (updatedEdges?: Edge[]) => void;
+  codeGeneratedNotice: string | null;
+  clearCodeGeneratedNotice: () => void;
   selectNode: (id: string | null) => void;
   setEditingNode: (node: Node<VisualBlockData> | null) => void;
   updateNodeData: (id: string, data: Partial<VisualBlockData>) => Promise<void>;
@@ -320,6 +326,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     mainWorkspaceTab: 'graph',
     bottomWorkspaceTab: 'console',
     bottomPanelHeight: 220,
+    codeGeneratedNotice: null,
 
     initialize: async () => {
       if (!get().projectId && !get().isLoading) await get().importJavaFiles([{ path: 'Main.java', content: SAMPLE }]);
@@ -359,7 +366,120 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       set({ manualPositions: positions, nodes: applyNodeChanges(changes.filter((c) => c.type !== 'remove'), get().nodes) });
     },
 
-    onEdgesChange: (changes) => set({ edges: applyEdgeChanges(changes.filter((c) => c.type !== 'remove'), get().edges) }),
+    onEdgesChange: (changes) => {
+      const hasRemove = changes.some((c) => c.type === 'remove');
+      const updatedEdges = applyEdgeChanges(changes, get().edges);
+      set({ edges: updatedEdges });
+      if (hasRemove) {
+        get().regenerateCodeFromEdges(updatedEdges);
+      }
+    },
+
+    onConnect: (connection: Connection) => {
+      if (!connection.source || !connection.target) return;
+      if (connection.source === connection.target) return;
+
+      const currentEdges = get().edges;
+      const isMulti = connection.sourceHandle === 'out-bottom';
+      const filtered = isMulti
+        ? currentEdges
+        : currentEdges.filter(e => !(e.source === connection.source && e.sourceHandle === connection.sourceHandle));
+
+      const sourceNode = get().nodes.find(n => n.id === connection.source);
+      const isCondition = sourceNode?.data.blockType === 'condition';
+      const isYes = connection.sourceHandle === 'out-left';
+      const isNo = connection.sourceHandle === 'out-right';
+
+      const newEdge: Edge = {
+        id: `${connection.source}:${connection.target}:${Date.now()}`,
+        source: connection.source,
+        target: connection.target,
+        sourceHandle: connection.sourceHandle,
+        targetHandle: connection.targetHandle || 'in',
+        type: 'smoothstep',
+        markerEnd: { type: 'arrowclosed', width: 16, height: 16 },
+        ...(isCondition && isYes ? {
+          label: 'Да',
+          labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
+          labelBgStyle: { fill: '#F0FDF4', rx: 4, ry: 4, stroke: '#86EFAC' },
+          style: { stroke: '#22C55E', strokeWidth: 2 },
+        } : isCondition && isNo ? {
+          label: 'Нет',
+          labelStyle: { fill: '#EA580C', fontWeight: 600, fontSize: 11 },
+          labelBgStyle: { fill: '#FFF7ED', rx: 4, ry: 4, stroke: '#FDBA74' },
+          style: { stroke: '#F97316', strokeWidth: 2 },
+        } : {}),
+      };
+
+      const updatedEdges = [...filtered, newEdge];
+      set({ edges: updatedEdges });
+      get().regenerateCodeFromEdges(updatedEdges);
+    },
+
+    onReconnect: (oldEdge: Edge, newConnection: Connection) => {
+      if (!newConnection.source || !newConnection.target) return;
+      if (newConnection.source === newConnection.target) return;
+
+      const currentEdges = get().edges;
+      const reconnected = reconnectEdge(oldEdge, newConnection, currentEdges);
+
+      const sourceNode = get().nodes.find(n => n.id === newConnection.source);
+      const isCondition = sourceNode?.data.blockType === 'condition';
+      const isYes = newConnection.sourceHandle === 'out-left';
+      const isNo = newConnection.sourceHandle === 'out-right';
+
+      const updatedEdges = reconnected.map(e => {
+        if (e.id === oldEdge.id) {
+          return {
+            ...e,
+            source: newConnection.source,
+            target: newConnection.target,
+            sourceHandle: newConnection.sourceHandle,
+            targetHandle: newConnection.targetHandle || 'in',
+            ...(isCondition && isYes ? {
+              label: 'Да',
+              labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
+              labelBgStyle: { fill: '#F0FDF4', rx: 4, ry: 4, stroke: '#86EFAC' },
+              style: { stroke: '#22C55E', strokeWidth: 2 },
+            } : isCondition && isNo ? {
+              label: 'Нет',
+              labelStyle: { fill: '#EA580C', fontWeight: 600, fontSize: 11 },
+              labelBgStyle: { fill: '#FFF7ED', rx: 4, ry: 4, stroke: '#FDBA74' },
+              style: { stroke: '#F97316', strokeWidth: 2 },
+            } : {}),
+          };
+        }
+        return e;
+      });
+
+      set({ edges: updatedEdges });
+      get().regenerateCodeFromEdges(updatedEdges);
+    },
+
+    regenerateCodeFromEdges: (updatedEdges?: Edge[]) => {
+      const edgesToUse = updatedEdges ?? get().edges;
+      const currentCode = get().javaCode;
+      if (!currentCode) return;
+
+      const activeMethodId = get().activeMethodId;
+      const result = generateJavaCodeFromGraph(
+        currentCode,
+        get().nodes,
+        edgesToUse,
+        activeMethodId
+      );
+
+      if (result.updated && result.code !== currentCode) {
+        log('info', `Связи изменены: сгенерирован новый Java-код (${result.methodName || 'метод'})`);
+        set({ codeGeneratedNotice: `Связи обновлены: сгенерирован Java-код для ${result.methodName || 'метода'}` });
+        setTimeout(() => {
+          if (get().codeGeneratedNotice) set({ codeGeneratedNotice: null });
+        }, 4500);
+        get().updateJavaCode(result.code);
+      }
+    },
+
+    clearCodeGeneratedNotice: () => set({ codeGeneratedNotice: null }),
 
     selectNode: (id) => {
       const node = get().nodes.find(n => n.id === id);

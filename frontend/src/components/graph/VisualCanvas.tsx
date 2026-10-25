@@ -13,8 +13,6 @@ import {
   Maximize2,
   ZoomIn,
   ZoomOut,
-  X,
-  Plus,
   Workflow,
   FileCode,
   Edit3,
@@ -51,6 +49,10 @@ const CanvasInner: React.FC = () => {
   const edges = useProjectStore((s) => s.edges);
   const onNodesChange = useProjectStore((s) => s.onNodesChange);
   const onEdgesChange = useProjectStore((s) => s.onEdgesChange);
+  const onConnect = useProjectStore((s) => s.onConnect);
+  const onReconnect = useProjectStore((s) => s.onReconnect);
+  const codeGeneratedNotice = useProjectStore((s) => s.codeGeneratedNotice);
+  const clearCodeGeneratedNotice = useProjectStore((s) => s.clearCodeGeneratedNotice);
   const selectNode = useProjectStore((s) => s.selectNode);
   const setEditingNode = useProjectStore((s) => s.setEditingNode);
   const addNode = useProjectStore((s) => s.addNode);
@@ -188,6 +190,21 @@ const CanvasInner: React.FC = () => {
     [screenToFlowPosition, addNode]
   );
 
+  const isValidConnection = useCallback(
+    (connection: any) => {
+      if (!connection.source || !connection.target) return false;
+      if (connection.source === connection.target) return false;
+      const sNode = nodes.find(n => n.id === connection.source);
+      const tNode = nodes.find(n => n.id === connection.target);
+      if (!sNode || !tNode) return false;
+      if (sNode.data.methodId && tNode.data.methodId && sNode.data.methodId !== tNode.data.methodId) {
+        return false;
+      }
+      return true;
+    },
+    [nodes]
+  );
+
   const isLight = theme === 'light';
 
 
@@ -218,50 +235,11 @@ const CanvasInner: React.FC = () => {
               <span>Код Java</span>
             </button>
           </div>
-
-          <div className={styles.tabDivider} />
-
-          {/* Active file tab */}
-          <div className={styles.fileTab}>
-            <FileCode size={13} color="var(--accent-blue)" />
-            <span>{activeFilePath.split('/').pop()}</span>
-            <span className={styles.tabCloseBtn}>
-              <X size={12} />
-            </span>
-          </div>
-
-          <button className={styles.addTabBtn} title="Новый таб">
-            <Plus size={13} />
-          </button>
         </div>
 
         {/* Right side controls based on active workspace */}
         <div className={styles.rightGroup}>
-          {mainWorkspaceTab === 'graph' ? (
-            <div className={styles.canvasControlsPill}>
-              <button className={styles.pillBtn} onClick={() => zoomIn()} title="Увеличить">
-                <ZoomIn size={14} />
-              </button>
-              <button className={styles.pillBtn} onClick={() => zoomOut()} title="Уменьшить">
-                <ZoomOut size={14} />
-              </button>
-              <span
-                className={styles.zoomText}
-                onClick={() => zoomTo(1)}
-                style={{ cursor: 'pointer' }}
-                title="Сбросить масштаб к 100%"
-              >
-                {zoom < 0.1 ? (zoom * 100).toFixed(1) : Math.round(zoom * 100)}%
-              </span>
-              <button
-                className={styles.pillBtn}
-                onClick={() => fitView({ duration: 300, padding: 0.25 })}
-                title="Вписать в экран"
-              >
-                <Maximize2 size={13} />
-              </button>
-            </div>
-          ) : (
+          {mainWorkspaceTab === 'editor' && (
             <div className={styles.editorControlsGroup}>
               <div className={styles.toggleGroup}>
                 <button
@@ -291,19 +269,29 @@ const CanvasInner: React.FC = () => {
         </div>
       </div>
 
-      <div className={styles.methodNavigation}>
-        <label htmlFor="graph-method">Метод</label>
-        <input aria-label="Поиск метода" placeholder="Найти метод…" value={methodSearch} onChange={e => setMethodSearch(e.target.value)} />
-        <select id="graph-method" aria-label="Метод схемы" value={activeMethodId} onChange={e => { setActiveMethodId(e.target.value); setMethodSearch(''); }}>
-          <option value="all">Весь файл — обзор</option>
-          <option value="members">Поля класса</option>
-          {methods.filter(n => n.id === activeMethodId || `${n.data.title} ${n.data.containerName ?? ''}`.toLowerCase().includes(methodSearch.toLowerCase())).map(n => <option key={n.id} value={n.id}>{n.data.title} — {n.data.containerName ?? ''} · L{n.data.line}</option>)}
-        </select>
-        <span>{visibleNodes.length} / {nodes.filter(n => n.data.source?.file === activeFilePath).length} блоков файла</span>
-        <button type="button" onClick={() => { resetGraphLayout(); setTimeout(() => void fitView({ padding: 0.25, duration: 150, maxZoom: 0.9 }), 50); }}>Автораскладка</button>
-      </div>
-      {dirty && <p role="status" className={styles.graphNotice}>Java-код изменён. На схеме последняя успешно разобранная версия; после исправления ошибок она обновится.</p>}
-      {graphWarnings.length > 0 && <details className={styles.graphNotice}><summary>Ограничения схемы этого метода ({graphWarnings.length})</summary>{graphWarnings.map(warning => <p key={warning}>{warning}</p>)}</details>}
+      {mainWorkspaceTab === 'graph' && (
+        <>
+          <div className={styles.methodNavigation}>
+            <label htmlFor="graph-method">Метод</label>
+            <input aria-label="Поиск метода" placeholder="Найти метод…" value={methodSearch} onChange={e => setMethodSearch(e.target.value)} />
+            <select id="graph-method" aria-label="Метод схемы" value={activeMethodId} onChange={e => { setActiveMethodId(e.target.value); setMethodSearch(''); }}>
+              <option value="all">Весь файл — обзор</option>
+              <option value="members">Поля класса</option>
+              {methods.filter(n => n.id === activeMethodId || `${n.data.title} ${n.data.containerName ?? ''}`.toLowerCase().includes(methodSearch.toLowerCase())).map(n => <option key={n.id} value={n.id}>{n.data.title} — {n.data.containerName ?? ''} · L{n.data.line}</option>)}
+            </select>
+            <span>{visibleNodes.length} / {nodes.filter(n => n.data.source?.file === activeFilePath).length} блоков файла</span>
+            <button type="button" onClick={() => { resetGraphLayout(); setTimeout(() => void fitView({ padding: 0.25, duration: 150, maxZoom: 0.9 }), 50); }}>Автораскладка</button>
+          </div>
+          {codeGeneratedNotice && (
+            <div role="status" className={styles.codeGeneratedNotice}>
+              <span>⚡ {codeGeneratedNotice}</span>
+              <button type="button" onClick={clearCodeGeneratedNotice} className={styles.noticeCloseBtn} title="Закрыть">✕</button>
+            </div>
+          )}
+          {dirty && <p role="status" className={styles.graphNotice}>Java-код изменён. На схеме последняя успешно разобранная версия; после исправления ошибок она обновится.</p>}
+          {graphWarnings.length > 0 && <details className={styles.graphNotice}><summary>Ограничения схемы этого метода ({graphWarnings.length})</summary>{graphWarnings.map(warning => <p key={warning}>{warning}</p>)}</details>}
+        </>
+      )}
 
       {/* Main Workspace Views */}
       <div className={styles.viewsContent}>
@@ -316,6 +304,11 @@ const CanvasInner: React.FC = () => {
             edges={visibleEdges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            onReconnect={onReconnect}
+            edgesReconnectable={true}
+            reconnectRadius={25}
+            isValidConnection={isValidConnection}
             nodeTypes={nodeTypes}
             onNodeClick={onNodeClick}
             onNodeDoubleClick={onNodeDoubleClick}
@@ -338,6 +331,32 @@ const CanvasInner: React.FC = () => {
               variant={BackgroundVariant.Lines}
             />
           </ReactFlow>
+
+          {/* Floating Zoom & Fit Controls in top-right corner of graph canvas (15px offset) */}
+          <div className={styles.canvasControlsPill}>
+            <button className={styles.pillBtn} onClick={() => zoomIn()} title="Увеличить">
+              <ZoomIn size={14} />
+            </button>
+            <button className={styles.pillBtn} onClick={() => zoomOut()} title="Уменьшить">
+              <ZoomOut size={14} />
+            </button>
+            <span
+              className={styles.zoomText}
+              onClick={() => zoomTo(1)}
+              style={{ cursor: 'pointer' }}
+              title="Сбросить масштаб к 100%"
+            >
+              {zoom < 0.1 ? (zoom * 100).toFixed(1) : Math.round(zoom * 100)}%
+            </span>
+            <button
+              className={styles.pillBtn}
+              onClick={() => fitView({ duration: 300, padding: 0.25 })}
+              title="Вписать в экран"
+            >
+              <Maximize2 size={13} />
+            </button>
+          </div>
+
           {!visibleNodes.length && <div className={styles.emptyGraph}>В этом разделе нет блоков. Выберите метод или добавьте новый через панель слева.</div>}
         </div>
 

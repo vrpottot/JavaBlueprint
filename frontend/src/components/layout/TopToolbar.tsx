@@ -3,16 +3,12 @@ import {
   Upload,
   Download,
   Play,
-  ChevronDown,
-  Settings,
   Moon,
   Sun,
   Bug,
   RotateCcw,
-  SlidersHorizontal,
+  Bot,
   ChevronRight,
-  Terminal,
-  Activity,
   Sparkles,
   FileText,
   Sidebar,
@@ -168,39 +164,6 @@ export const TopToolbar: React.FC = () => {
             <Play size={13} className={styles.playIcon} fill="currentColor" />
             <span>{isCompiling ? 'Компиляция...' : isRunning ? 'Выполнение...' : 'Run'}</span>
           </button>
-          <button
-            className={styles.runChevronBtn}
-            onClick={() => setRunDropdownOpen(!runDropdownOpen)}
-            title="Конфигурация запуска"
-            aria-expanded={runDropdownOpen}
-          >
-            <ChevronDown size={12} />
-          </button>
-
-          {runDropdownOpen && (
-            <div className={styles.runDropdownMenu}>
-              <button
-                className={styles.dropdownOption}
-                onClick={() => {
-                  setRunDropdownOpen(false);
-                  void runProgram();
-                }}
-              >
-                <Activity size={13} className={styles.greenIcon} />
-                <span>Компиляция и запуск</span>
-              </button>
-              <button
-                className={styles.dropdownOption}
-                onClick={() => {
-                  setRunDropdownOpen(false);
-                  void runProgram();
-                }}
-              >
-                <Terminal size={13} className={styles.blueIcon} />
-                <span>Проверка поведения</span>
-              </button>
-            </div>
-          )}
         </div>
 
         {/* Debug button */}
@@ -219,14 +182,7 @@ export const TopToolbar: React.FC = () => {
 
       {/* Right Tools: Analysis, Theme, Settings */}
       <div className={styles.toolsGroup}>
-        <button
-          className={`${styles.iconBtn} ${isRightSidebarOpen ? styles.active : ''}`}
-          onClick={toggleRightSidebar}
-          title="Панель статического анализа кода"
-          aria-label="Toggle analysis sidebar"
-        >
-          <SlidersHorizontal size={14} />
-        </button>
+
 
         <button
           className={styles.iconBtn}
@@ -237,8 +193,13 @@ export const TopToolbar: React.FC = () => {
           {theme === 'dark' ? <Sun size={14} className={styles.sunIcon} /> : <Moon size={14} className={styles.moonIcon} />}
         </button>
 
-        <button className={styles.iconBtn} title="Настройки" aria-label="Settings">
-          <Settings size={14} />
+        <button
+          className={`${styles.iconBtn} ${isRightSidebarOpen ? styles.active : ''}`}
+          onClick={toggleRightSidebar}
+          title="Панель статического анализа кода"
+          aria-label="Toggle analysis sidebar"
+        >
+          <Bot size={14} />
         </button>
       </div>
     </header>

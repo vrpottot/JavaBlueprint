@@ -4,8 +4,6 @@ import {
   ChevronDown,
   Search,
   GripVertical,
-  Crosshair,
-  MoreVertical,
   Code2,
   Box,
   GitFork,
@@ -199,12 +197,7 @@ export const ProjectExplorer: React.FC = () => {
             >
               <FilePlus size={14} />
             </button>
-            <button className={styles.headerActionBtn} title="Сфокусировать текущий файл">
-              <Crosshair size={14} />
-            </button>
-            <button className={styles.headerActionBtn} title="Дополнительные действия">
-              <MoreVertical size={14} />
-            </button>
+
           </div>
         </div>
 

@@ -110,6 +110,7 @@ export function graph(result: EngineResult) {
           ? (isYes ? 'out-left' : isNo ? 'out-right' : 'out-bottom')
           : (source?.kind === 'loop' && e.label === 'exit' ? 'out-exit' : 'out'),
         targetHandle: back ? 'loop-in' : 'in', type: 'smoothstep', animated: back,
+        reconnectable: true,
         markerEnd: { type: 'arrowclosed', width: 16, height: 16 },
         ...(isCondition && isYes ? {
           label: 'Да',

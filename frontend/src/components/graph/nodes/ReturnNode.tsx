@@ -14,9 +14,8 @@ export const ReturnNode = memo(({ data, selected }: NodeProps) => {
         isSelected ? styles.selected : ''
       }`}
     >
-      <Handle type="target" position={Position.Top} id="in" />
-      <Handle type="target" position={Position.Left} id="in-left" />
-      <Handle type="target" position={Position.Right} id="in-right" />
+      {/* Ровно один вход/выход к предыдущему блоку (вход возврата) */}
+      <Handle type="target" position={Position.Top} id="in" title="Вход от предыдущего блока" />
 
       {/* Прямоугольник со скруглением 10px */}
       <svg
@@ -62,8 +61,11 @@ export const ReturnNode = memo(({ data, selected }: NodeProps) => {
         )}
       </div>
 
+<<<<<<< HEAD
       <Handle type="source" position={Position.Bottom} id="out" />
       {nodeData.hasException && <Handle type="source" position={Position.Right} id="out-exception" title="Исключение" style={{ top: '75%', background: '#d97706' }} />}
+=======
+>>>>>>> e1a243e (fix: исправление ошибок сборки и доработка UI схемы)
     </div>
   );
 });

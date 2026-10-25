@@ -14,7 +14,7 @@ export const VariableNode = memo(({ data, selected }: NodeProps) => {
         isSelected ? styles.selected : ''
       }`}
     >
-      <Handle type="target" position={Position.Top} id="in" />
+      <Handle type="target" position={Position.Top} id="in" title="Вход от предыдущего блока" />
 
       {/* 2. Параллелограмм со скошенными сторонами */}
       <svg
@@ -63,8 +63,12 @@ export const VariableNode = memo(({ data, selected }: NodeProps) => {
         )}
       </div>
 
+<<<<<<< HEAD
       <Handle type="source" position={Position.Bottom} id="out" />
       {nodeData.hasException && <Handle type="source" position={Position.Right} id="out-exception" title="Исключение" style={{ top: '75%', background: '#d97706' }} />}
+=======
+      <Handle type="source" position={Position.Bottom} id="out" title="Выход к следующему блоку" />
+>>>>>>> e1a243e (fix: исправление ошибок сборки и доработка UI схемы)
     </div>
   );
 });

@@ -14,7 +14,7 @@ export const LoopNode = memo(({ data, selected }: NodeProps) => {
         isSelected ? styles.selected : ''
       }`}
     >
-      <Handle type="target" position={Position.Top} id="in" />
+      <Handle type="target" position={Position.Top} id="in" title="Вход в цикл" />
 
       {/* 4. Шестиугольник со скошенными углами (ГОСТ / ISO) */}
       <svg

@@ -47,7 +47,7 @@ export function analyzeJavaCode(code: string, filename = 'Main.java'): CodeAnaly
   // 2. Structural Analysis
   const hasNestedLoops = /for\s*\(.*?\)\s*\{[\s\S]*?for\s*\(.*?\)/m.test(code);
   const hasLinearLookupInLoop = /for\s*\(.*?\)\s*\{[\s\S]*?\.(contains|indexOf)\(/.test(code);
-  const hasStringConcatInLoop = /for\s*\(.*?\)\s*\{[\s\S]*?\+\=/.test(code);
+  const hasStringConcatInLoop = /for\s*\(.*?\)\s*\{[\s\S]*?\+=/.test(code);
   const hasCallInLoopCondition = /for\s*\([^;]*;\s*[^;]*\.(size|length)\(\)/.test(code);
   const hasMissingNullGuard = !/==\s*null|Objects\.nonNull|Optional/.test(code) && /List<|String|Order/.test(code);
   const isProcessOrdersSample = /processOrders/.test(code);

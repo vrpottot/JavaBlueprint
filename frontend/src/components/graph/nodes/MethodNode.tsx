@@ -33,8 +33,7 @@ export const MethodNode = memo(({ data, selected }: NodeProps) => {
         isSelected ? styles.selected : ''
       }`}
     >
-      <Handle type="target" position={Position.Top} id="in" />
-      <Handle type="target" position={Position.Left} id="in-left" />
+      <Handle type="target" position={Position.Top} id="in" title="Вызов метода" />
 
       {/* Прямоугольник со скруглением 10px */}
       <svg
