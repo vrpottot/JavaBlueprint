@@ -21,6 +21,12 @@
     "stress:mission": "tsx scripts/stress-mission.ts",
     "stress:mission:browser": "tsx scripts/stress-mission-browser.ts",
     "check:analysis": "tsx scripts/check-analysis.ts",
+    "audit:jury": "tsx scripts/jury-audit.ts",
+    "audit:jury:browser": "tsx scripts/jury-browser.ts",
+    "audit:jury:api": "tsx scripts/jury-api.ts",
+    "audit:jury:palette": "tsx scripts/jury-palette.ts",
+    "audit:jury:templates": "tsx scripts/jury-palette-contracts.ts",
+    "audit:jury:png": "tsx scripts/jury-png.ts",
     "runner:build": "docker build -t javablueprint-runner:local -f runner/Dockerfile ."
   },
   "dependencies": {

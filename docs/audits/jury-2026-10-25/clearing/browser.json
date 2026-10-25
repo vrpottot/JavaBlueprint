@@ -1,0 +1,583 @@
+{
+  "base": "https://javascope.193-233-246-241.sslip.io",
+  "started": "2026-10-25T07:59:17.234Z",
+  "scopes": [
+    {
+      "title": "ClearingHouse — ClearingHouse · L36",
+      "nodes": 2,
+      "overlaps": []
+    },
+    {
+      "title": "parse — ClearingHouse.Currency · L42",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "discountBasisPoints — ClearingHouse.Tier · L50",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "terminal — ClearingHouse.Status · L62",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "ClearingException — ClearingHouse.ClearingException · L76",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "Money — ClearingHouse.Money · L83",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "plus — ClearingHouse.Money · L87",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "negate — ClearingHouse.Money · L94",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "format — ClearingHouse.Money · L98",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "Rate — ClearingHouse.Rate · L107",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "convert — ClearingHouse.Rate · L113",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "inverse — ClearingHouse.Rate · L121",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "put — ClearingHouse.RateBook · L129",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "route — ClearingHouse.RateBook · L135",
+      "nodes": 24,
+      "overlaps": []
+    },
+    {
+      "title": "convert — ClearingHouse.RateBook · L165",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "id — ClearingHouse.Identified · L175",
+      "nodes": 1,
+      "overlaps": []
+    },
+    {
+      "title": "Account — ClearingHouse.Account · L186",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "id — ClearingHouse.Account · L196",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "held — ClearingHouse.Account · L201",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "available — ClearingHouse.Account · L209",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "limit — ClearingHouse.Account · L213",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "reserve — ClearingHouse.Account · L221",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "release — ClearingHouse.Account · L237",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "capture — ClearingHouse.Account · L242",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "credit — ClearingHouse.Account · L251",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "snapshot — ClearingHouse.Account · L258",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "restore — ClearingHouse.Account · L262",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "BusinessAccount — ClearingHouse.BusinessAccount · L273",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "limit — ClearingHouse.BusinessAccount · L281",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "add — ClearingHouse.Repository · L293",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "find — ClearingHouse.Repository · L299",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "require — ClearingHouse.Repository · L303",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "matching — ClearingHouse.Repository · L311",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "project — ClearingHouse.Repository · L321",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "size — ClearingHouse.Repository · L329",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "iterator — ClearingHouse.Repository · L333",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "Payment — ClearingHouse.Payment · L349",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "id — ClearingHouse.Payment · L357",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "transition — ClearingHouse.Payment · L362",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "append — ClearingHouse.Journal · L377",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "event — ClearingHouse.Journal · L381",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "sum — ClearingHouse.Journal · L385",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "byAccount — ClearingHouse.Journal · L395",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "statement — ClearingHouse.Journal · L403",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "truncate — ClearingHouse.Journal · L407",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "AtomicPosting — ClearingHouse.AtomicPosting · L421",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "commit — ClearingHouse.AtomicPosting · L430",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "close — ClearingHouse.AtomicPosting · L434",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "fee — ClearingHouse.FeePolicy · L446",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "total — ClearingHouse.FeePolicy · L454",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "RiskWindow — ClearingHouse.RiskWindow · L467",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "accept — ClearingHouse.RiskWindow · L475",
+      "nodes": 13,
+      "overlaps": []
+    },
+    {
+      "title": "clear — ClearingHouse.RiskWindow · L491",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "Transfer — ClearingHouse.Transfer · L497",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "net — ClearingHouse.Settlement · L505",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "compress — ClearingHouse.Settlement · L514",
+      "nodes": 30,
+      "overlaps": []
+    },
+    {
+      "title": "order — ClearingHouse.DependencyPlan · L553",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "visit — ClearingHouse.DependencyPlan · L562",
+      "nodes": 16,
+      "overlaps": []
+    },
+    {
+      "title": "addAccount — ClearingHouse.ClearingEngine · L594",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "treasury — ClearingHouse.ClearingEngine · L599",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "validate — ClearingHouse.ClearingEngine · L603",
+      "nodes": 14,
+      "overlaps": []
+    },
+    {
+      "title": "submit — ClearingHouse.ClearingEngine · L623",
+      "nodes": 61,
+      "overlaps": []
+    },
+    {
+      "title": "reverse — ClearingHouse.ClearingEngine · L670",
+      "nodes": 28,
+      "overlaps": []
+    },
+    {
+      "title": "reconcile — ClearingHouse.ClearingEngine · L694",
+      "nodes": 16,
+      "overlaps": []
+    },
+    {
+      "title": "statuses — ClearingHouse.ClearingEngine · L717",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "settlement — ClearingHouse.ClearingEngine · L725",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "parse — ClearingHouse.Csv · L737",
+      "nodes": 21,
+      "overlaps": []
+    },
+    {
+      "title": "encode — ClearingHouse.Csv · L764",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "lowerBound — ClearingHouse.Analytics · L778",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "inversionCount — ClearingHouse.Analytics · L792",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "maxWindow — ClearingHouse.Analytics · L804",
+      "nodes": 13,
+      "overlaps": []
+    },
+    {
+      "title": "prefix — ClearingHouse.Analytics · L820",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "rectangle — ClearingHouse.Analytics · L836",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "largest — ClearingHouse.Analytics · L840",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "AuditResource — ClearingHouse.AuditResource · L856",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "close — ClearingHouse.AuditResource · L863",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "cleanup — ClearingHouse · L872",
+      "nodes": 43,
+      "overlaps": []
+    },
+    {
+      "title": "checksum — ClearingHouse · L891",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "Config — ClearingHouse.Config · L900",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "parse — ClearingHouse.Config · L904",
+      "nodes": 14,
+      "overlaps": []
+    },
+    {
+      "title": "Generator — ClearingHouse.Generator · L918",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "next — ClearingHouse.Generator · L922",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "accounts — ClearingHouse.Generator · L927",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "payments — ClearingHouse.Generator · L942",
+      "nodes": 18,
+      "overlaps": []
+    },
+    {
+      "title": "run — ClearingHouse · L964",
+      "nodes": 38,
+      "overlaps": []
+    },
+    {
+      "title": "main — ClearingHouse · L1010",
+      "nodes": 14,
+      "overlaps": []
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "checks": [
+    {
+      "name": "all method scopes have no overlapping blocks",
+      "passed": true,
+      "ms": 1
+    },
+    {
+      "name": "Java export preserves exact source bytes",
+      "passed": true,
+      "ms": 4882
+    },
+    {
+      "name": "PNG export contains a readable image",
+      "passed": true,
+      "ms": 2349
+    },
+    {
+      "name": "method palette adds and deletes a real method",
+      "passed": true,
+      "ms": 15772
+    },
+    {
+      "name": "source navigation opens the selected method",
+      "passed": true,
+      "ms": 878
+    },
+    {
+      "name": "real UI compiles, runs, compares and shows 15 JUnit tests",
+      "passed": true,
+      "ms": 28028
+    },
+    {
+      "name": "test file scopes do not include main source nodes",
+      "passed": true,
+      "ms": 219
+    },
+    {
+      "name": "no browser exceptions or missing React Flow handles",
+      "passed": true,
+      "ms": 0
+    }
+  ],
+  "importMs": 10862,
+  "overlappingScopes": [],
+  "png": {
+    "width": 2370,
+    "height": 3998,
+    "bytes": 541116
+  },
+  "verification": {
+    "revision": 2,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 9038,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Clearing house / Клиринг ===\nsize=24 seed=19\nstatus={POSTED=14, REJECTED=8, REVERSED=2}\naccounts=21 rollbacks=4\nUSD fees=1017 settlement=4\nEUR fees=668 settlement=4\nKZT fees=208 settlement=3\nanalytics=91,8,1028050\nlargest=USD:5,KZT:5,USD:3\ncleanup=open:first|open:second|first+second|close:second|close:first|caught:body|suppressed:second|suppressed:first|finally\ncsv=\"Алматы,банк\",\"a\"\"b\",42\nfailures=[UNKNOWN_ACCOUNT, INSUFFICIENT_FUNDS, INVALID_AMOUNT, DEPENDENCY]\nchecksum=948874132\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 540,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✔\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1006 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 4005,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✔\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1006 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (15 tests found)",
+            "status": "success",
+            "durationMs": 4005,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✔\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1006 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    },
+    "comparison": {
+      "status": "matched_on_inputs",
+      "checkedInputs": 1,
+      "provenEquivalent": false,
+      "explanation": "Observed stdout, stderr and exit codes match on these inputs only. Full program equivalence is not proven."
+    },
+    "original": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 9067,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Clearing house / Клиринг ===\nsize=24 seed=19\nstatus={POSTED=14, REJECTED=8, REVERSED=2}\naccounts=21 rollbacks=4\nUSD fees=1017 settlement=4\nEUR fees=668 settlement=4\nKZT fees=208 settlement=3\nanalytics=91,8,1028050\nlargest=USD:5,KZT:5,USD:3\ncleanup=open:first|open:second|first+second|close:second|close:first|caught:body|suppressed:second|suppressed:first|finally\ncsv=\"Алматы,банк\",\"a\"\"b\",42\nfailures=[UNKNOWN_ACCOUNT, INSUFFICIENT_FUNDS, INVALID_AMOUNT, DEPENDENCY]\nchecksum=948874132\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 888,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✔\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 614 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 3069,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✔\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 614 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (15 tests found)",
+            "status": "success",
+            "durationMs": 3069,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✔\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 614 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    }
+  },
+  "finished": "2026-10-25T08:00:26.193Z"
+}

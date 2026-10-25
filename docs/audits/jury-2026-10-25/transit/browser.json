@@ -1,0 +1,478 @@
+{
+  "base": "https://javascope.193-233-246-241.sslip.io",
+  "started": "2026-10-25T08:01:50.836Z",
+  "scopes": [
+    {
+      "title": "TransitGrid — TransitGrid · L34",
+      "nodes": 2,
+      "overlaps": []
+    },
+    {
+      "title": "percent — TransitGrid.Rider · L40",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "Station — TransitGrid.Station · L54",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "Link — TransitGrid.Link · L71",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "available — TransitGrid.Link · L83",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "departure — TransitGrid.Link · L87",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "travel — TransitGrid.Link · L92",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "reserve — TransitGrid.Link · L96",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "release — TransitGrid.Link · L103",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "ExpressLink — TransitGrid.ExpressLink · L114",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "travel — TransitGrid.ExpressLink · L122",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "add — TransitGrid.Network · L133",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "connect — TransitGrid.Network · L140",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "check — TransitGrid.Network · L149",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "size — TransitGrid.Network · L155",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "link — TransitGrid.Network · L159",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "reachable — TransitGrid.Network · L163",
+      "nodes": 17,
+      "overlaps": []
+    },
+    {
+      "title": "iterator — TransitGrid.Network · L183",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "Path — TransitGrid.Path · L193",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "found — TransitGrid.Path · L197",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "Router — TransitGrid.Router · L205",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "route — TransitGrid.Router · L209",
+      "nodes": 39,
+      "overlaps": []
+    },
+    {
+      "title": "floyd — TransitGrid.Router · L260",
+      "nodes": 21,
+      "overlaps": []
+    },
+    {
+      "title": "ResidualEdge — TransitGrid.ResidualEdge · L296",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "Flow — TransitGrid.Flow · L309",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "add — TransitGrid.Flow · L318",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "levels — TransitGrid.Flow · L328",
+      "nodes": 14,
+      "overlaps": []
+    },
+    {
+      "title": "push — TransitGrid.Flow · L345",
+      "nodes": 16,
+      "overlaps": []
+    },
+    {
+      "title": "maximum — TransitGrid.Flow · L365",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "reachable — TransitGrid.Flow · L380",
+      "nodes": 13,
+      "overlaps": []
+    },
+    {
+      "title": "cutCapacity — TransitGrid.Flow · L396",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "from — TransitGrid.Flow · L408",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "Components — TransitGrid.Components · L428",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "find — TransitGrid.Components · L436",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "visit — TransitGrid.Components · L445",
+      "nodes": 25,
+      "overlaps": []
+    },
+    {
+      "title": "DisjointSet — TransitGrid.DisjointSet · L480",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "root — TransitGrid.DisjointSet · L488",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "merge — TransitGrid.DisjointSet · L501",
+      "nodes": 15,
+      "overlaps": []
+    },
+    {
+      "title": "backbone — TransitGrid · L523",
+      "nodes": 16,
+      "overlaps": []
+    },
+    {
+      "title": "Fenwick — TransitGrid.Fenwick · L544",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "add — TransitGrid.Fenwick · L548",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "prefix — TransitGrid.Fenwick · L557",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "range — TransitGrid.Fenwick · L568",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "Interval — TransitGrid.Interval · L577",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "peak — TransitGrid · L584",
+      "nodes": 13,
+      "overlaps": []
+    },
+    {
+      "title": "fare — TransitGrid · L599",
+      "nodes": 16,
+      "overlaps": []
+    },
+    {
+      "title": "Booking — TransitGrid.Booking · L628",
+      "nodes": 10,
+      "overlaps": []
+    },
+    {
+      "title": "Reservation — TransitGrid.Reservation · L645",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "add — TransitGrid.Reservation · L649",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "commit — TransitGrid.Reservation · L654",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "close — TransitGrid.Reservation · L658",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "BookingEngine — TransitGrid.BookingEngine · L675",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "book — TransitGrid.BookingEngine · L680",
+      "nodes": 47,
+      "overlaps": []
+    },
+    {
+      "title": "cancel — TransitGrid.BookingEngine · L715",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "check — TransitGrid.BookingEngine · L729",
+      "nodes": 17,
+      "overlaps": []
+    },
+    {
+      "title": "counts — TransitGrid.BookingEngine · L753",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "transferPlan — TransitGrid · L762",
+      "nodes": 18,
+      "overlaps": []
+    },
+    {
+      "title": "topological — TransitGrid · L786",
+      "nodes": 21,
+      "overlaps": []
+    },
+    {
+      "title": "condensation — TransitGrid · L815",
+      "nodes": 18,
+      "overlaps": []
+    },
+    {
+      "title": "apportion — TransitGrid · L837",
+      "nodes": 34,
+      "overlaps": []
+    },
+    {
+      "title": "generate — TransitGrid · L882",
+      "nodes": 23,
+      "overlaps": []
+    },
+    {
+      "title": "describe — TransitGrid · L912",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "checksum — TransitGrid · L922",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "run — TransitGrid · L930",
+      "nodes": 51,
+      "overlaps": []
+    },
+    {
+      "title": "main — TransitGrid · L992",
+      "nodes": 15,
+      "overlaps": []
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "checks": [
+    {
+      "name": "all method scopes have no overlapping blocks",
+      "passed": true,
+      "ms": 0
+    },
+    {
+      "name": "Java export preserves exact source bytes",
+      "passed": true,
+      "ms": 5452
+    },
+    {
+      "name": "PNG export contains a readable image",
+      "passed": true,
+      "ms": 2553
+    },
+    {
+      "name": "method palette adds and deletes a real method",
+      "passed": true,
+      "ms": 18740
+    },
+    {
+      "name": "source navigation opens the selected method",
+      "passed": true,
+      "ms": 910
+    },
+    {
+      "name": "real UI compiles, runs, compares and shows 15 JUnit tests",
+      "passed": true,
+      "ms": 29763
+    },
+    {
+      "name": "test file scopes do not include main source nodes",
+      "passed": true,
+      "ms": 246
+    },
+    {
+      "name": "no browser exceptions or missing React Flow handles",
+      "passed": true,
+      "ms": 0
+    }
+  ],
+  "importMs": 15038,
+  "overlappingScopes": [],
+  "png": {
+    "width": 3776,
+    "height": 5878,
+    "bytes": 904261
+  },
+  "verification": {
+    "revision": 2,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 7703,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Transit grid / Транспорт ===\nstations=18 seed=31\nlinks=59 scc=2\nflow=35 cut=35 shortest=6827\nbackbone=63/1\nbookings={CONFIRMED=31, REJECTED=17, CANCELLED=6} revenue=9141\npeak=35 seats=160\nallocation=[7, 3, 2]\nfirst=Станция-0#0/0\ntransfer=[0, 1]\nchecksum=957947235\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 734,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ TransitGridTest ✔\n│     ├─ timetableRoundingExpressDispatchAndCapacityAreRespected() ✔\n│     ├─ labelledSearchAndDisjointSetRemainConsistent() ✔\n│     ├─ validationAndPatternDescriptionsExposeExplicitFailures() ✔\n│     ├─ dinicMatchesExhaustiveMinimumCutsOnRandomDirectedMultigraphs() ✔\n│     ├─ shortestPathsMatchIndependentBellmanFordOracle() ✔\n│     ├─ fenwickRangeSumsMatchArrayOracleAfterMixedUpdates() ✔\n│     ├─ stronglyConnectedComponentsMatchMutualReachability() ✔\n│     ├─ boundedSimulationsAndMainAreDeterministicAndUtf8() ✔\n│     ├─ topologicalOrderRejectsCyclesAndKeepsDeterministicTies() ✔\n│     ├─ halfOpenOccupancyHandlesArrivalsAtDepartureTick() ✔\n│     ├─ maximumFlowHandlesParallelEdgesAndTrivialSink() ✔\n│     ├─ fareRoundingAndRiderDiscountsUseIntegerCents() ✔\n│     ├─ kruskalBackboneMatchesIndependentSubsetEnumeration() ✔\n│     ├─ bookingCancellationDuplicateAndZeroDistanceAreDefined() ✔\n│     └─ failedBookingRestoresAllReservationsAndRevenue() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1607 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 5294,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ TransitGridTest ✔\n│     ├─ timetableRoundingExpressDispatchAndCapacityAreRespected() ✔\n│     ├─ labelledSearchAndDisjointSetRemainConsistent() ✔\n│     ├─ validationAndPatternDescriptionsExposeExplicitFailures() ✔\n│     ├─ dinicMatchesExhaustiveMinimumCutsOnRandomDirectedMultigraphs() ✔\n│     ├─ shortestPathsMatchIndependentBellmanFordOracle() ✔\n│     ├─ fenwickRangeSumsMatchArrayOracleAfterMixedUpdates() ✔\n│     ├─ stronglyConnectedComponentsMatchMutualReachability() ✔\n│     ├─ boundedSimulationsAndMainAreDeterministicAndUtf8() ✔\n│     ├─ topologicalOrderRejectsCyclesAndKeepsDeterministicTies() ✔\n│     ├─ halfOpenOccupancyHandlesArrivalsAtDepartureTick() ✔\n│     ├─ maximumFlowHandlesParallelEdgesAndTrivialSink() ✔\n│     ├─ fareRoundingAndRiderDiscountsUseIntegerCents() ✔\n│     ├─ kruskalBackboneMatchesIndependentSubsetEnumeration() ✔\n│     ├─ bookingCancellationDuplicateAndZeroDistanceAreDefined() ✔\n│     └─ failedBookingRestoresAllReservationsAndRevenue() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1607 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (15 tests found)",
+            "status": "success",
+            "durationMs": 5294,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ TransitGridTest ✔\n│     ├─ timetableRoundingExpressDispatchAndCapacityAreRespected() ✔\n│     ├─ labelledSearchAndDisjointSetRemainConsistent() ✔\n│     ├─ validationAndPatternDescriptionsExposeExplicitFailures() ✔\n│     ├─ dinicMatchesExhaustiveMinimumCutsOnRandomDirectedMultigraphs() ✔\n│     ├─ shortestPathsMatchIndependentBellmanFordOracle() ✔\n│     ├─ fenwickRangeSumsMatchArrayOracleAfterMixedUpdates() ✔\n│     ├─ stronglyConnectedComponentsMatchMutualReachability() ✔\n│     ├─ boundedSimulationsAndMainAreDeterministicAndUtf8() ✔\n│     ├─ topologicalOrderRejectsCyclesAndKeepsDeterministicTies() ✔\n│     ├─ halfOpenOccupancyHandlesArrivalsAtDepartureTick() ✔\n│     ├─ maximumFlowHandlesParallelEdgesAndTrivialSink() ✔\n│     ├─ fareRoundingAndRiderDiscountsUseIntegerCents() ✔\n│     ├─ kruskalBackboneMatchesIndependentSubsetEnumeration() ✔\n│     ├─ bookingCancellationDuplicateAndZeroDistanceAreDefined() ✔\n│     └─ failedBookingRestoresAllReservationsAndRevenue() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1607 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    },
+    "comparison": {
+      "status": "matched_on_inputs",
+      "checkedInputs": 1,
+      "provenEquivalent": false,
+      "explanation": "Observed stdout, stderr and exit codes match on these inputs only. Full program equivalence is not proven."
+    },
+    "original": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 7708,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Transit grid / Транспорт ===\nstations=18 seed=31\nlinks=59 scc=2\nflow=35 cut=35 shortest=6827\nbackbone=63/1\nbookings={CONFIRMED=31, REJECTED=17, CANCELLED=6} revenue=9141\npeak=35 seats=160\nallocation=[7, 3, 2]\nfirst=Станция-0#0/0\ntransfer=[0, 1]\nchecksum=957947235\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1000,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ TransitGridTest ✔\n│     ├─ timetableRoundingExpressDispatchAndCapacityAreRespected() ✔\n│     ├─ labelledSearchAndDisjointSetRemainConsistent() ✔\n│     ├─ validationAndPatternDescriptionsExposeExplicitFailures() ✔\n│     ├─ dinicMatchesExhaustiveMinimumCutsOnRandomDirectedMultigraphs() ✔\n│     ├─ shortestPathsMatchIndependentBellmanFordOracle() ✔\n│     ├─ fenwickRangeSumsMatchArrayOracleAfterMixedUpdates() ✔\n│     ├─ stronglyConnectedComponentsMatchMutualReachability() ✔\n│     ├─ boundedSimulationsAndMainAreDeterministicAndUtf8() ✔\n│     ├─ topologicalOrderRejectsCyclesAndKeepsDeterministicTies() ✔\n│     ├─ halfOpenOccupancyHandlesArrivalsAtDepartureTick() ✔\n│     ├─ maximumFlowHandlesParallelEdgesAndTrivialSink() ✔\n│     ├─ fareRoundingAndRiderDiscountsUseIntegerCents() ✔\n│     ├─ kruskalBackboneMatchesIndependentSubsetEnumeration() ✔\n│     ├─ bookingCancellationDuplicateAndZeroDistanceAreDefined() ✔\n│     └─ failedBookingRestoresAllReservationsAndRevenue() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1496 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 5808,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ TransitGridTest ✔\n│     ├─ timetableRoundingExpressDispatchAndCapacityAreRespected() ✔\n│     ├─ labelledSearchAndDisjointSetRemainConsistent() ✔\n│     ├─ validationAndPatternDescriptionsExposeExplicitFailures() ✔\n│     ├─ dinicMatchesExhaustiveMinimumCutsOnRandomDirectedMultigraphs() ✔\n│     ├─ shortestPathsMatchIndependentBellmanFordOracle() ✔\n│     ├─ fenwickRangeSumsMatchArrayOracleAfterMixedUpdates() ✔\n│     ├─ stronglyConnectedComponentsMatchMutualReachability() ✔\n│     ├─ boundedSimulationsAndMainAreDeterministicAndUtf8() ✔\n│     ├─ topologicalOrderRejectsCyclesAndKeepsDeterministicTies() ✔\n│     ├─ halfOpenOccupancyHandlesArrivalsAtDepartureTick() ✔\n│     ├─ maximumFlowHandlesParallelEdgesAndTrivialSink() ✔\n│     ├─ fareRoundingAndRiderDiscountsUseIntegerCents() ✔\n│     ├─ kruskalBackboneMatchesIndependentSubsetEnumeration() ✔\n│     ├─ bookingCancellationDuplicateAndZeroDistanceAreDefined() ✔\n│     └─ failedBookingRestoresAllReservationsAndRevenue() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1496 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (15 tests found)",
+            "status": "success",
+            "durationMs": 5808,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ TransitGridTest ✔\n│     ├─ timetableRoundingExpressDispatchAndCapacityAreRespected() ✔\n│     ├─ labelledSearchAndDisjointSetRemainConsistent() ✔\n│     ├─ validationAndPatternDescriptionsExposeExplicitFailures() ✔\n│     ├─ dinicMatchesExhaustiveMinimumCutsOnRandomDirectedMultigraphs() ✔\n│     ├─ shortestPathsMatchIndependentBellmanFordOracle() ✔\n│     ├─ fenwickRangeSumsMatchArrayOracleAfterMixedUpdates() ✔\n│     ├─ stronglyConnectedComponentsMatchMutualReachability() ✔\n│     ├─ boundedSimulationsAndMainAreDeterministicAndUtf8() ✔\n│     ├─ topologicalOrderRejectsCyclesAndKeepsDeterministicTies() ✔\n│     ├─ halfOpenOccupancyHandlesArrivalsAtDepartureTick() ✔\n│     ├─ maximumFlowHandlesParallelEdgesAndTrivialSink() ✔\n│     ├─ fareRoundingAndRiderDiscountsUseIntegerCents() ✔\n│     ├─ kruskalBackboneMatchesIndependentSubsetEnumeration() ✔\n│     ├─ bookingCancellationDuplicateAndZeroDistanceAreDefined() ✔\n│     └─ failedBookingRestoresAllReservationsAndRevenue() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1496 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    }
+  },
+  "finished": "2026-10-25T08:03:10.061Z"
+}

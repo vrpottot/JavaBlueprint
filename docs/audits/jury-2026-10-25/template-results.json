@@ -1,0 +1,215 @@
+{
+  "items": [
+    {
+      "id": "method",
+      "name": "Метод / Конструктор",
+      "code": ""
+    },
+    {
+      "id": "variable",
+      "name": "Переменная (примитив/обёртка)",
+      "code": "int value = 0;"
+    },
+    {
+      "id": "array",
+      "name": "Массив (Array)",
+      "code": "int[] numbers = new int[10];"
+    },
+    {
+      "id": "condition",
+      "name": "Условие (if / else)",
+      "code": "if (value > 0) { }"
+    },
+    {
+      "id": "switch",
+      "name": "Переключатель (switch)",
+      "code": "switch (value) {\n    case 1 -> { }\n    default -> { }\n}"
+    },
+    {
+      "id": "loop-for",
+      "name": "Цикл for",
+      "code": "for (int i = 0; i < 10; i++) { }"
+    },
+    {
+      "id": "loop-foreach",
+      "name": "Цикл foreach (Iterable)",
+      "code": "for (var item : items) { }"
+    },
+    {
+      "id": "loop-while",
+      "name": "Цикл while",
+      "code": "while (condition) { }"
+    },
+    {
+      "id": "return",
+      "name": "Возврат (return)",
+      "code": "return;"
+    },
+    {
+      "id": "io-scanner",
+      "name": "Ввод Scanner (UTF-8)",
+      "code": "Scanner scanner = new Scanner(System.in, java.nio.charset.StandardCharsets.UTF_8);"
+    },
+    {
+      "id": "io-println",
+      "name": "Вывод (System.out.println)",
+      "code": "System.out.println(\"Результат: \" + value);"
+    },
+    {
+      "id": "io-printf",
+      "name": "Форматирование (printf / Formatter)",
+      "code": "System.out.printf(\"Значение: %s, число: %d%n\", text, number);"
+    },
+    {
+      "id": "io-err",
+      "name": "Вывод ошибок (System.err)",
+      "code": "System.err.println(\"Ошибка обработки данных\");"
+    },
+    {
+      "id": "col-list",
+      "name": "Список (List / ArrayList)",
+      "code": "List<String> list = new ArrayList<>();"
+    },
+    {
+      "id": "col-set",
+      "name": "Множество (Set / HashSet)",
+      "code": "Set<String> set = new HashSet<>();"
+    },
+    {
+      "id": "col-map",
+      "name": "Словарь (Map / HashMap)",
+      "code": "Map<String, Integer> map = new HashMap<>();"
+    },
+    {
+      "id": "col-listof",
+      "name": "Неизменяемый список (List.of)",
+      "code": "List<String> items = List.of(\"A\", \"B\", \"C\");"
+    },
+    {
+      "id": "col-sort",
+      "name": "Сортировка (Collections.sort)",
+      "code": "Collections.sort(list);"
+    },
+    {
+      "id": "exc-try-catch",
+      "name": "Обработка (try / catch / finally)",
+      "code": "try {\n    // проверяемый блок\n} catch (Exception e) {\n    System.err.println(\"Исключение: \" + e.getMessage());\n} finally {\n    // освобождение ресурсов\n}"
+    },
+    {
+      "id": "exc-throw",
+      "name": "Выброс ошибки (throw)",
+      "code": "throw new IllegalArgumentException(\"Некорректный аргумент: \" + value);"
+    }
+  ],
+  "individual": [
+    {
+      "name": "Переменная (примитив/обёртка)",
+      "errors": []
+    },
+    {
+      "name": "Массив (Array)",
+      "errors": []
+    },
+    {
+      "name": "Условие (if / else)",
+      "errors": []
+    },
+    {
+      "name": "Переключатель (switch)",
+      "errors": []
+    },
+    {
+      "name": "Цикл for",
+      "errors": []
+    },
+    {
+      "name": "Цикл foreach (Iterable)",
+      "errors": []
+    },
+    {
+      "name": "Цикл while",
+      "errors": []
+    },
+    {
+      "name": "Возврат (return)",
+      "errors": []
+    },
+    {
+      "name": "Ввод Scanner (UTF-8)",
+      "errors": []
+    },
+    {
+      "name": "Вывод (System.out.println)",
+      "errors": []
+    },
+    {
+      "name": "Форматирование (printf / Formatter)",
+      "errors": []
+    },
+    {
+      "name": "Вывод ошибок (System.err)",
+      "errors": []
+    },
+    {
+      "name": "Список (List / ArrayList)",
+      "errors": []
+    },
+    {
+      "name": "Множество (Set / HashSet)",
+      "errors": []
+    },
+    {
+      "name": "Словарь (Map / HashMap)",
+      "errors": []
+    },
+    {
+      "name": "Неизменяемый список (List.of)",
+      "errors": []
+    },
+    {
+      "name": "Сортировка (Collections.sort)",
+      "errors": []
+    },
+    {
+      "name": "Обработка (try / catch / finally)",
+      "error": "Error: No data of this type found. Use containsData to check for this first."
+    },
+    {
+      "name": "Выброс ошибки (throw)",
+      "errors": []
+    }
+  ],
+  "irErrors": [
+    "Error: No data of this type found. Use containsData to check for this first."
+  ],
+  "verification": {
+    "revision": 0,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 1644,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [],
+      "tests": {
+        "status": "not_run",
+        "cases": []
+      }
+    },
+    "comparison": {
+      "status": "not_requested",
+      "checkedInputs": 0,
+      "provenEquivalent": false,
+      "explanation": "Compilation, test success and behavior comparison are separate results."
+    }
+  },
+  "files": [
+    {
+      "path": "PaletteContracts.java",
+      "content": "import java.util.*; class PaletteContracts {\nstatic void template0(){List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nint value = 0;\n}\nstatic void template1(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nint[] numbers = new int[10];\n}\nstatic void template2(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nif (value > 0) { }\n}\nstatic void template3(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nswitch (value) {\n    case 1 -> { }\n    default -> { }\n}\n}\nstatic void template4(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nfor (int i = 0; i < 10; i++) { }\n}\nstatic void template5(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nfor (var item : items) { }\n}\nstatic void template6(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nwhile (condition) { }\n}\nstatic void template7(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nreturn;\n}\nstatic void template8(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nScanner scanner = new Scanner(System.in, java.nio.charset.StandardCharsets.UTF_8);\n}\nstatic void template9(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nSystem.out.println(\"Результат: \" + value);\n}\nstatic void template10(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nSystem.out.printf(\"Значение: %s, число: %d%n\", text, number);\n}\nstatic void template11(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nSystem.err.println(\"Ошибка обработки данных\");\n}\nstatic void template12(){int value=1;List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nList<String> list = new ArrayList<>();\n}\nstatic void template13(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nSet<String> set = new HashSet<>();\n}\nstatic void template14(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nMap<String, Integer> map = new HashMap<>();\n}\nstatic void template15(){int value=1;List<String> list=new ArrayList<>();String text=\"x\"; int number=1; boolean condition=false;\nList<String> items = List.of(\"A\", \"B\", \"C\");\n}\nstatic void template16(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nCollections.sort(list);\n}\nstatic void template17(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\ntry {\n    // проверяемый блок\n} catch (Exception e) {\n    System.err.println(\"Исключение: \" + e.getMessage());\n} finally {\n    // освобождение ресурсов\n}\n}\nstatic void template18(){int value=1;List<String> list=new ArrayList<>();List<String> items=List.of(\"x\");String text=\"x\"; int number=1; boolean condition=false;\nthrow new IllegalArgumentException(\"Некорректный аргумент: \" + value);\n}\n}"
+    }
+  ]
+}

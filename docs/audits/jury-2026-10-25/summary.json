@@ -1,0 +1,434 @@
+{
+  "evaluatedRevision": "4334d84b96fbe7bed553ec557d0f768b12a62009",
+  "cases": [
+    {
+      "name": "ClearingHouse",
+      "sources": [
+        {
+          "path": "ClearingHouse.java",
+          "lines": 1018,
+          "nonblank": 913,
+          "sha256": "86bbf49766c8bd3200b3e56874d3937fb5cd1a8947c8f6eaf1181e42ff32dd8e"
+        },
+        {
+          "path": "ClearingHouseTest.java",
+          "lines": 225,
+          "nonblank": 208,
+          "sha256": "b7b3df8b61180b963766eca069f9bc5dd745c1411a3c8ddce92c39e31529c8b7"
+        }
+      ],
+      "parse": {
+        "ms": 1533,
+        "layoutMs": 672,
+        "nodes": 1042,
+        "edges": 1422,
+        "scopes": 86,
+        "warnings": [
+          "Lambda bodies and switch expressions are preserved in the AST; their internal execution is not expanded into a complete control-flow graph."
+        ]
+      },
+      "complexity": {
+        "estimated": 49,
+        "total": 86
+      },
+      "coverage": {
+        "INSTRUCTION": {
+          "missed": 122,
+          "covered": 3172
+        },
+        "BRANCH": {
+          "missed": 38,
+          "covered": 256
+        },
+        "LINE": {
+          "missed": 22,
+          "covered": 554
+        },
+        "COMPLEXITY": {
+          "missed": 42,
+          "covered": 214
+        },
+        "METHOD": {
+          "missed": 4,
+          "covered": 104
+        },
+        "CLASS": {
+          "missed": 0,
+          "covered": 29
+        }
+      },
+      "uncoveredMethods": [
+        {
+          "owner": "ClearingHouse$Csv",
+          "name": "&lt;init&gt;",
+          "descriptor": "()V",
+          "line": 736,
+          "covered": false
+        },
+        {
+          "owner": "ClearingHouse$Analytics",
+          "name": "&lt;init&gt;",
+          "descriptor": "()V",
+          "line": 777,
+          "covered": false
+        },
+        {
+          "owner": "ClearingHouse$Settlement",
+          "name": "&lt;init&gt;",
+          "descriptor": "()V",
+          "line": 504,
+          "covered": false
+        },
+        {
+          "owner": "ClearingHouse$DependencyPlan",
+          "name": "&lt;init&gt;",
+          "descriptor": "()V",
+          "line": 552,
+          "covered": false
+        }
+      ],
+      "browser": {
+        "importMs": 10862,
+        "scopes": 86,
+        "overlapping": 0,
+        "checks": [
+          {
+            "name": "all method scopes have no overlapping blocks",
+            "passed": true,
+            "ms": 1
+          },
+          {
+            "name": "Java export preserves exact source bytes",
+            "passed": true,
+            "ms": 4882
+          },
+          {
+            "name": "PNG export contains a readable image",
+            "passed": true,
+            "ms": 2349
+          },
+          {
+            "name": "method palette adds and deletes a real method",
+            "passed": true,
+            "ms": 15772
+          },
+          {
+            "name": "source navigation opens the selected method",
+            "passed": true,
+            "ms": 878
+          },
+          {
+            "name": "real UI compiles, runs, compares and shows 15 JUnit tests",
+            "passed": true,
+            "ms": 28028
+          },
+          {
+            "name": "test file scopes do not include main source nodes",
+            "passed": true,
+            "ms": 219
+          },
+          {
+            "name": "no browser exceptions or missing React Flow handles",
+            "passed": true,
+            "ms": 0
+          }
+        ]
+      },
+      "mutations": [
+        [
+          "safe visual method edit",
+          "passed",
+          []
+        ],
+        [
+          "behavior mutation",
+          "failed",
+          []
+        ]
+      ]
+    },
+    {
+      "name": "QueryForge",
+      "sources": [
+        {
+          "path": "QueryForge.java",
+          "lines": 1005,
+          "nonblank": 914,
+          "sha256": "80a24354680db2fe1231c709273707438f1d2f20562c98f52ab2da7028250780"
+        },
+        {
+          "path": "QueryForgeTest.java",
+          "lines": 203,
+          "nonblank": 186,
+          "sha256": "ed2268a56a92eea008fcf3b06150b4d552356f45314e69182878b1c9618520c1"
+        }
+      ],
+      "parse": {
+        "ms": 1686,
+        "layoutMs": 664,
+        "nodes": 955,
+        "edges": 1396,
+        "scopes": 78,
+        "warnings": [
+          "Lambda bodies and switch expressions are preserved in the AST; their internal execution is not expanded into a complete control-flow graph."
+        ]
+      },
+      "complexity": {
+        "estimated": 40,
+        "total": 78
+      },
+      "coverage": {
+        "INSTRUCTION": {
+          "missed": 131,
+          "covered": 3237
+        },
+        "BRANCH": {
+          "missed": 46,
+          "covered": 326
+        },
+        "LINE": {
+          "missed": 25,
+          "covered": 567
+        },
+        "COMPLEXITY": {
+          "missed": 44,
+          "covered": 252
+        },
+        "METHOD": {
+          "missed": 2,
+          "covered": 98
+        },
+        "CLASS": {
+          "missed": 0,
+          "covered": 25
+        }
+      },
+      "uncoveredMethods": [
+        {
+          "owner": "QueryForge$Delimited",
+          "name": "&lt;init&gt;",
+          "descriptor": "()V",
+          "line": 797,
+          "covered": false
+        },
+        {
+          "owner": "QueryForge$Grouping",
+          "name": "&lt;init&gt;",
+          "descriptor": "()V",
+          "line": 735,
+          "covered": false
+        }
+      ],
+      "browser": {
+        "importMs": 14914,
+        "scopes": 78,
+        "overlapping": 0,
+        "checks": [
+          {
+            "name": "all method scopes have no overlapping blocks",
+            "passed": true,
+            "ms": 0
+          },
+          {
+            "name": "Java export preserves exact source bytes",
+            "passed": true,
+            "ms": 8709
+          },
+          {
+            "name": "PNG export contains a readable image",
+            "passed": true,
+            "ms": 3072
+          },
+          {
+            "name": "method palette adds and deletes a real method",
+            "passed": true,
+            "ms": 26648
+          },
+          {
+            "name": "source navigation opens the selected method",
+            "passed": true,
+            "ms": 912
+          },
+          {
+            "name": "real UI compiles, runs, compares and shows 15 JUnit tests",
+            "passed": true,
+            "ms": 23406
+          },
+          {
+            "name": "test file scopes do not include main source nodes",
+            "passed": true,
+            "ms": 195
+          },
+          {
+            "name": "no browser exceptions or missing React Flow handles",
+            "passed": true,
+            "ms": 0
+          }
+        ]
+      },
+      "mutations": [
+        [
+          "safe visual method edit",
+          "passed",
+          []
+        ],
+        [
+          "behavior mutation",
+          "failed",
+          [
+            "0:empty",
+            "4:220 17"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "TransitGrid",
+      "sources": [
+        {
+          "path": "TransitGrid.java",
+          "lines": 1001,
+          "nonblank": 919,
+          "sha256": "bebe8212bb7816672244c9c265d8f318cde86ea0148ce10cca90de31d47d7918"
+        },
+        {
+          "path": "TransitGridTest.java",
+          "lines": 233,
+          "nonblank": 215,
+          "sha256": "b7951059f225f2f6383d7810c4ec4072cdf5c9e0a6b2463a88d1906b0c7f01c1"
+        }
+      ],
+      "parse": {
+        "ms": 1583,
+        "layoutMs": 792,
+        "nodes": 1060,
+        "edges": 1573,
+        "scopes": 65,
+        "warnings": [
+          "Lambda bodies and switch expressions are preserved in the AST; their internal execution is not expanded into a complete control-flow graph."
+        ]
+      },
+      "complexity": {
+        "estimated": 42,
+        "total": 65
+      },
+      "coverage": {
+        "INSTRUCTION": {
+          "missed": 55,
+          "covered": 3383
+        },
+        "BRANCH": {
+          "missed": 45,
+          "covered": 339
+        },
+        "LINE": {
+          "missed": 10,
+          "covered": 603
+        },
+        "COMPLEXITY": {
+          "missed": 45,
+          "covered": 222
+        },
+        "METHOD": {
+          "missed": 0,
+          "covered": 73
+        },
+        "CLASS": {
+          "missed": 0,
+          "covered": 20
+        }
+      },
+      "uncoveredMethods": [],
+      "browser": {
+        "importMs": 15038,
+        "scopes": 65,
+        "overlapping": 0,
+        "checks": [
+          {
+            "name": "all method scopes have no overlapping blocks",
+            "passed": true,
+            "ms": 0
+          },
+          {
+            "name": "Java export preserves exact source bytes",
+            "passed": true,
+            "ms": 5452
+          },
+          {
+            "name": "PNG export contains a readable image",
+            "passed": true,
+            "ms": 2553
+          },
+          {
+            "name": "method palette adds and deletes a real method",
+            "passed": true,
+            "ms": 18740
+          },
+          {
+            "name": "source navigation opens the selected method",
+            "passed": true,
+            "ms": 910
+          },
+          {
+            "name": "real UI compiles, runs, compares and shows 15 JUnit tests",
+            "passed": true,
+            "ms": 29763
+          },
+          {
+            "name": "test file scopes do not include main source nodes",
+            "passed": true,
+            "ms": 246
+          },
+          {
+            "name": "no browser exceptions or missing React Flow handles",
+            "passed": true,
+            "ms": 0
+          }
+        ]
+      },
+      "mutations": [
+        [
+          "safe visual method edit",
+          "passed",
+          []
+        ],
+        [
+          "behavior mutation",
+          "failed",
+          [
+            "0:empty",
+            "4:48 17 1"
+          ]
+        ]
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Java scope",
+      "maximum": 25,
+      "score": 20
+    },
+    {
+      "criterion": "Behavior preservation",
+      "maximum": 30,
+      "score": 25
+    },
+    {
+      "criterion": "Diagnostics and optimization",
+      "maximum": 20,
+      "score": 7
+    },
+    {
+      "criterion": "Interface",
+      "maximum": 15,
+      "score": 10
+    },
+    {
+      "criterion": "Engineering and demo",
+      "maximum": 10,
+      "score": 8
+    }
+  ],
+  "totalScore": 70
+}

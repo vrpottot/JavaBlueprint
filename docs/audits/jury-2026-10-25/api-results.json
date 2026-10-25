@@ -1,0 +1,696 @@
+{
+  "base": "https://javascope.193-233-246-241.sslip.io",
+  "started": "2026-10-25T08:14:29.460Z",
+  "checks": [
+    {
+      "name": "real JUnit reproduces exact cubic work and null/finally semantics",
+      "passed": true
+    },
+    {
+      "name": "boxedSwitch has an implicit exception route before return",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  nodes.find(node => node.kind === 'method' && node.title === name)\n"
+    },
+    {
+      "name": "unboxing has an implicit exception route before return",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  nodes.find(node => node.kind === 'method' && node.title === name)\n"
+    },
+    {
+      "name": "growing builder alias is not claimed linear",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected \"actual\" to be strictly unequal to:\n\n'O(n)'"
+    },
+    {
+      "name": "helper-grown traversal is not claimed quadratic",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected \"actual\" to be strictly unequal to:\n\n'O(n^2)'"
+    },
+    {
+      "name": "invalid source preserves project revision and source bytes",
+      "passed": true
+    },
+    {
+      "name": "failed transform batch rolls back all operations",
+      "passed": true
+    },
+    {
+      "name": "revision conflicts reject stale writes",
+      "passed": true
+    },
+    {
+      "name": "path traversal and unknown JSON fields are rejected",
+      "passed": true
+    },
+    {
+      "name": "source generation preserves exact bytes",
+      "passed": true
+    },
+    {
+      "name": "a valid finally block with an ordinary comment imports successfully",
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: {\"error\":{\"code\":\"UNSUPPORTED_TRANSFORM\",\"message\":\"No data of this type found. Use containsData to check for this first.\"}}\n\n422 !== 201\n"
+    },
+    {
+      "name": "AI verification gate rejects a compilable mutation caught by tests",
+      "passed": true
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "version": "4334d84b96fbe7bed553ec557d0f768b12a62009",
+    "java": "JavaParser CLI",
+    "execution": "docker-only"
+  },
+  "analysis": {
+    "projectId": "c1e3ce50-cd9a-4cbb-b190-4c5d9912b50e",
+    "revision": 0,
+    "diagnostics": [
+      {
+        "id": "cc024627-9be8-3b89-98dd-230821aa8da6:nested_loop",
+        "type": "nested_loop",
+        "severity": "medium",
+        "title": "Вложенный цикл",
+        "description": "Число итераций может расти как произведение размеров обходов. Это структурный признак, а не доказанная Big O.",
+        "recommendation": "Проверьте возможность индексирования или использования Set/Map.",
+        "file": "CostTraps.java",
+        "line": 27,
+        "nodeId": "cc024627-9be8-3b89-98dd-230821aa8da6"
+      },
+      {
+        "id": "10db2dd1-41cc-36e5-9b77-c530006832b5:duplicate_statement",
+        "type": "duplicate_statement",
+        "severity": "medium",
+        "title": "Повторяющаяся операция",
+        "description": "Такая же операция встречается в CostTrapsTest.java:17.",
+        "recommendation": "Проверьте, можно ли вынести повтор в общий метод.",
+        "file": "CostTrapsTest.java",
+        "line": 20,
+        "nodeId": "10db2dd1-41cc-36e5-9b77-c530006832b5"
+      }
+    ],
+    "complexity": [
+      {
+        "methodId": "5ac81353-8f4b-3fe2-a429-214d6c9b8651",
+        "method": "CostTraps",
+        "file": "CostTraps.java",
+        "line": 6,
+        "structuralBound": "O(1)",
+        "estimate": "O(1)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+        ],
+        "limitations": [],
+        "explanation": "O(1) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": []
+      },
+      {
+        "methodId": "763a7a80-30e1-3f05-aa32-a0064f2ca3c5",
+        "method": "aliasBuilder",
+        "file": "CostTraps.java",
+        "line": 9,
+        "structuralBound": "O(n)",
+        "estimate": "O(n)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+        ],
+        "limitations": [],
+        "explanation": "O(n) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 13,
+            "nodeId": "237cacf3-9de5-3e99-9eda-5db350873ad1",
+            "estimate": "O(n)",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          }
+        ]
+      },
+      {
+        "methodId": "609f257d-155c-3e48-b3b1-d5f4904d0ecc",
+        "method": "growingHelper",
+        "file": "CostTraps.java",
+        "line": 22,
+        "structuralBound": "O(n^2)",
+        "estimate": "O(n^2)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+          "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+          "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа.",
+          "Стоимость обработки числовых элементов может зависеть от их максимального модуля; для int число десятичных цифр ограничено 10."
+        ],
+        "limitations": [],
+        "explanation": "O(n^2) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 35,
+            "nodeId": "3792131f-b9a3-38e8-b89f-3e33584b732d",
+            "estimate": "O(n)",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          },
+          {
+            "line": 26,
+            "nodeId": "768a0c37-29c8-3950-847b-15b02b9d4180",
+            "estimate": "O(n)",
+            "rule": "Стоимость метода CostTraps.append с подстановкой аргументов."
+          },
+          {
+            "line": 27,
+            "nodeId": "cc024627-9be8-3b89-98dd-230821aa8da6",
+            "estimate": "O(n)",
+            "rule": "Число итераций равно длине массива/стандартной коллекции."
+          },
+          {
+            "line": 25,
+            "nodeId": "e23ac99b-f52d-30d1-abc4-f170067e512e",
+            "estimate": "O(n^2)",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          }
+        ]
+      },
+      {
+        "methodId": "c2d38178-01de-3e70-93a6-cac29fde591d",
+        "method": "append",
+        "file": "CostTraps.java",
+        "line": 34,
+        "structuralBound": "O(n)",
+        "estimate": "O(n * |values| + n^2)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+          "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+          "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+        ],
+        "limitations": [],
+        "explanation": "O(n * |values| + n^2) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 35,
+            "nodeId": "3792131f-b9a3-38e8-b89f-3e33584b732d",
+            "estimate": "O(n * |values| + n^2)",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          }
+        ]
+      },
+      {
+        "methodId": "1a415662-9c52-389a-8872-52f9d386f94c",
+        "method": "boxedSwitch",
+        "file": "CostTraps.java",
+        "line": 41,
+        "structuralBound": "O(1)",
+        "estimate": "O(|trace|)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+          "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+          "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+        ],
+        "limitations": [],
+        "explanation": "O(|trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 42,
+            "nodeId": "9e422194-88d5-34f5-a8dc-5a2ab134e3ed",
+            "estimate": "O(|trace|)",
+            "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+          }
+        ]
+      },
+      {
+        "methodId": "9e335491-8757-3bca-bee9-35e0f1a24780",
+        "method": "unboxing",
+        "file": "CostTraps.java",
+        "line": 53,
+        "structuralBound": "O(1)",
+        "estimate": "O(|trace|)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+          "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+          "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+        ],
+        "limitations": [],
+        "explanation": "O(|trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 54,
+            "nodeId": "14285980-944b-3680-ae30-887cb8cc70c7",
+            "estimate": "O(|trace|)",
+            "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+          }
+        ]
+      },
+      {
+        "methodId": "a9bc9712-335d-399d-b00a-7c2d832d1502",
+        "method": "growingBuilderAndCollectionHaveKnownWorkCounts",
+        "file": "CostTrapsTest.java",
+        "line": 7,
+        "structuralBound": "O(n)",
+        "estimate": "unknown",
+        "status": "unknown",
+        "kind": "upper_bound",
+        "confidence": "unknown",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+          "Стоимость обработки числовых элементов может зависеть от их максимального модуля; для int число десятичных цифр ограничено 10.",
+          "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+          "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+        ],
+        "limitations": [
+          "L9: Неизвестна стоимость вызова \"a\".repeat(n).",
+          "L9: Неизвестна стоимость вызова assertEquals(\"a\".repeat(n), CostTraps.aliasBuilder(n)).",
+          "L10: Неизвестна стоимость вызова assertEquals((long) n * n * (n + 1) / 2, CostTraps.growingHelper(n))."
+        ],
+        "explanation": "Полная оценка неизвестна: L9: Неизвестна стоимость вызова \"a\".repeat(n). L9: Неизвестна стоимость вызова assertEquals(\"a\".repeat(n), CostTraps.aliasBuilder(n)). L10: Неизвестна стоимость вызова assertEquals((long) n * n * (n + 1) / 2, CostTraps.growingHelper(n)).",
+        "evidence": [
+          {
+            "line": 13,
+            "nodeId": "237cacf3-9de5-3e99-9eda-5db350873ad1",
+            "estimate": "O(max(|new int[] { 0, 1, 2, 4, 8, 16, 32 }[*]|))",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          },
+          {
+            "line": 9,
+            "nodeId": "f9c599e5-98c5-34d3-99bb-a32cedcee87e",
+            "estimate": "O(max(|new int[] { 0, 1, 2, 4, 8, 16, 32 }[*]|))",
+            "rule": "Стоимость метода CostTraps.aliasBuilder с подстановкой аргументов."
+          },
+          {
+            "line": 35,
+            "nodeId": "3792131f-b9a3-38e8-b89f-3e33584b732d",
+            "estimate": "O(max(|new int[] { 0, 1, 2, 4, 8, 16, 32 }[*]|))",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          },
+          {
+            "line": 26,
+            "nodeId": "768a0c37-29c8-3950-847b-15b02b9d4180",
+            "estimate": "O(max(|new int[] { 0, 1, 2, 4, 8, 16, 32 }[*]|))",
+            "rule": "Стоимость метода CostTraps.append с подстановкой аргументов."
+          },
+          {
+            "line": 27,
+            "nodeId": "cc024627-9be8-3b89-98dd-230821aa8da6",
+            "estimate": "O(max(|new int[] { 0, 1, 2, 4, 8, 16, 32 }[*]|))",
+            "rule": "Число итераций равно длине массива/стандартной коллекции."
+          },
+          {
+            "line": 25,
+            "nodeId": "e23ac99b-f52d-30d1-abc4-f170067e512e",
+            "estimate": "O(max(|new int[] { 0, 1, 2, 4, 8, 16, 32 }[*]|)^2)",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          },
+          {
+            "line": 10,
+            "nodeId": "6d2653f0-16d7-3122-8f9a-695dd7764a9f",
+            "estimate": "O(max(|new int[] { 0, 1, 2, 4, 8, 16, 32 }[*]|)^2)",
+            "rule": "Стоимость метода CostTraps.growingHelper с подстановкой аргументов."
+          },
+          {
+            "line": 8,
+            "nodeId": "6824a01f-0c33-37e1-80b3-e97dc340c9dd",
+            "estimate": "unknown",
+            "rule": "Число итераций равно длине массива/стандартной коллекции."
+          }
+        ]
+      },
+      {
+        "methodId": "aa47d174-2d5d-386b-a03b-57c6c3cf91c7",
+        "method": "nullSelectorsAndImplicitUnboxingExecuteFinallyBeforeThrowing",
+        "file": "CostTrapsTest.java",
+        "line": 14,
+        "structuralBound": "O(1)",
+        "estimate": "unknown",
+        "status": "unknown",
+        "kind": "upper_bound",
+        "confidence": "unknown",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+          "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+          "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+        ],
+        "limitations": [
+          "L16: Неизвестна стоимость вызова assertThrows(NullPointerException.class, () -> CostTraps.boxedSwitch(null, trace)).",
+          "L17: Неизвестна стоимость вызова assertEquals(List.of(\"finally\"), trace).",
+          "L19: Неизвестна стоимость вызова assertThrows(NullPointerException.class, () -> CostTraps.unboxing(null, trace)).",
+          "L20: Неизвестна стоимость вызова assertEquals(List.of(\"finally\"), trace)."
+        ],
+        "explanation": "Полная оценка неизвестна: L16: Неизвестна стоимость вызова assertThrows(NullPointerException.class, () -> CostTraps.boxedSwitch(null, trace)). L17: Неизвестна стоимость вызова assertEquals(List.of(\"finally\"), trace). L19: Неизвестна стоимость вызова assertThrows(NullPointerException.class, () -> CostTraps.unboxing(null, trace)). L20: Неизвестна стоимость вызова assertEquals(List.of(\"finally\"), trace).",
+        "evidence": []
+      }
+    ],
+    "metrics": {
+      "linesOfCode": 84,
+      "cyclomaticComplexity": 13,
+      "nestingDepth": 3,
+      "testCoverage": null,
+      "maintainabilityIndex": null,
+      "limitations": "Cyclomatic complexity is a structural lower bound; boolean short-circuits and individual switch labels are not counted. Coverage is not measured."
+    }
+  },
+  "verification": {
+    "status": 200,
+    "body": {
+      "revision": 0,
+      "current": {
+        "compilation": {
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 3286,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "runs": [],
+        "tests": {
+          "status": "passed",
+          "execution": {
+            "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ CostTrapsTest ✔\n│     ├─ nullSelectorsAndImplicitUnboxingExecuteFinallyBeforeThrowing() ✔\n│     └─ growingBuilderAndCollectionHaveKnownWorkCounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 340 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[         2 tests found           ]\n[         0 tests skipped         ]\n[         2 tests started         ]\n[         0 tests aborted         ]\n[         2 tests successful      ]\n[         0 tests failed          ]\n\n",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 2681,
+            "timedOut": false,
+            "outputLimitExceeded": false
+          },
+          "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ CostTrapsTest ✔\n│     ├─ nullSelectorsAndImplicitUnboxingExecuteFinallyBeforeThrowing() ✔\n│     └─ growingBuilderAndCollectionHaveKnownWorkCounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 340 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[         2 tests found           ]\n[         0 tests skipped         ]\n[         2 tests started         ]\n[         0 tests aborted         ]\n[         2 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "cases": [
+            {
+              "id": "junit-suite",
+              "name": "JUnit 5 (2 tests found)",
+              "status": "success",
+              "durationMs": 2681,
+              "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ CostTrapsTest ✔\n│     ├─ nullSelectorsAndImplicitUnboxingExecuteFinallyBeforeThrowing() ✔\n│     └─ growingBuilderAndCollectionHaveKnownWorkCounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 340 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[         2 tests found           ]\n[         0 tests skipped         ]\n[         2 tests started         ]\n[         0 tests aborted         ]\n[         2 tests successful      ]\n[         0 tests failed          ]\n\n"
+            }
+          ]
+        }
+      },
+      "comparison": {
+        "status": "not_requested",
+        "checkedInputs": 0,
+        "provenEquivalent": false,
+        "explanation": "Compilation, test success and behavior comparison are separate results."
+      }
+    }
+  },
+  "boxedSwitchFlow": {
+    "method": {
+      "id": "1a415662-9c52-389a-8872-52f9d386f94c",
+      "astPath": "0.2.4",
+      "astKind": "MethodDeclaration",
+      "kind": "method",
+      "title": "boxedSwitch",
+      "code": "// Null selector throws NPE, after executing finally. The CFG misses that route.\nstatic int boxedSwitch(Integer value, List<String> trace) {\n    try {\n        return switch(value) {\n            case 0 ->\n                0;\n            default ->\n                1;\n        };\n    } finally {\n        trace.add(\"finally\");\n    }\n}",
+      "snippet": " static int boxedSwitch(Integer value, List<String> trace)",
+      "displayCode": " static int boxedSwitch(Integer value, List<String> trace)",
+      "warning": "",
+      "depth": 0,
+      "loopDepth": 0,
+      "editable": [
+        "addBlock",
+        "replaceMethod",
+        "deleteMethod",
+        "duplicateMethod"
+      ],
+      "source": {
+        "file": "CostTraps.java",
+        "startLine": 41,
+        "endLine": 50,
+        "startColumn": 5,
+        "endColumn": 5
+      },
+      "methodId": "1a415662-9c52-389a-8872-52f9d386f94c",
+      "containerId": "90ef546b-aa10-3eb0-822c-6e9c150547ff",
+      "method": {
+        "signature": "static int boxedSwitch(Integer value, List<String> trace)",
+        "body": "try {\n        return switch(value) {\n            case 0 ->\n                0;\n            default ->\n                1;\n        };\n    } finally {\n        trace.add(\"finally\");\n    }",
+        "hasBody": true
+      },
+      "complexity": {
+        "estimate": "O(|trace|)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+          "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+          "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+        ],
+        "limitations": [],
+        "explanation": "O(|trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 42,
+            "nodeId": "9e422194-88d5-34f5-a8dc-5a2ab134e3ed",
+            "estimate": "O(|trace|)",
+            "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+          }
+        ]
+      }
+    },
+    "returned": {
+      "id": "2faa64d7-49a5-37d7-900f-7e935001c314",
+      "astPath": "0.2.4.0.0.1.0",
+      "astKind": "ReturnStmt",
+      "kind": "return",
+      "title": "Return",
+      "code": "return switch(value) {\n    case 0 ->\n        0;\n    default ->\n        1;\n};",
+      "snippet": "return switch(value) {\n    case 0 ->\n        0;\n    default ->\n        1;\n};",
+      "displayCode": "return switch(value) {\n    case 0 ->\n        0;\n    default ->\n        1;\n};",
+      "warning": "Тело лямбды / switch-выражения сохранено в Java; внутренний поток не развёрнут на схеме.",
+      "depth": 2,
+      "loopDepth": 0,
+      "editable": [
+        "updateExpression",
+        "replaceStatement",
+        "deleteBlock",
+        "duplicateBlock",
+        "addBlock"
+      ],
+      "source": {
+        "file": "CostTraps.java",
+        "startLine": 43,
+        "endLine": 46,
+        "startColumn": 13,
+        "endColumn": 14
+      },
+      "parentId": "9e422194-88d5-34f5-a8dc-5a2ab134e3ed",
+      "methodId": "1a415662-9c52-389a-8872-52f9d386f94c",
+      "containerId": "90ef546b-aa10-3eb0-822c-6e9c150547ff"
+    },
+    "exceptional": []
+  },
+  "unboxingFlow": {
+    "method": {
+      "id": "9e335491-8757-3bca-bee9-35e0f1a24780",
+      "astPath": "0.2.5",
+      "astKind": "MethodDeclaration",
+      "kind": "method",
+      "title": "unboxing",
+      "code": "// Reading an Integer may unbox null before return and still execute finally.\nstatic int unboxing(Integer value, List<String> trace) {\n    try {\n        return value + 1;\n    } finally {\n        trace.add(\"finally\");\n    }\n}",
+      "snippet": " static int unboxing(Integer value, List<String> trace)",
+      "displayCode": " static int unboxing(Integer value, List<String> trace)",
+      "warning": "",
+      "depth": 0,
+      "loopDepth": 0,
+      "editable": [
+        "addBlock",
+        "replaceMethod",
+        "deleteMethod",
+        "duplicateMethod"
+      ],
+      "source": {
+        "file": "CostTraps.java",
+        "startLine": 53,
+        "endLine": 59,
+        "startColumn": 5,
+        "endColumn": 5
+      },
+      "methodId": "9e335491-8757-3bca-bee9-35e0f1a24780",
+      "containerId": "90ef546b-aa10-3eb0-822c-6e9c150547ff",
+      "method": {
+        "signature": "static int unboxing(Integer value, List<String> trace)",
+        "body": "try {\n        return value + 1;\n    } finally {\n        trace.add(\"finally\");\n    }",
+        "hasBody": true
+      },
+      "complexity": {
+        "estimate": "O(|trace|)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+          "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+          "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+        ],
+        "limitations": [],
+        "explanation": "O(|trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 54,
+            "nodeId": "14285980-944b-3680-ae30-887cb8cc70c7",
+            "estimate": "O(|trace|)",
+            "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+          }
+        ]
+      }
+    },
+    "returned": {
+      "id": "c2b1e059-5603-364e-8a04-629634596393",
+      "astPath": "0.2.5.0.0.1.0",
+      "astKind": "ReturnStmt",
+      "kind": "return",
+      "title": "Return",
+      "code": "return value + 1;",
+      "snippet": "return value + 1;",
+      "displayCode": "return value + 1;",
+      "warning": "",
+      "depth": 2,
+      "loopDepth": 0,
+      "editable": [
+        "updateExpression",
+        "replaceStatement",
+        "deleteBlock",
+        "duplicateBlock",
+        "addBlock"
+      ],
+      "source": {
+        "file": "CostTraps.java",
+        "startLine": 55,
+        "endLine": 55,
+        "startColumn": 13,
+        "endColumn": 29
+      },
+      "parentId": "14285980-944b-3680-ae30-887cb8cc70c7",
+      "methodId": "9e335491-8757-3bca-bee9-35e0f1a24780",
+      "containerId": "90ef546b-aa10-3eb0-822c-6e9c150547ff"
+    },
+    "exceptional": []
+  },
+  "finallyComment": {
+    "status": 422,
+    "body": {
+      "error": {
+        "code": "UNSUPPORTED_TRANSFORM",
+        "message": "No data of this type found. Use containsData to check for this first."
+      }
+    }
+  },
+  "aiRejected": {
+    "status": 422,
+    "body": {
+      "error": {
+        "code": "AI_VERIFICATION_FAILED",
+        "message": "AI proposal did not preserve observed behavior on supplied inputs",
+        "details": {
+          "revision": 0,
+          "current": {
+            "compilation": {
+              "stdout": "",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 7606,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "runs": [
+              {
+                "stdout": "=== Clearing house / Клиринг ===\nsize=0 seed=1\nstatus={}\naccounts=21 rollbacks=0\nUSD fees=0 settlement=0\nEUR fees=0 settlement=0\nKZT fees=0 settlement=0\nanalytics=84,3,750000\nlargest=EUR:5,KZT:5,USD:5\ncleanup=open:first|open:second|first+second|close:second|close:first|caught:body|suppressed:second|suppressed:first|finally\ncsv=\"Алматы,банк\",\"a\"\"b\",42\nfailures=[]\nchecksum=3529759012\n",
+                "stderr": "",
+                "exitCode": 0,
+                "durationMs": 896,
+                "timedOut": false,
+                "outputLimitExceeded": false,
+                "name": "empty scenario",
+                "passed": null
+              }
+            ],
+            "tests": {
+              "status": "failed",
+              "execution": {
+                "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✘ expected: <500> but was: <499>\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:ClearingHouseTest:feeRoundingAndMoneyOverflowHaveDefinedBehavior()\n    MethodSource [className = 'ClearingHouseTest', methodName = 'feeRoundingAndMoneyOverflowHaveDefinedBehavior', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <500> but was: <499>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       ClearingHouseTest.feeRoundingAndMoneyOverflowHaveDefinedBehavior(ClearingHouseTest.java:148)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 1014 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        14 tests successful      ]\n[         1 tests failed          ]\n\n",
+                "stderr": "",
+                "exitCode": 1,
+                "durationMs": 4320,
+                "timedOut": false,
+                "outputLimitExceeded": false
+              },
+              "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✘ expected: <500> but was: <499>\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:ClearingHouseTest:feeRoundingAndMoneyOverflowHaveDefinedBehavior()\n    MethodSource [className = 'ClearingHouseTest', methodName = 'feeRoundingAndMoneyOverflowHaveDefinedBehavior', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <500> but was: <499>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       ClearingHouseTest.feeRoundingAndMoneyOverflowHaveDefinedBehavior(ClearingHouseTest.java:148)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 1014 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        14 tests successful      ]\n[         1 tests failed          ]\n\n",
+              "cases": [
+                {
+                  "id": "junit-suite",
+                  "name": "JUnit 5 (15 tests found)",
+                  "status": "failure",
+                  "durationMs": 4320,
+                  "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✘ expected: <500> but was: <499>\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:ClearingHouseTest:feeRoundingAndMoneyOverflowHaveDefinedBehavior()\n    MethodSource [className = 'ClearingHouseTest', methodName = 'feeRoundingAndMoneyOverflowHaveDefinedBehavior', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <500> but was: <499>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       ClearingHouseTest.feeRoundingAndMoneyOverflowHaveDefinedBehavior(ClearingHouseTest.java:148)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 1014 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        14 tests successful      ]\n[         1 tests failed          ]\n\n"
+                }
+              ]
+            }
+          },
+          "comparison": {
+            "status": "inconclusive",
+            "checkedInputs": 0,
+            "provenEquivalent": false,
+            "explanation": "Behavior comparison requires successful compilation and execution on identical explicit inputs. Tests alone do not prove equivalence."
+          },
+          "original": {
+            "compilation": {
+              "stdout": "",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 6471,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "runs": [
+              {
+                "stdout": "=== Clearing house / Клиринг ===\nsize=0 seed=1\nstatus={}\naccounts=21 rollbacks=0\nUSD fees=0 settlement=0\nEUR fees=0 settlement=0\nKZT fees=0 settlement=0\nanalytics=84,3,750000\nlargest=EUR:5,KZT:5,USD:5\ncleanup=open:first|open:second|first+second|close:second|close:first|caught:body|suppressed:second|suppressed:first|finally\ncsv=\"Алматы,банк\",\"a\"\"b\",42\nfailures=[]\nchecksum=3529759012\n",
+                "stderr": "",
+                "exitCode": 0,
+                "durationMs": 818,
+                "timedOut": false,
+                "outputLimitExceeded": false,
+                "name": "empty scenario",
+                "passed": null
+              }
+            ],
+            "tests": {
+              "status": "passed",
+              "execution": {
+                "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✔\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 911 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+                "stderr": "",
+                "exitCode": 0,
+                "durationMs": 3337,
+                "timedOut": false,
+                "outputLimitExceeded": false
+              },
+              "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✔\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 911 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+              "cases": [
+                {
+                  "id": "junit-suite",
+                  "name": "JUnit 5 (15 tests found)",
+                  "status": "success",
+                  "durationMs": 3337,
+                  "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ ClearingHouseTest ✔\n│     ├─ riskWindowExpiresAtExactBoundary() ✔\n│     ├─ csvRoundTripsUnicodeQuotesAndEmptyFields() ✔\n│     ├─ configurationRepositoriesAndSimulationAreDeterministic() ✔\n│     ├─ reversalRestoresOriginalMoneyAndCannotRepeat() ✔\n│     ├─ duplicateRejectionsAndFrozenAccountsAreExplicit() ✔\n│     ├─ failureAfterDebitRollsBackAccountsAndJournal() ✔\n│     ├─ analyticsAgreeWithBruteForceAndPrefixOracle() ✔\n│     ├─ ratesFollowPathsAndRejectDisconnectedOrOverflowingConversions() ✔\n│     ├─ exactAvailableBalanceCanBeReserved() ✔\n│     ├─ resourceCleanupPreservesPrimaryAndSuppressedOrder() ✔\n│     ├─ dependencyOrderingRejectsCyclesAndMissingReferences() ✔\n│     ├─ nettingMatchesIndependentDoubleEntryOracle() ✔\n│     ├─ successfulPostingHasThreeBalancedEntries() ✔\n│     ├─ feeRoundingAndMoneyOverflowHaveDefinedBehavior() ✔\n│     └─ transactionDeduplicatesAliasedAccounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 911 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "finished": "2026-10-25T08:15:26.920Z"
+}

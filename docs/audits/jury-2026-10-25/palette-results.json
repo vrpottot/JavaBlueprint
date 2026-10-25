@@ -1,0 +1,485 @@
+{
+  "base": "https://javascope.193-233-246-241.sslip.io",
+  "checks": [],
+  "revision0": {
+    "projectId": "231ade51-f58b-4aa0-bb36-9c768f052882",
+    "revision": 1,
+    "files": [
+      {
+        "path": "PaletteProbe.java",
+        "content": "public class PaletteProbe {\n\n    public static void main(String[] args) {\n        int value = 0;\n    }\n}\n"
+      }
+    ],
+    "structure": [
+      {
+        "path": "PaletteProbe.java",
+        "packageName": "",
+        "types": [
+          "PaletteProbe"
+        ],
+        "mainClasses": [
+          "PaletteProbe"
+        ]
+      }
+    ],
+    "containers": [
+      {
+        "id": "faf3fd40-a547-3df7-9a3f-4f6a6e9e5860",
+        "name": "PaletteProbe",
+        "file": "PaletteProbe.java",
+        "kind": "class",
+        "canAddMethods": true,
+        "isAbstract": false,
+        "methodNames": [
+          "main"
+        ]
+      }
+    ],
+    "changes": [],
+    "graph": {
+      "nodes": [
+        {
+          "id": "c2cf4833-d81c-3325-81b6-31bb71055506",
+          "type": "methodNode",
+          "position": {
+            "x": 40,
+            "y": 40
+          },
+          "data": {
+            "title": "main",
+            "codeSnippet": "public static void main(String[] args)",
+            "displayCode": "public static void main(String[] args)",
+            "blockType": "method",
+            "line": 3,
+            "warning": "",
+            "source": {
+              "file": "PaletteProbe.java",
+              "startLine": 3,
+              "endLine": 5,
+              "startColumn": 5,
+              "endColumn": 5
+            },
+            "astKind": "MethodDeclaration",
+            "editable": [
+              "addBlock",
+              "replaceMethod",
+              "deleteMethod",
+              "duplicateMethod"
+            ],
+            "methodId": "c2cf4833-d81c-3325-81b6-31bb71055506",
+            "hasException": false,
+            "containerId": "faf3fd40-a547-3df7-9a3f-4f6a6e9e5860",
+            "containerName": "PaletteProbe",
+            "method": {
+              "signature": "public static void main(String[] args)",
+              "body": "int value = 0;",
+              "hasBody": true
+            },
+            "description": "PaletteProbe · PaletteProbe.java:3",
+            "badge": "MethodDeclaration"
+          }
+        },
+        {
+          "id": "ada15128-7376-4387-9288-b36bfd6ef2ef",
+          "type": "variableNode",
+          "position": {
+            "x": 40,
+            "y": 380
+          },
+          "data": {
+            "title": "value",
+            "codeSnippet": "int value = 0;",
+            "displayCode": "int value = 0;",
+            "blockType": "variable",
+            "line": 4,
+            "warning": "",
+            "source": {
+              "file": "PaletteProbe.java",
+              "startLine": 4,
+              "endLine": 4,
+              "startColumn": 9,
+              "endColumn": 22
+            },
+            "astKind": "ExpressionStmt",
+            "editable": [
+              "updateExpression",
+              "updateVariable",
+              "replaceStatement",
+              "deleteBlock",
+              "duplicateBlock",
+              "addBlock"
+            ],
+            "methodId": "c2cf4833-d81c-3325-81b6-31bb71055506",
+            "hasException": false,
+            "containerId": "faf3fd40-a547-3df7-9a3f-4f6a6e9e5860",
+            "containerName": "PaletteProbe",
+            "description": "PaletteProbe · PaletteProbe.java:4",
+            "badge": "ExpressionStmt"
+          }
+        },
+        {
+          "id": "cfg:29ac77ea-4fe6-3853-8bec-e4d10c8b8a95",
+          "type": "returnNode",
+          "position": {
+            "x": 40,
+            "y": 720
+          },
+          "data": {
+            "title": "Выход",
+            "codeSnippet": "Завершение метода",
+            "displayCode": "Завершение метода",
+            "blockType": "return",
+            "line": 3,
+            "source": {
+              "file": "PaletteProbe.java",
+              "startLine": 3,
+              "endLine": 5,
+              "startColumn": 5,
+              "endColumn": 5
+            },
+            "astKind": "Completion",
+            "editable": [],
+            "methodId": "c2cf4833-d81c-3325-81b6-31bb71055506",
+            "synthetic": true,
+            "hasException": false,
+            "containerId": "faf3fd40-a547-3df7-9a3f-4f6a6e9e5860",
+            "containerName": "PaletteProbe",
+            "description": "PaletteProbe · PaletteProbe.java:3",
+            "badge": "Completion"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "ada15128-7376-4387-9288-b36bfd6ef2ef:cfg:29ac77ea-4fe6-3853-8bec-e4d10c8b8a95:0",
+          "source": "ada15128-7376-4387-9288-b36bfd6ef2ef",
+          "target": "cfg:29ac77ea-4fe6-3853-8bec-e4d10c8b8a95",
+          "kind": "flow",
+          "sourceHandle": "out",
+          "targetHandle": "in",
+          "type": "smoothstep",
+          "animated": false,
+          "markerEnd": {
+            "type": "arrowclosed",
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "id": "c2cf4833-d81c-3325-81b6-31bb71055506:ada15128-7376-4387-9288-b36bfd6ef2ef:1",
+          "source": "c2cf4833-d81c-3325-81b6-31bb71055506",
+          "target": "ada15128-7376-4387-9288-b36bfd6ef2ef",
+          "kind": "flow",
+          "sourceHandle": "out",
+          "targetHandle": "in",
+          "type": "smoothstep",
+          "animated": false,
+          "markerEnd": {
+            "type": "arrowclosed",
+            "width": 16,
+            "height": 16
+          }
+        }
+      ],
+      "warnings": []
+    },
+    "errors": []
+  },
+  "revision1": {
+    "projectId": "231ade51-f58b-4aa0-bb36-9c768f052882",
+    "revision": 2,
+    "files": [
+      {
+        "path": "PaletteProbe.java",
+        "content": "public class PaletteProbe {\n\n    public static void main(String[] args) {\n        int value = 0;\n        int value = 0;\n    }\n}\n"
+      }
+    ],
+    "structure": [
+      {
+        "path": "PaletteProbe.java",
+        "packageName": "",
+        "types": [
+          "PaletteProbe"
+        ],
+        "mainClasses": [
+          "PaletteProbe"
+        ]
+      }
+    ],
+    "containers": [
+      {
+        "id": "faf3fd40-a547-3df7-9a3f-4f6a6e9e5860",
+        "name": "PaletteProbe",
+        "file": "PaletteProbe.java",
+        "kind": "class",
+        "canAddMethods": true,
+        "isAbstract": false,
+        "methodNames": [
+          "main"
+        ]
+      }
+    ],
+    "changes": [],
+    "graph": {
+      "nodes": [
+        {
+          "id": "c2cf4833-d81c-3325-81b6-31bb71055506",
+          "type": "methodNode",
+          "position": {
+            "x": 40,
+            "y": 40
+          },
+          "data": {
+            "title": "main",
+            "codeSnippet": "public static void main(String[] args)",
+            "displayCode": "public static void main(String[] args)",
+            "blockType": "method",
+            "line": 3,
+            "warning": "",
+            "source": {
+              "file": "PaletteProbe.java",
+              "startLine": 3,
+              "endLine": 6,
+              "startColumn": 5,
+              "endColumn": 5
+            },
+            "astKind": "MethodDeclaration",
+            "editable": [
+              "addBlock",
+              "replaceMethod",
+              "deleteMethod",
+              "duplicateMethod"
+            ],
+            "methodId": "c2cf4833-d81c-3325-81b6-31bb71055506",
+            "hasException": false,
+            "containerId": "faf3fd40-a547-3df7-9a3f-4f6a6e9e5860",
+            "containerName": "PaletteProbe",
+            "method": {
+              "signature": "public static void main(String[] args)",
+              "body": "int value = 0;\n    int value = 0;",
+              "hasBody": true
+            },
+            "description": "PaletteProbe · PaletteProbe.java:3",
+            "badge": "MethodDeclaration"
+          }
+        },
+        {
+          "id": "ada15128-7376-4387-9288-b36bfd6ef2ef",
+          "type": "variableNode",
+          "position": {
+            "x": 40,
+            "y": 380
+          },
+          "data": {
+            "title": "value",
+            "codeSnippet": "int value = 0;",
+            "displayCode": "int value = 0;",
+            "blockType": "variable",
+            "line": 4,
+            "warning": "",
+            "source": {
+              "file": "PaletteProbe.java",
+              "startLine": 4,
+              "endLine": 4,
+              "startColumn": 9,
+              "endColumn": 22
+            },
+            "astKind": "ExpressionStmt",
+            "editable": [
+              "updateExpression",
+              "updateVariable",
+              "replaceStatement",
+              "deleteBlock",
+              "duplicateBlock",
+              "addBlock"
+            ],
+            "methodId": "c2cf4833-d81c-3325-81b6-31bb71055506",
+            "hasException": false,
+            "containerId": "faf3fd40-a547-3df7-9a3f-4f6a6e9e5860",
+            "containerName": "PaletteProbe",
+            "description": "PaletteProbe · PaletteProbe.java:4",
+            "badge": "ExpressionStmt"
+          }
+        },
+        {
+          "id": "cb783c8c-c56f-41ff-82ff-ba5f566793d4",
+          "type": "variableNode",
+          "position": {
+            "x": 40,
+            "y": 720
+          },
+          "data": {
+            "title": "value",
+            "codeSnippet": "int value = 0;",
+            "displayCode": "int value = 0;",
+            "blockType": "variable",
+            "line": 5,
+            "warning": "",
+            "source": {
+              "file": "PaletteProbe.java",
+              "startLine": 5,
+              "endLine": 5,
+              "startColumn": 9,
+              "endColumn": 22
+            },
+            "astKind": "ExpressionStmt",
+            "editable": [
+              "updateExpression",
+              "updateVariable",
+              "replaceStatement",
+              "deleteBlock",
+              "duplicateBlock",
+              "addBlock"
+            ],
+            "methodId": "c2cf4833-d81c-3325-81b6-31bb71055506",
+            "hasException": false,
+            "containerId": "faf3fd40-a547-3df7-9a3f-4f6a6e9e5860",
+            "containerName": "PaletteProbe",
+            "description": "PaletteProbe · PaletteProbe.java:5",
+            "badge": "ExpressionStmt"
+          }
+        },
+        {
+          "id": "cfg:29ac77ea-4fe6-3853-8bec-e4d10c8b8a95",
+          "type": "returnNode",
+          "position": {
+            "x": 40,
+            "y": 1060
+          },
+          "data": {
+            "title": "Выход",
+            "codeSnippet": "Завершение метода",
+            "displayCode": "Завершение метода",
+            "blockType": "return",
+            "line": 3,
+            "source": {
+              "file": "PaletteProbe.java",
+              "startLine": 3,
+              "endLine": 6,
+              "startColumn": 5,
+              "endColumn": 5
+            },
+            "astKind": "Completion",
+            "editable": [],
+            "methodId": "c2cf4833-d81c-3325-81b6-31bb71055506",
+            "synthetic": true,
+            "hasException": false,
+            "containerId": "faf3fd40-a547-3df7-9a3f-4f6a6e9e5860",
+            "containerName": "PaletteProbe",
+            "description": "PaletteProbe · PaletteProbe.java:3",
+            "badge": "Completion"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "cb783c8c-c56f-41ff-82ff-ba5f566793d4:cfg:29ac77ea-4fe6-3853-8bec-e4d10c8b8a95:0",
+          "source": "cb783c8c-c56f-41ff-82ff-ba5f566793d4",
+          "target": "cfg:29ac77ea-4fe6-3853-8bec-e4d10c8b8a95",
+          "kind": "flow",
+          "sourceHandle": "out",
+          "targetHandle": "in",
+          "type": "smoothstep",
+          "animated": false,
+          "markerEnd": {
+            "type": "arrowclosed",
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "id": "ada15128-7376-4387-9288-b36bfd6ef2ef:cb783c8c-c56f-41ff-82ff-ba5f566793d4:1",
+          "source": "ada15128-7376-4387-9288-b36bfd6ef2ef",
+          "target": "cb783c8c-c56f-41ff-82ff-ba5f566793d4",
+          "kind": "flow",
+          "sourceHandle": "out",
+          "targetHandle": "in",
+          "type": "smoothstep",
+          "animated": false,
+          "markerEnd": {
+            "type": "arrowclosed",
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "id": "c2cf4833-d81c-3325-81b6-31bb71055506:ada15128-7376-4387-9288-b36bfd6ef2ef:2",
+          "source": "c2cf4833-d81c-3325-81b6-31bb71055506",
+          "target": "ada15128-7376-4387-9288-b36bfd6ef2ef",
+          "kind": "flow",
+          "sourceHandle": "out",
+          "targetHandle": "in",
+          "type": "smoothstep",
+          "animated": false,
+          "markerEnd": {
+            "type": "arrowclosed",
+            "width": 16,
+            "height": 16
+          }
+        }
+      ],
+      "warnings": []
+    },
+    "errors": []
+  },
+  "verification": {
+    "revision": 2,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "/input/PaletteProbe.java:5: error: variable value is already defined in method main(String[])\n        int value = 0;\n            ^\n1 error\n",
+        "exitCode": 1,
+        "durationMs": 3604,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [],
+      "tests": {
+        "status": "not_run",
+        "cases": []
+      }
+    },
+    "comparison": {
+      "status": "inconclusive",
+      "checkedInputs": 0,
+      "provenEquivalent": false,
+      "explanation": "Behavior comparison requires successful compilation and execution on identical explicit inputs. Tests alone do not prove equivalence."
+    },
+    "original": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 3504,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 486,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "not_run",
+        "cases": []
+      }
+    }
+  },
+  "duplicateVariable": true,
+  "constructor": {
+    "status": 422,
+    "body": {
+      "error": {
+        "code": "UNSUPPORTED_TRANSFORM",
+        "message": "Введите ровно один метод: сигнатуру и тело. Поля, конструкторы и дополнительные классы здесь не допускаются."
+      }
+    }
+  }
+}

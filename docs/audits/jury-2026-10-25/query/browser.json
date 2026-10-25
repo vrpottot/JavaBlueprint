@@ -1,0 +1,543 @@
+{
+  "base": "https://javascope.193-233-246-241.sslip.io",
+  "started": "2026-10-25T08:00:26.488Z",
+  "scopes": [
+    {
+      "title": "QueryForge — QueryForge · L31",
+      "nodes": 2,
+      "overlaps": []
+    },
+    {
+      "title": "Value — QueryForge.Value · L41",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "number — QueryForge.Value · L46",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "text — QueryForge.Value · L50",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "asLong — QueryForge.Value · L54",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "truth — QueryForge.Value · L61",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "display — QueryForge.Value · L69",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "compareTo — QueryForge.Value · L77",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "Row — QueryForge.Row · L91",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "get — QueryForge.Row · L95",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "with — QueryForge.Row · L103",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "select — QueryForge.Row · L109",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "merge — QueryForge.Row · L117",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "canonical — QueryForge.Row · L128",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "Column — QueryForge.Column · L138",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "Table — QueryForge.Table · L151",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "validate — QueryForge.Table · L162",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "insert — QueryForge.Table · L178",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "insertAll — QueryForge.Table · L186",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "index — QueryForge.Table · L195",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "lookup — QueryForge.Table · L206",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "delete — QueryForge.Table · L220",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "rebuild — QueryForge.Table · L227",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "iterator — QueryForge.Table · L235",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "add — QueryForge.Database · L244",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "table — QueryForge.Database · L250",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "transaction — QueryForge.Database · L258",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "Transaction — QueryForge.Transaction · L268",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "commit — QueryForge.Transaction · L275",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "close — QueryForge.Transaction · L279",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "is — QueryForge.Token · L299",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "SyntaxException — QueryForge.SyntaxException · L308",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "Lexer — QueryForge.Lexer · L318",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "scan — QueryForge.Lexer · L322",
+      "nodes": 29,
+      "overlaps": []
+    },
+    {
+      "title": "string — QueryForge.Lexer · L360",
+      "nodes": 14,
+      "overlaps": []
+    },
+    {
+      "title": "evaluate — QueryForge.Expr · L379",
+      "nodes": 1,
+      "overlaps": []
+    },
+    {
+      "title": "evaluate — QueryForge.Literal · L383",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "evaluate — QueryForge.Field · L390",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "evaluate — QueryForge.Unary · L397",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "evaluate — QueryForge.Binary · L409",
+      "nodes": 14,
+      "overlaps": []
+    },
+    {
+      "title": "Call — QueryForge.Call · L443",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "evaluate — QueryForge.Call · L447",
+      "nodes": 17,
+      "overlaps": []
+    },
+    {
+      "title": "Plan — QueryForge.Plan · L482",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "Parser — QueryForge.Parser · L491",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "peek — QueryForge.Parser · L495",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "take — QueryForge.Parser · L499",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "accept — QueryForge.Parser · L507",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "expect — QueryForge.Parser · L515",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "word — QueryForge.Parser · L521",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "parse — QueryForge.Parser · L529",
+      "nodes": 32,
+      "overlaps": []
+    },
+    {
+      "title": "precedence — QueryForge.Parser · L568",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "expression — QueryForge.Parser · L579",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "primary — QueryForge.Parser · L592",
+      "nodes": 28,
+      "overlaps": []
+    },
+    {
+      "title": "Executor — QueryForge.Executor · L636",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "execute — QueryForge.Executor · L640",
+      "nodes": 21,
+      "overlaps": []
+    },
+    {
+      "title": "query — QueryForge.Executor · L667",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "distinct — QueryForge.Executor · L671",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "union — QueryForge.Executor · L682",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "difference — QueryForge.Executor · L688",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "nestedJoin — QueryForge.Executor · L702",
+      "nodes": 10,
+      "overlaps": []
+    },
+    {
+      "title": "hashJoin — QueryForge.Executor · L715",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "group — QueryForge.Grouping · L736",
+      "nodes": 23,
+      "overlaps": []
+    },
+    {
+      "title": "runningTotal — QueryForge.Grouping · L765",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "denseRank — QueryForge.Grouping · L775",
+      "nodes": 10,
+      "overlaps": []
+    },
+    {
+      "title": "median — QueryForge.Grouping · L787",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "parse — QueryForge.Delimited · L798",
+      "nodes": 31,
+      "overlaps": []
+    },
+    {
+      "title": "encode — QueryForge.Delimited · L836",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "importTable — QueryForge.Delimited · L850",
+      "nodes": 14,
+      "overlaps": []
+    },
+    {
+      "title": "MemoryCursor — QueryForge.MemoryCursor · L875",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "next — QueryForge.MemoryCursor · L881",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "close — QueryForge.MemoryCursor · L888",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "consume — QueryForge · L895",
+      "nodes": 32,
+      "overlaps": []
+    },
+    {
+      "title": "row — QueryForge · L915",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "generate — QueryForge · L923",
+      "nodes": 21,
+      "overlaps": []
+    },
+    {
+      "title": "renderRows — QueryForge · L948",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "checksum — QueryForge · L956",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "run — QueryForge · L964",
+      "nodes": 35,
+      "overlaps": []
+    },
+    {
+      "title": "main — QueryForge · L998",
+      "nodes": 13,
+      "overlaps": []
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "checks": [
+    {
+      "name": "all method scopes have no overlapping blocks",
+      "passed": true,
+      "ms": 0
+    },
+    {
+      "name": "Java export preserves exact source bytes",
+      "passed": true,
+      "ms": 8709
+    },
+    {
+      "name": "PNG export contains a readable image",
+      "passed": true,
+      "ms": 3072
+    },
+    {
+      "name": "method palette adds and deletes a real method",
+      "passed": true,
+      "ms": 26648
+    },
+    {
+      "name": "source navigation opens the selected method",
+      "passed": true,
+      "ms": 912
+    },
+    {
+      "name": "real UI compiles, runs, compares and shows 15 JUnit tests",
+      "passed": true,
+      "ms": 23406
+    },
+    {
+      "name": "test file scopes do not include main source nodes",
+      "passed": true,
+      "ms": 195
+    },
+    {
+      "name": "no browser exceptions or missing React Flow handles",
+      "passed": true,
+      "ms": 0
+    }
+  ],
+  "importMs": 14914,
+  "overlappingScopes": [],
+  "png": {
+    "width": 2400,
+    "height": 4518,
+    "bytes": 524588
+  },
+  "verification": {
+    "revision": 2,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 6406,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Query forge / Запросы ===\nsize=32 seed=29\nselected=7 joined=32\n\"21\",\"астана\",\"19249\"\n\"24\",\"алматы\",\"19039\"\n\"2\",\"шымкент\",\"17083\"\n\"20\",\"алматы\",\"16999\"\n\"3\",\"орал\",\"16853\"\n\"11\",\"орал\",\"16421\"\n\"23\",\"орал\",\"15693\"\nАлматы:8:39040:426\nАстана:8:45128:95\nОрал:8:49784:3141\nШымкент:8:36864:560\ntotal=170816 prefix=170816\nrestored=32 trace=35\nmetrics=32,20\nchecksum=1463253714\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 733,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ QueryForgeTest ✔\n│     ├─ syntaxValidationRejectsInvalidAliasesMissingTokensAndTrailingGarbage() ✔\n│     ├─ windowFunctionsAndMedianAgreeWithSmallOracles() ✔\n│     ├─ allComparisonOperatorsAndNullPropagationAreExplicit() ✔\n│     ├─ realMainPreservesUtf8AndDefaultInput() ✔\n│     ├─ csvImportsEscapedUnicodeNullsAndMultilineFields() ✔\n│     ├─ queryProjectionFilterOrderingAndLimitAreCorrect() ✔\n│     ├─ cursorClosesOnContinueAndErrorAndRefusesReuse() ✔\n│     ├─ groupingIgnoresNullAmountsAndMatchesIndependentTotals() ✔\n│     ├─ lexerHandlesQuotesUnicodeAndAccurateErrors() ✔\n│     ├─ indexesRemainCorrectAfterInsertDeleteAndRollback() ✔\n│     ├─ hashJoinMatchesNestedLoopOracleIncludingDuplicatesAndNulls() ✔\n│     ├─ simulationsAreDeterministicAtEmptyAndMaximumSizes() ✔\n│     ├─ precedenceParenthesesAndShortCircuitHaveIndependentExpectedValues() ✔\n│     ├─ schemaAndBulkInsertAreAtomicForValidationFailures() ✔\n│     └─ rowImmutabilityProjectionAndSetOperationsAreCorrect() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1082 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 3327,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ QueryForgeTest ✔\n│     ├─ syntaxValidationRejectsInvalidAliasesMissingTokensAndTrailingGarbage() ✔\n│     ├─ windowFunctionsAndMedianAgreeWithSmallOracles() ✔\n│     ├─ allComparisonOperatorsAndNullPropagationAreExplicit() ✔\n│     ├─ realMainPreservesUtf8AndDefaultInput() ✔\n│     ├─ csvImportsEscapedUnicodeNullsAndMultilineFields() ✔\n│     ├─ queryProjectionFilterOrderingAndLimitAreCorrect() ✔\n│     ├─ cursorClosesOnContinueAndErrorAndRefusesReuse() ✔\n│     ├─ groupingIgnoresNullAmountsAndMatchesIndependentTotals() ✔\n│     ├─ lexerHandlesQuotesUnicodeAndAccurateErrors() ✔\n│     ├─ indexesRemainCorrectAfterInsertDeleteAndRollback() ✔\n│     ├─ hashJoinMatchesNestedLoopOracleIncludingDuplicatesAndNulls() ✔\n│     ├─ simulationsAreDeterministicAtEmptyAndMaximumSizes() ✔\n│     ├─ precedenceParenthesesAndShortCircuitHaveIndependentExpectedValues() ✔\n│     ├─ schemaAndBulkInsertAreAtomicForValidationFailures() ✔\n│     └─ rowImmutabilityProjectionAndSetOperationsAreCorrect() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1082 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (15 tests found)",
+            "status": "success",
+            "durationMs": 3327,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ QueryForgeTest ✔\n│     ├─ syntaxValidationRejectsInvalidAliasesMissingTokensAndTrailingGarbage() ✔\n│     ├─ windowFunctionsAndMedianAgreeWithSmallOracles() ✔\n│     ├─ allComparisonOperatorsAndNullPropagationAreExplicit() ✔\n│     ├─ realMainPreservesUtf8AndDefaultInput() ✔\n│     ├─ csvImportsEscapedUnicodeNullsAndMultilineFields() ✔\n│     ├─ queryProjectionFilterOrderingAndLimitAreCorrect() ✔\n│     ├─ cursorClosesOnContinueAndErrorAndRefusesReuse() ✔\n│     ├─ groupingIgnoresNullAmountsAndMatchesIndependentTotals() ✔\n│     ├─ lexerHandlesQuotesUnicodeAndAccurateErrors() ✔\n│     ├─ indexesRemainCorrectAfterInsertDeleteAndRollback() ✔\n│     ├─ hashJoinMatchesNestedLoopOracleIncludingDuplicatesAndNulls() ✔\n│     ├─ simulationsAreDeterministicAtEmptyAndMaximumSizes() ✔\n│     ├─ precedenceParenthesesAndShortCircuitHaveIndependentExpectedValues() ✔\n│     ├─ schemaAndBulkInsertAreAtomicForValidationFailures() ✔\n│     └─ rowImmutabilityProjectionAndSetOperationsAreCorrect() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 1082 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    },
+    "comparison": {
+      "status": "matched_on_inputs",
+      "checkedInputs": 1,
+      "provenEquivalent": false,
+      "explanation": "Observed stdout, stderr and exit codes match on these inputs only. Full program equivalence is not proven."
+    },
+    "original": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 7038,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Query forge / Запросы ===\nsize=32 seed=29\nselected=7 joined=32\n\"21\",\"астана\",\"19249\"\n\"24\",\"алматы\",\"19039\"\n\"2\",\"шымкент\",\"17083\"\n\"20\",\"алматы\",\"16999\"\n\"3\",\"орал\",\"16853\"\n\"11\",\"орал\",\"16421\"\n\"23\",\"орал\",\"15693\"\nАлматы:8:39040:426\nАстана:8:45128:95\nОрал:8:49784:3141\nШымкент:8:36864:560\ntotal=170816 prefix=170816\nrestored=32 trace=35\nmetrics=32,20\nchecksum=1463253714\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 738,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ QueryForgeTest ✔\n│     ├─ syntaxValidationRejectsInvalidAliasesMissingTokensAndTrailingGarbage() ✔\n│     ├─ windowFunctionsAndMedianAgreeWithSmallOracles() ✔\n│     ├─ allComparisonOperatorsAndNullPropagationAreExplicit() ✔\n│     ├─ realMainPreservesUtf8AndDefaultInput() ✔\n│     ├─ csvImportsEscapedUnicodeNullsAndMultilineFields() ✔\n│     ├─ queryProjectionFilterOrderingAndLimitAreCorrect() ✔\n│     ├─ cursorClosesOnContinueAndErrorAndRefusesReuse() ✔\n│     ├─ groupingIgnoresNullAmountsAndMatchesIndependentTotals() ✔\n│     ├─ lexerHandlesQuotesUnicodeAndAccurateErrors() ✔\n│     ├─ indexesRemainCorrectAfterInsertDeleteAndRollback() ✔\n│     ├─ hashJoinMatchesNestedLoopOracleIncludingDuplicatesAndNulls() ✔\n│     ├─ simulationsAreDeterministicAtEmptyAndMaximumSizes() ✔\n│     ├─ precedenceParenthesesAndShortCircuitHaveIndependentExpectedValues() ✔\n│     ├─ schemaAndBulkInsertAreAtomicForValidationFailures() ✔\n│     └─ rowImmutabilityProjectionAndSetOperationsAreCorrect() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 872 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 3829,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ QueryForgeTest ✔\n│     ├─ syntaxValidationRejectsInvalidAliasesMissingTokensAndTrailingGarbage() ✔\n│     ├─ windowFunctionsAndMedianAgreeWithSmallOracles() ✔\n│     ├─ allComparisonOperatorsAndNullPropagationAreExplicit() ✔\n│     ├─ realMainPreservesUtf8AndDefaultInput() ✔\n│     ├─ csvImportsEscapedUnicodeNullsAndMultilineFields() ✔\n│     ├─ queryProjectionFilterOrderingAndLimitAreCorrect() ✔\n│     ├─ cursorClosesOnContinueAndErrorAndRefusesReuse() ✔\n│     ├─ groupingIgnoresNullAmountsAndMatchesIndependentTotals() ✔\n│     ├─ lexerHandlesQuotesUnicodeAndAccurateErrors() ✔\n│     ├─ indexesRemainCorrectAfterInsertDeleteAndRollback() ✔\n│     ├─ hashJoinMatchesNestedLoopOracleIncludingDuplicatesAndNulls() ✔\n│     ├─ simulationsAreDeterministicAtEmptyAndMaximumSizes() ✔\n│     ├─ precedenceParenthesesAndShortCircuitHaveIndependentExpectedValues() ✔\n│     ├─ schemaAndBulkInsertAreAtomicForValidationFailures() ✔\n│     └─ rowImmutabilityProjectionAndSetOperationsAreCorrect() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 872 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (15 tests found)",
+            "status": "success",
+            "durationMs": 3829,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ QueryForgeTest ✔\n│     ├─ syntaxValidationRejectsInvalidAliasesMissingTokensAndTrailingGarbage() ✔\n│     ├─ windowFunctionsAndMedianAgreeWithSmallOracles() ✔\n│     ├─ allComparisonOperatorsAndNullPropagationAreExplicit() ✔\n│     ├─ realMainPreservesUtf8AndDefaultInput() ✔\n│     ├─ csvImportsEscapedUnicodeNullsAndMultilineFields() ✔\n│     ├─ queryProjectionFilterOrderingAndLimitAreCorrect() ✔\n│     ├─ cursorClosesOnContinueAndErrorAndRefusesReuse() ✔\n│     ├─ groupingIgnoresNullAmountsAndMatchesIndependentTotals() ✔\n│     ├─ lexerHandlesQuotesUnicodeAndAccurateErrors() ✔\n│     ├─ indexesRemainCorrectAfterInsertDeleteAndRollback() ✔\n│     ├─ hashJoinMatchesNestedLoopOracleIncludingDuplicatesAndNulls() ✔\n│     ├─ simulationsAreDeterministicAtEmptyAndMaximumSizes() ✔\n│     ├─ precedenceParenthesesAndShortCircuitHaveIndependentExpectedValues() ✔\n│     ├─ schemaAndBulkInsertAreAtomicForValidationFailures() ✔\n│     └─ rowImmutabilityProjectionAndSetOperationsAreCorrect() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 872 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        15 tests found           ]\n[         0 tests skipped         ]\n[        15 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    }
+  },
+  "finished": "2026-10-25T08:01:50.573Z"
+}
