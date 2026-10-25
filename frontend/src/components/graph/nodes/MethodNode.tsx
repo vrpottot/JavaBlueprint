@@ -36,8 +36,8 @@ export const MethodNode = memo(({ data, selected }: NodeProps) => {
         isSelected ? styles.selected : ''
       }`}
     >
-      {/* 0 входов для объявления метода, 1 вход для стороннего вызова */}
-      {isExternalCall && <Handle type="target" position={Position.Top} id="in" />}
+      <Handle type="target" position={Position.Top} id="in" />
+      <Handle type="target" position={Position.Left} id="in-left" />
 
       {/* Прямоугольник со скруглением 10px */}
       <svg

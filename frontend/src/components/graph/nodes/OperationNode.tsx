@@ -15,6 +15,7 @@ export const OperationNode = memo(({ data, selected }: NodeProps) => {
       }`}
     >
       <Handle type="target" position={Position.Top} id="in" />
+      <Handle type="target" position={Position.Left} id="in-left" />
 
       {/* Прямоугольник со скруглением 10px */}
       <svg
@@ -61,6 +62,7 @@ export const OperationNode = memo(({ data, selected }: NodeProps) => {
       </div>
 
       <Handle type="source" position={Position.Bottom} id="out" />
+      <Handle type="source" position={Position.Right} id="out-right" />
     </div>
   );
 });

@@ -56,14 +56,14 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
         )}
       </div>
 
-      {/* Фиксированные выходы: «Да» (True) ВСЕГДА справа, «Нет» (False) ВСЕГДА слева */}
-      <Handle type="source" position={Position.Right} id="out-right" title="Да (True)" />
-      {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipYes}>Да</span>}
+      {/* Connection Handles on vertices with external label indicators */}
+      <Handle type="source" position={Position.Left} id="out-left" title="Да (True)" />
+      {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipLeft}>Да</span>}
 
-      <Handle type="source" position={Position.Left} id="out-left" title="Нет (False)" />
-      {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipNo}>Нет</span>}
+      <Handle type="source" position={Position.Bottom} id="out-bottom" title="Нет (False)" />
+      {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipBottom}>Нет</span>}
 
-      <Handle type="source" position={Position.Bottom} id="out-bottom" title="Ветвление" />
+      <Handle type="source" position={Position.Right} id="out-right" title="Ветвление" />
     </div>
   );
 });

@@ -7,7 +7,6 @@ import {
   useViewport,
   useNodesInitialized,
   ReactFlowProvider,
-  MarkerType,
   type Node,
 } from '@xyflow/react';
 import {
@@ -189,32 +188,6 @@ const CanvasInner: React.FC = () => {
 
   const isLight = theme === 'light';
 
-  const flowEdges = useMemo(() => {
-    return visibleEdges.map((edge) => {
-      const { label, ...edgeWithoutLabel } = edge;
-      let sourceHandle = edge.sourceHandle;
-      const srcNode = nodes.find((n) => n.id === edge.source);
-      const isCondition = srcNode?.type === 'conditionNode' || (srcNode?.data as any)?.blockType === 'condition';
-      if (isCondition) {
-        if (edge.label === 'true' || edge.label === 'Да') {
-          sourceHandle = 'out-right';
-        } else if (edge.label === 'false' || edge.label === 'Нет' || sourceHandle === 'out-bottom') {
-          sourceHandle = 'out-left';
-        }
-      }
-      return {
-        ...edgeWithoutLabel,
-        sourceHandle,
-        label: undefined,
-        markerEnd: edge.markerEnd ?? {
-          type: MarkerType.ArrowClosed,
-          width: 16,
-          height: 16,
-          color: isLight ? '#2AA298' : '#388BFD',
-        },
-      };
-    });
-  }, [visibleEdges, isLight, nodes]);
 
   return (
     <div
@@ -338,16 +311,7 @@ const CanvasInner: React.FC = () => {
         >
           <ReactFlow
             nodes={visibleNodes}
-            edges={flowEdges}
-            defaultEdgeOptions={{
-              type: 'smoothstep',
-              markerEnd: {
-                type: MarkerType.ArrowClosed,
-                width: 16,
-                height: 16,
-                color: isLight ? '#2AA298' : '#388BFD',
-              },
-            }}
+            edges={visibleEdges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             nodeTypes={nodeTypes}

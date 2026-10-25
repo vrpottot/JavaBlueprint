@@ -60,6 +60,7 @@ export const ReturnNode = memo(({ data, selected }: NodeProps) => {
         )}
       </div>
 
+      <Handle type="source" position={Position.Bottom} id="out" />
     </div>
   );
 });

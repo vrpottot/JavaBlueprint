@@ -23,13 +23,13 @@ export function graph(result: EngineResult) {
   let offset = 0;
   for (const group of groups.values()) {
     if (!group[0]?.data.methodId) {
-      group.forEach((node, index) => { node.position = { x: offset, y: index * 290 }; });
+      group.forEach((node, index) => { node.position = { x: offset, y: index * 330 }; });
       offset += 650;
       continue;
     }
     const ids = new Set(group.map(node => node.id));
     const layout = new dagre.graphlib.Graph({ multigraph: true });
-    layout.setGraph({ rankdir: 'TB', nodesep: 50, ranksep: 50, edgesep: 15, marginx: 20, marginy: 20 });
+    layout.setGraph({ rankdir: 'TB', nodesep: 100, ranksep: 100, edgesep: 30, marginx: 40, marginy: 40 });
     layout.setDefaultEdgeLabel(() => ({}));
     for (const node of group) layout.setNode(node.id, {
       width: node.data.blockType === 'condition' ? 500 : 400,
@@ -55,7 +55,7 @@ export function graph(result: EngineResult) {
       const back = target?.kind === 'loop' && within(e.source, e.target);
       return {
         id: `${e.source}:${e.target}:${i}`, ...e,
-        sourceHandle: source?.kind === 'condition' ? e.label === 'true' ? 'out-right' : e.label === 'false' ? 'out-left' : 'out-bottom' : source?.kind === 'loop' && e.label === 'exit' ? 'out-exit' : 'out',
+        sourceHandle: source?.kind === 'condition' ? e.label === 'true' ? 'out-left' : e.label === 'false' ? 'out-bottom' : 'out-right' : source?.kind === 'loop' && e.label === 'exit' ? 'out-exit' : 'out',
         targetHandle: back ? 'loop-in' : 'in', type: 'smoothstep', animated: back,
         markerEnd: { type: 'arrowclosed', width: 16, height: 16 },
         ...(e.kind === 'exception' ? { style: { stroke: '#d97706', strokeDasharray: '6 4' } } : {}),
