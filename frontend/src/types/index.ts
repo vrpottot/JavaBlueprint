@@ -75,7 +75,7 @@ export interface ComplexityEstimate {
   explanation: string;
 }
 
-export type ConsoleLogType = 'info' | 'success' | 'warn' | 'error';
+export type ConsoleLogType = 'info' | 'success' | 'warn' | 'error' | 'input' | 'prompt';
 
 export interface ConsoleLog {
   id: string;
@@ -95,8 +95,10 @@ export interface TestCase {
 }
 
 export interface BlockPaletteItem {
+  id?: string;
   type: BlockType;
   name: string;
+  category?: 'Язык и java.lang' | 'Консольный ввод-вывод' | 'Коллекции java.util' | 'Исключения';
   description: string;
   defaultCode: string;
   color: string;

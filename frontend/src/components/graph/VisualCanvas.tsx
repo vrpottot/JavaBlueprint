@@ -174,13 +174,14 @@ const CanvasInner: React.FC = () => {
       event.preventDefault();
       const blockType = event.dataTransfer.getData('application/javascope-block') as BlockType;
       if (!blockType) return;
+      const customCode = event.dataTransfer.getData('application/javascope-code');
 
       const position = screenToFlowPosition({
         x: event.clientX,
         y: event.clientY,
       });
 
-      addNode(blockType, position);
+      addNode(blockType, position, customCode || undefined);
     },
     [screenToFlowPosition, addNode]
   );

@@ -1,0 +1,12 @@
+{
+  "java.project.referencedLibraries": [
+    "backend/java-engine/lib/**/*.jar",
+    "java-engine/lib/**/*.jar",
+    "lib/**/*.jar"
+  ],
+  "java.project.sourcePaths": [
+    "backend/java-engine/src",
+    "java-engine/src",
+    "src"
+  ]
+}

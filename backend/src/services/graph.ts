@@ -56,6 +56,25 @@ export function graph(result: EngineResult) {
       const point = layout.node(node.id);
       node.position = { x: offset + point.x - point.width / 2, y: point.y - point.height / 2 };
     }
+    for (const cond of group) {
+      if (cond.data.blockType !== 'condition' || cond.data.astKind === 'SwitchStmt') continue;
+      const yesEdge = result.edges.find(e => e.source === cond.id && (e.label === 'true' || e.label === 'Да' || e.label === 'да'));
+      const noEdge = result.edges.find(e => e.source === cond.id && (e.label === 'false' || e.label === 'Нет' || e.label === 'нет'));
+      if (!yesEdge) continue;
+      const yesNode = group.find(n => n.id === yesEdge.target);
+      const noNode = noEdge ? group.find(n => n.id === noEdge.target) : null;
+      if (yesNode && noNode && yesNode.id !== noNode.id) {
+        if (yesNode.position.x >= noNode.position.x) {
+          const temp = yesNode.position.x;
+          yesNode.position.x = noNode.position.x;
+          noNode.position.x = temp;
+        }
+      } else if (yesNode && (!noNode || yesNode.id === noNode?.id)) {
+        if (yesNode.position.x >= cond.position.x) {
+          yesNode.position.x = cond.position.x - 450;
+        }
+      }
+    }
     offset += (layout.graph().width ?? 650) + 250;
   }
   const within = (source: string, ancestor: string) => {
@@ -71,13 +90,13 @@ export function graph(result: EngineResult) {
       const isNo = e.label === 'false' || e.label === 'Нет' || e.label === 'нет';
       const isCondition = source?.kind === 'condition';
       const isIfBlock = isCondition && source?.astKind !== 'SwitchStmt';
-      // В блоке если («IfStmt») стрелка истинного условия (ведущая к результату) ВСЕГДА выходит из правой части блока (out-right)
+      // В блоке если («IfStmt») стрелка истинного условия (Да) выходит слева (out-left), а ложного (Нет) — справа (out-right)
       // A switch case keeps its Java label even when its first statement returns.
-      const isYes = isIfBlock && !isNo;
+      const isYes = (isIfBlock && !isNo) || (isCondition && (e.label === 'true' || e.label === 'Да' || e.label === 'да'));
       return {
         id: `${e.source}:${e.target}:${i}`, ...e,
         sourceHandle: isCondition
-          ? (isYes ? 'out-right' : isNo ? 'out-left' : 'out-bottom')
+          ? (isYes ? 'out-left' : isNo ? 'out-right' : 'out-bottom')
           : (source?.kind === 'loop' && e.label === 'exit' ? 'out-exit' : 'out'),
         targetHandle: back ? 'loop-in' : 'in', type: 'smoothstep', animated: back,
         markerEnd: { type: 'arrowclosed', width: 16, height: 16 },

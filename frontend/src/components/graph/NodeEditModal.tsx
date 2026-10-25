@@ -12,11 +12,34 @@ const getBlockDisplayTitle = (node: Node<VisualBlockData>) => {
     const name = node.data.method?.name || node.data.title;
     return name && !name.startsWith('Метод') && !name.startsWith('Конструктор') ? `${prefix}: ${name}` : (name || prefix);
   }
+  const code = (node.data.codeSnippet || '').trim();
+  const kind = node.data.astKind || '';
+
+  if (type === 'variable') {
+    if (code.includes('[]') || kind === 'ArrayCreationExpr' || kind === 'ArrayType') return 'Массив (Array)';
+    if (kind === 'FieldDeclaration') return 'Поле класса';
+    return 'Переменная';
+  }
+  if (type === 'condition') {
+    if (kind === 'SwitchStmt' || code.startsWith('switch')) return 'Переключатель (switch)';
+    return 'Условие (if/else)';
+  }
+  if (type === 'loop') {
+    if (kind === 'ForEachStmt') return 'Цикл (foreach)';
+    if (kind === 'WhileStmt' || code.startsWith('while')) return 'Цикл (while)';
+    if (kind === 'DoStmt' || code.startsWith('do')) return 'Цикл (do-while)';
+    return 'Цикл';
+  }
+  if (type === 'operation') {
+    if (kind === 'TryStmt' || code.startsWith('try')) return 'Try / Catch / Finally';
+    if (kind === 'ThrowStmt' || code.startsWith('throw')) return 'Выброс исключения (throw)';
+    if (code.includes('Scanner') || code.includes('System.in')) return 'Ввод (Scanner)';
+    if (code.includes('System.err')) return 'Вывод ошибки (System.err)';
+    if (code.includes('System.out')) return 'Вывод в консоль (System.out)';
+    if (code.includes('List') || code.includes('Set') || code.includes('Map') || code.includes('Collections')) return 'Коллекция (java.util)';
+    return 'Операция';
+  }
   switch (type) {
-    case 'variable': return 'Переменная';
-    case 'condition': return 'Условие';
-    case 'loop': return 'Цикл';
-    case 'operation': return 'Операция';
     case 'return': return 'Возврат';
     default: return node.data.title || node.id;
   }
@@ -35,7 +58,20 @@ function NodeEditForm({ node }: { node: Node<VisualBlockData> }) {
 
   const supported = node.data.editable ?? [];
   const editable = supported.some(op => ['updateCondition', 'updateExpression', 'updateVariable', 'replaceStatement'].includes(op));
-  const field = supported.includes('updateCondition') ? 'Условие Java' : node.data.astKind === 'FieldDeclaration' ? 'Начальное значение' : node.data.astKind === 'SwitchStmt' ? 'Выражение switch' : node.data.astKind === 'ForEachStmt' ? 'Массив или коллекция для обхода' : 'Java-инструкция целиком';
+  const snippet = (node.data.codeSnippet || '').trim();
+  const field = supported.includes('updateCondition') 
+    ? 'Условие Java' 
+    : node.data.astKind === 'FieldDeclaration' 
+    ? 'Начальное значение' 
+    : node.data.astKind === 'SwitchStmt' 
+    ? 'Выражение switch' 
+    : node.data.astKind === 'ForEachStmt' 
+    ? 'Массив или коллекция для обхода' 
+    : node.data.astKind === 'TryStmt' || snippet.startsWith('try')
+    ? 'Блок try / catch / finally'
+    : node.data.astKind === 'ThrowStmt' || snippet.startsWith('throw')
+    ? 'Инструкция throw'
+    : 'Java-инструкция целиком';
 
   const displayTitle = getBlockDisplayTitle(node);
   const blockType = node.data.blockType || 'method';

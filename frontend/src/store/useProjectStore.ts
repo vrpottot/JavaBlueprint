@@ -70,6 +70,8 @@ interface ProjectState {
   testCases: TestCase[];
   isRunning: boolean;
   isCompiling: boolean;
+  waitingForInput: boolean;
+  sessionPrintedStdoutLength: number;
   runStdin: string;
   theme: 'light' | 'dark';
   showOptimizationModal: boolean;
@@ -78,6 +80,7 @@ interface ProjectState {
   isLeftSidebarOpen: boolean;
   isRightSidebarOpen: boolean;
   mainWorkspaceTab: 'graph' | 'editor';
+  bottomWorkspaceTab: 'console' | 'tests';
   bottomPanelHeight: number;
   initialize: () => Promise<void>;
   syncSources: () => Promise<void>;
@@ -85,17 +88,21 @@ interface ProjectState {
   updateJavaCode: (code: string) => void;
   setCodeViewMode: (mode: 'source' | 'optimized') => void;
   setMainWorkspaceTab: (tab: 'graph' | 'editor') => void;
+  setBottomWorkspaceTab: (tab: 'console' | 'tests') => void;
+  setWaitingForInput: (waiting: boolean) => void;
   onNodesChange: (changes: NodeChange<Node<VisualBlockData>>[]) => void;
   onEdgesChange: (changes: EdgeChange[]) => void;
   selectNode: (id: string | null) => void;
   setEditingNode: (node: Node<VisualBlockData> | null) => void;
   updateNodeData: (id: string, data: Partial<VisualBlockData>) => Promise<void>;
-  addNode: (type: BlockType, position?: { x: number; y: number }) => Promise<void>;
+  addNode: (type: BlockType, position?: { x: number; y: number }, customCode?: string) => Promise<void>;
   deleteNode: (id: string) => Promise<void>;
   duplicateNode: (id: string) => Promise<void>;
   applyOptimization: () => Promise<void>;
   revertOptimization: () => Promise<void>;
-  runProgram: () => Promise<void>;
+  runProgram: (customStdin?: string) => Promise<void>;
+  sendConsoleInput: (input: string) => Promise<void>;
+  codeRequiresInput: () => boolean;
   importJavaFile: (name: string, content: string, replaceProject?: boolean) => Promise<void>;
   importJavaFiles: (files: SourceFile[], replaceProject?: boolean) => Promise<void>;
   exportJavaFile: () => Promise<void>;
@@ -301,7 +308,9 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     testCases: [],
     isRunning: false,
     isCompiling: false,
-    runStdin: '5\n',
+    waitingForInput: false,
+    sessionPrintedStdoutLength: 0,
+    runStdin: '',
     theme: 'light',
     showOptimizationModal: false,
     showImportModal: false,
@@ -309,6 +318,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     isLeftSidebarOpen: true,
     isRightSidebarOpen: true,
     mainWorkspaceTab: 'graph',
+    bottomWorkspaceTab: 'console',
     bottomPanelHeight: 220,
 
     initialize: async () => {
@@ -402,7 +412,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       if (await transform({ type, nodeId: id, code })) set({ editingNode: null });
     },
 
-    addNode: async (type, position) => {
+    addNode: async (type, position, customCode) => {
       if (type === 'method') {
         await busy(async () => {
           await sync();
@@ -420,8 +430,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         fail(new Error('Выберите метод или оператор, после которого добавить блок.'));
         return;
       }
-      let code = PALETTE_ITEMS.find((p) => p.type === type)?.defaultCode;
-      if (type === 'variable' || type === 'loop') {
+      let code = customCode ?? PALETTE_ITEMS.find((p) => p.type === type)?.defaultCode;
+      if (!customCode && (type === 'variable' || type === 'loop')) {
         const used = new Set((get().sourceFiles.find(f => f.path === get().activeFilePath)?.content ?? '').match(/[A-Za-z_$][\w$]*/g));
         const base = type === 'variable' ? 'value' : 'index';
         let name = base, suffix = 2;
@@ -454,30 +464,90 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         await analysis();
       }),
 
-    runProgram: () =>
+    runProgram: (customStdin?: string) =>
       busy(async () => {
+        set({ bottomWorkspaceTab: 'console' });
         await sync();
         if (!get().projectId) throw new Error('Сначала импортируйте Java-файл.');
-        set({ isCompiling: true });
-        log('info', 'Компиляция javac и проверка в Docker...');
+
+        const isInteractiveContinuation = customStdin !== undefined && get().waitingForInput;
+
+        let stdinToUse: string;
+        if (customStdin !== undefined) {
+          stdinToUse = customStdin;
+          set({ runStdin: customStdin });
+        } else {
+          set({ sessionPrintedStdoutLength: 0, runStdin: '' });
+          stdinToUse = '';
+        }
+
+        set({ isCompiling: true, waitingForInput: false });
+
         const mainClass = get().mainClasses[0];
         const result = await api<Verification>(`/projects/${get().projectId}/verify`, {
           revision: get().revision,
           compare: true,
-          ...(mainClass ? { mainClass, inputs: [{ name: 'stdin', stdin: get().runStdin }] } : {}),
+          ...(mainClass ? { mainClass, inputs: [{ name: 'stdin', stdin: stdinToUse }] } : {}),
         });
+
         const compilation = result.current.compilation;
-        log(compilation.exitCode === 0 ? 'success' : 'error', `javac: exit=${compilation.exitCode}; ${compilation.durationMs} мс${compilation.timedOut ? '; timeout' : ''}`);
-        if (compilation.stdout) log('info', compilation.stdout);
-        if (compilation.stderr) log(compilation.exitCode === 0 ? 'warn' : 'error', compilation.stderr);
-        for (const run of result.current.runs) {
-          if (run.stdout) log('info', run.stdout);
-          if (run.stderr) log('error', run.stderr);
-          log(
-            run.exitCode === 0 && !run.timedOut && !run.outputLimitExceeded ? 'success' : 'error',
-            `${run.name}: exit=${run.exitCode}; ${run.durationMs} мс${run.timedOut ? '; timeout' : ''}`
-          );
+        if (compilation.exitCode !== 0) {
+          log('error', `javac: exit=${compilation.exitCode}; ${compilation.durationMs} мс${compilation.timedOut ? '; timeout' : ''}`);
+          if (compilation.stderr) log('error', compilation.stderr);
+          set({ isCompiling: false, isRunning: false, sessionPrintedStdoutLength: 0, waitingForInput: false });
+          return;
+        } else if (!isInteractiveContinuation) {
+          log('success', `javac: exit=0; ${compilation.durationMs} мс`);
         }
+
+        let needsMoreInput = false;
+        let lastPrintedChunk = '';
+
+        for (const run of result.current.runs) {
+          const fullStdout = run.stdout || '';
+          const prevLen = get().sessionPrintedStdoutLength;
+          const newChunk = fullStdout.slice(prevLen);
+          set({ sessionPrintedStdoutLength: fullStdout.length });
+
+          if (newChunk.length > 0) {
+            lastPrintedChunk = newChunk;
+            const lines = newChunk.split(/\r?\n/);
+            for (let i = 0; i < lines.length; i++) {
+              const line = lines[i];
+              if (line.length > 0) {
+                log('info', line);
+              }
+            }
+          }
+
+          if (run.stderr) {
+            if (
+              run.stderr.includes('NoSuchElementException') ||
+              run.stderr.includes('NoSuchElement')
+            ) {
+              needsMoreInput = true;
+            } else {
+              log('error', run.stderr);
+            }
+          }
+
+          if (!needsMoreInput) {
+            log(
+              run.exitCode === 0 && !run.timedOut && !run.outputLimitExceeded ? 'success' : 'error',
+              `${run.name}: exit=${run.exitCode}; ${run.durationMs} мс${run.timedOut ? '; timeout' : ''}`
+            );
+          }
+        }
+
+        if (needsMoreInput) {
+          set({ waitingForInput: true });
+          if (!lastPrintedChunk.trim()) {
+            log('prompt', '⚠️ Программа ожидает ввод данных в консоли:');
+          }
+        } else {
+          set({ waitingForInput: false, sessionPrintedStdoutLength: 0 });
+        }
+
         set({ testCases: result.current.tests.cases });
         if (result.current.tests.status === 'not_run') log('warn', 'JUnit-тесты не найдены. Импортируйте тестовые .java-файлы вместе с проектом.');
         log(result.comparison.status === 'matched_on_inputs' ? 'success' : 'warn', result.comparison.explanation);
@@ -497,7 +567,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
           const oldId = currentProjectId;
           const p = await api<ProjectSnapshot>('/projects/parse', { files });
           accept(p, true);
-          set({ showImportModal: false });
+          set({ showImportModal: false, runStdin: '', waitingForInput: false, sessionPrintedStdoutLength: 0 });
           await analysis();
           if (oldId && oldId !== p.projectId) void api(`/projects/${oldId}`, undefined, 'DELETE').catch(() => { });
           log('success', `Создан проект: загружено файлов ${files.length}, узлов ${p.graph.nodes.length}.`);
@@ -553,6 +623,35 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     setRunStdin: (runStdin) => set({ runStdin }),
 
+    setBottomWorkspaceTab: (bottomWorkspaceTab) => set({ bottomWorkspaceTab }),
+
+    setWaitingForInput: (waitingForInput) => set({ waitingForInput }),
+
+    codeRequiresInput: () => {
+      const files = get().sourceFiles;
+      return files.some((f) =>
+        /\bSystem\.in\b/.test(f.content) ||
+        /\bScanner\s*\(/.test(f.content) ||
+        /\bnew\s+Scanner\b/.test(f.content) ||
+        /\bBufferedReader\b.*System\.in/.test(f.content) ||
+        /\bSystem\.console\(\)/.test(f.content)
+      );
+    },
+
+    sendConsoleInput: async (input: string) => {
+      const trimmed = input.trim();
+      log('input', trimmed);
+      const current = get().runStdin || '';
+      let formatted: string;
+      if (get().waitingForInput && current.trim().length > 0) {
+        formatted = `${current.trimEnd()}\n${trimmed}\n`;
+      } else {
+        formatted = `${trimmed}\n`;
+      }
+      set({ runStdin: formatted, waitingForInput: false });
+      await get().runProgram(formatted);
+    },
+
     toggleTheme: () => get().setTheme(get().theme === 'light' ? 'dark' : 'light'),
 
     setTheme: (theme) => {
@@ -582,7 +681,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     setShowAddBlockModal: (showAddBlockModal) => set({ showAddBlockModal }),
 
-    clearConsole: () => set({ consoleLogs: [] }),
+    clearConsole: () => set({ consoleLogs: [], waitingForInput: false, runStdin: '', sessionPrintedStdoutLength: 0 }),
 
     addConsoleLog: (type, message) =>
       set({

@@ -8,8 +8,17 @@ export const backendRoot = fileURLToPath(new URL('../../', import.meta.url));
 export interface JavaEngine { process(files: SourceFile[], identities?: Identity[], operations?: Transform[]): Promise<EngineResult> }
 export class JavaParserEngine implements JavaEngine {
   async process(files: SourceFile[], identities: Identity[] = [], operations: Transform[] = []): Promise<EngineResult> {
-    // This trusted CLI only parses and rewrites ASTs. It never loads or executes submitted classes.
-    const result = await runProcess(process.env.JAVA_BIN || 'java', ['-Xmx256m', '-Xss2m', '-cp', `${backendRoot}java-engine/build${delimiter}${backendRoot}java-engine/lib/*`, 'Engine'], {
+    const result = await runProcess(process.env.JAVA_BIN || 'java', [
+      '-Dfile.encoding=UTF-8',
+      '-Dsun.stdout.encoding=UTF-8',
+      '-Dsun.stderr.encoding=UTF-8',
+      '-Dsun.jnu.encoding=UTF-8',
+      '-Xmx256m',
+      '-Xss2m',
+      '-cp',
+      `${backendRoot}java-engine/build${delimiter}${backendRoot}java-engine/lib/*`,
+      'Engine'
+    ], {
       stdin: JSON.stringify({ files, identities, operations }), timeoutMs: 20000, outputBytes: 32 * 1024 * 1024,
     });
     if (result.timedOut || result.outputLimitExceeded) throw new ApiError(422, 'PARSER_LIMIT', 'Java parser exceeded its resource limit');

@@ -161,7 +161,7 @@ export const TopToolbar: React.FC = () => {
         <div className={styles.runGroup} ref={dropdownRef}>
           <button
             className={`${styles.runBtn} ${isRunning || isCompiling ? styles.running : ''}`}
-            onClick={runProgram}
+            onClick={() => void runProgram()}
             disabled={isRunning || isCompiling || isLoading}
             title="Запустить программу (F5)"
           >
@@ -183,7 +183,7 @@ export const TopToolbar: React.FC = () => {
                 className={styles.dropdownOption}
                 onClick={() => {
                   setRunDropdownOpen(false);
-                  runProgram();
+                  void runProgram();
                 }}
               >
                 <Activity size={13} className={styles.greenIcon} />
@@ -193,7 +193,7 @@ export const TopToolbar: React.FC = () => {
                 className={styles.dropdownOption}
                 onClick={() => {
                   setRunDropdownOpen(false);
-                  runProgram();
+                  void runProgram();
                 }}
               >
                 <Terminal size={13} className={styles.blueIcon} />
@@ -206,7 +206,7 @@ export const TopToolbar: React.FC = () => {
         {/* Debug button */}
         <button
           className={styles.actionBtn}
-          onClick={runProgram}
+          onClick={() => void runProgram()}
           disabled={isLoading || isRunning || isCompiling}
           title="Компиляция и проверка"
         >

@@ -35,7 +35,13 @@ export const VariableNode = memo(({ data, selected }: NodeProps) => {
             <div className={styles.headerIcon}>
               <Box size={13} />
             </div>
-            <span className={styles.nodeTitle}>Переменная</span>
+            <span className={styles.nodeTitle}>
+              {nodeData.codeSnippet?.includes('[]') || nodeData.displayCode?.includes('[]')
+                ? 'Массив (Array)'
+                : nodeData.astKind === 'FieldDeclaration'
+                ? 'Поле класса'
+                : 'Переменная'}
+            </span>
           </div>
 
           <div className={styles.headerRight}>

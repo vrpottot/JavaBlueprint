@@ -250,7 +250,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-ret-early',
     type: 'returnNode',
-    position: { x: 640, y: 260 },
+    position: { x: -140, y: 260 },
     data: {
       title: 'Возврат',
       codeSnippet: 'return result',
@@ -317,7 +317,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-op-continue',
     type: 'operationNode',
-    position: { x: -160, y: 760 },
+    position: { x: 740, y: 760 },
     data: {
       title: 'Продолжить (continue)',
       codeSnippet: 'continue',
@@ -373,9 +373,9 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-cond-yes-early',
     source: 'node-cond-null',
-    sourceHandle: 'out-right',
+    sourceHandle: 'out-left',
     target: 'node-ret-early',
-    targetHandle: 'in-left',
+    targetHandle: 'in-right',
     label: 'Да',
     labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
     labelBgStyle: { fill: '#F0FDF4', rx: 4, ry: 4, stroke: '#86EFAC' },
@@ -384,7 +384,7 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-cond-no-loop',
     source: 'node-cond-null',
-    sourceHandle: 'out-left',
+    sourceHandle: 'out-right',
     target: 'node-loop',
     label: 'Нет',
     labelStyle: { fill: '#EA580C', fontWeight: 600, fontSize: 11 },
@@ -403,7 +403,7 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-valid-yes-process',
     source: 'node-cond-valid',
-    sourceHandle: 'out-right',
+    sourceHandle: 'out-left',
     target: 'node-op-process',
     label: 'Да',
     labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
@@ -419,9 +419,9 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-valid-no-continue',
     source: 'node-cond-valid',
-    sourceHandle: 'out-left',
+    sourceHandle: 'out-right',
     target: 'node-op-continue',
-    targetHandle: 'in',
+    targetHandle: 'in-left',
     label: 'Нет',
     labelStyle: { fill: '#DC2626', fontWeight: 600, fontSize: 11 },
     labelBgStyle: { fill: '#FEF2F2', rx: 4, ry: 4, stroke: '#FCA5A5' },
@@ -538,7 +538,7 @@ export const OPTIMIZED_EDGES: Edge[] = [
   {
     id: 'e-opt-2',
     source: 'node-cond-opt',
-    sourceHandle: 'out-left',
+    sourceHandle: 'out-right',
     target: 'node-stream-opt',
     label: 'Нет',
     labelStyle: { fill: '#39C98A', fontWeight: 600, fontSize: 11 },

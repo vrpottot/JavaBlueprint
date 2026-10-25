@@ -71,7 +71,7 @@ export class DockerRunner implements Runner {
       const version: VersionResult = { compilation, runs: [], tests: { status: 'not_run', cases: [] } };
       if (compilation.exitCode !== 0 || compilation.timedOut || compilation.outputLimitExceeded) return version;
       const mount = ['--mount', `type=volume,src=${volume},dst=/classes,readonly`, this.image];
-      const java = ['java', '-Xmx128m', '-XX:ActiveProcessorCount=1', '-XX:+DisableAttachMechanism', '-Dfile.encoding=UTF-8'];
+      const java = ['java', '-Xmx128m', '-XX:ActiveProcessorCount=1', '-XX:+DisableAttachMechanism', '-Dfile.encoding=UTF-8', '-Dsun.stdout.encoding=UTF-8', '-Dsun.stderr.encoding=UTF-8', '-Dsun.jnu.encoding=UTF-8'];
       if (mainClass) for (const input of inputs) {
         const result = await this.isolated([...mount, ...java, '-cp', '/classes', mainClass, ...(input.args ?? [])], input.stdin, 5000);
         version.runs.push({ ...result, name: input.name, passed: input.expectedStdout === undefined ? null : result.exitCode === 0 && !result.timedOut && !result.outputLimitExceeded && result.stdout === input.expectedStdout });
