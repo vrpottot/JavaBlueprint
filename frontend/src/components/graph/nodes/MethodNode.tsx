@@ -27,9 +27,6 @@ export const MethodNode = memo(({ data, selected }: NodeProps) => {
   }
   const displayTitle = methodName ? `${prefix}: ${methodName}` : prefix;
 
-  const isExternalCall = nodeData.astKind === 'MethodCallExpr' ||
-    Boolean(nodeData.title && (nodeData.title.toLowerCase().includes('внешний') || nodeData.title.toLowerCase().includes('вызов')));
-
   return (
     <div
       className={`${styles.flowNodeContainer} ${styles.terminatorNode} ${

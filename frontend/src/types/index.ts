@@ -25,7 +25,7 @@ export interface VisualBlockData {
   source?: { file: string; startLine: number; endLine: number; startColumn: number; endColumn: number };
   astKind?: string;
   editable?: string[];
-  method?: { signature: string; body: string; hasBody: boolean };
+  method?: { signature: string; body: string; hasBody: boolean; name?: string };
   [key: string]: unknown;
 }
 

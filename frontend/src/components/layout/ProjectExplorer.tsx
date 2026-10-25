@@ -1,7 +1,5 @@
 import { useState, useRef } from 'react';
 import {
-  Folder,
-  FolderOpen,
   ChevronRight,
   ChevronDown,
   Search,
@@ -14,7 +12,6 @@ import {
   RefreshCw,
   Plus,
   CornerDownLeft,
-  Layers,
   FilePlus,
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
