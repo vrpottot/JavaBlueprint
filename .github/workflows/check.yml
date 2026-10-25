@@ -52,7 +52,9 @@ jobs:
           set -euo pipefail
           token=$(curl -fsS -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=javascope-deploy" | jq -r .value)
           echo "::add-mask::$token"
-          git archive --format=tar.gz -o /tmp/javascope-release.tar.gz "$GITHUB_SHA"
+          git archive --format=tar.gz -o /tmp/javascope-release.tar.gz "$GITHUB_SHA" backend frontend deploy
+          archive_size=$(stat -c%s /tmp/javascope-release.tar.gz)
+          if (( archive_size > 8 * 1024 * 1024 )); then echo 'Runtime release exceeds the 8 MiB upload limit'; exit 1; fi
           curl --fail-with-body --retry 2 -H "Authorization: Bearer $token" -H 'Content-Type: application/gzip' --data-binary @/tmp/javascope-release.tar.gz "$DEPLOY_URL/_deploy"
           for attempt in {1..90}; do
             revision=$(curl -fsS "$DEPLOY_URL/api/health" | jq -r .version || true)

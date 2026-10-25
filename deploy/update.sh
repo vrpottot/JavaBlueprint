@@ -15,6 +15,6 @@ if [[ -f /var/lib/javascope/deployed-head ]] && [[ $(cat /var/lib/javascope/depl
 release=/opt/javascope/releases/$revision
 if [[ ! -d "$release" ]]; then
   mkdir -p "$release"
-  git --git-dir="$cache" archive "$revision" | tar -x -C "$release"
+  git --git-dir="$cache" archive "$revision" backend frontend deploy | tar -x -C "$release"
 fi
 /bin/bash "$release/deploy/release.sh" "$release" "$revision"

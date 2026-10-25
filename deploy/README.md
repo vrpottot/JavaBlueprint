@@ -53,7 +53,7 @@ The API user belongs to the Docker group to launch trusted runner configurations
 
 ## Automatic updates and short checks
 
-The primary path is GitHub Actions, with no VPS password, SSH private key or long-lived deployment token stored in GitHub. After short checks pass on a push to `main`, the workflow requests a short-lived GitHub OIDC identity and uploads a Git archive to `/_deploy` over HTTPS.
+The primary path is GitHub Actions, with no VPS password, SSH private key or long-lived deployment token stored in GitHub. After short checks pass on a push to `main`, the workflow requests a short-lived GitHub OIDC identity and uploads a Git archive to `/_deploy` over HTTPS. The runtime bundle contains `backend/`, `frontend/` and `deploy/`; documentation, audit evidence and presentation images remain available in the GitHub repository. CI checks the bundle against the 8 MiB upload limit before sending it.
 
 The receiver listens only on `127.0.0.1:3003`, behind nginx. It verifies GitHub's RS256 signature against its fixed JWKS endpoint, issuer, audience, expiry, maximum token age, repository owner/name, `main` ref, push event, exact workflow path and commit SHA. It rejects stale workflow run numbers and replayed identities. Branch/PR checks cannot deploy. Uploads are limited to 8 MiB; Python's data extraction filter and expanded-size/member limits protect source extraction. A deployment lock serializes releases.
 
@@ -69,7 +69,7 @@ Each changed commit performs:
 4. Switch the shared current symlink and restart production only after those checks pass. Check public frontend HTML, its commit marker and the same-origin API before accepting the release.
 5. Restore the previous frontend/backend release and runner image if a production health check fails. Keep five releases, including the active release and its predecessor.
 
-Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: 27 backend groups plus one frontend store/API group, including method editing, bounded AI context, graph layout and complexity counterexamples. Complexity examples are batched in one JVM call; the deployment smoke compiles one tiny project. CI never calls a real AI provider. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
+Failures before switching leave production untouched. Restarts clear in-memory projects, so clients must reimport projects after a successful deployment. Tests are deliberately bounded: 27 backend groups plus two frontend store/diagnostics groups, including method editing, bounded AI context, graph layout and complexity counterexamples. Complexity examples are batched in one JVM call; the deployment smoke compiles one tiny project. CI never calls a real AI provider. Browser tests and the full timeout/isolation suite are manual checks, not repeated every minute.
 
 GitHub Actions runs short backend checks, frontend build/lint and a gateway smoke check, with a five-minute job limit and cancellation of superseded runs. VPS release checks are independent and remain mandatory even if Actions is unavailable. Builds typically take seconds to a few minutes on the first install; the updater times out after ten minutes rather than waiting indefinitely.
 
