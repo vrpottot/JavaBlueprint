@@ -1,0 +1,26 @@
+
+> javablueprint-backend@0.1.0 test:frontend
+> tsx --test ../frontend/tests/*.test.ts
+
+TAP version 13
+# Subtest: diagnostics preserve geometry, follow source aliases, honor severity and exclude other files or resolved issues
+ok 1 - diagnostics preserve geometry, follow source aliases, honor severity and exclude other files or resolved issues
+  ---
+  duration_ms: 8.764153
+  type: 'test'
+  ...
+# Subtest: editor scopes files and methods, preserves deliberate drags, inserts unique variables and protects AST metrics from AI
+ok 2 - editor scopes files and methods, preserves deliberate drags, inserts unique variables and protects AST metrics from AI
+  ---
+  duration_ms: 977.094383
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1265.269897

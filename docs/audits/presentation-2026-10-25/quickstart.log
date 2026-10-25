@@ -1,0 +1,83 @@
+
+added 63 packages, and audited 64 packages in 1s
+
+22 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> javablueprint-backend@0.1.0 setup
+> node scripts/setup.mjs
+
+Ready: javaparser.jar
+Ready: gson.jar
+Ready: junit.jar
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Java engine compiled
+
+> javablueprint-backend@0.1.0 runner:build
+> docker build -t javablueprint-runner:local -f runner/Dockerfile .
+
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  5.398MB
+Step 1/7 : FROM eclipse-temurin:21-jdk-jammy
+ ---> 76d6a518726d
+Step 2/7 : RUN groupadd --gid 10001 runner && useradd --uid 10001 --gid 10001 --no-create-home runner     && mkdir /classes && chown 10001:10001 /classes
+ ---> Using cache
+ ---> d98d32485fd0
+Step 3/7 : COPY java-engine/lib/junit.jar /opt/junit.jar
+ ---> Using cache
+ ---> cef878547ebf
+Step 4/7 : RUN chmod 444 /opt/junit.jar
+ ---> Using cache
+ ---> 3a3a711053e6
+Step 5/7 : WORKDIR /classes
+ ---> Using cache
+ ---> 371ac0b115af
+Step 6/7 : USER 10001:10001
+ ---> Using cache
+ ---> 31ff26b01e74
+Step 7/7 : CMD ["java", "-version"]
+ ---> Using cache
+ ---> eb79131f6dc1
+Successfully built eb79131f6dc1
+Successfully tagged javablueprint-runner:local
+
+added 175 packages, and audited 176 packages in 3s
+
+100 packages are looking for funding
+  run `npm fund` for details
+
+2 vulnerabilities (1 low, 1 critical)
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+
+> javablueprint-backend@0.1.0 build
+> tsc -p tsconfig.json
+
+
+> frontend@0.0.0 build
+> tsc -b && vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 2406 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   1.39 kB │ gzip:   0.76 kB
+dist/assets/index-u0xkyyIx.css  127.66 kB │ gzip:  18.58 kB
+dist/assets/index--BN_9m5u.js   729.82 kB │ gzip: 224.53 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 958ms

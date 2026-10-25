@@ -1,0 +1,17 @@
+
+> javablueprint-backend@0.1.0 test:browser
+> playwright test --config=playwright.config.ts
+
+
+Running 6 tests using 1 worker
+
+(node:2697608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/diagnostics.spec.ts:4:1 › complexity follows the selected method and diagnostic colors link the graph to Monaco source (3.5s)
+  ✓  2 tests/browser/editor.spec.ts:3:1 › file and method navigation keeps graphs separate and case edits change real execution (8.2s)
+  ✓  3 tests/browser/editor.spec.ts:43:1 › invalid source retains the last graph, displays file diagnostics and recovers after correction (4.0s)
+  ✓  4 tests/browser/methods.spec.ts:3:1 › method palette creates, validates, edits, copies and deletes real Java methods (11.1s)
+  ✓  5 tests/browser/methods.spec.ts:105:1 › dragging the method block supports interface declarations and keyboard navigation (3.4s)
+  ✓  6 tests/browser/workflow.spec.ts:4:1 › real UI imports files, edits the AST, verifies Java and shows JUnit results (10.7s)
+
+  6 passed (41.6s)

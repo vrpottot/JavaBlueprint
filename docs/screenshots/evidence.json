@@ -1,0 +1,614 @@
+{
+  "base": "http://127.0.0.1:5173",
+  "captured": "2026-10-25T08:54:08.265Z",
+  "examples": [
+    {
+      "method": "constant",
+      "estimate": "O(1)",
+      "screenshot": "big-o-constant.png"
+    },
+    {
+      "method": "linear",
+      "estimate": "O(n)",
+      "screenshot": "big-o-linear.png"
+    },
+    {
+      "method": "logarithmic",
+      "estimate": "O(log(n))",
+      "screenshot": "big-o-logarithmic.png"
+    },
+    {
+      "method": "nLogN",
+      "estimate": "O(n * log(n))",
+      "screenshot": "big-o-n-log-n.png"
+    },
+    {
+      "method": "quadratic",
+      "estimate": "O(n^2)",
+      "screenshot": "big-o-quadratic.png"
+    },
+    {
+      "method": "pairsOptimized",
+      "estimate": "O(1)",
+      "screenshot": "big-o-optimized.png"
+    }
+  ],
+  "browserErrors": [],
+  "health": {
+    "status": "ok",
+    "version": "development",
+    "java": "JavaParser CLI",
+    "execution": "docker-only"
+  },
+  "analysis": {
+    "projectId": "7eb85b65-fcb8-4da0-9e82-4321ce23807e",
+    "revision": 0,
+    "diagnostics": [
+      {
+        "id": "8ae1c031-4464-3138-994e-bcb9e154de9b:nested_loop",
+        "type": "nested_loop",
+        "severity": "medium",
+        "title": "Вложенный цикл",
+        "description": "Число итераций может расти как произведение размеров обходов. Это структурный признак, а не доказанная Big O.",
+        "recommendation": "Проверьте возможность индексирования или использования Set/Map.",
+        "file": "BigODemo.java",
+        "line": 30,
+        "nodeId": "8ae1c031-4464-3138-994e-bcb9e154de9b"
+      },
+      {
+        "id": "6045995e-85b5-3a57-b714-40a93a18c785:nested_loop",
+        "type": "nested_loop",
+        "severity": "medium",
+        "title": "Вложенный цикл",
+        "description": "Число итераций может расти как произведение размеров обходов. Это структурный признак, а не доказанная Big O.",
+        "recommendation": "Проверьте возможность индексирования или использования Set/Map.",
+        "file": "BigODemo.java",
+        "line": 40,
+        "nodeId": "6045995e-85b5-3a57-b714-40a93a18c785"
+      }
+    ],
+    "complexity": [
+      {
+        "methodId": "83476f26-e78d-3837-96fd-db5c4b1295a1",
+        "method": "constant",
+        "file": "BigODemo.java",
+        "line": 6,
+        "structuralBound": "O(1)",
+        "estimate": "O(1)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+        ],
+        "limitations": [],
+        "explanation": "O(1) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": []
+      },
+      {
+        "methodId": "ee64c108-fe70-358d-946a-de7b7587d15e",
+        "method": "linear",
+        "file": "BigODemo.java",
+        "line": 10,
+        "structuralBound": "O(n)",
+        "estimate": "O(n)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+        ],
+        "limitations": [],
+        "explanation": "O(n) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 12,
+            "nodeId": "8cbe6ffc-85b0-33ee-a7a3-8c18d3dae1ed",
+            "estimate": "O(n)",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          }
+        ]
+      },
+      {
+        "methodId": "aae63013-127c-37bf-8c90-0554f6875388",
+        "method": "logarithmic",
+        "file": "BigODemo.java",
+        "line": 18,
+        "structuralBound": "O(n)",
+        "estimate": "O(log(n))",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+        ],
+        "limitations": [],
+        "explanation": "O(log(n)) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 20,
+            "nodeId": "5f937a5f-a51b-3bad-8d53-692d12a039cf",
+            "estimate": "O(log(n))",
+            "rule": "Шаг while выполняется безусловно в каждой полной итерации."
+          }
+        ]
+      },
+      {
+        "methodId": "d4b7d111-6291-3914-828d-afc72dca8ccc",
+        "method": "quadratic",
+        "file": "BigODemo.java",
+        "line": 27,
+        "structuralBound": "O(n^2)",
+        "estimate": "O(n^2)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+        ],
+        "limitations": [],
+        "explanation": "O(n^2) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 30,
+            "nodeId": "8ae1c031-4464-3138-994e-bcb9e154de9b",
+            "estimate": "O(n)",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          },
+          {
+            "line": 29,
+            "nodeId": "2743947f-f51b-3cc5-a800-1282ee4de388",
+            "estimate": "O(n^2)",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          }
+        ]
+      },
+      {
+        "methodId": "f84e8b11-fad9-37f2-8463-d708359150da",
+        "method": "nLogN",
+        "file": "BigODemo.java",
+        "line": 37,
+        "structuralBound": "O(n^2)",
+        "estimate": "O(n * log(n))",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+        ],
+        "limitations": [],
+        "explanation": "O(n * log(n)) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 40,
+            "nodeId": "6045995e-85b5-3a57-b714-40a93a18c785",
+            "estimate": "O(log(n))",
+            "rule": "Суммирование геометрически уменьшающихся объёмов, без лишнего множителя log n."
+          },
+          {
+            "line": 39,
+            "nodeId": "b69d3e54-11ae-36e5-9708-14be076737db",
+            "estimate": "O(n * log(n))",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          }
+        ]
+      },
+      {
+        "methodId": "6099dfa3-45e6-3aed-828a-6a627be102bd",
+        "method": "pairsOptimized",
+        "file": "BigODemo.java",
+        "line": 47,
+        "structuralBound": "O(1)",
+        "estimate": "O(1)",
+        "status": "estimated",
+        "kind": "upper_bound",
+        "confidence": "conditional",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+        ],
+        "limitations": [],
+        "explanation": "O(1) — верхняя граница для распознанных конструкций при указанных предположениях.",
+        "evidence": [
+          {
+            "line": 48,
+            "nodeId": "765659de-f354-3cf7-a01c-bec87acc2b25",
+            "estimate": "O(1)",
+            "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+          }
+        ]
+      },
+      {
+        "methodId": "0b002fb2-e9c4-34f0-a986-3aa302eb35a1",
+        "method": "main",
+        "file": "BigODemo.java",
+        "line": 54,
+        "structuralBound": "O(1)",
+        "estimate": "unknown",
+        "status": "unknown",
+        "kind": "upper_bound",
+        "confidence": "unknown",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+          "Для вывода считается объём данных; ожидание ОС/пользовательского ввода не ограничивается этой оценкой."
+        ],
+        "limitations": [
+          "L55: Нет контракта конструктора Scanner.",
+          "L56: Неизвестна стоимость вызова input.hasNextInt().",
+          "L56: Неизвестна стоимость вызова input.nextInt().",
+          "L1: Неизвестна стоимость вызова input.close()."
+        ],
+        "explanation": "Полная оценка неизвестна: L55: Нет контракта конструктора Scanner. L56: Неизвестна стоимость вызова input.hasNextInt(). L56: Неизвестна стоимость вызова input.nextInt(). L1: Неизвестна стоимость вызова input.close().",
+        "evidence": [
+          {
+            "line": 59,
+            "nodeId": "613e0e06-2ce8-3b37-9238-3f779ceb70be",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.constant с подстановкой аргументов."
+          },
+          {
+            "line": 12,
+            "nodeId": "8cbe6ffc-85b0-33ee-a7a3-8c18d3dae1ed",
+            "estimate": "O(input.nextInt())",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          },
+          {
+            "line": 60,
+            "nodeId": "5d26c947-c69a-34f7-896a-afa71da401c9",
+            "estimate": "O(input.nextInt())",
+            "rule": "Стоимость метода BigODemo.linear с подстановкой аргументов."
+          },
+          {
+            "line": 20,
+            "nodeId": "5f937a5f-a51b-3bad-8d53-692d12a039cf",
+            "estimate": "O(log(input.nextInt()))",
+            "rule": "Шаг while выполняется безусловно в каждой полной итерации."
+          },
+          {
+            "line": 61,
+            "nodeId": "3168f846-7e1d-3f43-aa15-a009e6da728f",
+            "estimate": "O(log(input.nextInt()))",
+            "rule": "Стоимость метода BigODemo.logarithmic с подстановкой аргументов."
+          },
+          {
+            "line": 30,
+            "nodeId": "8ae1c031-4464-3138-994e-bcb9e154de9b",
+            "estimate": "O(input.nextInt())",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          },
+          {
+            "line": 29,
+            "nodeId": "2743947f-f51b-3cc5-a800-1282ee4de388",
+            "estimate": "O(input.nextInt()^2)",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          },
+          {
+            "line": 62,
+            "nodeId": "03c37fad-ce67-30df-be93-9464348defa0",
+            "estimate": "O(input.nextInt()^2)",
+            "rule": "Стоимость метода BigODemo.quadratic с подстановкой аргументов."
+          },
+          {
+            "line": 40,
+            "nodeId": "6045995e-85b5-3a57-b714-40a93a18c785",
+            "estimate": "O(log(input.nextInt()))",
+            "rule": "Суммирование геометрически уменьшающихся объёмов, без лишнего множителя log n."
+          },
+          {
+            "line": 39,
+            "nodeId": "b69d3e54-11ae-36e5-9708-14be076737db",
+            "estimate": "O(input.nextInt() * log(input.nextInt()))",
+            "rule": "Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций."
+          },
+          {
+            "line": 63,
+            "nodeId": "177cf54c-d4dd-3e3a-845f-51050ac3bd81",
+            "estimate": "O(input.nextInt() * log(input.nextInt()))",
+            "rule": "Стоимость метода BigODemo.nLogN с подстановкой аргументов."
+          },
+          {
+            "line": 48,
+            "nodeId": "765659de-f354-3cf7-a01c-bec87acc2b25",
+            "estimate": "O(1)",
+            "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+          },
+          {
+            "line": 64,
+            "nodeId": "efc787a3-8696-3869-a0c8-fda14f970a8f",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.pairsOptimized с подстановкой аргументов."
+          },
+          {
+            "line": 55,
+            "nodeId": "d68c3d08-b922-3a36-a492-ff0d9d5584c7",
+            "estimate": "unknown",
+            "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+          }
+        ]
+      },
+      {
+        "methodId": "eeef92ff-4374-3b05-b2b4-854bf9cf9187",
+        "method": "linearAndConstantUseKnownValues",
+        "file": "BigODemoTest.java",
+        "line": 5,
+        "structuralBound": "O(1)",
+        "estimate": "unknown",
+        "status": "unknown",
+        "kind": "upper_bound",
+        "confidence": "unknown",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+        ],
+        "limitations": [
+          "L6: Неизвестна стоимость вызова assertEquals(1, BigODemo.constant(0)).",
+          "L7: Неизвестна стоимость вызова assertEquals(17, BigODemo.constant(16)).",
+          "L8: Неизвестна стоимость вызова assertEquals(120, BigODemo.linear(16))."
+        ],
+        "explanation": "Полная оценка неизвестна: L6: Неизвестна стоимость вызова assertEquals(1, BigODemo.constant(0)). L7: Неизвестна стоимость вызова assertEquals(17, BigODemo.constant(16)). L8: Неизвестна стоимость вызова assertEquals(120, BigODemo.linear(16)).",
+        "evidence": [
+          {
+            "line": 6,
+            "nodeId": "d6b36ac2-d17e-373f-9e4a-202023166057",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.constant с подстановкой аргументов."
+          },
+          {
+            "line": 7,
+            "nodeId": "56b94a97-fb9f-3c3a-9585-f69ddd20370c",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.constant с подстановкой аргументов."
+          },
+          {
+            "line": 12,
+            "nodeId": "8cbe6ffc-85b0-33ee-a7a3-8c18d3dae1ed",
+            "estimate": "O(1)",
+            "rule": "Постоянные границы цикла."
+          },
+          {
+            "line": 8,
+            "nodeId": "49ec2d6f-1b92-31ce-8322-1fd714e08dc1",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.linear с подстановкой аргументов."
+          }
+        ]
+      },
+      {
+        "methodId": "3bf4d81f-e964-3380-8bd5-86245fc86a28",
+        "method": "halvingHasKnownStepCounts",
+        "file": "BigODemoTest.java",
+        "line": 11,
+        "structuralBound": "O(1)",
+        "estimate": "unknown",
+        "status": "unknown",
+        "kind": "upper_bound",
+        "confidence": "unknown",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+        ],
+        "limitations": [
+          "L12: Неизвестна стоимость вызова assertEquals(0, BigODemo.logarithmic(0)).",
+          "L13: Неизвестна стоимость вызова assertEquals(1, BigODemo.logarithmic(1)).",
+          "L14: Неизвестна стоимость вызова assertEquals(5, BigODemo.logarithmic(16)).",
+          "L15: Неизвестна стоимость вызова assertEquals(80, BigODemo.nLogN(16))."
+        ],
+        "explanation": "Полная оценка неизвестна: L12: Неизвестна стоимость вызова assertEquals(0, BigODemo.logarithmic(0)). L13: Неизвестна стоимость вызова assertEquals(1, BigODemo.logarithmic(1)). L14: Неизвестна стоимость вызова assertEquals(5, BigODemo.logarithmic(16)). L15: Неизвестна стоимость вызова assertEquals(80, BigODemo.nLogN(16)).",
+        "evidence": [
+          {
+            "line": 20,
+            "nodeId": "5f937a5f-a51b-3bad-8d53-692d12a039cf",
+            "estimate": "O(1)",
+            "rule": "Шаг while выполняется безусловно в каждой полной итерации."
+          },
+          {
+            "line": 12,
+            "nodeId": "a67a244d-9a1e-3539-a223-65211e6a800c",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.logarithmic с подстановкой аргументов."
+          },
+          {
+            "line": 20,
+            "nodeId": "5f937a5f-a51b-3bad-8d53-692d12a039cf",
+            "estimate": "O(1)",
+            "rule": "Шаг while выполняется безусловно в каждой полной итерации."
+          },
+          {
+            "line": 13,
+            "nodeId": "b5a90d8a-4258-32fb-82bb-51c6f34047d7",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.logarithmic с подстановкой аргументов."
+          },
+          {
+            "line": 20,
+            "nodeId": "5f937a5f-a51b-3bad-8d53-692d12a039cf",
+            "estimate": "O(1)",
+            "rule": "Шаг while выполняется безусловно в каждой полной итерации."
+          },
+          {
+            "line": 14,
+            "nodeId": "99a38116-5b73-39da-8e23-cf55d88dab1d",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.logarithmic с подстановкой аргументов."
+          },
+          {
+            "line": 40,
+            "nodeId": "6045995e-85b5-3a57-b714-40a93a18c785",
+            "estimate": "O(1)",
+            "rule": "Суммирование геометрически уменьшающихся объёмов, без лишнего множителя log n."
+          },
+          {
+            "line": 39,
+            "nodeId": "b69d3e54-11ae-36e5-9708-14be076737db",
+            "estimate": "O(1)",
+            "rule": "Постоянные границы цикла."
+          },
+          {
+            "line": 15,
+            "nodeId": "6cea7c91-922f-3988-90c2-35787435af19",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.nLogN с подстановкой аргументов."
+          }
+        ]
+      },
+      {
+        "methodId": "9ac2f102-2554-3d65-83fd-6ef0dd58bfca",
+        "method": "constantTimeReplacementPreservesPairCountsOnBoundaryAndNormalInputs",
+        "file": "BigODemoTest.java",
+        "line": 18,
+        "structuralBound": "O(n)",
+        "estimate": "unknown",
+        "status": "unknown",
+        "kind": "upper_bound",
+        "confidence": "unknown",
+        "assumptions": [
+          "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+          "Числовые размеры в оценке обозначают модуль значения."
+        ],
+        "limitations": [
+          "L20: Неизвестна стоимость вызова assertEquals(BigODemo.quadratic(n), BigODemo.pairsOptimized(n), \"n=\" + n)."
+        ],
+        "explanation": "Полная оценка неизвестна: L20: Неизвестна стоимость вызова assertEquals(BigODemo.quadratic(n), BigODemo.pairsOptimized(n), \"n=\" + n).",
+        "evidence": [
+          {
+            "line": 30,
+            "nodeId": "8ae1c031-4464-3138-994e-bcb9e154de9b",
+            "estimate": "O(1)",
+            "rule": "Постоянные границы цикла."
+          },
+          {
+            "line": 29,
+            "nodeId": "2743947f-f51b-3cc5-a800-1282ee4de388",
+            "estimate": "O(1)",
+            "rule": "Постоянные границы цикла."
+          },
+          {
+            "line": 20,
+            "nodeId": "152a8a2c-5b3c-337c-85ad-590e15d5c5c9",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.quadratic с подстановкой аргументов."
+          },
+          {
+            "line": 48,
+            "nodeId": "765659de-f354-3cf7-a01c-bec87acc2b25",
+            "estimate": "O(1)",
+            "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+          },
+          {
+            "line": 20,
+            "nodeId": "35e31227-872e-3f98-9f1f-4b040159c3e3",
+            "estimate": "O(1)",
+            "rule": "Стоимость метода BigODemo.pairsOptimized с подстановкой аргументов."
+          },
+          {
+            "line": 19,
+            "nodeId": "247fef7a-5008-3848-ad28-105c8cce50fe",
+            "estimate": "unknown",
+            "rule": "Постоянные границы цикла."
+          }
+        ]
+      }
+    ],
+    "metrics": {
+      "linesOfCode": 92,
+      "cyclomaticComplexity": 18,
+      "nestingDepth": 3,
+      "testCoverage": null,
+      "maintainabilityIndex": null,
+      "limitations": "Cyclomatic complexity is a structural lower bound; boolean short-circuits and individual switch labels are not counted. Coverage is not measured."
+    }
+  },
+  "verification": {
+    "revision": 0,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 1535,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "n=16\nconstant=17\nlinear=120\nlogarithmic=5\nquadratic=120\nnLogN=80\noptimized=120\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 552,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ BigODemoTest ✔\n│     ├─ linearAndConstantUseKnownValues() ✔\n│     ├─ constantTimeReplacementPreservesPairCountsOnBoundaryAndNormalInputs() ✔\n│     └─ halvingHasKnownStepCounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 102 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[         3 tests found           ]\n[         0 tests skipped         ]\n[         3 tests started         ]\n[         0 tests aborted         ]\n[         3 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1427,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ BigODemoTest ✔\n│     ├─ linearAndConstantUseKnownValues() ✔\n│     ├─ constantTimeReplacementPreservesPairCountsOnBoundaryAndNormalInputs() ✔\n│     └─ halvingHasKnownStepCounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 102 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[         3 tests found           ]\n[         0 tests skipped         ]\n[         3 tests started         ]\n[         0 tests aborted         ]\n[         3 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (3 tests found)",
+            "status": "success",
+            "durationMs": 1427,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ BigODemoTest ✔\n│     ├─ linearAndConstantUseKnownValues() ✔\n│     ├─ constantTimeReplacementPreservesPairCountsOnBoundaryAndNormalInputs() ✔\n│     └─ halvingHasKnownStepCounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 102 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[         3 tests found           ]\n[         0 tests skipped         ]\n[         3 tests started         ]\n[         0 tests aborted         ]\n[         3 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    },
+    "comparison": {
+      "status": "matched_on_inputs",
+      "checkedInputs": 1,
+      "provenEquivalent": false,
+      "explanation": "Observed stdout, stderr and exit codes match on these inputs only. Full program equivalence is not proven."
+    },
+    "original": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 1549,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "n=16\nconstant=17\nlinear=120\nlogarithmic=5\nquadratic=120\nnLogN=80\noptimized=120\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 549,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ BigODemoTest ✔\n│     ├─ linearAndConstantUseKnownValues() ✔\n│     ├─ constantTimeReplacementPreservesPairCountsOnBoundaryAndNormalInputs() ✔\n│     └─ halvingHasKnownStepCounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 95 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[         3 tests found           ]\n[         0 tests skipped         ]\n[         3 tests started         ]\n[         0 tests aborted         ]\n[         3 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1429,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ BigODemoTest ✔\n│     ├─ linearAndConstantUseKnownValues() ✔\n│     ├─ constantTimeReplacementPreservesPairCountsOnBoundaryAndNormalInputs() ✔\n│     └─ halvingHasKnownStepCounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 95 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[         3 tests found           ]\n[         0 tests skipped         ]\n[         3 tests started         ]\n[         0 tests aborted         ]\n[         3 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (3 tests found)",
+            "status": "success",
+            "durationMs": 1429,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ BigODemoTest ✔\n│     ├─ linearAndConstantUseKnownValues() ✔\n│     ├─ constantTimeReplacementPreservesPairCountsOnBoundaryAndNormalInputs() ✔\n│     └─ halvingHasKnownStepCounts() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 95 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[         3 tests found           ]\n[         0 tests skipped         ]\n[         3 tests started         ]\n[         0 tests aborted         ]\n[         3 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    }
+  },
+  "completed": "2026-10-25T08:54:23.335Z"
+}

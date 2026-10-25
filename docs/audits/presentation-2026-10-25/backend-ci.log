@@ -1,0 +1,176 @@
+
+> javablueprint-backend@0.1.0 test:ci
+> tsx --test --test-concurrency=1 tests/api.test.ts tests/complexity.test.ts tests/advanced-complexity.test.ts tests/deploy.test.ts tests/methods.test.ts tests/ai-context.test.ts tests/editor.test.ts tests/control-flow.test.ts
+
+TAP version 13
+# Subtest: cost contracts compose allocations, return sizes, streams, strings, queues and renamed binary search
+ok 1 - cost contracts compose allocations, return sizes, streams, strings, queues and renamed binary search
+  ---
+  duration_ms: 441.240056
+  type: 'test'
+  ...
+# Subtest: AI receives bounded, source-linked context for named methods in a large project
+ok 2 - AI receives bounded, source-linked context for named methods in a large project
+  ---
+  duration_ms: 384.331155
+  type: 'test'
+  ...
+# Subtest: real JavaParser creates source-linked IR and branched React Flow graph
+ok 3 - real JavaParser creates source-linked IR and branched React Flow graph
+  ---
+  duration_ms: 307.573627
+  type: 'test'
+  ...
+# Subtest: condition edit changes AST, preserves IDs and refreshes source ranges
+ok 4 - condition edit changes AST, preserves IDs and refreshes source ranges
+  ---
+  duration_ms: 749.649452
+  type: 'test'
+  ...
+# Subtest: add, duplicate, delete and initializer edits preserve unaffected node IDs
+ok 5 - add, duplicate, delete and initializer edits preserve unaffected node IDs
+  ---
+  duration_ms: 688.705389
+  type: 'test'
+  ...
+# Subtest: failed transform batch rolls back the whole project
+ok 6 - failed transform batch rolls back the whole project
+  ---
+  duration_ms: 451.706097
+  type: 'test'
+  ...
+# Subtest: comments, Javadoc and string literal whitespace survive generation
+ok 7 - comments, Javadoc and string literal whitespace survive generation
+  ---
+  duration_ms: 460.579811
+  type: 'test'
+  ...
+# Subtest: syntax errors include diagnostics and create no project
+ok 8 - syntax errors include diagnostics and create no project
+  ---
+  duration_ms: 148.820292
+  type: 'test'
+  ...
+# Subtest: invalid requests and unsafe paths are rejected
+ok 9 - invalid requests and unsafe paths are rejected
+  ---
+  duration_ms: 2.725969
+  type: 'test'
+  ...
+# Subtest: Java 21 constructs survive round trip: interfaces, exceptions, loops, collections, lambda, record and enum
+ok 10 - Java 21 constructs survive round trip: interfaces, exceptions, loops, collections, lambda, record and enum
+  ---
+  duration_ms: 624.371217
+  type: 'test'
+  ...
+# Subtest: analysis reports long methods and nested loops without fabricated complexity or coverage
+ok 11 - analysis reports long methods and nested loops without fabricated complexity or coverage
+  ---
+  duration_ms: 271.48877
+  type: 'test'
+  ...
+# Subtest: 1000-line monolith parses, produces a graph and remains editable
+ok 12 - 1000-line monolith parses, produces a graph and remains editable
+  ---
+  duration_ms: 1164.081526
+  type: 'test'
+  ...
+# Subtest: source update keeps the original upload and deleted projects return 404
+ok 13 - source update keeps the original upload and deleted projects return 404
+  ---
+  duration_ms: 477.338797
+  type: 'test'
+  ...
+# Subtest: project capacity is explicit and expired projects are cleaned up
+ok 14 - project capacity is explicit and expired projects are cleaned up
+  ---
+  duration_ms: 0.449868
+  type: 'test'
+  ...
+# Subtest: comparison distinguishes matching samples, differences, failures and missing evidence
+ok 15 - comparison distinguishes matching samples, differences, failures and missing evidence
+  ---
+  duration_ms: 0.212007
+  type: 'test'
+  ...
+# Subtest: AI proposal cannot bypass verification or mutate on missing evidence
+ok 16 - AI proposal cannot bypass verification or mutate on missing evidence
+  ---
+  duration_ms: 254.616111
+  type: 'test'
+  ...
+# Subtest: production gateway key protects processing routes and leaves health public
+ok 17 - production gateway key protects processing routes and leaves health public
+  ---
+  duration_ms: 200.322106
+  type: 'test'
+  ...
+# Subtest: AST cost model composes independent sizes, logarithms, branches and local calls conservatively
+ok 18 - AST cost model composes independent sizes, logarithms, branches and local calls conservatively
+  ---
+  duration_ms: 400.735335
+  type: 'test'
+  ...
+# Subtest: finally routes preserve pending return, nested cleanup, labeled jumps and return overrides
+ok 19 - finally routes preserve pending return, nested cleanup, labeled jumps and return overrides
+  ---
+  duration_ms: 511.164791
+  type: 'test'
+  ...
+# Subtest: known throw types select the first compatible catch and self-suppression has its own exceptional path
+ok 20 - known throw types select the first compatible catch and self-suppression has its own exceptional path
+  ---
+  duration_ms: 269.675021
+  type: 'test'
+  ...
+# Subtest: resource initialization, reverse close order, suppression and typed catch selection are explicit
+ok 21 - resource initialization, reverse close order, suppression and typed catch selection are explicit
+  ---
+  duration_ms: 248.536541
+  type: 'test'
+  ...
+# Subtest: deployment accepts only fresh signed main-branch identities from the exact GitHub workflow
+ok 22 - deployment accepts only fresh signed main-branch identities from the exact GitHub workflow
+  ---
+  duration_ms: 204.658733
+  type: 'test'
+  ...
+# Subtest: switch entries and unbraced returns support statement edits; additions precede terminal exits
+ok 23 - switch entries and unbraced returns support statement edits; additions precede terminal exits
+  ---
+  duration_ms: 455.260659
+  type: 'test'
+  ...
+# Subtest: graph resolves labeled jumps, hides opaque expression internals and separates branches without overlapping nodes
+ok 24 - graph resolves labeled jumps, hides opaque expression internals and separates branches without overlapping nodes
+  ---
+  duration_ms: 564.220693
+  type: 'test'
+  ...
+# Subtest: method lifecycle is atomic, source-linked, stable and preview does not mutate the project
+ok 25 - method lifecycle is atomic, source-linked, stable and preview does not mutate the project
+  ---
+  duration_ms: 1645.369178
+  type: 'test'
+  ...
+# Subtest: method validation rejects erased duplicates, constructors and invalid interface methods while allowing overloads
+ok 26 - method validation rejects erased duplicates, constructors and invalid interface methods while allowing overloads
+  ---
+  duration_ms: 1795.497188
+  type: 'test'
+  ...
+# Subtest: named nested classes, interfaces, records and enums support correct method placement and generic signatures
+ok 27 - named nested classes, interfaces, records and enums support correct method placement and generic signatures
+  ---
+  duration_ms: 415.018672
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14465.565781

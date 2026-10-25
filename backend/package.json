@@ -27,6 +27,7 @@
     "audit:jury:palette": "tsx scripts/jury-palette.ts",
     "audit:jury:templates": "tsx scripts/jury-palette-contracts.ts",
     "audit:jury:png": "tsx scripts/jury-png.ts",
+    "screenshots": "tsx scripts/capture-presentation.ts",
     "runner:build": "docker build -t javablueprint-runner:local -f runner/Dockerfile ."
   },
   "dependencies": {

@@ -1,0 +1,12 @@
+
+> javablueprint-backend@0.1.0 test:browser
+> playwright test --config=playwright.config.ts tests/browser/workflow.spec.ts
+
+
+Running 1 test using 1 worker
+
+(node:2714525) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/workflow.spec.ts:4:1 › real UI imports files, edits the AST, verifies Java and shows JUnit results (12.6s)
+
+  1 passed (13.2s)
