@@ -236,7 +236,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
   };
 
   return {
-    activeMethodId: 'members', manualPositions: {}, automaticPositions: {},
+    activeMethodId: 'all', manualPositions: {}, automaticPositions: {},
     setActiveMethodId: (id) => {
       if (id !== 'all' && id !== 'members' && !get().nodes.some(n => n.id === id && n.data.source?.file === get().activeFilePath && n.data.blockType === 'method')) return;
       set({ activeMethodId: id, selectedNodeId: null, mainWorkspaceTab: 'graph' });

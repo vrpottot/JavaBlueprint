@@ -55,7 +55,7 @@ export function graph(result: EngineResult) {
       const back = target?.kind === 'loop' && within(e.source, e.target);
       return {
         id: `${e.source}:${e.target}:${i}`, ...e,
-        sourceHandle: source?.kind === 'condition' ? e.label === 'true' ? 'out-left' : e.label === 'false' ? 'out-bottom' : 'out-right' : source?.kind === 'loop' && e.label === 'exit' ? 'out-exit' : 'out',
+        sourceHandle: source?.kind === 'condition' ? e.label === 'true' ? 'out-right' : e.label === 'false' ? 'out-left' : 'out-bottom' : source?.kind === 'loop' && e.label === 'exit' ? 'out-exit' : 'out',
         targetHandle: back ? 'loop-in' : 'in', type: 'smoothstep', animated: back,
         markerEnd: { type: 'arrowclosed', width: 16, height: 16 },
         ...(e.kind === 'exception' ? { style: { stroke: '#d97706', strokeDasharray: '6 4' } } : {}),
