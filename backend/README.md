@@ -168,6 +168,8 @@ The default suite uses the real JavaParser and skips the five Docker integration
 
 `npm run test:ci` runs 23 focused backend groups, including AST edits, layout and complexity counterexamples. After installing frontend dependencies, `npm run test:frontend` runs one store/API regression group. The supplied warehouse stress files were also checked with real javac/JUnit, behavior-preserving edits and failing mutations; see the [audit and evidence](../docs/audits/2026-10-25/README.md).
 
+A second, authored [Mission Control monolith](examples/mission-control/README.md) has 1,566 lines, 100 explicit method/constructor scopes and 16 JUnit tests with independent algorithm oracles. Run `npm run stress:mission` for its manual parser/isolated Java/mutation audit, or `npm run stress:mission:browser` with local development servers running. Both accept `--output /path/to/evidence`; the browser command also accepts `--url https://your-site`. These large checks are excluded from per-push CI. Results and remaining limits are in its [audit](../docs/audits/mission-control-2026-10-25/README.md).
+
 Browser end-to-end test (requires frontend dependencies, Docker and runner image):
 
 ```bash

@@ -18,6 +18,8 @@
     "test:gateway": "tsx scripts/check-gateway.mjs",
     "test:browser": "playwright test --config=playwright.config.ts",
     "demo": "tsx scripts/demo.ts",
+    "stress:mission": "tsx scripts/stress-mission.ts",
+    "stress:mission:browser": "tsx scripts/stress-mission-browser.ts",
     "runner:build": "docker build -t javablueprint-runner:local -f runner/Dockerfile ."
   },
   "dependencies": {
