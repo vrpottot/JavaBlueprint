@@ -90,7 +90,7 @@ interface ProjectState {
   selectNode: (id: string | null) => void;
   setEditingNode: (node: Node<VisualBlockData> | null) => void;
   updateNodeData: (id: string, data: Partial<VisualBlockData>) => Promise<void>;
-  addNode: (type: BlockType, position?: { x: number; y: number }) => Promise<void>;
+  addNode: (type: BlockType, position?: { x: number; y: number }, customCode?: string) => Promise<void>;
   deleteNode: (id: string) => Promise<void>;
   duplicateNode: (id: string) => Promise<void>;
   applyOptimization: () => Promise<void>;
@@ -402,7 +402,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       if (await transform({ type, nodeId: id, code })) set({ editingNode: null });
     },
 
-    addNode: async (type, position) => {
+    addNode: async (type, position, customCode) => {
       if (type === 'method') {
         await busy(async () => {
           await sync();
@@ -420,8 +420,8 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         fail(new Error('Выберите метод или оператор, после которого добавить блок.'));
         return;
       }
-      let code = PALETTE_ITEMS.find((p) => p.type === type)?.defaultCode;
-      if (type === 'variable' || type === 'loop') {
+      let code = customCode ?? PALETTE_ITEMS.find((p) => p.type === type)?.defaultCode;
+      if (!customCode && (type === 'variable' || type === 'loop')) {
         const used = new Set((get().sourceFiles.find(f => f.path === get().activeFilePath)?.content ?? '').match(/[A-Za-z_$][\w$]*/g));
         const base = type === 'variable' ? 'value' : 'index';
         let name = base, suffix = 2;

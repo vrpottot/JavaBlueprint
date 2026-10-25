@@ -34,7 +34,9 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
             <div className={styles.decisionIcon}>
               <GitFork size={13} />
             </div>
-            <span className={styles.nodeTitle}>Условие</span>
+            <span className={styles.nodeTitle}>
+              {nodeData.astKind === 'SwitchStmt' ? 'Переключатель (switch)' : 'Условие (if)'}
+            </span>
           </div>
 
           <div className={styles.headerRight}>

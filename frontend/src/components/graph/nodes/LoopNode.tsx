@@ -35,7 +35,15 @@ export const LoopNode = memo(({ data, selected }: NodeProps) => {
             <div className={styles.headerIcon}>
               <RefreshCw size={13} />
             </div>
-            <span className={styles.nodeTitle}>Цикл</span>
+            <span className={styles.nodeTitle}>
+              {nodeData.astKind === 'ForEachStmt'
+                ? 'Цикл (foreach)'
+                : nodeData.astKind === 'WhileStmt'
+                ? 'Цикл (while)'
+                : nodeData.astKind === 'DoStmt'
+                ? 'Цикл (do-while)'
+                : 'Цикл (for)'}
+            </span>
           </div>
 
           <div className={styles.headerRight}>

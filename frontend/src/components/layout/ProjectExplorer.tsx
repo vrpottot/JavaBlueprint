@@ -13,10 +13,13 @@ import {
   Plus,
   CornerDownLeft,
   FilePlus,
+  ShieldAlert,
+  Terminal,
+  Layers,
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import { PALETTE_ITEMS } from '../../lib/palette';
-import type { FileItem, BlockType } from '../../types';
+import type { FileItem, BlockPaletteItem } from '../../types';
 import styles from './ProjectExplorer.module.scss';
 
 export const ProjectExplorer: React.FC = () => {
@@ -60,13 +63,34 @@ export const ProjectExplorer: React.FC = () => {
     }));
   };
 
-  const filteredPalette = PALETTE_ITEMS.filter((item) =>
+  const filteredPalette = PALETTE_ITEMS.filter((item: BlockPaletteItem) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getBlockIcon = (type: BlockType) => {
-    switch (type) {
+  const getBlockIcon = (item: BlockPaletteItem) => {
+    if (item.category === 'Исключения') {
+      return (
+        <div className={`${styles.blockIconBadge} ${styles.badgeReturn}`}>
+          <ShieldAlert size={14} />
+        </div>
+      );
+    }
+    if (item.category === 'Консольный ввод-вывод') {
+      return (
+        <div className={`${styles.blockIconBadge} ${styles.badgeOperation}`}>
+          <Terminal size={14} />
+        </div>
+      );
+    }
+    if (item.category === 'Коллекции java.util') {
+      return (
+        <div className={`${styles.blockIconBadge} ${styles.badgeVariable}`}>
+          <Layers size={14} />
+        </div>
+      );
+    }
+    switch (item.type) {
       case 'variable':
         return (
           <div className={`${styles.blockIconBadge} ${styles.badgeVariable}`}>
@@ -91,16 +115,16 @@ export const ProjectExplorer: React.FC = () => {
             <Code2 size={14} />
           </div>
         );
-      case 'operation':
-        return (
-          <div className={`${styles.blockIconBadge} ${styles.badgeOperation}`}>
-            <Plus size={14} />
-          </div>
-        );
       case 'return':
         return (
           <div className={`${styles.blockIconBadge} ${styles.badgeReturn}`}>
             <CornerDownLeft size={14} />
+          </div>
+        );
+      default:
+        return (
+          <div className={`${styles.blockIconBadge} ${styles.badgeOperation}`}>
+            <Plus size={14} />
           </div>
         );
     }
@@ -212,7 +236,7 @@ export const ProjectExplorer: React.FC = () => {
         <div className={styles.blockList}>
           {filteredPalette.map((item) => (
             <div
-              key={item.type}
+              key={item.id ?? item.name}
               role="button"
               tabIndex={0}
               aria-label={`Добавить блок ${item.name}`}
@@ -220,14 +244,15 @@ export const ProjectExplorer: React.FC = () => {
               draggable
               onDragStart={(e) => {
                 e.dataTransfer.setData('application/javascope-block', item.type);
+                if (item.defaultCode) e.dataTransfer.setData('application/javascope-code', item.defaultCode);
                 e.dataTransfer.effectAllowed = 'move';
               }}
-              onClick={() => addNode(item.type)}
-              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); void addNode(item.type); } }}
-              title={`Перетащите или кликните для добавления:\n${item.description}`}
+              onClick={() => addNode(item.type, undefined, item.defaultCode)}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); void addNode(item.type, undefined, item.defaultCode); } }}
+              title={`[${item.category ?? 'Блок'}] ${item.name}\n${item.description}\n\n${item.defaultCode || ''}`}
             >
               <div className={styles.cardLeft}>
-                {getBlockIcon(item.type)}
+                {getBlockIcon(item)}
                 <span className={styles.cardName}>{item.name}</span>
               </div>
 
