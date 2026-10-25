@@ -2,16 +2,13 @@
 @use '../../styles/mixins' as *;
 
 .panel {
-  width: $analysis-width;
-  min-width: 270px;
+  width: 100%;
   height: 100%;
   background-color: var(--bg-panel);
-  border-left: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   user-select: none;
   overflow: hidden;
-  transition: width $transition-normal;
 }
 
 .header {

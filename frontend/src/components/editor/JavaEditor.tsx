@@ -29,7 +29,6 @@ export const JavaEditor: React.FC<JavaEditorProps> = ({ hideHeader = false }) =>
   const selectedLine = !(codeViewMode === 'source' && isOptimized) && selected?.data.source?.file === activeFilePath ? selected.data.source.startLine : null;
   const reveal = useCallback(() => { if (selectedLine) { editorRef.current?.revealLineInCenter(selectedLine); editorRef.current?.setPosition({ lineNumber: selectedLine, column: 1 }); } }, [selectedLine]);
   useEffect(() => {
-    if (tab !== 'editor') return;
     const timer = setTimeout(reveal, 50);
     return () => clearTimeout(timer);
   }, [reveal, tab, activeFilePath, codeViewMode]);

@@ -15,7 +15,20 @@ import { AIChat } from '../chat/AIChat';
 import styles from './AnalysisPanel.module.scss';
 
 export const AnalysisPanel: React.FC = () => {
-  const [panelMode, setPanelMode] = useState<'chat' | 'summary'>('summary');
+  const [panelMode, setPanelModeState] = useState<'chat' | 'summary'>(() => {
+    try {
+      const saved = localStorage.getItem('javablueprint_analysis_panel_mode');
+      if (saved === 'chat' || saved === 'summary') return saved;
+    } catch {}
+    return 'chat';
+  });
+
+  const setPanelMode = (mode: 'chat' | 'summary') => {
+    setPanelModeState(mode);
+    try {
+      localStorage.setItem('javablueprint_analysis_panel_mode', mode);
+    } catch {}
+  };
   const issues = useProjectStore((s) => s.issues);
   const recommendations = useProjectStore((s) => s.recommendations);
   const metrics = useProjectStore((s) => s.metrics);

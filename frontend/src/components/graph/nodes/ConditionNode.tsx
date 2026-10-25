@@ -65,14 +65,10 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
       <Handle type="source" position={Position.Right} id="out-right" title="Нет (False)" />
       {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipNo}>Нет</span>}
 
-<<<<<<< HEAD
-      <Handle type="source" position={Position.Bottom} id="out-bottom" title="Ветвление" />
-      {nodeData.hasException && <Handle type="source" position={Position.Right} id="out-exception" title="Исключение" style={{ top: '75%', background: '#d97706' }} />}
-=======
       {nodeData.astKind === 'SwitchStmt' && (
         <Handle type="source" position={Position.Bottom} id="out-bottom" title="Ветвление switch" />
       )}
->>>>>>> e1a243e (fix: исправление ошибок сборки и доработка UI схемы)
+      {nodeData.hasException && <Handle type="source" position={Position.Right} id="out-exception" title="Исключение" style={{ top: '75%', background: '#d97706' }} />}
     </div>
   );
 });

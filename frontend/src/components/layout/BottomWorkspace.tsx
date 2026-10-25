@@ -5,7 +5,11 @@ import { ConsolePanel } from '../console/ConsolePanel';
 import { TestResults } from '../tests/TestResults';
 import styles from './BottomWorkspace.module.scss';
 
-export const BottomWorkspace: React.FC = () => {
+interface BottomWorkspaceProps {
+  isDocked?: boolean;
+}
+
+export const BottomWorkspace: React.FC<BottomWorkspaceProps> = ({ isDocked = false }) => {
   const bottomPanelHeight = useProjectStore((s) => s.bottomPanelHeight);
   const setBottomPanelHeight = useProjectStore((s) => s.setBottomPanelHeight);
   const activeTab = useProjectStore((s) => s.bottomWorkspaceTab);
@@ -45,13 +49,15 @@ export const BottomWorkspace: React.FC = () => {
   }, [isResizing, handleMouseMove, handleMouseUp]);
 
   return (
-    <section className={styles.workspace} style={{ height: `${bottomPanelHeight}px` }}>
-      {/* Draggable Height Resizer */}
-      <div
-        className={`${styles.resizeHandle} ${isResizing ? styles.active : ''}`}
-        onMouseDown={handleMouseDown}
-        title="Перетащите для изменения высоты"
-      />
+    <section className={styles.workspace} style={isDocked ? { height: '100%', flex: 1 } : { height: `${bottomPanelHeight}px` }}>
+      {/* Draggable Height Resizer (only if not docked) */}
+      {!isDocked && (
+        <div
+          className={`${styles.resizeHandle} ${isResizing ? styles.active : ''}`}
+          onMouseDown={handleMouseDown}
+          title="Перетащите для изменения высоты"
+        />
+      )}
 
       {/* Tabs Header matching reference screenshot */}
       <div className={styles.tabBar}>

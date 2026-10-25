@@ -1,0 +1,202 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.dockLayoutWrapper {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-canvas);
+
+  // Mapped dockview variables to project design tokens
+  --dv-drag-over-background-color: rgba(66, 148, 247, 0.12);
+  --dv-drag-over-border: 1px dashed var(--accent-blue);
+  --dv-drag-over-border-color: var(--accent-blue);
+
+  --dv-tabs-and-actions-container-height: 34px;
+  --dv-tabs-and-actions-container-font-size: 12px;
+  --dv-tab-font-size: 12px;
+
+  --dv-tabs-and-actions-container-background-color: var(--bg-panel-secondary);
+  --dv-activegroup-visiblepanel-tab-background-color: var(--bg-panel);
+  --dv-activegroup-visiblepanel-tab-color: var(--text-primary);
+  --dv-activegroup-hiddenpanel-tab-background-color: var(--bg-panel-secondary);
+  --dv-activegroup-hiddenpanel-tab-color: var(--text-secondary);
+
+  --dv-inactivegroup-visiblepanel-tab-background-color: var(--bg-panel);
+  --dv-inactivegroup-visiblepanel-tab-color: var(--text-secondary);
+  --dv-inactivegroup-hiddenpanel-tab-background-color: var(--bg-panel-secondary);
+  --dv-inactivegroup-hiddenpanel-tab-color: var(--text-muted);
+
+  --dv-tab-divider-color: var(--border-color);
+  --dv-group-view-background-color: var(--bg-canvas);
+  --dv-separator-border: 1px solid var(--border-color);
+
+  :global {
+    .dockview-container {
+      width: 100%;
+      height: 100%;
+    }
+
+    .dv-tabs-and-actions-container {
+      border-bottom: 1px solid var(--border-color);
+      user-select: none;
+      background-color: var(--bg-panel-secondary);
+    }
+
+    // Subtle, calm tab styling (less prominent / "менее явным")
+    .dv-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 12px;
+      font-family: $font-sans;
+      font-weight: 500;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      background-color: transparent !important;
+      border: none !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
+      border-bottom: 2px solid transparent !important;
+      box-shadow: none !important;
+      transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
+
+      &:hover {
+        color: var(--text-primary);
+        background-color: var(--bg-panel-hover) !important;
+      }
+
+      // Soft, refined active state without loud borders or glowing bars
+      &.dv-active-tab {
+        color: var(--text-primary) !important;
+        font-weight: 500;
+        background-color: var(--bg-panel) !important;
+        border-top: none !important;
+        border-bottom: 2px solid rgba(66, 148, 247, 0.7) !important;
+        box-shadow: none !important;
+      }
+
+      &.dv-inactive-tab {
+        color: var(--text-secondary) !important;
+        background-color: transparent !important;
+        border-bottom: 2px solid transparent !important;
+      }
+    }
+
+    // Remove tab close buttons ("убери кнопки закрыть вкладку")
+    .dv-tab-close-btn,
+    .dv-default-tab-action,
+    [class*="tab-close"] {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .dv-sash {
+      background-color: var(--border-color);
+      transition: background-color $transition-fast;
+
+      &:hover,
+      &:active {
+        background-color: var(--accent-blue);
+      }
+    }
+
+    .dv-groupview {
+      overflow: hidden;
+      background-color: var(--bg-panel);
+      position: relative;
+
+      // Vertical collapse (height: 34px)
+      &.group-collapsed,
+      &.dv-group-collapsed {
+        min-height: 34px !important;
+        max-height: 34px !important;
+        height: 34px !important;
+        overflow: hidden !important;
+
+        .dv-content-container {
+          display: none !important;
+          visibility: hidden !important;
+        }
+      }
+
+      // Horizontal collapse (width: 34px)
+      &.group-collapsed-width,
+      &.dv-group-collapsed-width {
+        min-width: 34px !important;
+        max-width: 34px !important;
+        width: 34px !important;
+        overflow: hidden !important;
+
+        .dv-content-container {
+          display: none !important;
+          visibility: hidden !important;
+        }
+      }
+    }
+  }
+}
+
+// Collapsed states accessible via CSS modules
+.groupCollapsed {
+  min-height: 34px !important;
+  max-height: 34px !important;
+  height: 34px !important;
+  overflow: hidden !important;
+
+  :global(.dv-content-container) {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
+.groupCollapsedWidth {
+  min-width: 34px !important;
+  max-width: 34px !important;
+  width: 34px !important;
+  overflow: hidden !important;
+
+  :global(.dv-content-container) {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
+// Header action buttons for collapse and maximize
+.headerActionsGroup {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 4px;
+  height: 100%;
+}
+
+.headerActionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-panel-hover);
+    border-color: var(--border-color);
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+}

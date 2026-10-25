@@ -46,6 +46,7 @@ interface ProjectState {
   revision: number;
   sourceFiles: SourceFile[];
   originalFiles: SourceFile[];
+  structure: { path: string; packageName?: string; types?: string[]; mainClasses: string[] }[];
   mainClasses: string[];
   dirty: boolean;
   isLoading: boolean;
@@ -111,6 +112,7 @@ interface ProjectState {
   codeRequiresInput: () => boolean;
   importJavaFile: (name: string, content: string, replaceProject?: boolean) => Promise<void>;
   importJavaFiles: (files: SourceFile[], replaceProject?: boolean) => Promise<void>;
+  deleteFile: (path: string) => Promise<void>;
   exportJavaFile: () => Promise<void>;
   setRunStdin: (value: string) => void;
   toggleTheme: () => void;
@@ -135,6 +137,71 @@ interface ProjectState {
 
 let debounce: ReturnType<typeof setTimeout> | undefined;
 
+export const STORAGE_KEYS = {
+  SOURCE_FILES: 'javablueprint_source_files',
+  ORIGINAL_FILES: 'javablueprint_original_files',
+  ACTIVE_FILE_PATH: 'javablueprint_active_file_path',
+  MANUAL_POSITIONS: 'javablueprint_manual_positions',
+  THEME: 'javablueprint_theme',
+  LEFT_SIDEBAR: 'javablueprint_left_sidebar',
+  RIGHT_SIDEBAR: 'javablueprint_right_sidebar',
+  MAIN_TAB: 'javablueprint_main_workspace_tab',
+  BOTTOM_TAB: 'javablueprint_bottom_workspace_tab',
+  CODE_VIEW_MODE: 'javablueprint_code_view_mode',
+  ACTIVE_ANALYSIS_TAB: 'javablueprint_active_analysis_tab',
+} as const;
+
+export const getStorageItem = (key: string): string | null => {
+  try {
+    return typeof window !== 'undefined' ? localStorage.getItem(key) : null;
+  } catch {
+    return null;
+  }
+};
+
+export const setStorageItem = (key: string, value: string) => {
+  try {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(key, value);
+    }
+  } catch (err) {
+    console.warn(`Failed to save ${key} to localStorage:`, err);
+  }
+};
+
+const persistProjectFiles = (files: SourceFile[], originalFiles?: SourceFile[], activePath?: string) => {
+  if (files && files.length > 0) {
+    setStorageItem(STORAGE_KEYS.SOURCE_FILES, JSON.stringify(files));
+  }
+  if (originalFiles && originalFiles.length > 0) {
+    setStorageItem(STORAGE_KEYS.ORIGINAL_FILES, JSON.stringify(originalFiles));
+  }
+  if (activePath) {
+    setStorageItem(STORAGE_KEYS.ACTIVE_FILE_PATH, activePath);
+  }
+};
+
+const savedTheme = getStorageItem(STORAGE_KEYS.THEME) as 'light' | 'dark' | null;
+const initialTheme: 'light' | 'dark' = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : 'dark';
+
+const savedLeftSidebar = getStorageItem(STORAGE_KEYS.LEFT_SIDEBAR);
+const initialLeftSidebar = savedLeftSidebar !== null ? savedLeftSidebar === 'true' : true;
+
+const savedRightSidebar = getStorageItem(STORAGE_KEYS.RIGHT_SIDEBAR);
+const initialRightSidebar = savedRightSidebar !== null ? savedRightSidebar === 'true' : true;
+
+const savedMainTab = getStorageItem(STORAGE_KEYS.MAIN_TAB) as 'graph' | 'editor' | null;
+const initialMainTab = savedMainTab === 'graph' || savedMainTab === 'editor' ? savedMainTab : 'graph';
+
+const savedBottomTab = getStorageItem(STORAGE_KEYS.BOTTOM_TAB) as 'console' | 'tests' | null;
+const initialBottomTab = savedBottomTab === 'console' || savedBottomTab === 'tests' ? savedBottomTab : 'console';
+
+const savedCodeViewMode = getStorageItem(STORAGE_KEYS.CODE_VIEW_MODE) as 'source' | 'optimized' | null;
+const initialCodeViewMode = savedCodeViewMode === 'source' || savedCodeViewMode === 'optimized' ? savedCodeViewMode : 'source';
+
+const savedAnalysisTab = getStorageItem(STORAGE_KEYS.ACTIVE_ANALYSIS_TAB) as 'issues' | 'recommendations' | 'metrics' | null;
+const initialAnalysisTab = savedAnalysisTab === 'issues' || savedAnalysisTab === 'recommendations' || savedAnalysisTab === 'metrics' ? savedAnalysisTab : 'issues';
+
 export const useProjectStore = create<ProjectState>((set, get) => {
   const log = (type: ConsoleLog['type'], message: string) => get().addConsoleLog(type, message);
   const fail = (error: unknown) => {
@@ -157,6 +224,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       sourceFiles: p.files,
       containers: p.containers ?? [],
       ...(original ? { originalFiles: p.files, isOptimized: false, codeViewMode: 'source' as const } : {}),
+      structure: p.structure ?? [],
       mainClasses: p.structure.flatMap((f) => f.mainClasses),
       projectName: p.files[0]?.path.split('/').pop()?.replace('.java', '') || 'JavaBlueprint',
       files: p.files.map((f) => ({ id: f.path, path: f.path, name: f.path, type: 'file' as const })),
@@ -174,6 +242,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       error: null,
       testCases: [],
     });
+    persistProjectFiles(p.files, original ? p.files : get().originalFiles, path);
     p.graph.warnings.forEach((w) => log('warn', w));
   };
 
@@ -289,6 +358,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     revision: 0,
     sourceFiles: [],
     originalFiles: [],
+    structure: [],
     mainClasses: [],
     dirty: false,
     isLoading: false,
@@ -299,7 +369,6 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     activeFilePath: '',
     javaCode: '',
     isOptimized: false,
-    codeViewMode: 'source',
     nodes: [],
     edges: [],
     selectedNodeId: null,
@@ -309,7 +378,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     metrics: emptyMetrics,
     methodComplexities: [],
     complexity: { current: 'Неизвестно', optimized: '—', speedup: 'Не измерено', explanation: 'Загрузите Java-код для анализа.' },
-    activeAnalysisTab: 'issues',
+    activeAnalysisTab: initialAnalysisTab,
     consoleLogs: [],
     testCases: [],
     isRunning: false,
@@ -317,31 +386,69 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     waitingForInput: false,
     sessionPrintedStdoutLength: 0,
     runStdin: '',
-    theme: 'light',
+    theme: initialTheme,
     showOptimizationModal: false,
     showImportModal: false,
     showAddBlockModal: false,
-    isLeftSidebarOpen: true,
-    isRightSidebarOpen: true,
-    mainWorkspaceTab: 'graph',
-    bottomWorkspaceTab: 'console',
+    isLeftSidebarOpen: initialLeftSidebar,
+    isRightSidebarOpen: initialRightSidebar,
+    mainWorkspaceTab: initialMainTab,
+    bottomWorkspaceTab: initialBottomTab,
+    codeViewMode: initialCodeViewMode,
     bottomPanelHeight: 220,
     codeGeneratedNotice: null,
 
     initialize: async () => {
-      if (!get().projectId && !get().isLoading) await get().importJavaFiles([{ path: 'Main.java', content: SAMPLE }]);
+      if (get().projectId || get().isLoading) return;
+
+      const savedFilesStr = getStorageItem(STORAGE_KEYS.SOURCE_FILES);
+      if (savedFilesStr) {
+        try {
+          const savedFiles: SourceFile[] = JSON.parse(savedFilesStr);
+          if (Array.isArray(savedFiles) && savedFiles.length > 0) {
+            await get().importJavaFiles(savedFiles, true);
+
+            const savedPath = getStorageItem(STORAGE_KEYS.ACTIVE_FILE_PATH);
+            if (savedPath && get().sourceFiles.some((f) => f.path === savedPath)) {
+              get().selectFile(savedPath);
+            }
+
+            const savedPositionsStr = getStorageItem(STORAGE_KEYS.MANUAL_POSITIONS);
+            if (savedPositionsStr) {
+              const savedPositions = JSON.parse(savedPositionsStr);
+              set({
+                manualPositions: savedPositions,
+                nodes: get().nodes.map((n) => ({
+                  ...n,
+                  position: savedPositions[n.id] || n.position,
+                })),
+              });
+            }
+            return;
+          }
+        } catch (err) {
+          console.warn('Failed to load saved project files from localStorage:', err);
+        }
+      }
+
+      await get().importJavaFiles([{ path: 'Main.java', content: SAMPLE }]);
     },
 
     syncSources: () => busy(sync),
 
     selectFile: (id) => {
       const file = (get().codeViewMode === 'source' && get().isOptimized ? get().originalFiles : get().sourceFiles).find((f) => f.path === id);
-      if (file) set({ activeFileId: id, activeFilePath: id, javaCode: file.content, activeMethodId: defaultMethod(get().nodes, id), selectedNodeId: null });
+      if (file) {
+        set({ activeFileId: id, activeFilePath: id, javaCode: file.content, activeMethodId: defaultMethod(get().nodes, id), selectedNodeId: null });
+        setStorageItem(STORAGE_KEYS.ACTIVE_FILE_PATH, id);
+      }
     },
 
     updateJavaCode: (code) => {
       if (get().isLoading || get().isRunning || get().isCompiling || (get().codeViewMode === 'source' && get().isOptimized)) return;
-      set({ javaCode: code, sourceFiles: get().sourceFiles.map((f) => (f.path === get().activeFilePath ? { ...f, content: code } : f)), dirty: true, testCases: [] });
+      const updatedFiles = get().sourceFiles.map((f) => (f.path === get().activeFilePath ? { ...f, content: code } : f));
+      set({ javaCode: code, sourceFiles: updatedFiles, dirty: true, testCases: [] });
+      persistProjectFiles(updatedFiles, undefined, get().activeFilePath);
       clearTimeout(debounce);
       debounce = setTimeout(() => {
         void get().syncSources();
@@ -351,10 +458,12 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     setCodeViewMode: (mode) => {
       const files = mode === 'source' && get().isOptimized ? get().originalFiles : get().sourceFiles;
       set({ codeViewMode: mode, javaCode: files.find((f) => f.path === get().activeFilePath)?.content || '' });
+      setStorageItem(STORAGE_KEYS.CODE_VIEW_MODE, mode);
     },
 
     setMainWorkspaceTab: (mainWorkspaceTab) => {
       set({ mainWorkspaceTab });
+      setStorageItem(STORAGE_KEYS.MAIN_TAB, mainWorkspaceTab);
     },
 
     onNodesChange: (changes) => {
@@ -362,7 +471,16 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         void get().deleteNode(c.id);
       });
       const positions = { ...get().manualPositions };
-      for (const change of changes) if (change.type === 'position' && change.position && change.dragging !== undefined) positions[change.id] = change.position;
+      let hasPositionChange = false;
+      for (const change of changes) {
+        if (change.type === 'position' && change.position && change.dragging !== undefined) {
+          positions[change.id] = change.position;
+          hasPositionChange = true;
+        }
+      }
+      if (hasPositionChange) {
+        setStorageItem(STORAGE_KEYS.MANUAL_POSITIONS, JSON.stringify(positions));
+      }
       set({ manualPositions: positions, nodes: applyNodeChanges(changes.filter((c) => c.type !== 'remove'), get().nodes) });
     },
 
@@ -603,7 +721,40 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
         set({ isCompiling: true, waitingForInput: false });
 
-        const mainClass = get().mainClasses[0];
+        const activePath = get().activeFilePath;
+        const fileStructure = get().structure.find((s) => s.path === activePath);
+        const activeFileName = activePath.split('/').pop() || activePath;
+
+        // 1. Ищем main-класс в структуре выбранного файла
+        let mainClassToRun = fileStructure?.mainClasses?.[0];
+        let isFallback = false;
+
+        if (!mainClassToRun) {
+          // Если явного mainClasses нет, но в файле объявлен класс и есть метод main в коде
+          const currentFile = get().sourceFiles.find((f) => f.path === activePath);
+          const currentContent = currentFile?.content || get().javaCode;
+          if (/public\s+static\s+void\s+main\s*\(/.test(currentContent) && fileStructure?.types?.[0]) {
+            mainClassToRun = fileStructure.types[0];
+          }
+        }
+
+        if (!mainClassToRun) {
+          // Если в выбранном файле нет main, используем fallback на первый main-класс проекта
+          mainClassToRun = get().mainClasses[0];
+          isFallback = Boolean(mainClassToRun);
+        }
+
+        if (mainClassToRun) {
+          if (isFallback) {
+            log('info', `Запуск: в выбранном файле "${activeFileName}" нет метода main, запускается главный класс проекта: ${mainClassToRun}`);
+          } else {
+            log('info', `Запуск выбранного файла: ${activeFileName} (класс ${mainClassToRun})`);
+          }
+        } else {
+          log('info', `Компиляция и проверка проекта (активный файл: ${activeFileName})...`);
+        }
+
+        const mainClass = mainClassToRun;
         const result = await api<Verification>(`/projects/${get().projectId}/verify`, {
           revision: get().revision,
           compare: true,
@@ -727,6 +878,43 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         }
       }),
 
+    deleteFile: (path: string) =>
+      busy(async () => {
+        const currentFiles = get().sourceFiles;
+        if (currentFiles.length <= 1) {
+          log('warn', 'Нельзя удалить единственный файл проекта. В проекте должен оставаться хотя бы один файл.');
+          return;
+        }
+
+        const currentProjectId = get().projectId;
+        if (!currentProjectId) throw new Error('Сначала импортируйте Java-файл.');
+
+        const remainingFiles = currentFiles.filter((f) => f.path !== path);
+        const remainingOriginal = get().originalFiles.filter((f) => f.path !== path);
+
+        let nextActivePath = get().activeFilePath;
+        if (nextActivePath === path) {
+          nextActivePath = remainingFiles[0]?.path || '';
+        }
+
+        const updated = await api<ProjectSnapshot>(`/projects/${currentProjectId}/sources`, {
+          revision: get().revision,
+          files: remainingFiles,
+        }, 'PUT');
+
+        accept(updated, true);
+
+        if (nextActivePath) {
+          get().selectFile(nextActivePath);
+        }
+
+        persistProjectFiles(remainingFiles, remainingOriginal, nextActivePath);
+        await analysis();
+
+        const fileName = path.split('/').pop() || path;
+        log('info', `Файл "${fileName}" успешно удален из проекта. Оставшиеся файлы: ${remainingFiles.map((f) => f.path.split('/').pop()).join(', ')}.`);
+      }),
+
     exportJavaFile: () =>
       busy(async () => {
         await sync();
@@ -743,19 +931,27 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     setRunStdin: (runStdin) => set({ runStdin }),
 
-    setBottomWorkspaceTab: (bottomWorkspaceTab) => set({ bottomWorkspaceTab }),
+    setBottomWorkspaceTab: (bottomWorkspaceTab) => {
+      set({ bottomWorkspaceTab });
+      setStorageItem(STORAGE_KEYS.BOTTOM_TAB, bottomWorkspaceTab);
+    },
 
     setWaitingForInput: (waitingForInput) => set({ waitingForInput }),
 
     codeRequiresInput: () => {
-      const files = get().sourceFiles;
-      return files.some((f) =>
-        /\bSystem\.in\b/.test(f.content) ||
-        /\bScanner\s*\(/.test(f.content) ||
-        /\bnew\s+Scanner\b/.test(f.content) ||
-        /\bBufferedReader\b.*System\.in/.test(f.content) ||
-        /\bSystem\.console\(\)/.test(f.content)
-      );
+      const activeFile = get().sourceFiles.find((f) => f.path === get().activeFilePath);
+      const targetContent = activeFile?.content ?? get().javaCode;
+      const checkInput = (content: string) =>
+        /\bSystem\.in\b/.test(content) ||
+        /\bScanner\s*\(/.test(content) ||
+        /\bnew\s+Scanner\b/.test(content) ||
+        /\bBufferedReader\b.*System\.in/.test(content) ||
+        /\bSystem\.console\(\)/.test(content);
+
+      if (targetContent && checkInput(targetContent)) {
+        return true;
+      }
+      return get().sourceFiles.some((f) => checkInput(f.content));
     },
 
     sendConsoleInput: async (input: string) => {
@@ -776,10 +972,14 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     setTheme: (theme) => {
       set({ theme });
+      setStorageItem(STORAGE_KEYS.THEME, theme);
       document.documentElement.setAttribute('data-theme', theme);
     },
 
-    setActiveAnalysisTab: (activeAnalysisTab) => set({ activeAnalysisTab }),
+    setActiveAnalysisTab: (activeAnalysisTab) => {
+      set({ activeAnalysisTab });
+      setStorageItem(STORAGE_KEYS.ACTIVE_ANALYSIS_TAB, activeAnalysisTab);
+    },
 
     focusNodeFromIssue: (id) => {
       set({ mainWorkspaceTab: 'graph' });
@@ -789,9 +989,17 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       get().selectNode(id);
     },
 
-    toggleLeftSidebar: () => set({ isLeftSidebarOpen: !get().isLeftSidebarOpen }),
+    toggleLeftSidebar: () => {
+      const next = !get().isLeftSidebarOpen;
+      set({ isLeftSidebarOpen: next });
+      setStorageItem(STORAGE_KEYS.LEFT_SIDEBAR, String(next));
+    },
 
-    toggleRightSidebar: () => set({ isRightSidebarOpen: !get().isRightSidebarOpen }),
+    toggleRightSidebar: () => {
+      const next = !get().isRightSidebarOpen;
+      set({ isRightSidebarOpen: next });
+      setStorageItem(STORAGE_KEYS.RIGHT_SIDEBAR, String(next));
+    },
 
     setBottomPanelHeight: (height) => set({ bottomPanelHeight: Math.max(140, Math.min(height, 500)) }),
 

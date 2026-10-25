@@ -13,17 +13,13 @@ import {
   Maximize2,
   ZoomIn,
   ZoomOut,
-  Workflow,
-  FileCode,
   Edit3,
   Copy,
-  Check,
   Trash2,
   ArrowUpRight,
 } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import type { VisualBlockData, BlockType } from '../../types';
-import { JavaEditor } from '../editor/JavaEditor';
 import { MethodNode } from './nodes/MethodNode';
 import { VariableNode } from './nodes/VariableNode';
 import { ConditionNode } from './nodes/ConditionNode';
@@ -74,12 +70,6 @@ const CanvasInner: React.FC = () => {
   const visibleEdges = useMemo(() => edges.filter(e => visibleIds.has(e.source) && visibleIds.has(e.target)), [edges, visibleIds]);
   const graphWarnings = useMemo(() => [...new Set(visibleNodes.flatMap(n => n.data.warning ? [n.data.warning] : []))], [visibleNodes]);
 
-  const mainWorkspaceTab = useProjectStore((s) => s.mainWorkspaceTab);
-  const setMainWorkspaceTab = useProjectStore((s) => s.setMainWorkspaceTab);
-  const codeViewMode = useProjectStore((s) => s.codeViewMode);
-  const setCodeViewMode = useProjectStore((s) => s.setCodeViewMode);
-  const javaCode = useProjectStore((s) => s.javaCode);
-
   const { fitView, zoomIn, zoomOut, zoomTo, screenToFlowPosition } = useReactFlow();
   const { zoom } = useViewport();
   const initialized = useNodesInitialized();
@@ -105,22 +95,6 @@ const CanvasInner: React.FC = () => {
   }, [focusNodeRequest, visibleIds, fitView]);
 
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(javaCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
-
-  useEffect(() => {
-    if (mainWorkspaceTab === 'graph') {
-      const timer = setTimeout(() => {
-        window.dispatchEvent(new Event('resize'));
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [mainWorkspaceTab]);
 
   const nodeTypes = useMemo(
     () => ({
@@ -215,90 +189,30 @@ const CanvasInner: React.FC = () => {
       onDrop={onDrop}
       onClick={() => setContextMenu(null)}
     >
-      {/* Workspace Switcher Header matching reference screenshot */}
-      <div className={styles.workspaceTabBar}>
-        <div className={styles.leftGroup}>
-          <div className={styles.tabsGroup}>
-            <button
-              className={`${styles.tabBtn} ${mainWorkspaceTab === 'graph' ? styles.active : ''}`}
-              onClick={() => setMainWorkspaceTab('graph')}
-            >
-              <Workflow size={14} className={styles.tabIcon} />
-              <span>Блок-схема</span>
-            </button>
-
-            <button
-              className={`${styles.tabBtn} ${mainWorkspaceTab === 'editor' ? styles.active : ''}`}
-              onClick={() => setMainWorkspaceTab('editor')}
-            >
-              <FileCode size={14} className={styles.tabIcon} />
-              <span>Код Java</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Right side controls based on active workspace */}
-        <div className={styles.rightGroup}>
-          {mainWorkspaceTab === 'editor' && (
-            <div className={styles.editorControlsGroup}>
-              <div className={styles.toggleGroup}>
-                <button
-                  className={`${styles.toggleBtn} ${codeViewMode === 'source' ? styles.active : ''}`}
-                  onClick={() => setCodeViewMode('source')}
-                >
-                  Исходный
-                </button>
-                <button
-                  className={`${styles.toggleBtn} ${codeViewMode === 'optimized' ? styles.active : ''}`}
-                  onClick={() => setCodeViewMode('optimized')}
-                >
-                  Текущий
-                </button>
-              </div>
-
-              <button
-                className={`${styles.actionBtn} ${copied ? styles.success : ''}`}
-                onClick={handleCopy}
-                title="Копировать код в буфер"
-              >
-                {copied ? <Check size={12} /> : <Copy size={12} />}
-                <span>{copied ? 'Скопировано' : 'Копировать'}</span>
-              </button>
-            </div>
-          )}
-        </div>
+      {/* Method Navigation & Graph Notices */}
+      <div className={styles.methodNavigation}>
+        <label htmlFor="graph-method">Метод</label>
+        <input aria-label="Поиск метода" placeholder="Найти метод…" value={methodSearch} onChange={e => setMethodSearch(e.target.value)} />
+        <select id="graph-method" aria-label="Метод схемы" value={activeMethodId} onChange={e => { setActiveMethodId(e.target.value); setMethodSearch(''); }}>
+          <option value="all">Весь файл — обзор</option>
+          <option value="members">Поля класса</option>
+          {methods.filter(n => n.id === activeMethodId || `${n.data.title} ${n.data.containerName ?? ''}`.toLowerCase().includes(methodSearch.toLowerCase())).map(n => <option key={n.id} value={n.id}>{n.data.title} — {n.data.containerName ?? ''} · L{n.data.line}</option>)}
+        </select>
+        <span>{visibleNodes.length} / {nodes.filter(n => n.data.source?.file === activeFilePath).length} блоков файла</span>
+        <button type="button" onClick={() => { resetGraphLayout(); setTimeout(() => void fitView({ padding: 0.25, duration: 150, maxZoom: 0.9 }), 50); }}>Автораскладка</button>
       </div>
-
-      {mainWorkspaceTab === 'graph' && (
-        <>
-          <div className={styles.methodNavigation}>
-            <label htmlFor="graph-method">Метод</label>
-            <input aria-label="Поиск метода" placeholder="Найти метод…" value={methodSearch} onChange={e => setMethodSearch(e.target.value)} />
-            <select id="graph-method" aria-label="Метод схемы" value={activeMethodId} onChange={e => { setActiveMethodId(e.target.value); setMethodSearch(''); }}>
-              <option value="all">Весь файл — обзор</option>
-              <option value="members">Поля класса</option>
-              {methods.filter(n => n.id === activeMethodId || `${n.data.title} ${n.data.containerName ?? ''}`.toLowerCase().includes(methodSearch.toLowerCase())).map(n => <option key={n.id} value={n.id}>{n.data.title} — {n.data.containerName ?? ''} · L{n.data.line}</option>)}
-            </select>
-            <span>{visibleNodes.length} / {nodes.filter(n => n.data.source?.file === activeFilePath).length} блоков файла</span>
-            <button type="button" onClick={() => { resetGraphLayout(); setTimeout(() => void fitView({ padding: 0.25, duration: 150, maxZoom: 0.9 }), 50); }}>Автораскладка</button>
-          </div>
-          {codeGeneratedNotice && (
-            <div role="status" className={styles.codeGeneratedNotice}>
-              <span>⚡ {codeGeneratedNotice}</span>
-              <button type="button" onClick={clearCodeGeneratedNotice} className={styles.noticeCloseBtn} title="Закрыть">✕</button>
-            </div>
-          )}
-          {dirty && <p role="status" className={styles.graphNotice}>Java-код изменён. На схеме последняя успешно разобранная версия; после исправления ошибок она обновится.</p>}
-          {graphWarnings.length > 0 && <details className={styles.graphNotice}><summary>Ограничения схемы этого метода ({graphWarnings.length})</summary>{graphWarnings.map(warning => <p key={warning}>{warning}</p>)}</details>}
-        </>
+      {codeGeneratedNotice && (
+        <div role="status" className={styles.codeGeneratedNotice}>
+          <span>⚡ {codeGeneratedNotice}</span>
+          <button type="button" onClick={clearCodeGeneratedNotice} className={styles.noticeCloseBtn} title="Закрыть">✕</button>
+        </div>
       )}
+      {dirty && <p role="status" className={styles.graphNotice}>Java-код изменён. На схеме последняя успешно разобранная версия; после исправления ошибок она обновится.</p>}
+      {graphWarnings.length > 0 && <details className={styles.graphNotice}><summary>Ограничения схемы этого метода ({graphWarnings.length})</summary>{graphWarnings.map(warning => <p key={warning}>{warning}</p>)}</details>}
 
-      {/* Main Workspace Views */}
+      {/* Main Workspace Graph View */}
       <div className={styles.viewsContent}>
-        <div
-          className={styles.graphView}
-          style={{ display: mainWorkspaceTab === 'graph' ? 'block' : 'none' }}
-        >
+        <div className={styles.graphView}>
           <ReactFlow
             nodes={visibleNodes}
             edges={visibleEdges}
@@ -358,13 +272,6 @@ const CanvasInner: React.FC = () => {
           </div>
 
           {!visibleNodes.length && <div className={styles.emptyGraph}>В этом разделе нет блоков. Выберите метод или добавьте новый через панель слева.</div>}
-        </div>
-
-        <div
-          className={styles.editorView}
-          style={{ display: mainWorkspaceTab === 'editor' ? 'block' : 'none' }}
-        >
-          <JavaEditor hideHeader />
         </div>
       </div>
 

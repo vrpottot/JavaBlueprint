@@ -44,6 +44,7 @@ export const TopToolbar: React.FC = () => {
   const [isExportingPng, setIsExportingPng] = useState(false);
   const [runDropdownOpen, setRunDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const activeFileName = activeFilePath ? activeFilePath.split('/').pop() : '';
 
   const handleExportPng = async () => {
     try {
@@ -159,7 +160,7 @@ export const TopToolbar: React.FC = () => {
             className={`${styles.runBtn} ${isRunning || isCompiling ? styles.running : ''}`}
             onClick={() => void runProgram()}
             disabled={isRunning || isCompiling || isLoading}
-            title="Запустить программу (F5)"
+            title={activeFileName ? `Запустить ${activeFileName} (F5)` : 'Запустить программу (F5)'}
           >
             <Play size={13} className={styles.playIcon} fill="currentColor" />
             <span>{isCompiling ? 'Компиляция...' : isRunning ? 'Выполнение...' : 'Run'}</span>
@@ -171,7 +172,7 @@ export const TopToolbar: React.FC = () => {
           className={styles.actionBtn}
           onClick={() => void runProgram()}
           disabled={isLoading || isRunning || isCompiling}
-          title="Компиляция и проверка"
+          title={activeFileName ? `Компиляция и проверка (${activeFileName})` : 'Компиляция и проверка'}
         >
           <Bug size={13} />
           <span>Проверить</span>
