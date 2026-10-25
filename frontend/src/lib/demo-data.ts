@@ -375,6 +375,7 @@ export const INITIAL_EDGES: Edge[] = [
     source: 'node-cond-null',
     sourceHandle: 'out-right',
     target: 'node-ret-early',
+    targetHandle: 'in-left',
     label: 'Да',
     labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
     labelBgStyle: { fill: '#F0FDF4', rx: 4, ry: 4, stroke: '#86EFAC' },

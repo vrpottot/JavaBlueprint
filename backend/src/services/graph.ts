@@ -40,12 +40,12 @@ export function graph(result: EngineResult) {
       if (a.source === b.source) {
         const srcNode = byId.get(a.source);
         if (srcNode?.kind === 'condition') {
-          const isAFalse = a.label === 'false' || a.label === 'Нет' || a.label === 'нет';
-          const isBFalse = b.label === 'false' || b.label === 'Нет' || b.label === 'нет';
-          const isATrue = a.label === 'true' || a.label === 'Да' || a.label === 'да';
-          const isBTrue = b.label === 'true' || b.label === 'Да' || b.label === 'да';
-          if (isAFalse && isBTrue) return -1;
-          if (isATrue && isBFalse) return 1;
+          const aIsNo = a.label === 'false' || a.label === 'Нет' || a.label === 'нет';
+          const bIsNo = b.label === 'false' || b.label === 'Нет' || b.label === 'нет';
+          const aIsYes = a.label === 'true' || a.label === 'Да' || a.label === 'да' || (srcNode.astKind !== 'SwitchStmt' && !aIsNo);
+          const bIsYes = b.label === 'true' || b.label === 'Да' || b.label === 'да' || (srcNode.astKind !== 'SwitchStmt' && !bIsNo);
+          if (aIsNo && bIsYes) return -1;
+          if (aIsYes && bIsNo) return 1;
         }
       }
       return 0;
@@ -68,21 +68,26 @@ export function graph(result: EngineResult) {
     edges: result.edges.filter(edge => byId.has(edge.source) && byId.has(edge.target)).map((e, i) => {
       const source = byId.get(e.source), target = byId.get(e.target);
       const back = target?.kind === 'loop' && within(e.source, e.target);
-      const isYes = e.label === 'true' || e.label === 'Да' || e.label === 'да';
       const isNo = e.label === 'false' || e.label === 'Нет' || e.label === 'нет';
+      const isCondition = source?.kind === 'condition';
+      const isIfBlock = isCondition && source?.astKind !== 'SwitchStmt';
+      // В блоке если («IfStmt») стрелка истинного условия (ведущая к результату) ВСЕГДА выходит из правой части блока (out-right)
+      const isYes = e.label === 'true' || e.label === 'Да' || e.label === 'да' ||
+        (isIfBlock && !isNo) ||
+        (isCondition && target?.kind === 'return' && !isNo);
       return {
         id: `${e.source}:${e.target}:${i}`, ...e,
-        sourceHandle: source?.kind === 'condition'
+        sourceHandle: isCondition
           ? (isYes ? 'out-right' : isNo ? 'out-left' : 'out-bottom')
           : (source?.kind === 'loop' && e.label === 'exit' ? 'out-exit' : 'out'),
         targetHandle: back ? 'loop-in' : 'in', type: 'smoothstep', animated: back,
         markerEnd: { type: 'arrowclosed', width: 16, height: 16 },
-        ...(source?.kind === 'condition' && isYes ? {
+        ...(isCondition && isYes ? {
           label: 'Да',
           labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
           labelBgStyle: { fill: '#F0FDF4', rx: 4, ry: 4, stroke: '#86EFAC' },
           style: { stroke: '#22C55E', strokeWidth: 2 },
-        } : source?.kind === 'condition' && isNo ? {
+        } : isCondition && isNo ? {
           label: 'Нет',
           labelStyle: { fill: '#EA580C', fontWeight: 600, fontSize: 11 },
           labelBgStyle: { fill: '#FFF7ED', rx: 4, ry: 4, stroke: '#FDBA74' },
