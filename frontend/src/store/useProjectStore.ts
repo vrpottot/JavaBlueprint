@@ -70,6 +70,7 @@ interface ProjectState {
   testCases: TestCase[];
   isRunning: boolean;
   isCompiling: boolean;
+  waitingForInput: boolean;
   runStdin: string;
   theme: 'light' | 'dark';
   showOptimizationModal: boolean;
@@ -78,6 +79,7 @@ interface ProjectState {
   isLeftSidebarOpen: boolean;
   isRightSidebarOpen: boolean;
   mainWorkspaceTab: 'graph' | 'editor';
+  bottomWorkspaceTab: 'console' | 'tests';
   bottomPanelHeight: number;
   initialize: () => Promise<void>;
   syncSources: () => Promise<void>;
@@ -85,6 +87,8 @@ interface ProjectState {
   updateJavaCode: (code: string) => void;
   setCodeViewMode: (mode: 'source' | 'optimized') => void;
   setMainWorkspaceTab: (tab: 'graph' | 'editor') => void;
+  setBottomWorkspaceTab: (tab: 'console' | 'tests') => void;
+  setWaitingForInput: (waiting: boolean) => void;
   onNodesChange: (changes: NodeChange<Node<VisualBlockData>>[]) => void;
   onEdgesChange: (changes: EdgeChange[]) => void;
   selectNode: (id: string | null) => void;
@@ -95,7 +99,9 @@ interface ProjectState {
   duplicateNode: (id: string) => Promise<void>;
   applyOptimization: () => Promise<void>;
   revertOptimization: () => Promise<void>;
-  runProgram: () => Promise<void>;
+  runProgram: (customStdin?: string) => Promise<void>;
+  sendConsoleInput: (input: string) => Promise<void>;
+  codeRequiresInput: () => boolean;
   importJavaFile: (name: string, content: string, replaceProject?: boolean) => Promise<void>;
   importJavaFiles: (files: SourceFile[], replaceProject?: boolean) => Promise<void>;
   exportJavaFile: () => Promise<void>;
@@ -301,6 +307,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     testCases: [],
     isRunning: false,
     isCompiling: false,
+    waitingForInput: false,
     runStdin: '5\n',
     theme: 'light',
     showOptimizationModal: false,
@@ -309,6 +316,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     isLeftSidebarOpen: true,
     isRightSidebarOpen: true,
     mainWorkspaceTab: 'graph',
+    bottomWorkspaceTab: 'console',
     bottomPanelHeight: 220,
 
     initialize: async () => {
@@ -454,30 +462,59 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         await analysis();
       }),
 
-    runProgram: () =>
+    runProgram: (customStdin?: string) =>
       busy(async () => {
+        set({ bottomWorkspaceTab: 'console' });
         await sync();
         if (!get().projectId) throw new Error('Сначала импортируйте Java-файл.');
-        set({ isCompiling: true });
+
+        const stdinToUse = customStdin !== undefined ? customStdin : get().runStdin;
+        if (customStdin !== undefined) {
+          set({ runStdin: customStdin });
+        }
+
+        const requiresInput = get().codeRequiresInput();
+        if (requiresInput && (!stdinToUse || stdinToUse.trim() === '')) {
+          set({ waitingForInput: true });
+          log('prompt', '⚠️ Программа запрашивает ввод данных (Scanner / System.in). Введите значение в консоли ниже и нажмите Enter:');
+          return;
+        }
+
+        set({ isCompiling: true, waitingForInput: false });
         log('info', 'Компиляция javac и проверка в Docker...');
         const mainClass = get().mainClasses[0];
         const result = await api<Verification>(`/projects/${get().projectId}/verify`, {
           revision: get().revision,
           compare: true,
-          ...(mainClass ? { mainClass, inputs: [{ name: 'stdin', stdin: get().runStdin }] } : {}),
+          ...(mainClass ? { mainClass, inputs: [{ name: 'stdin', stdin: stdinToUse }] } : {}),
         });
         const compilation = result.current.compilation;
         log(compilation.exitCode === 0 ? 'success' : 'error', `javac: exit=${compilation.exitCode}; ${compilation.durationMs} мс${compilation.timedOut ? '; timeout' : ''}`);
         if (compilation.stdout) log('info', compilation.stdout);
         if (compilation.stderr) log(compilation.exitCode === 0 ? 'warn' : 'error', compilation.stderr);
+        
+        let needsMoreInput = false;
         for (const run of result.current.runs) {
           if (run.stdout) log('info', run.stdout);
-          if (run.stderr) log('error', run.stderr);
+          if (run.stderr) {
+            log('error', run.stderr);
+            if (run.stderr.includes('NoSuchElementException') || run.stderr.includes('NoSuchElement')) {
+              needsMoreInput = true;
+            }
+          }
           log(
             run.exitCode === 0 && !run.timedOut && !run.outputLimitExceeded ? 'success' : 'error',
             `${run.name}: exit=${run.exitCode}; ${run.durationMs} мс${run.timedOut ? '; timeout' : ''}`
           );
         }
+
+        if (needsMoreInput) {
+          set({ waitingForInput: true });
+          log('prompt', '⚠️ Scanner запросил следующие входные данные (NoSuchElementException). Введите значение ниже и нажмите Enter:');
+        } else {
+          set({ waitingForInput: false });
+        }
+
         set({ testCases: result.current.tests.cases });
         if (result.current.tests.status === 'not_run') log('warn', 'JUnit-тесты не найдены. Импортируйте тестовые .java-файлы вместе с проектом.');
         log(result.comparison.status === 'matched_on_inputs' ? 'success' : 'warn', result.comparison.explanation);
@@ -552,6 +589,29 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       }),
 
     setRunStdin: (runStdin) => set({ runStdin }),
+
+    setBottomWorkspaceTab: (bottomWorkspaceTab) => set({ bottomWorkspaceTab }),
+
+    setWaitingForInput: (waitingForInput) => set({ waitingForInput }),
+
+    codeRequiresInput: () => {
+      const files = get().sourceFiles;
+      return files.some((f) =>
+        /\bSystem\.in\b/.test(f.content) ||
+        /\bScanner\s*\(/.test(f.content) ||
+        /\bnew\s+Scanner\b/.test(f.content) ||
+        /\bBufferedReader\b.*System\.in/.test(f.content) ||
+        /\bSystem\.console\(\)/.test(f.content)
+      );
+    },
+
+    sendConsoleInput: async (input: string) => {
+      const trimmed = input.trim();
+      log('input', trimmed);
+      const formatted = `${trimmed}\n`;
+      set({ runStdin: formatted, waitingForInput: false });
+      await get().runProgram(formatted);
+    },
 
     toggleTheme: () => get().setTheme(get().theme === 'light' ? 'dark' : 'light'),
 

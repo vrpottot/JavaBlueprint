@@ -39,7 +39,7 @@ export const TestResults: React.FC = () => {
 
         <button
           className={styles.rerunBtn}
-          onClick={runProgram}
+          onClick={() => void runProgram()}
           disabled={isBusy}
           title="Запустить повторный прогон тестов"
         >

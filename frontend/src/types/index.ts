@@ -75,7 +75,7 @@ export interface ComplexityEstimate {
   explanation: string;
 }
 
-export type ConsoleLogType = 'info' | 'success' | 'warn' | 'error';
+export type ConsoleLogType = 'info' | 'success' | 'warn' | 'error' | 'input' | 'prompt';
 
 export interface ConsoleLog {
   id: string;

@@ -8,8 +8,9 @@ import styles from './BottomWorkspace.module.scss';
 export const BottomWorkspace: React.FC = () => {
   const bottomPanelHeight = useProjectStore((s) => s.bottomPanelHeight);
   const setBottomPanelHeight = useProjectStore((s) => s.setBottomPanelHeight);
+  const activeTab = useProjectStore((s) => s.bottomWorkspaceTab);
+  const setActiveTab = useProjectStore((s) => s.setBottomWorkspaceTab);
 
-  const [activeTab, setActiveTab] = useState<'console' | 'tests'>('console');
   const [isResizing, setIsResizing] = useState(false);
 
   const handleMouseDown = (e: React.MouseEvent) => {
