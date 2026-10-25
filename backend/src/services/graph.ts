@@ -10,6 +10,7 @@ export function graph(result: EngineResult) {
       title: n.title, codeSnippet: n.snippet, displayCode: n.displayCode ?? n.snippet,
       blockType: n.kind, line: n.source.startLine, warning: n.warning,
       source: n.source, astKind: n.astKind, editable: n.editable, methodId: n.methodId,
+      originId: n.originId, synthetic: n.synthetic, hasException: result.edges.some(edge => edge.source === n.id && edge.kind === 'exception'),
       containerId: n.containerId, containerName: owners.get(n.containerId ?? ''), method: n.method,
       description: `${owners.get(n.containerId ?? '') ?? ''} · ${n.source.file}:${n.source.startLine}`, badge: n.astKind,
     },
@@ -87,15 +88,15 @@ export function graph(result: EngineResult) {
     edges: result.edges.filter(edge => byId.has(edge.source) && byId.has(edge.target)).map((e, i) => {
       const source = byId.get(e.source), target = byId.get(e.target);
       const back = target?.kind === 'loop' && within(e.source, e.target);
-      const isNo = e.label === 'false' || e.label === 'Нет' || e.label === 'нет';
+      const isNo = e.kind === 'branch' && (e.label === 'false' || e.label === 'Нет' || e.label === 'нет');
       const isCondition = source?.kind === 'condition';
       const isIfBlock = isCondition && source?.astKind !== 'SwitchStmt';
       // В блоке если («IfStmt») стрелка истинного условия (Да) выходит слева (out-left), а ложного (Нет) — справа (out-right)
       // A switch case keeps its Java label even when its first statement returns.
-      const isYes = (isIfBlock && !isNo) || (isCondition && (e.label === 'true' || e.label === 'Да' || e.label === 'да'));
+      const isYes = isIfBlock && e.kind === 'branch' && (e.label === 'true' || e.label === 'Да' || e.label === 'да');
       return {
         id: `${e.source}:${e.target}:${i}`, ...e,
-        sourceHandle: isCondition
+        sourceHandle: e.kind === 'exception' ? 'out-exception' : isCondition
           ? (isYes ? 'out-left' : isNo ? 'out-right' : 'out-bottom')
           : (source?.kind === 'loop' && e.label === 'exit' ? 'out-exit' : 'out'),
         targetHandle: back ? 'loop-in' : 'in', type: 'smoothstep', animated: back,

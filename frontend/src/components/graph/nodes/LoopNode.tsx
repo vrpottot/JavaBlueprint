@@ -72,6 +72,7 @@ export const LoopNode = memo(({ data, selected }: NodeProps) => {
       <span className={styles.handleTipBottomLoop}>Тело цикла</span>
 
       <Handle type="source" position={Position.Right} id="out-exit" title="Выход" />
+      {nodeData.hasException && <Handle type="source" position={Position.Right} id="out-exception" title="Исключение" style={{ top: '75%', background: '#d97706' }} />}
       <span className={styles.handleTipRight}>Выход</span>
     </div>
   );

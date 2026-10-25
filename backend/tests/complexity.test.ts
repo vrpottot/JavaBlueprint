@@ -41,12 +41,12 @@ class Costs {
 }` }]);
   assert.deepEqual(result.errors, []);
   const estimates = Object.fromEntries(result.nodes.filter(n => n.kind === 'method').map(n => [n.title, n.complexity!]));
-  const expected = { constant:'O(1)', fixed:'O(1)', linear:'O(n)', logarithmic:'O(log(n))', quadratic:'O(n^2)', independent:'O(m * n)', sequential:'O(m + n)', sameSize:'O(n)', mixed:'O(n * log(n))', triangular:'O(n^2)', withCall:'O(n^2)', array:'O(|values|)', whileLog:'O(log(n))', allocated:'O(n)', library:'O(|values|)', constantInner:'O(n)', guarded:'O(n^2)', whileStats:'O(log(n))', grid:'O(max(|grid[]|) * |grid|)', digits:'O(log(value))', totalDigits:'O(log(max(|a[*]|)) * |a|)', pointer:'O(|a| + |b|)', shrinkingValue:'O(n * log(n))' };
+  const expected = { constant:'O(1)', fixed:'O(1)', linear:'O(n)', logarithmic:'O(log(n))', quadratic:'O(n^2)', independent:'O(m * n)', sequential:'O(m + n)', sameSize:'O(n)', mixed:'O(n * log(n))', triangular:'O(n^2)', withCall:'O(n^2)', array:'O(|values|)', whileLog:'O(log(n))', allocated:'O(n)', library:'O(|values|)', constantInner:'O(n)', guarded:'O(n^2)', whileStats:'O(log(n))', grid:'O(max(|grid[]|) * |grid|)', digits:'O(log(value))', totalDigits:'O(log(max(|a[*]|)) * |a|)', pointer:'O(|a| + |b|)', shrinkingValue:'O(n)', recursion:'O(n)' };
   for (const [name, cost] of Object.entries(expected)) {
     assert.equal(estimates[name]!.estimate, cost, `${name}: ${JSON.stringify(estimates[name])}`);
     assert.ok(estimates[name]!.assumptions.length);
   }
-  for (const name of ['recursion','unknown','badStep','changedBound','changedCounter','unbounded','tooWide','stalled','multipleSteps']) {
+  for (const name of ['unknown','badStep','changedBound','changedCounter','unbounded','tooWide','stalled','multipleSteps']) {
     assert.equal(estimates[name]!.estimate, 'unknown', name);
     assert.ok(estimates[name]!.limitations.length, name);
   }

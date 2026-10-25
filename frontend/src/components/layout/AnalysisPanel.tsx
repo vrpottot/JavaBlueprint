@@ -270,12 +270,16 @@ export const AnalysisPanel: React.FC = () => {
         </div>
 
         <p className={styles.explanation}>{complexity.explanation}</p>
+        <p className={styles.explanation}>
+          Оценено: {methodComplexities.filter(method => method.estimate !== 'unknown').length} из {methodComplexities.length}. Верхние границы зависят от указанных предположений.
+        </p>
         <div style={{ maxHeight: 260, overflowY: 'auto' }}>
           {(methodComplexities || []).map((method) => (
             <details key={method.methodId} style={{ marginBottom: 10 }}>
               <summary style={{ cursor: 'pointer', fontSize: 12 }}>
-                {method.method}: <strong>{method.estimate === 'unknown' ? 'Неизвестно' : method.estimate}</strong>
+                {method.method}: <strong>{method.estimate === 'unknown' ? 'Неизвестно' : method.estimate.length > 100 ? 'Составная оценка — раскрыть' : method.estimate}</strong>
               </summary>
+              {method.estimate.length > 100 && <pre className={styles.costFormula}>{method.estimate}</pre>}
               {method.explanation && <p className={styles.explanation}>{method.explanation}</p>}
               {method.file && <p className={styles.explanation}>{method.file}:{method.line}</p>}
               {(method.assumptions || []).map((a, i) => (

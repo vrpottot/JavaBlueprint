@@ -64,6 +64,7 @@ export const VariableNode = memo(({ data, selected }: NodeProps) => {
       </div>
 
       <Handle type="source" position={Position.Bottom} id="out" />
+      {nodeData.hasException && <Handle type="source" position={Position.Right} id="out-exception" title="Исключение" style={{ top: '75%', background: '#d97706' }} />}
     </div>
   );
 });

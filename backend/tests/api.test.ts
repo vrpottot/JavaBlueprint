@@ -156,7 +156,8 @@ test('analysis reports long methods and nested loops without fabricated complexi
   const result = analyze(await engine.process([{ path: 'Big.java', content: code }]));
   assert.ok(result.diagnostics.some(d => d.type === 'long_method'));
   assert.ok(result.diagnostics.some(d => d.type === 'nested_loop'));
-  assert.equal(result.complexity[0]!.estimate, 'unknown'); // println has unmodeled I/O cost.
+  assert.equal(result.complexity[0]!.estimate, 'O(n^2)');
+  assert.ok(result.complexity[0]!.assumptions.some(a => a.includes('ожидание ОС')));
   assert.equal(result.complexity[0]!.structuralBound, 'O(n^2)');
   assert.equal(result.metrics.testCoverage, null);
 });

@@ -355,6 +355,7 @@
 }
 
 .compBox {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -368,6 +369,9 @@
 }
 
 .compRed {
+  overflow-wrap: anywhere;
+  max-height: 100px;
+  overflow-y: auto;
   font-family: $font-mono;
   font-size: 13.5px;
   font-weight: 700;
@@ -375,10 +379,19 @@
 }
 
 .compGreen {
+  overflow-wrap: anywhere;
   font-family: $font-mono;
   font-size: 13.5px;
   font-weight: 700;
   color: var(--accent-green);
+}
+
+.costFormula {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 180px;
+  overflow-y: auto;
+  font-size: 11px;
 }
 
 // Performance Estimation Card

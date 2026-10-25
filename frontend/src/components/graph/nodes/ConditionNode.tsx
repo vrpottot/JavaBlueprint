@@ -44,7 +44,7 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
           </div>
         </div>
 
-        <div className={styles.codeSnippet}>{nodeData.codeSnippet}</div>
+        <div className={styles.codeSnippet}>{nodeData.displayCode ?? nodeData.codeSnippet}</div>
 
         {nodeData.description && !nodeData.description.includes('.java') && (
           <div className={styles.description}>{nodeData.description}</div>
@@ -66,6 +66,7 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
       {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipNo}>Нет</span>}
 
       <Handle type="source" position={Position.Bottom} id="out-bottom" title="Ветвление" />
+      {nodeData.hasException && <Handle type="source" position={Position.Right} id="out-exception" title="Исключение" style={{ top: '75%', background: '#d97706' }} />}
     </div>
   );
 });

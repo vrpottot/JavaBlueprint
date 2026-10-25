@@ -78,7 +78,7 @@ export const OperationNode = memo(({ data, selected }: NodeProps) => {
             <div className={styles.headerIcon}>
               {icon}
             </div>
-            <span className={styles.nodeTitle}>{title}</span>
+            <span className={styles.nodeTitle}>{nodeData.synthetic ? nodeData.title : title}</span>
           </div>
 
           <div className={styles.headerRight}>
@@ -102,6 +102,7 @@ export const OperationNode = memo(({ data, selected }: NodeProps) => {
 
       <Handle type="source" position={Position.Bottom} id="out" />
       <Handle type="source" position={Position.Right} id="out-right" />
+      {nodeData.hasException && <Handle type="source" position={Position.Right} id="out-exception" title="Исключение" style={{ top: '75%', background: '#d97706' }} />}
     </div>
   );
 });
