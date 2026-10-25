@@ -52,7 +52,7 @@ public class PaymentGateway {
       const text = event.target?.result as string;
       if (text) setContent(text);
     };
-    reader.readAsText(file);
+    reader.readAsText(file, 'UTF-8');
     reader.onerror = () => setFileError('Не удалось прочитать файл. Выберите его повторно.');
   };
 

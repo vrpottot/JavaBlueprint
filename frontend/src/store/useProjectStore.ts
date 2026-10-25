@@ -308,7 +308,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     isRunning: false,
     isCompiling: false,
     waitingForInput: false,
-    runStdin: '5\n',
+    runStdin: '',
     theme: 'light',
     showOptimizationModal: false,
     showImportModal: false,
@@ -494,23 +494,37 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         if (compilation.stderr) log(compilation.exitCode === 0 ? 'warn' : 'error', compilation.stderr);
         
         let needsMoreInput = false;
+        let lastPromptLine = '';
         for (const run of result.current.runs) {
-          if (run.stdout) log('info', run.stdout);
+          if (run.stdout) {
+            log('info', run.stdout);
+            const lines = run.stdout.trim().split('\n');
+            lastPromptLine = lines[lines.length - 1] || '';
+          }
           if (run.stderr) {
-            log('error', run.stderr);
-            if (run.stderr.includes('NoSuchElementException') || run.stderr.includes('NoSuchElement')) {
+            if (
+              run.stderr.includes('NoSuchElementException') ||
+              run.stderr.includes('NoSuchElement')
+            ) {
               needsMoreInput = true;
+            } else {
+              log('error', run.stderr);
             }
           }
-          log(
-            run.exitCode === 0 && !run.timedOut && !run.outputLimitExceeded ? 'success' : 'error',
-            `${run.name}: exit=${run.exitCode}; ${run.durationMs} мс${run.timedOut ? '; timeout' : ''}`
-          );
+          if (!needsMoreInput) {
+            log(
+              run.exitCode === 0 && !run.timedOut && !run.outputLimitExceeded ? 'success' : 'error',
+              `${run.name}: exit=${run.exitCode}; ${run.durationMs} мс${run.timedOut ? '; timeout' : ''}`
+            );
+          }
         }
 
         if (needsMoreInput) {
           set({ waitingForInput: true });
-          log('prompt', '⚠️ Scanner запросил следующие входные данные (NoSuchElementException). Введите значение ниже и нажмите Enter:');
+          const promptText = lastPromptLine
+            ? `⚠️ Программа ожидает ввод для: "${lastPromptLine.trim()}". Введите значение в консоли ниже и нажмите Enter:`
+            : '⚠️ Scanner ожидает следующие данные ввода. Введите значение в консоли ниже и нажмите Enter:';
+          log('prompt', promptText);
         } else {
           set({ waitingForInput: false });
         }
@@ -534,7 +548,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
           const oldId = currentProjectId;
           const p = await api<ProjectSnapshot>('/projects/parse', { files });
           accept(p, true);
-          set({ showImportModal: false });
+          set({ showImportModal: false, runStdin: '', waitingForInput: false });
           await analysis();
           if (oldId && oldId !== p.projectId) void api(`/projects/${oldId}`, undefined, 'DELETE').catch(() => { });
           log('success', `Создан проект: загружено файлов ${files.length}, узлов ${p.graph.nodes.length}.`);
@@ -608,7 +622,13 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     sendConsoleInput: async (input: string) => {
       const trimmed = input.trim();
       log('input', trimmed);
-      const formatted = `${trimmed}\n`;
+      const current = get().runStdin || '';
+      let formatted: string;
+      if (get().waitingForInput && current.trim().length > 0) {
+        formatted = `${current.trimEnd()}\n${trimmed}\n`;
+      } else {
+        formatted = `${trimmed}\n`;
+      }
       set({ runStdin: formatted, waitingForInput: false });
       await get().runProgram(formatted);
     },
@@ -642,7 +662,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
 
     setShowAddBlockModal: (showAddBlockModal) => set({ showAddBlockModal }),
 
-    clearConsole: () => set({ consoleLogs: [] }),
+    clearConsole: () => set({ consoleLogs: [], waitingForInput: false, runStdin: '' }),
 
     addConsoleLog: (type, message) =>
       set({
