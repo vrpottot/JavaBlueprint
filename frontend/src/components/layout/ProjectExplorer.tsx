@@ -131,22 +131,10 @@ export const ProjectExplorer: React.FC = () => {
             aria-selected={isActive}
           >
             <div className={styles.itemLabel}>
-              {isDir ? (
-                <>
-                  <span className={styles.chevron}>
-                    {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
-                  </span>
-                  <span className={styles.folderIcon}>
-                    {isExpanded ? <FolderOpen size={14} /> : <Folder size={14} />}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className={styles.treeIndentSpacer} />
-                  <div className={styles.javaFileIcon}>
-                    <span>Ja</span>
-                  </div>
-                </>
+              {isDir && (
+                <span className={styles.chevron}>
+                  {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+                </span>
               )}
               <span className={styles.fileNameText}>{item.name}</span>
             </div>
@@ -172,7 +160,6 @@ export const ProjectExplorer: React.FC = () => {
       <div className={styles.projectSection}>
         <div className={styles.sectionHeader}>
           <div className={styles.headerLeft}>
-            <Layers size={14} className={styles.headerIcon} />
             <span className={styles.headerTitle}>Проект</span>
           </div>
           <div className={styles.headerActions}>

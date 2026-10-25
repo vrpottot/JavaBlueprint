@@ -65,33 +65,33 @@ export async function exportGraphToPng(isDark: boolean, projectName: string): Pr
   // Directly set CSS custom properties on viewportElement to ensure cloned inheritance
   const themeProps = isDark
     ? {
-        '--bg-main': '#0D1117',
-        '--bg-canvas': '#080C12',
-        '--bg-panel': '#161B22',
-        '--border-color': '#30363D',
-        '--text-primary': '#F0F6FC',
-        '--text-secondary': '#8B949E',
-        '--node-method': '#A371F7',
-        '--node-variable': '#388BFD',
-        '--node-condition': '#F0883E',
-        '--node-loop': '#8957E5',
-        '--node-operation': '#3FB950',
-        '--node-return': '#3FB950',
-      }
+      '--bg-main': '#0D1117',
+      '--bg-canvas': '#080C12',
+      '--bg-panel': '#161B22',
+      '--border-color': '#30363D',
+      '--text-primary': '#F0F6FC',
+      '--text-secondary': '#8B949E',
+      '--node-variable': '#A855F7',
+      '--node-condition': '#F59E0B',
+      '--node-loop': '#10B981',
+      '--node-method': '#0EA5E9',
+      '--node-operation': '#84CC16',
+      '--node-return': '#F43F5E',
+    }
     : {
-        '--bg-main': '#F6F8FA',
-        '--bg-canvas': '#F6F8FA',
-        '--bg-panel': '#FFFFFF',
-        '--border-color': '#D0D7DE',
-        '--text-primary': '#1F2328',
-        '--text-secondary': '#57606A',
-        '--node-method': '#8250DF',
-        '--node-variable': '#0969DA',
-        '--node-condition': '#BC4C00',
-        '--node-loop': '#8250DF',
-        '--node-operation': '#1A7F37',
-        '--node-return': '#1A7F37',
-      };
+      '--bg-main': '#F6F8FA',
+      '--bg-canvas': '#F6F8FA',
+      '--bg-panel': '#FFFFFF',
+      '--border-color': '#D0D7DE',
+      '--text-primary': '#1F2328',
+      '--text-secondary': '#57606A',
+      '--node-variable': '#9333EA',
+      '--node-condition': '#D97706',
+      '--node-loop': '#059669',
+      '--node-method': '#0284C7',
+      '--node-operation': '#65A30D',
+      '--node-return': '#E11D48',
+    };
 
   Object.entries(themeProps).forEach(([prop, val]) => {
     viewportElement.style.setProperty(prop, val);
@@ -125,10 +125,13 @@ export async function exportGraphToPng(isDark: boolean, projectName: string): Pr
       const stroke = computed.stroke && computed.stroke !== 'none' && computed.stroke !== 'rgba(0, 0, 0, 0)'
         ? computed.stroke
         : (isDark ? '#30363D' : '#D0D7DE');
+      const fill = computed.fill && computed.fill !== 'none' && computed.fill !== 'rgba(0, 0, 0, 0)'
+        ? computed.fill
+        : shapeFill;
 
-      shape.setAttribute('fill', shapeFill);
+      shape.setAttribute('fill', fill);
       shape.setAttribute('stroke', stroke);
-      shape.style.fill = shapeFill;
+      shape.style.fill = fill;
       shape.style.stroke = stroke;
     }
   });

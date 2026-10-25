@@ -45,13 +45,20 @@ $accent-red-hover: var(--accent-red-hover, #FF7B72);
 $accent-red-glow: var(--accent-red-subtle, rgba(248, 81, 73, 0.2));
 
 // Block Type Semantic Colors
-$node-method: var(--node-method, #A371F7);
-$node-variable: var(--node-variable, #388BFD);
-$node-condition: var(--node-condition, #F0883E);
-$node-loop: var(--node-loop, #8957E5);
-$node-operation: var(--node-operation, #2EA043);
-$node-return: var(--node-return, #3FB950);
+$node-variable: var(--node-variable, #A855F7);
+$node-condition: var(--node-condition, #F59E0B);
+$node-loop: var(--node-loop, #10B981);
+$node-method: var(--node-method, #0EA5E9);
+$node-operation: var(--node-operation, #84CC16);
+$node-return: var(--node-return, #F43F5E);
 $node-error: var(--accent-red, #F85149);
+
+$node-variable-bg: var(--node-variable-bg, color-mix(in srgb, #A855F7 14%, #161B22));
+$node-condition-bg: var(--node-condition-bg, color-mix(in srgb, #F59E0B 14%, #161B22));
+$node-loop-bg: var(--node-loop-bg, color-mix(in srgb, #10B981 14%, #161B22));
+$node-method-bg: var(--node-method-bg, color-mix(in srgb, #0EA5E9 14%, #161B22));
+$node-operation-bg: var(--node-operation-bg, color-mix(in srgb, #84CC16 14%, #161B22));
+$node-return-bg: var(--node-return-bg, color-mix(in srgb, #F43F5E 14%, #161B22));
 
 // Sizing & Spacing Scale (8pt grid system)
 $header-height: 48px;

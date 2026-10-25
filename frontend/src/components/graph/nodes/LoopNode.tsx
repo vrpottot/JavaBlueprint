@@ -16,7 +16,7 @@ export const LoopNode = memo(({ data, selected }: NodeProps) => {
     >
       <Handle type="target" position={Position.Top} id="in" />
 
-      {/* 4. ПОДГОТОВКА: Шестиугольник со скошенными углами (ГОСТ / ISO) */}
+      {/* 4. Шестиугольник со скошенными углами (ГОСТ / ISO) */}
       <svg
         className={styles.shapeSvgBg}
         viewBox="0 0 100 100"
@@ -33,20 +33,19 @@ export const LoopNode = memo(({ data, selected }: NodeProps) => {
         <div className={styles.nodeHeader}>
           <div className={styles.headerLeft}>
             <div className={styles.headerIcon}>
-              <RefreshCw size={13} color="#8B5CF6" />
+              <RefreshCw size={13} />
             </div>
-            <span className={styles.nodeTitle}>{nodeData.title}</span>
+            <span className={styles.nodeTitle}>Цикл</span>
           </div>
 
           <div className={styles.headerRight}>
-            <span className={styles.shapeBadge}>Подготовка</span>
-            {nodeData.line && <span className={styles.lineBadge}>L{nodeData.line}</span>}
+            {nodeData.line && <span className={styles.lineBadge}>L:{nodeData.line}</span>}
           </div>
         </div>
 
         <div className={styles.codeSnippet} title={nodeData.displayCode ?? nodeData.codeSnippet}>{nodeData.displayCode ?? nodeData.codeSnippet}</div>
 
-        {nodeData.description && (
+        {nodeData.description && !nodeData.description.includes('.java') && (
           <div className={styles.description}>{nodeData.description}</div>
         )}
 
@@ -58,9 +57,14 @@ export const LoopNode = memo(({ data, selected }: NodeProps) => {
         )}
       </div>
 
-      <Handle type="source" position={Position.Bottom} id="out" />
-      <Handle type="source" position={Position.Right} id="out-exit" title="Выход из цикла" />
       <Handle type="target" position={Position.Left} id="loop-in" title="Следующая итерация" />
+
+      {/* 2 выхода: «Тело цикла» (повторение) снизу, «Выход» (завершение) справа */}
+      <Handle type="source" position={Position.Bottom} id="out" title="Тело цикла" />
+      <span className={styles.handleTipBottomLoop}>Тело цикла</span>
+
+      <Handle type="source" position={Position.Right} id="out-exit" title="Выход" />
+      <span className={styles.handleTipRight}>Выход</span>
     </div>
   );
 });

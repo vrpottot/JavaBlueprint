@@ -24,13 +24,13 @@
 }
 
 .sectionHeader {
-  height: 40px;
+  height: 38px;
   padding: 0 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
-  background-color: var(--bg-panel-secondary);
+  background-color: var(--bg-panel);
 }
 
 .headerLeft {
@@ -97,18 +97,13 @@
   cursor: pointer;
   transition: all $transition-fast;
 
-  &:hover {
-    background-color: var(--bg-panel-hover);
-    color: var(--text-primary);
-  }
-
+  &:hover,
   &.active {
-    background-color: #0D3868 !important;
-    color: #FFFFFF !important;
-    font-weight: 500;
+    background-color: var(--bg-panel-hover) !important;
+    color: var(--text-primary) !important;
 
     .fileNameText {
-      color: #FFFFFF;
+      color: var(--text-primary);
     }
   }
 }
@@ -277,40 +272,43 @@
   overflow: hidden;
 }
 
-// Colorful icon badges matching the reference photo
+// Block icon badges: transparent background with colored symbol matching the block
 .blockIconBadge {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
+  background: transparent !important;
+  box-shadow: none !important;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 
   &.badgeVariable {
-    background: linear-gradient(135deg, #A855F7 0%, #7E22CE 100%);
+    color: var(--node-variable, #A855F7);
   }
 
   &.badgeCondition {
-    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    color: var(--node-condition, #F59E0B);
   }
 
   &.badgeLoop {
-    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: var(--node-loop, #10B981);
   }
 
   &.badgeMethod {
-    background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+    color: var(--node-method, #0EA5E9);
   }
 
   &.badgeOperation {
-    background: linear-gradient(135deg, #84CC16 0%, #65A30D 100%);
+    color: var(--node-operation, #84CC16);
   }
 
   &.badgeReturn {
-    background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%);
+    color: var(--node-return, #F43F5E);
+  }
+
+  svg {
+    stroke-width: 2.2px;
   }
 }
 

@@ -8,8 +8,11 @@
   backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 150px;
+  padding-bottom: 40px;
+  overflow-y: auto;
 }
 
 .modalContent {
@@ -90,6 +93,57 @@
   gap: 12px;
 }
 
+.codeMetaHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.typeInfo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.typeLabel {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.typeValue {
+  font-family: $font-mono;
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--bg-panel-secondary);
+  border: 1px solid var(--border-color);
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 11.5px;
+}
+
+.lineInfo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: $font-mono;
+  font-size: 11.5px;
+  font-weight: 600;
+  background-color: var(--bg-panel-secondary);
+  border: 1px solid var(--border-color);
+  padding: 1px 7px;
+  border-radius: 4px;
+}
+
+.lineLabel {
+  color: var(--text-muted);
+}
+
+.lineValue {
+  color: var(--text-secondary);
+}
+
 .label {
   font-size: 11px;
   font-weight: 600;
@@ -121,10 +175,11 @@
   padding: 10px 12px;
   color: var(--text-primary);
   font-family: $font-mono;
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.5;
   outline: none;
   resize: vertical;
+  min-height: 110px;
   transition: border-color $transition-fast, box-shadow $transition-fast;
 
   &:focus {

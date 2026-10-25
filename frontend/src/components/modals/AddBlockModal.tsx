@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Plus, Code, Database, GitFork, RefreshCw, PlayCircle, CheckCircle2 } from 'lucide-react';
+import { X, Plus, Code2, Box, GitFork, RefreshCw, CornerDownLeft } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import { PALETTE_ITEMS } from '../../lib/palette';
 import type { BlockType } from '../../types';
@@ -17,17 +17,17 @@ export const AddBlockModal: React.FC = () => {
   const getIcon = (type: BlockType) => {
     switch (type) {
       case 'method':
-        return <Code size={16} color="var(--accent-purple)" />;
+        return <Code2 size={16} color="var(--node-method)" />;
       case 'variable':
-        return <Database size={16} color="var(--accent-blue)" />;
+        return <Box size={16} color="var(--node-variable)" />;
       case 'condition':
-        return <GitFork size={16} color="var(--accent-orange)" />;
+        return <GitFork size={16} color="var(--node-condition)" />;
       case 'loop':
         return <RefreshCw size={16} color="var(--node-loop)" />;
       case 'operation':
-        return <PlayCircle size={16} color="var(--accent-green)" />;
+        return <Plus size={16} color="var(--node-operation)" />;
       case 'return':
-        return <CheckCircle2 size={16} color="var(--accent-green)" />;
+        return <CornerDownLeft size={16} color="var(--node-return)" />;
     }
   };
 

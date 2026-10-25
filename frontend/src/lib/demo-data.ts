@@ -373,7 +373,7 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-cond-yes-early',
     source: 'node-cond-null',
-    sourceHandle: 'out-left',
+    sourceHandle: 'out-right',
     target: 'node-ret-early',
     label: 'Да',
     labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
@@ -383,7 +383,7 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-cond-no-loop',
     source: 'node-cond-null',
-    sourceHandle: 'out-bottom',
+    sourceHandle: 'out-left',
     target: 'node-loop',
     label: 'Нет',
     labelStyle: { fill: '#EA580C', fontWeight: 600, fontSize: 11 },
@@ -402,7 +402,7 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-valid-yes-process',
     source: 'node-cond-valid',
-    sourceHandle: 'out-bottom',
+    sourceHandle: 'out-right',
     target: 'node-op-process',
     label: 'Да',
     labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
@@ -418,7 +418,7 @@ export const INITIAL_EDGES: Edge[] = [
   {
     id: 'e-valid-no-continue',
     source: 'node-cond-valid',
-    sourceHandle: 'out-right',
+    sourceHandle: 'out-left',
     target: 'node-op-continue',
     targetHandle: 'in-left',
     label: 'Нет',

@@ -231,7 +231,7 @@ export const TopToolbar: React.FC = () => {
         <button
           className={styles.iconBtn}
           onClick={toggleTheme}
-          title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+          title={theme === 'dark' ? 'Светлая тема: Night Owl Light (No Italics)' : 'Тёмная тема: Темная 2026 по умолчанию'}
           aria-label="Toggle theme"
         >
           {theme === 'dark' ? <Sun size={14} className={styles.sunIcon} /> : <Moon size={14} className={styles.moonIcon} />}

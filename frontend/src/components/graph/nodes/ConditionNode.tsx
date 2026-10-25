@@ -10,13 +10,12 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
 
   return (
     <div
-      className={`${styles.flowNodeContainer} ${styles.decisionNode} ${
-        isSelected ? styles.selected : ''
-      }`}
+      className={`${styles.flowNodeContainer} ${styles.decisionNode} ${isSelected ? styles.selected : ''
+        }`}
     >
       <Handle type="target" position={Position.Top} id="in" />
 
-      {/* 3. РЕШЕНИЕ: Классический ромб ветвления (ГОСТ / ISO 5807) */}
+      {/* 3. Классический ромб ветвления (ГОСТ / ISO 5807) */}
       <svg
         className={styles.shapeSvgBg}
         viewBox="0 0 100 100"
@@ -24,42 +23,47 @@ export const ConditionNode = memo(({ data, selected }: NodeProps) => {
         xmlns="http://www.w3.org/2000/svg"
       >
         <polygon
-          points="50,1 99,50 50,99 1,50"
+          points="1,50 8,1 92,1 99,50 92,99 8,99"
           className={styles.shapePath}
         />
       </svg>
 
       <div className={styles.decisionContent}>
         <div className={styles.decisionHeader}>
-          <GitFork size={12} color="#F59E0B" />
-          <span className={styles.shapeBadge}>Решение</span>
-          {nodeData.line && <span className={styles.lineBadge}>L{nodeData.line}</span>}
+          <div className={styles.headerLeft}>
+            <div className={styles.decisionIcon}>
+              <GitFork size={13} />
+            </div>
+            <span className={styles.nodeTitle}>Условие</span>
+          </div>
+
+          <div className={styles.headerRight}>
+            {nodeData.line && <span className={styles.lineBadge}>L:{nodeData.line}</span>}
+          </div>
         </div>
 
-        <div className={styles.decisionTitle}>{nodeData.title}</div>
+        <div className={styles.codeSnippet}>{nodeData.codeSnippet}</div>
 
-        <div className={styles.decisionCodeSnippet} title={nodeData.codeSnippet}>{nodeData.codeSnippet}</div>
-
-        {nodeData.description && (
-          <div className={styles.decisionDescription}>{nodeData.description}</div>
+        {nodeData.description && !nodeData.description.includes('.java') && (
+          <div className={styles.description}>{nodeData.description}</div>
         )}
 
         {nodeData.warning && (
-          <div className={styles.decisionWarning}>
-            <AlertTriangle size={11} />
+          <div className={styles.warningBox}>
+            <AlertTriangle size={12} />
             <span>{nodeData.warning}</span>
           </div>
         )}
       </div>
 
-      {/* Connection Handles on vertices with external label indicators */}
-      <Handle type="source" position={Position.Left} id="out-left" title="Да (True)" />
-      {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipLeft}>Да</span>}
+      {/* Фиксированные выходы: «Да» (True) ВСЕГДА справа, «Нет» (False) ВСЕГДА слева */}
+      <Handle type="source" position={Position.Right} id="out-right" title="Да (True)" />
+      {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipYes}>Да</span>}
 
-      <Handle type="source" position={Position.Bottom} id="out-bottom" title="Нет (False)" />
-      {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipBottom}>Нет</span>}
+      <Handle type="source" position={Position.Left} id="out-left" title="Нет (False)" />
+      {nodeData.astKind !== 'SwitchStmt' && <span className={styles.handleTipNo}>Нет</span>}
 
-      <Handle type="source" position={Position.Right} id="out-right" title="Ветвление" />
+      <Handle type="source" position={Position.Bottom} id="out-bottom" title="Ветвление" />
     </div>
   );
 });

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
-import { PlayCircle, AlertTriangle } from 'lucide-react';
+import { Plus, AlertTriangle } from 'lucide-react';
 import type { VisualBlockData } from '../../../types';
 import styles from './NodeStyles.module.scss';
 
@@ -15,22 +15,19 @@ export const OperationNode = memo(({ data, selected }: NodeProps) => {
       }`}
     >
       <Handle type="target" position={Position.Top} id="in" />
-      <Handle type="target" position={Position.Left} id="in-left" />
 
-      {/* 5. ПРОЦЕСС: Четкий прямоугольник (ГОСТ 19.701-90 / ISO 5807) */}
+      {/* Прямоугольник со скруглением 10px */}
       <svg
         className={styles.shapeSvgBg}
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <rect
           x="1"
           y="1"
-          width="98"
-          height="98"
-          rx="4"
-          ry="4"
+          width="calc(100% - 2px)"
+          height="calc(100% - 2px)"
+          rx="10"
+          ry="10"
           className={styles.shapePath}
         />
       </svg>
@@ -39,20 +36,19 @@ export const OperationNode = memo(({ data, selected }: NodeProps) => {
         <div className={styles.nodeHeader}>
           <div className={styles.headerLeft}>
             <div className={styles.headerIcon}>
-              <PlayCircle size={14} color="#3FB950" />
+              <Plus size={13} />
             </div>
-            <span className={styles.nodeTitle}>{nodeData.title}</span>
+            <span className={styles.nodeTitle}>Операция</span>
           </div>
 
           <div className={styles.headerRight}>
-            <span className={styles.shapeBadge}>Процесс</span>
-            {nodeData.line && <span className={styles.lineBadge}>L{nodeData.line}</span>}
+            {nodeData.line && <span className={styles.lineBadge}>L:{nodeData.line}</span>}
           </div>
         </div>
 
         <div className={styles.codeSnippet} title={nodeData.codeSnippet}>{nodeData.displayCode ?? nodeData.codeSnippet}</div>
 
-        {nodeData.description && (
+        {nodeData.description && !nodeData.description.includes('.java') && (
           <div className={styles.description}>{nodeData.description}</div>
         )}
 
@@ -65,7 +61,6 @@ export const OperationNode = memo(({ data, selected }: NodeProps) => {
       </div>
 
       <Handle type="source" position={Position.Bottom} id="out" />
-      <Handle type="source" position={Position.Right} id="out-right" />
     </div>
   );
 });

@@ -8,29 +8,49 @@ export const MethodNode = memo(({ data, selected }: NodeProps) => {
   const nodeData = data as VisualBlockData;
   const isSelected = selected || nodeData.isHighlighted;
 
+  const isConstructor = nodeData.astKind === 'ConstructorDeclaration';
+  const prefix = isConstructor ? 'Конструктор' : 'Метод';
+  let methodName = nodeData.method?.name;
+  if (!methodName && nodeData.title) {
+    const trimmed = nodeData.title.trim();
+    if (trimmed.startsWith('Метод:') || trimmed.startsWith('Конструктор:')) {
+      methodName = trimmed.replace(/^(Метод|Конструктор):\s*/, '');
+    } else if (trimmed !== 'Метод' && trimmed !== 'Конструктор') {
+      methodName = trimmed;
+    }
+  }
+  if (!methodName && nodeData.codeSnippet) {
+    const match = nodeData.codeSnippet.match(/([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/);
+    if (match && match[1] && !['if', 'for', 'while', 'switch', 'catch'].includes(match[1])) {
+      methodName = match[1];
+    }
+  }
+  const displayTitle = methodName ? `${prefix}: ${methodName}` : prefix;
+
+  const isExternalCall = nodeData.astKind === 'MethodCallExpr' ||
+    Boolean(nodeData.title && (nodeData.title.toLowerCase().includes('внешний') || nodeData.title.toLowerCase().includes('вызов')));
+
   return (
     <div
       className={`${styles.flowNodeContainer} ${styles.terminatorNode} ${
         isSelected ? styles.selected : ''
       }`}
     >
-      <Handle type="target" position={Position.Top} id="in" />
-      <Handle type="target" position={Position.Left} id="in-left" />
+      {/* 0 входов для объявления метода, 1 вход для стороннего вызова */}
+      {isExternalCall && <Handle type="target" position={Position.Top} id="in" />}
 
-      {/* 1. ТЕРМИНАТОР: Скругленный овал / капсула */}
+      {/* Прямоугольник со скруглением 10px */}
       <svg
         className={styles.shapeSvgBg}
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <rect
           x="1"
           y="1"
-          width="98"
-          height="98"
-          rx="22"
-          ry="22"
+          width="calc(100% - 2px)"
+          height="calc(100% - 2px)"
+          rx="10"
+          ry="10"
           className={styles.shapePath}
         />
       </svg>
@@ -39,20 +59,19 @@ export const MethodNode = memo(({ data, selected }: NodeProps) => {
         <div className={styles.nodeHeader}>
           <div className={styles.headerLeft}>
             <div className={styles.headerIcon}>
-              <Code2 size={14} color="#A855F7" />
+              <Code2 size={13} />
             </div>
-            <span className={styles.nodeTitle}>{nodeData.title}</span>
+            <span className={styles.nodeTitle}>{displayTitle}</span>
           </div>
 
           <div className={styles.headerRight}>
-            <span className={styles.shapeBadge}>{nodeData.astKind === 'ConstructorDeclaration' ? 'Конструктор' : 'Метод'}</span>
-            {nodeData.line && <span className={styles.lineBadge}>L{nodeData.line}</span>}
+            {nodeData.line && <span className={styles.lineBadge}>L:{nodeData.line}</span>}
           </div>
         </div>
 
         <div className={styles.codeSnippet} title={nodeData.codeSnippet}>{nodeData.displayCode ?? nodeData.codeSnippet}</div>
 
-        {nodeData.description && (
+        {nodeData.description && !nodeData.description.includes('.java') && (
           <div className={styles.description}>{nodeData.description}</div>
         )}
 

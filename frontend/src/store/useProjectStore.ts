@@ -352,7 +352,23 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       const node = get().nodes.find(n => n.id === id);
       const source = node?.data.source;
       const outside = node && !scopeNodes([node], get().activeFilePath, get().activeMethodId).length;
-      set({ selectedNodeId: id, ...(outside && source ? { activeFileId: source.file, activeFilePath: source.file, activeMethodId: node.data.methodId ?? 'members', javaCode: get().sourceFiles.find(f => f.path === source.file)?.content ?? '', codeViewMode: 'optimized' as const } : {}), nodes: get().nodes.map(n => ({ ...n, data: { ...n.data, isHighlighted: n.id === id } })) });
+      set({
+        selectedNodeId: id,
+        ...(outside && source
+          ? {
+            activeFileId: source.file,
+            activeFilePath: source.file,
+            activeMethodId: node.data.methodId ?? 'members',
+            javaCode: get().sourceFiles.find(f => f.path === source.file)?.content ?? '',
+            codeViewMode: 'optimized' as const,
+          }
+          : {}),
+        nodes: get().nodes.map(n => ({
+          ...n,
+          selected: n.id === id,
+          data: { ...n.data, isHighlighted: n.id === id },
+        })),
+      });
     },
 
     setEditingNode: (editingNode) => {

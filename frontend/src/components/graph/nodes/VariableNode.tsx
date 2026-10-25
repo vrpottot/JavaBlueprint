@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
-import { Database, AlertTriangle } from 'lucide-react';
+import { Box, AlertTriangle } from 'lucide-react';
 import type { VisualBlockData } from '../../../types';
 import styles from './NodeStyles.module.scss';
 
@@ -16,7 +16,7 @@ export const VariableNode = memo(({ data, selected }: NodeProps) => {
     >
       <Handle type="target" position={Position.Top} id="in" />
 
-      {/* 2. ДАННЫЕ: Параллелограмм со скошенными сторонами */}
+      {/* 2. Параллелограмм со скошенными сторонами */}
       <svg
         className={styles.shapeSvgBg}
         viewBox="0 0 100 100"
@@ -33,20 +33,19 @@ export const VariableNode = memo(({ data, selected }: NodeProps) => {
         <div className={styles.nodeHeader}>
           <div className={styles.headerLeft}>
             <div className={styles.headerIcon}>
-              <Database size={13} color="#3B82F6" />
+              <Box size={13} />
             </div>
-            <span className={styles.nodeTitle}>{nodeData.title}</span>
+            <span className={styles.nodeTitle}>Переменная</span>
           </div>
 
           <div className={styles.headerRight}>
-            <span className={styles.shapeBadge}>Данные</span>
-            {nodeData.line && <span className={styles.lineBadge}>L{nodeData.line}</span>}
+            {nodeData.line && <span className={styles.lineBadge}>L:{nodeData.line}</span>}
           </div>
         </div>
 
         <div className={styles.codeSnippet} title={nodeData.codeSnippet}>{nodeData.displayCode ?? nodeData.codeSnippet}</div>
 
-        {nodeData.description && (
+        {nodeData.description && !nodeData.description.includes('.java') && (
           <div className={styles.description}>{nodeData.description}</div>
         )}
 

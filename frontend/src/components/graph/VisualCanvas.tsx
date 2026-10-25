@@ -7,6 +7,7 @@ import {
   useViewport,
   useNodesInitialized,
   ReactFlowProvider,
+  MarkerType,
   type Node,
 } from '@xyflow/react';
 import {
@@ -188,6 +189,33 @@ const CanvasInner: React.FC = () => {
 
   const isLight = theme === 'light';
 
+  const flowEdges = useMemo(() => {
+    return visibleEdges.map((edge) => {
+      const { label, ...edgeWithoutLabel } = edge;
+      let sourceHandle = edge.sourceHandle;
+      const srcNode = nodes.find((n) => n.id === edge.source);
+      const isCondition = srcNode?.type === 'conditionNode' || (srcNode?.data as any)?.blockType === 'condition';
+      if (isCondition) {
+        if (edge.label === 'true' || edge.label === 'Да') {
+          sourceHandle = 'out-right';
+        } else if (edge.label === 'false' || edge.label === 'Нет' || sourceHandle === 'out-bottom') {
+          sourceHandle = 'out-left';
+        }
+      }
+      return {
+        ...edgeWithoutLabel,
+        sourceHandle,
+        label: undefined,
+        markerEnd: edge.markerEnd ?? {
+          type: MarkerType.ArrowClosed,
+          width: 16,
+          height: 16,
+          color: isLight ? '#2AA298' : '#388BFD',
+        },
+      };
+    });
+  }, [visibleEdges, isLight, nodes]);
+
   return (
     <div
       className={styles.canvasContainer}
@@ -310,7 +338,16 @@ const CanvasInner: React.FC = () => {
         >
           <ReactFlow
             nodes={visibleNodes}
-            edges={visibleEdges}
+            edges={flowEdges}
+            defaultEdgeOptions={{
+              type: 'smoothstep',
+              markerEnd: {
+                type: MarkerType.ArrowClosed,
+                width: 16,
+                height: 16,
+                color: isLight ? '#2AA298' : '#388BFD',
+              },
+            }}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             nodeTypes={nodeTypes}
@@ -329,10 +366,10 @@ const CanvasInner: React.FC = () => {
             colorMode={isLight ? 'light' : 'dark'}
           >
             <Background
-              color={isLight ? '#CBD5E1' : '#2A3647'}
+              color={isLight ? '#E5E7EB' : '#1E2638'}
               gap={20}
               size={1}
-              variant={BackgroundVariant.Dots}
+              variant={BackgroundVariant.Lines}
             />
           </ReactFlow>
           {!visibleNodes.length && <div className={styles.emptyGraph}>В этом разделе нет блоков. Выберите метод или добавьте новый через панель слева.</div>}

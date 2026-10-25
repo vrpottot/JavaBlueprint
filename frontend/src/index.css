@@ -1,6 +1,7 @@
 @import '@xyflow/react/dist/style.css';
 
-:root, [data-theme="dark"] {
+:root,
+[data-theme="dark"] {
   /* Deep Developer Dark (JetBrains / GitHub Slate) */
   --bg-main: #0D1117;
   --bg-canvas: #080C12;
@@ -40,12 +41,19 @@
   --accent-red-hover: #FF7B72;
   --accent-red-subtle: rgba(248, 81, 73, 0.15);
 
-  --node-method: #A371F7;
-  --node-variable: #388BFD;
-  --node-condition: #F0883E;
-  --node-loop: #8957E5;
-  --node-operation: #2EA043;
-  --node-return: #3FB950;
+  --node-variable: #A855F7;
+  --node-condition: #F59E0B;
+  --node-loop: #10B981;
+  --node-method: #0EA5E9;
+  --node-operation: #84CC16;
+  --node-return: #F43F5E;
+
+  --node-variable-bg: color-mix(in srgb, var(--node-variable) 14%, #161B22);
+  --node-condition-bg: color-mix(in srgb, var(--node-condition) 14%, #161B22);
+  --node-loop-bg: color-mix(in srgb, var(--node-loop) 14%, #161B22);
+  --node-method-bg: color-mix(in srgb, var(--node-method) 14%, #161B22);
+  --node-operation-bg: color-mix(in srgb, var(--node-operation) 14%, #161B22);
+  --node-return-bg: color-mix(in srgb, var(--node-return) 14%, #161B22);
 
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
@@ -101,12 +109,19 @@
   --accent-red-hover: #E5534B;
   --accent-red-subtle: rgba(207, 34, 46, 0.1);
 
-  --node-method: #8250DF;
-  --node-variable: #0969DA;
-  --node-condition: #BC4C00;
-  --node-loop: #8250DF;
-  --node-operation: #1A7F37;
-  --node-return: #1A7F37;
+  --node-variable: #9333EA;
+  --node-condition: #D97706;
+  --node-loop: #059669;
+  --node-method: #0284C7;
+  --node-operation: #65A30D;
+  --node-return: #E11D48;
+
+  --node-variable-bg: color-mix(in srgb, var(--node-variable) 10%, #FFFFFF);
+  --node-condition-bg: color-mix(in srgb, var(--node-condition) 10%, #FFFFFF);
+  --node-loop-bg: color-mix(in srgb, var(--node-loop) 10%, #FFFFFF);
+  --node-method-bg: color-mix(in srgb, var(--node-method) 10%, #FFFFFF);
+  --node-operation-bg: color-mix(in srgb, var(--node-operation) 10%, #FFFFFF);
+  --node-return-bg: color-mix(in srgb, var(--node-return) 10%, #FFFFFF);
 
   --shadow-sm: 0 1px 3px rgba(31, 35, 40, 0.08);
   --shadow-md: 0 4px 16px rgba(31, 35, 40, 0.12);
@@ -117,13 +132,17 @@
   background-color: #F6F8FA;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -147,12 +166,15 @@ textarea:focus-visible {
   box-shadow: 0 0 0 2px var(--border-focus);
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: inherit;
   color: inherit;
 }
 
-code, pre {
+code,
+pre {
   font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 }
 
@@ -224,6 +246,21 @@ code, pre {
   stroke-width: 2 !important;
 }
 
+/* Hide edge labels in the middle of arrows */
+.react-flow__edge-text,
+.react-flow__edge-textwrapper,
+.react-flow__edge-textbg {
+  display: none !important;
+}
+
+[data-theme="dark"] .react-flow__arrowhead,
+[data-theme="dark"] .react-flow__arrowhead path,
+:root:not([data-theme="light"]) .react-flow__arrowhead,
+:root:not([data-theme="light"]) .react-flow__arrowhead path {
+  fill: #388BFD !important;
+  stroke: #388BFD !important;
+}
+
 /* Light Mode React Flow */
 [data-theme="light"] .react-flow {
   background-color: #FFFFFF !important;
@@ -267,6 +304,12 @@ code, pre {
 [data-theme="light"] .react-flow__edge-path {
   stroke: #0969DA !important;
   stroke-width: 2 !important;
+}
+
+[data-theme="light"] .react-flow__arrowhead,
+[data-theme="light"] .react-flow__arrowhead path {
+  fill: #0969DA !important;
+  stroke: #0969DA !important;
 }
 
 .react-flow__controls-button svg {
