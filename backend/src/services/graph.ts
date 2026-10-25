@@ -35,7 +35,22 @@ export function graph(result: EngineResult) {
       width: node.data.blockType === 'condition' ? 500 : 400,
       height: node.data.blockType === 'condition' ? 320 : node.data.warning ? 300 : 240,
     });
-    result.edges.forEach((edge, index) => { if (ids.has(edge.source) && ids.has(edge.target)) layout.setEdge(edge.source, edge.target, {}, String(index)); });
+    const groupEdges = result.edges.filter(edge => ids.has(edge.source) && ids.has(edge.target));
+    const sortedForLayout = [...groupEdges].sort((a, b) => {
+      if (a.source === b.source) {
+        const srcNode = byId.get(a.source);
+        if (srcNode?.kind === 'condition') {
+          const isAFalse = a.label === 'false' || a.label === 'Нет' || a.label === 'нет';
+          const isBFalse = b.label === 'false' || b.label === 'Нет' || b.label === 'нет';
+          const isATrue = a.label === 'true' || a.label === 'Да' || a.label === 'да';
+          const isBTrue = b.label === 'true' || b.label === 'Да' || b.label === 'да';
+          if (isAFalse && isBTrue) return -1;
+          if (isATrue && isBFalse) return 1;
+        }
+      }
+      return 0;
+    });
+    sortedForLayout.forEach((edge, index) => { layout.setEdge(edge.source, edge.target, {}, String(index)); });
     dagre.layout(layout);
     for (const node of group) {
       const point = layout.node(node.id);
@@ -53,11 +68,26 @@ export function graph(result: EngineResult) {
     edges: result.edges.filter(edge => byId.has(edge.source) && byId.has(edge.target)).map((e, i) => {
       const source = byId.get(e.source), target = byId.get(e.target);
       const back = target?.kind === 'loop' && within(e.source, e.target);
+      const isYes = e.label === 'true' || e.label === 'Да' || e.label === 'да';
+      const isNo = e.label === 'false' || e.label === 'Нет' || e.label === 'нет';
       return {
         id: `${e.source}:${e.target}:${i}`, ...e,
-        sourceHandle: source?.kind === 'condition' ? e.label === 'true' ? 'out-right' : e.label === 'false' ? 'out-left' : 'out-bottom' : source?.kind === 'loop' && e.label === 'exit' ? 'out-exit' : 'out',
+        sourceHandle: source?.kind === 'condition'
+          ? (isYes ? 'out-right' : isNo ? 'out-left' : 'out-bottom')
+          : (source?.kind === 'loop' && e.label === 'exit' ? 'out-exit' : 'out'),
         targetHandle: back ? 'loop-in' : 'in', type: 'smoothstep', animated: back,
         markerEnd: { type: 'arrowclosed', width: 16, height: 16 },
+        ...(source?.kind === 'condition' && isYes ? {
+          label: 'Да',
+          labelStyle: { fill: '#16A34A', fontWeight: 600, fontSize: 11 },
+          labelBgStyle: { fill: '#F0FDF4', rx: 4, ry: 4, stroke: '#86EFAC' },
+          style: { stroke: '#22C55E', strokeWidth: 2 },
+        } : source?.kind === 'condition' && isNo ? {
+          label: 'Нет',
+          labelStyle: { fill: '#EA580C', fontWeight: 600, fontSize: 11 },
+          labelBgStyle: { fill: '#FFF7ED', rx: 4, ry: 4, stroke: '#FDBA74' },
+          style: { stroke: '#F97316', strokeWidth: 2 },
+        } : {}),
         ...(e.kind === 'exception' ? { style: { stroke: '#d97706', strokeDasharray: '6 4' } } : {}),
       };
     }),

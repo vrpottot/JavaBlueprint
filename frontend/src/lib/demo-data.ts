@@ -250,7 +250,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-ret-early',
     type: 'returnNode',
-    position: { x: -140, y: 340 },
+    position: { x: 640, y: 260 },
     data: {
       title: 'Возврат',
       codeSnippet: 'return result',
@@ -317,7 +317,7 @@ export const INITIAL_NODES: Node<VisualBlockData>[] = [
   {
     id: 'node-op-continue',
     type: 'operationNode',
-    position: { x: 740, y: 800 },
+    position: { x: -160, y: 760 },
     data: {
       title: 'Продолжить (continue)',
       codeSnippet: 'continue',
@@ -420,7 +420,7 @@ export const INITIAL_EDGES: Edge[] = [
     source: 'node-cond-valid',
     sourceHandle: 'out-left',
     target: 'node-op-continue',
-    targetHandle: 'in-left',
+    targetHandle: 'in',
     label: 'Нет',
     labelStyle: { fill: '#DC2626', fontWeight: 600, fontSize: 11 },
     labelBgStyle: { fill: '#FEF2F2', rx: 4, ry: 4, stroke: '#FCA5A5' },
@@ -537,6 +537,7 @@ export const OPTIMIZED_EDGES: Edge[] = [
   {
     id: 'e-opt-2',
     source: 'node-cond-opt',
+    sourceHandle: 'out-left',
     target: 'node-stream-opt',
     label: 'Нет',
     labelStyle: { fill: '#39C98A', fontWeight: 600, fontSize: 11 },
