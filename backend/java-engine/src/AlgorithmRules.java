@@ -222,12 +222,17 @@ final class AlgorithmRules {
         if(block.findAll(AssignExpr.class).stream().anyMatch(write->write.getTarget() instanceof ArrayAccessExpr array&&array.getName().toString().equals(stateArray)&&(!guard.getThenStmt().isAncestorOf(write)||write.getValue() instanceof BooleanLiteralExpr value&&!value.getValue())))return null;
         if(block.findAll(MethodCallExpr.class).stream().anyMatch(call->call.getArguments().stream().anyMatch(argument->argument.toString().equals(stateArray))))return null;
         Complexity.Cost vertices=c.sizes.getOrDefault(state,Complexity.Cost.variable("V("+adjacency+")")),edges=Complexity.Cost.variable("E("+adjacency+")");
-        Complexity.Context body=c.copy(); body.sizes.put(queue,vertices.plus(edges));
+        Complexity.Cost initial=c.sizes.getOrDefault(queue,Complexity.Cost.variable("|"+queue+"|"));
+        Complexity.Context body=c.copy(); body.sizes.put(queue,vertices.plus(edges).plus(initial));
         Complexity.Cost perVertex=Complexity.Cost.one();
         for(Statement statement:block.getStatements())if(statement!=scan)perVertex=perVertex.plus(model.statement(statement,body));
         for(VariableDeclarator variable:scan.getVariable().getVariables())body.types.put(variable.getNameAsString(),variable.getType().asString());
         Complexity.Cost perEdge=model.expression(scan.getIterable(),body).plus(model.statement(scan.getBody(),body));
-        Complexity.Cost result=vertices.times(perVertex).plus(edges.times(perEdge));
+        // Caller-supplied worklists may already contain duplicates. Priority queues
+        // can additionally extract O(E) stale entries before the guard continues.
+        Complexity.Cost removals=vertices.plus(initial).plus(priority?edges:Complexity.Cost.one());
+        Complexity.Cost edgeVisits=edges.times(initial);
+        Complexity.Cost result=removals.times(perVertex).plus(edgeVisits.times(perEdge));
         if(priority) {
             model.assumptions.add("Для Дейкстры веса неотрицательны и сложение расстояний не переполняется; stale-guard и строгое улучшение ограничивают повторные извлечения числом рёбер.");
             for(AssignExpr write:guard.getThenStmt().findAll(AssignExpr.class))if(write.getTarget() instanceof ArrayAccessExpr array&&!array.getName().toString().equals(state))c.chains.put(array.getName().toString(),vertices);

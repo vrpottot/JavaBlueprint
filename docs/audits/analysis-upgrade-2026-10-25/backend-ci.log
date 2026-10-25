@@ -6,163 +6,163 @@ TAP version 13
 # Subtest: cost contracts compose allocations, return sizes, streams, strings, queues and renamed binary search
 ok 1 - cost contracts compose allocations, return sizes, streams, strings, queues and renamed binary search
   ---
-  duration_ms: 377.994614
+  duration_ms: 428.143803
   type: 'test'
   ...
 # Subtest: AI receives bounded, source-linked context for named methods in a large project
 ok 2 - AI receives bounded, source-linked context for named methods in a large project
   ---
-  duration_ms: 376.025218
+  duration_ms: 352.546113
   type: 'test'
   ...
 # Subtest: real JavaParser creates source-linked IR and branched React Flow graph
 ok 3 - real JavaParser creates source-linked IR and branched React Flow graph
   ---
-  duration_ms: 293.579692
+  duration_ms: 309.452471
   type: 'test'
   ...
 # Subtest: condition edit changes AST, preserves IDs and refreshes source ranges
 ok 4 - condition edit changes AST, preserves IDs and refreshes source ranges
   ---
-  duration_ms: 727.770193
+  duration_ms: 707.35057
   type: 'test'
   ...
 # Subtest: add, duplicate, delete and initializer edits preserve unaffected node IDs
 ok 5 - add, duplicate, delete and initializer edits preserve unaffected node IDs
   ---
-  duration_ms: 661.494021
+  duration_ms: 640.487282
   type: 'test'
   ...
 # Subtest: failed transform batch rolls back the whole project
 ok 6 - failed transform batch rolls back the whole project
   ---
-  duration_ms: 438.972837
+  duration_ms: 445.005504
   type: 'test'
   ...
 # Subtest: comments, Javadoc and string literal whitespace survive generation
 ok 7 - comments, Javadoc and string literal whitespace survive generation
   ---
-  duration_ms: 455.922136
+  duration_ms: 441.268551
   type: 'test'
   ...
 # Subtest: syntax errors include diagnostics and create no project
 ok 8 - syntax errors include diagnostics and create no project
   ---
-  duration_ms: 137.211033
+  duration_ms: 144.370766
   type: 'test'
   ...
 # Subtest: invalid requests and unsafe paths are rejected
 ok 9 - invalid requests and unsafe paths are rejected
   ---
-  duration_ms: 2.993033
+  duration_ms: 2.797973
   type: 'test'
   ...
 # Subtest: Java 21 constructs survive round trip: interfaces, exceptions, loops, collections, lambda, record and enum
 ok 10 - Java 21 constructs survive round trip: interfaces, exceptions, loops, collections, lambda, record and enum
   ---
-  duration_ms: 590.387788
+  duration_ms: 611.353858
   type: 'test'
   ...
 # Subtest: analysis reports long methods and nested loops without fabricated complexity or coverage
 ok 11 - analysis reports long methods and nested loops without fabricated complexity or coverage
   ---
-  duration_ms: 266.188992
+  duration_ms: 261.697889
   type: 'test'
   ...
 # Subtest: 1000-line monolith parses, produces a graph and remains editable
 ok 12 - 1000-line monolith parses, produces a graph and remains editable
   ---
-  duration_ms: 1095.94361
+  duration_ms: 1067.590913
   type: 'test'
   ...
 # Subtest: source update keeps the original upload and deleted projects return 404
 ok 13 - source update keeps the original upload and deleted projects return 404
   ---
-  duration_ms: 476.425
+  duration_ms: 489.585717
   type: 'test'
   ...
 # Subtest: project capacity is explicit and expired projects are cleaned up
 ok 14 - project capacity is explicit and expired projects are cleaned up
   ---
-  duration_ms: 0.435505
+  duration_ms: 0.399198
   type: 'test'
   ...
 # Subtest: comparison distinguishes matching samples, differences, failures and missing evidence
 ok 15 - comparison distinguishes matching samples, differences, failures and missing evidence
   ---
-  duration_ms: 0.200858
+  duration_ms: 0.222558
   type: 'test'
   ...
 # Subtest: AI proposal cannot bypass verification or mutate on missing evidence
 ok 16 - AI proposal cannot bypass verification or mutate on missing evidence
   ---
-  duration_ms: 235.984974
+  duration_ms: 257.381101
   type: 'test'
   ...
 # Subtest: production gateway key protects processing routes and leaves health public
 ok 17 - production gateway key protects processing routes and leaves health public
   ---
-  duration_ms: 195.247908
+  duration_ms: 212.952912
   type: 'test'
   ...
 # Subtest: AST cost model composes independent sizes, logarithms, branches and local calls conservatively
 ok 18 - AST cost model composes independent sizes, logarithms, branches and local calls conservatively
   ---
-  duration_ms: 389.680778
+  duration_ms: 355.130921
   type: 'test'
   ...
 # Subtest: finally routes preserve pending return, nested cleanup, labeled jumps and return overrides
 ok 19 - finally routes preserve pending return, nested cleanup, labeled jumps and return overrides
   ---
-  duration_ms: 499.036793
+  duration_ms: 507.326152
   type: 'test'
   ...
 # Subtest: known throw types select the first compatible catch and self-suppression has its own exceptional path
 ok 20 - known throw types select the first compatible catch and self-suppression has its own exceptional path
   ---
-  duration_ms: 248.78874
+  duration_ms: 251.858104
   type: 'test'
   ...
 # Subtest: resource initialization, reverse close order, suppression and typed catch selection are explicit
 ok 21 - resource initialization, reverse close order, suppression and typed catch selection are explicit
   ---
-  duration_ms: 225.602776
+  duration_ms: 235.718066
   type: 'test'
   ...
 # Subtest: deployment accepts only fresh signed main-branch identities from the exact GitHub workflow
 ok 22 - deployment accepts only fresh signed main-branch identities from the exact GitHub workflow
   ---
-  duration_ms: 346.25761
+  duration_ms: 234.488055
   type: 'test'
   ...
 # Subtest: switch entries and unbraced returns support statement edits; additions precede terminal exits
 ok 23 - switch entries and unbraced returns support statement edits; additions precede terminal exits
   ---
-  duration_ms: 446.43095
+  duration_ms: 457.541178
   type: 'test'
   ...
 # Subtest: graph resolves labeled jumps, hides opaque expression internals and separates branches without overlapping nodes
 ok 24 - graph resolves labeled jumps, hides opaque expression internals and separates branches without overlapping nodes
   ---
-  duration_ms: 536.242647
+  duration_ms: 543.427599
   type: 'test'
   ...
 # Subtest: method lifecycle is atomic, source-linked, stable and preview does not mutate the project
 ok 25 - method lifecycle is atomic, source-linked, stable and preview does not mutate the project
   ---
-  duration_ms: 1624.85259
+  duration_ms: 1608.295251
   type: 'test'
   ...
 # Subtest: method validation rejects erased duplicates, constructors and invalid interface methods while allowing overloads
 ok 26 - method validation rejects erased duplicates, constructors and invalid interface methods while allowing overloads
   ---
-  duration_ms: 1752.927134
+  duration_ms: 1721.29873
   type: 'test'
   ...
 # Subtest: named nested classes, interfaces, records and enums support correct method placement and generic signatures
 ok 27 - named nested classes, interfaces, records and enums support correct method placement and generic signatures
   ---
-  duration_ms: 400.48454
+  duration_ms: 411.268898
   type: 'test'
   ...
 1..27
@@ -173,4 +173,4 @@ ok 27 - named nested classes, interfaces, records and enums support correct meth
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 14103.552594
+# duration_ms 13986.195587
