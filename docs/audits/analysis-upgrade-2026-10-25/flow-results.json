@@ -1,0 +1,1344 @@
+{
+  "created": "2026-10-25T07:19:51.753Z",
+  "parseMs": 465,
+  "nodes": 285,
+  "edges": 374,
+  "complexity": [
+    {
+      "methodId": "9d91e53e-9cdb-359b-a290-56fa0be640f1",
+      "method": "FlowCases",
+      "file": "FlowCases.java",
+      "line": 7,
+      "structuralBound": "O(1)",
+      "estimate": "O(1)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(1) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": []
+    },
+    {
+      "methodId": "4dae6abd-17ef-376b-a92e-551ec0b189bb",
+      "method": "snapshot",
+      "file": "FlowCases.java",
+      "line": 9,
+      "structuralBound": "O(1)",
+      "estimate": "O(|trace|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [],
+      "explanation": "O(|trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 11,
+          "nodeId": "b92ce488-17cb-31bd-936d-b48f4c620a2f",
+          "estimate": "O(|trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        }
+      ]
+    },
+    {
+      "methodId": "d07515a8-08eb-3e09-8e04-51e82a25f92e",
+      "method": "override",
+      "file": "FlowCases.java",
+      "line": 20,
+      "structuralBound": "O(1)",
+      "estimate": "O(|trace|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [],
+      "explanation": "O(|trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 26,
+          "nodeId": "a3d20da9-4717-347d-b694-1ef6c61b18f9",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 21,
+          "nodeId": "3a838ed9-962c-3438-9923-a983bcb1975e",
+          "estimate": "O(|trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        }
+      ]
+    },
+    {
+      "methodId": "e95503fc-e55e-3ab7-8216-fd0ffd6444bd",
+      "method": "nested",
+      "file": "FlowCases.java",
+      "line": 32,
+      "structuralBound": "O(1)",
+      "estimate": "O(|trace|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [],
+      "explanation": "O(|trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 34,
+          "nodeId": "d7006096-4bf1-3bfa-9954-5880250bcd80",
+          "estimate": "O(|trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 33,
+          "nodeId": "99a73951-5b80-3066-aa35-67d20f7b2710",
+          "estimate": "O(|trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        }
+      ]
+    },
+    {
+      "methodId": "bf566ea2-ca3d-333f-aa6f-1256cbdebaf7",
+      "method": "loop",
+      "file": "FlowCases.java",
+      "line": 45,
+      "structuralBound": "O(n)",
+      "estimate": "O(|trace|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [],
+      "explanation": "O(|trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 51,
+          "nodeId": "556059c9-c3a5-3440-8521-088765e4281e",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 49,
+          "nodeId": "b052d67c-65cd-3234-b1b3-ac02e29a61a5",
+          "estimate": "O(|trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 48,
+          "nodeId": "278a2c75-a4cf-3851-9fb5-c89df5dbaf49",
+          "estimate": "O(|trace|)",
+          "rule": "Постоянные границы цикла."
+        }
+      ]
+    },
+    {
+      "methodId": "f422e79f-5e96-30f0-a55d-0ff97bf7cf1d",
+      "method": "Resource",
+      "file": "FlowCases.java",
+      "line": 68,
+      "structuralBound": "O(1)",
+      "estimate": "O(|name| + |trace|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа.",
+        "Фиксированные накладные расходы JVM и построения stack trace не масштабируются с размером данных; анализируется алгоритмическая модель."
+      ],
+      "limitations": [],
+      "explanation": "O(|name| + |trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(|name|)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        }
+      ]
+    },
+    {
+      "methodId": "904665fa-14ec-33e2-99b5-911daa5b52b5",
+      "method": "close",
+      "file": "FlowCases.java",
+      "line": 78,
+      "structuralBound": "O(1)",
+      "estimate": "O(|name| + |trace|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [],
+      "explanation": "O(|name| + |trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        }
+      ]
+    },
+    {
+      "methodId": "5a331f99-2644-3077-bd25-2536c47f051d",
+      "method": "resources",
+      "file": "FlowCases.java",
+      "line": 87,
+      "structuralBound": "O(n)",
+      "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |failure.getSuppressed()| * |trace| + |failure.getSuppressed()|^2 + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Фиксированные накладные расходы JVM и построения stack trace не масштабируются с размером данных; анализируется алгоритмическая модель.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [],
+      "explanation": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |failure.getSuppressed()| * |trace| + |failure.getSuppressed()|^2 + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 93,
+          "nodeId": "41dccf78-89b9-3bf0-b222-735dfaa93d00",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 99,
+          "nodeId": "b21fa531-b7f7-36b6-935d-7acf3ec211f6",
+          "estimate": "O(|failure.getSuppressed()| * |suppressed.getMessage()| + |failure.getSuppressed()| * |trace| + |failure.getSuppressed()|^2 + |suppressed|)",
+          "rule": "Число итераций равно длине массива/стандартной коллекции."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|first.name| + |first.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|second.name| + |second.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 88,
+          "nodeId": "143dc019-ea5d-380d-9684-26acd62254fa",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |failure.getSuppressed()| * |trace| + |failure.getSuppressed()|^2 + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        }
+      ]
+    },
+    {
+      "methodId": "0752df29-4d4a-3ff5-8642-1e46787d7027",
+      "method": "closeOverridesReturn",
+      "file": "FlowCases.java",
+      "line": 108,
+      "structuralBound": "O(1)",
+      "estimate": "O(|failure.getMessage()| + |resource.name| + |resource.trace| + |trace|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Фиксированные накладные расходы JVM и построения stack trace не масштабируются с размером данных; анализируется алгоритмическая модель.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [],
+      "explanation": "O(|failure.getMessage()| + |resource.name| + |resource.trace| + |trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 109,
+          "nodeId": "534449fa-22c4-3e04-91a5-30811b77db17",
+          "estimate": "O(|failure.getMessage()| + |resource.name| + |resource.trace| + |trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        }
+      ]
+    },
+    {
+      "methodId": "a63d403c-ecbd-35c6-a8c8-91eb506277d1",
+      "method": "selfSuppression",
+      "file": "FlowCases.java",
+      "line": 120,
+      "structuralBound": "O(1)",
+      "estimate": "O(|resource.name| + |resource.trace| + |trace|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Фиксированные накладные расходы JVM и построения stack trace не масштабируются с размером данных; анализируется алгоритмическая модель.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [],
+      "explanation": "O(|resource.name| + |resource.trace| + |trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 122,
+          "nodeId": "18b4db46-6354-3fc2-b8c6-5ce219d5ddb4",
+          "estimate": "O(|resource.name| + |resource.trace| + |trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        }
+      ]
+    },
+    {
+      "methodId": "1c254085-99d1-3e7e-9b01-38ed210f0b53",
+      "method": "finallyThrows",
+      "file": "FlowCases.java",
+      "line": 135,
+      "structuralBound": "O(1)",
+      "estimate": "O(|trace|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа.",
+        "Фиксированные накладные расходы JVM и построения stack trace не масштабируются с размером данных; анализируется алгоритмическая модель."
+      ],
+      "limitations": [],
+      "explanation": "O(|trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 141,
+          "nodeId": "39151564-181a-3131-a1d3-7d0a93d8c9ae",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 136,
+          "nodeId": "fe3a22d8-a155-3cc9-97ad-55b27fe63575",
+          "estimate": "O(|trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        }
+      ]
+    },
+    {
+      "methodId": "6e5cda99-ca3e-3fb0-9e46-89102275ed28",
+      "method": "nullResource",
+      "file": "FlowCases.java",
+      "line": 147,
+      "structuralBound": "O(1)",
+      "estimate": "O(|resource.name| + |resource.trace| + |trace|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [],
+      "explanation": "O(|resource.name| + |resource.trace| + |trace|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 148,
+          "nodeId": "d27cf885-94cd-3ed8-810c-09b0496a4045",
+          "estimate": "O(|resource.name| + |resource.trace| + |trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        }
+      ]
+    },
+    {
+      "methodId": "0d89e0aa-77a9-3c9e-b331-54d3d3fb4665",
+      "method": "main",
+      "file": "FlowCases.java",
+      "line": 155,
+      "structuralBound": "O(1)",
+      "estimate": "O(C(toString(trace)) + |failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |resource.name| + |resource.trace| + |second.name| + |second.trace| + |suppressed| + |text(trace)|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа.",
+        "Неизвестная реализация toString задаётся стоимостью C(toString), отдельно от длины полученной строки.",
+        "Для вывода считается объём данных; ожидание ОС/пользовательского ввода не ограничивается этой оценкой.",
+        "Фиксированные накладные расходы JVM и построения stack trace не масштабируются с размером данных; анализируется алгоритмическая модель."
+      ],
+      "limitations": [],
+      "explanation": "O(C(toString(trace)) + |failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |resource.name| + |resource.trace| + |second.name| + |second.trace| + |suppressed| + |text(trace)|) — верхняя граница для распознанных конструкций при указанных предположениях.",
+      "evidence": [
+        {
+          "line": 11,
+          "nodeId": "b92ce488-17cb-31bd-936d-b48f4c620a2f",
+          "estimate": "O(1)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 157,
+          "nodeId": "f7af7dec-01e2-3f3e-bd05-3a97afa261e0",
+          "estimate": "O(1)",
+          "rule": "Стоимость метода FlowCases.snapshot с подстановкой аргументов."
+        },
+        {
+          "line": 26,
+          "nodeId": "a3d20da9-4717-347d-b694-1ef6c61b18f9",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 21,
+          "nodeId": "3a838ed9-962c-3438-9923-a983bcb1975e",
+          "estimate": "O(1)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 159,
+          "nodeId": "b916eee9-1bd1-39ed-82be-d86f4dad18bf",
+          "estimate": "O(1)",
+          "rule": "Стоимость метода FlowCases.override с подстановкой аргументов."
+        },
+        {
+          "line": 34,
+          "nodeId": "d7006096-4bf1-3bfa-9954-5880250bcd80",
+          "estimate": "O(1)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 33,
+          "nodeId": "99a73951-5b80-3066-aa35-67d20f7b2710",
+          "estimate": "O(1)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 161,
+          "nodeId": "ca35fa74-be12-3daf-973c-567f366f091d",
+          "estimate": "O(1)",
+          "rule": "Стоимость метода FlowCases.nested с подстановкой аргументов."
+        },
+        {
+          "line": 51,
+          "nodeId": "556059c9-c3a5-3440-8521-088765e4281e",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 49,
+          "nodeId": "b052d67c-65cd-3234-b1b3-ac02e29a61a5",
+          "estimate": "O(1)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 48,
+          "nodeId": "278a2c75-a4cf-3851-9fb5-c89df5dbaf49",
+          "estimate": "O(1)",
+          "rule": "Постоянные границы цикла."
+        },
+        {
+          "line": 163,
+          "nodeId": "92e7aa50-5df0-3899-a4f5-49a9192be670",
+          "estimate": "O(1)",
+          "rule": "Стоимость метода FlowCases.loop с подстановкой аргументов."
+        },
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 93,
+          "nodeId": "41dccf78-89b9-3bf0-b222-735dfaa93d00",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 99,
+          "nodeId": "b21fa531-b7f7-36b6-935d-7acf3ec211f6",
+          "estimate": "O(|failure.getSuppressed()| * |suppressed.getMessage()| + |suppressed|)",
+          "rule": "Число итераций равно длине массива/стандартной коллекции."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|first.name| + |first.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|second.name| + |second.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 88,
+          "nodeId": "143dc019-ea5d-380d-9684-26acd62254fa",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 165,
+          "nodeId": "8f20af11-f41b-3cd7-a978-0494eda26b69",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Стоимость метода FlowCases.resources с подстановкой аргументов."
+        },
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 93,
+          "nodeId": "41dccf78-89b9-3bf0-b222-735dfaa93d00",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 99,
+          "nodeId": "b21fa531-b7f7-36b6-935d-7acf3ec211f6",
+          "estimate": "O(|failure.getSuppressed()| * |suppressed.getMessage()| + |suppressed|)",
+          "rule": "Число итераций равно длине массива/стандартной коллекции."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|first.name| + |first.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|second.name| + |second.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 88,
+          "nodeId": "143dc019-ea5d-380d-9684-26acd62254fa",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 167,
+          "nodeId": "be6d13a1-5c2b-3a7d-bc59-07992dedf51a",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Стоимость метода FlowCases.resources с подстановкой аргументов."
+        },
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 122,
+          "nodeId": "18b4db46-6354-3fc2-b8c6-5ce219d5ddb4",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 169,
+          "nodeId": "871a02ee-20d2-3f81-8540-29cb8ddf075d",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода FlowCases.selfSuppression с подстановкой аргументов."
+        }
+      ]
+    },
+    {
+      "methodId": "bff3e0c8-da1e-3b02-a662-49eed95539fb",
+      "method": "returnExpressionIsCapturedBeforeFinally",
+      "file": "FlowCasesTest.java",
+      "line": 8,
+      "structuralBound": "O(1)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [
+        "L11: Неизвестна стоимость вызова assertEquals(1, FlowCases.snapshot(trace)).",
+        "L12: Неизвестна стоимость вызова assertEquals(List.of(\"try\", \"finally:9\"), trace)."
+      ],
+      "explanation": "Полная оценка неизвестна: L11: Неизвестна стоимость вызова assertEquals(1, FlowCases.snapshot(trace)). L12: Неизвестна стоимость вызова assertEquals(List.of(\"try\", \"finally:9\"), trace).",
+      "evidence": [
+        {
+          "line": 11,
+          "nodeId": "b92ce488-17cb-31bd-936d-b48f4c620a2f",
+          "estimate": "O(1)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 11,
+          "nodeId": "ed860f4c-987c-31cb-b6e6-025f7adf2e93",
+          "estimate": "O(1)",
+          "rule": "Стоимость метода FlowCases.snapshot с подстановкой аргументов."
+        }
+      ]
+    },
+    {
+      "methodId": "fadd60bc-d30d-389b-8361-0e4de578943d",
+      "method": "returnInFinallyOverridesOnlyItsBranch",
+      "file": "FlowCasesTest.java",
+      "line": 15,
+      "structuralBound": "O(1)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [
+        "L18: Неизвестна стоимость вызова assertEquals(2, FlowCases.override(true, trace)).",
+        "L19: Неизвестна стоимость вызова assertEquals(List.of(\"try\", \"finally\"), trace).",
+        "L21: Неизвестна стоимость вызова assertEquals(1, FlowCases.override(false, trace)).",
+        "L22: Неизвестна стоимость вызова assertEquals(List.of(\"try\", \"finally\"), trace)."
+      ],
+      "explanation": "Полная оценка неизвестна: L18: Неизвестна стоимость вызова assertEquals(2, FlowCases.override(true, trace)). L19: Неизвестна стоимость вызова assertEquals(List.of(\"try\", \"finally\"), trace). L21: Неизвестна стоимость вызова assertEquals(1, FlowCases.override(false, trace)). L22: Неизвестна стоимость вызова assertEquals(List.of(\"try\", \"finally\"), trace).",
+      "evidence": [
+        {
+          "line": 26,
+          "nodeId": "a3d20da9-4717-347d-b694-1ef6c61b18f9",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 21,
+          "nodeId": "3a838ed9-962c-3438-9923-a983bcb1975e",
+          "estimate": "O(1)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 18,
+          "nodeId": "d63f1c23-b8f5-3a13-aeee-0bce776beeaa",
+          "estimate": "O(1)",
+          "rule": "Стоимость метода FlowCases.override с подстановкой аргументов."
+        },
+        {
+          "line": 21,
+          "nodeId": "416d4d3f-0941-350a-af31-405d461926de",
+          "estimate": "O(1)",
+          "rule": "Стоимость метода FlowCases.override с подстановкой аргументов."
+        }
+      ]
+    },
+    {
+      "methodId": "44b2d58d-4e8f-3871-9704-f6cf1d466460",
+      "method": "nestedFinalizersRunInsideOut",
+      "file": "FlowCasesTest.java",
+      "line": 25,
+      "structuralBound": "O(1)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [
+        "L28: Неизвестна стоимость вызова assertEquals(7, FlowCases.nested(trace)).",
+        "L29: Неизвестна стоимость вызова assertEquals(List.of(\"body\", \"inner\", \"outer\"), trace)."
+      ],
+      "explanation": "Полная оценка неизвестна: L28: Неизвестна стоимость вызова assertEquals(7, FlowCases.nested(trace)). L29: Неизвестна стоимость вызова assertEquals(List.of(\"body\", \"inner\", \"outer\"), trace).",
+      "evidence": [
+        {
+          "line": 34,
+          "nodeId": "d7006096-4bf1-3bfa-9954-5880250bcd80",
+          "estimate": "O(1)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 33,
+          "nodeId": "99a73951-5b80-3066-aa35-67d20f7b2710",
+          "estimate": "O(1)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 28,
+          "nodeId": "d0267cc8-b3e2-3901-8f42-25178c0e3acf",
+          "estimate": "O(1)",
+          "rule": "Стоимость метода FlowCases.nested с подстановкой аргументов."
+        }
+      ]
+    },
+    {
+      "methodId": "46c67c2a-4bca-330f-a22a-b34d88a2224f",
+      "method": "breakAndContinueBothExecuteFinally",
+      "file": "FlowCasesTest.java",
+      "line": 32,
+      "structuralBound": "O(1)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [
+        "L35: Неизвестна стоимость вызова assertEquals(1, FlowCases.loop(false, trace)).",
+        "L36: Неизвестна стоимость вызова assertEquals(List.of(\"finally:0\", \"after\"), trace).",
+        "L38: Неизвестна стоимость вызова assertEquals(3, FlowCases.loop(true, trace)).",
+        "L39: Неизвестна стоимость вызова assertEquals(List.of(\"finally:0\", \"finally:1\", \"finally:2\", \"after\"), trace)."
+      ],
+      "explanation": "Полная оценка неизвестна: L35: Неизвестна стоимость вызова assertEquals(1, FlowCases.loop(false, trace)). L36: Неизвестна стоимость вызова assertEquals(List.of(\"finally:0\", \"after\"), trace). L38: Неизвестна стоимость вызова assertEquals(3, FlowCases.loop(true, trace)). L39: Неизвестна стоимость вызова assertEquals(List.of(\"finally:0\", \"finally:1\", \"finally:2\", \"after\"), trace).",
+      "evidence": [
+        {
+          "line": 51,
+          "nodeId": "556059c9-c3a5-3440-8521-088765e4281e",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 49,
+          "nodeId": "b052d67c-65cd-3234-b1b3-ac02e29a61a5",
+          "estimate": "O(1)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 48,
+          "nodeId": "278a2c75-a4cf-3851-9fb5-c89df5dbaf49",
+          "estimate": "O(1)",
+          "rule": "Постоянные границы цикла."
+        },
+        {
+          "line": 35,
+          "nodeId": "05e07e86-ba8a-3cbf-ad3d-314c116c89f8",
+          "estimate": "O(1)",
+          "rule": "Стоимость метода FlowCases.loop с подстановкой аргументов."
+        },
+        {
+          "line": 38,
+          "nodeId": "5a443e6f-4ddf-3bd4-8409-4deb9ba5f020",
+          "estimate": "O(1)",
+          "rule": "Стоимость метода FlowCases.loop с подстановкой аргументов."
+        }
+      ]
+    },
+    {
+      "methodId": "8c2f3ebc-1608-3282-abed-8d2e15150a49",
+      "method": "closeOrderAndTwoSuppressedFailuresPreservePrimary",
+      "file": "FlowCasesTest.java",
+      "line": 42,
+      "structuralBound": "O(1)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "Фиксированные накладные расходы JVM и построения stack trace не масштабируются с размером данных; анализируется алгоритмическая модель.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [
+        "L45: Неизвестна стоимость вызова assertEquals(\"body\", FlowCases.resources(0, true, true, trace)).",
+        "L46: Неизвестна стоимость вызова assertEquals(List.of(\"open:first\", \"open:second\", \"body:first+second\", \"close:second\", \"close:first\", \"catch:body\", \"suppressed:close:second\", \"suppressed:close:first\", \"finally\"), trace)."
+      ],
+      "explanation": "Полная оценка неизвестна: L45: Неизвестна стоимость вызова assertEquals(\"body\", FlowCases.resources(0, true, true, trace)). L46: Неизвестна стоимость вызова assertEquals(List.of(\"open:first\", \"open:second\", \"body:first+second\", \"close:second\", \"close:first\", \"catch:body\", \"suppressed:close:second\", \"suppressed:close:first\", \"finally\"), trace).",
+      "evidence": [
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 93,
+          "nodeId": "41dccf78-89b9-3bf0-b222-735dfaa93d00",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 99,
+          "nodeId": "b21fa531-b7f7-36b6-935d-7acf3ec211f6",
+          "estimate": "O(|failure.getSuppressed()| * |suppressed.getMessage()| + |suppressed|)",
+          "rule": "Число итераций равно длине массива/стандартной коллекции."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|first.name| + |first.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|second.name| + |second.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 88,
+          "nodeId": "143dc019-ea5d-380d-9684-26acd62254fa",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 45,
+          "nodeId": "0714d4ce-bc19-3a4f-8c64-34be37c2c9be",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Стоимость метода FlowCases.resources с подстановкой аргументов."
+        }
+      ]
+    },
+    {
+      "methodId": "702105f2-20dc-3879-be26-a0a204b6738e",
+      "method": "failedSecondInitializerClosesOnlyFirstResource",
+      "file": "FlowCasesTest.java",
+      "line": 50,
+      "structuralBound": "O(1)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "Фиксированные накладные расходы JVM и построения stack trace не масштабируются с размером данных; анализируется алгоритмическая модель.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [
+        "L53: Неизвестна стоимость вызова assertEquals(\"open:second\", FlowCases.resources(2, false, false, trace)).",
+        "L54: Неизвестна стоимость вызова assertEquals(List.of(\"open:first\", \"open:second\", \"close:first\", \"catch:open:second\", \"finally\"), trace).",
+        "L56: Неизвестна стоимость вызова assertEquals(\"open:first\", FlowCases.resources(1, false, false, trace)).",
+        "L57: Неизвестна стоимость вызова assertEquals(List.of(\"open:first\", \"catch:open:first\", \"finally\"), trace)."
+      ],
+      "explanation": "Полная оценка неизвестна: L53: Неизвестна стоимость вызова assertEquals(\"open:second\", FlowCases.resources(2, false, false, trace)). L54: Неизвестна стоимость вызова assertEquals(List.of(\"open:first\", \"open:second\", \"close:first\", \"catch:open:second\", \"finally\"), trace). L56: Неизвестна стоимость вызова assertEquals(\"open:first\", FlowCases.resources(1, false, false, trace)). L57: Неизвестна стоимость вызова assertEquals(List.of(\"open:first\", \"catch:open:first\", \"finally\"), trace).",
+      "evidence": [
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 93,
+          "nodeId": "41dccf78-89b9-3bf0-b222-735dfaa93d00",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 99,
+          "nodeId": "b21fa531-b7f7-36b6-935d-7acf3ec211f6",
+          "estimate": "O(|failure.getSuppressed()| * |suppressed.getMessage()| + |suppressed|)",
+          "rule": "Число итераций равно длине массива/стандартной коллекции."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|first.name| + |first.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|second.name| + |second.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 88,
+          "nodeId": "143dc019-ea5d-380d-9684-26acd62254fa",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 53,
+          "nodeId": "4f3ea5fa-18a1-367c-bd5e-8e156a7b79eb",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Стоимость метода FlowCases.resources с подстановкой аргументов."
+        },
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 93,
+          "nodeId": "41dccf78-89b9-3bf0-b222-735dfaa93d00",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 99,
+          "nodeId": "b21fa531-b7f7-36b6-935d-7acf3ec211f6",
+          "estimate": "O(|failure.getSuppressed()| * |suppressed.getMessage()| + |suppressed|)",
+          "rule": "Число итераций равно длине массива/стандартной коллекции."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|first.name| + |first.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|second.name| + |second.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 88,
+          "nodeId": "143dc019-ea5d-380d-9684-26acd62254fa",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 56,
+          "nodeId": "94462290-0b66-3df2-a835-24aef030992e",
+          "estimate": "O(|failure.getMessage()| + |failure.getSuppressed()| * |suppressed.getMessage()| + |first.name| + |first.trace| + |second.name| + |second.trace| + |suppressed|)",
+          "rule": "Стоимость метода FlowCases.resources с подстановкой аргументов."
+        }
+      ]
+    },
+    {
+      "methodId": "a003b3fb-c8f8-3aaf-81bd-74b4a7cf3e74",
+      "method": "closeFailureReplacesPendingReturn",
+      "file": "FlowCasesTest.java",
+      "line": 60,
+      "structuralBound": "O(1)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "Фиксированные накладные расходы JVM и построения stack trace не масштабируются с размером данных; анализируется алгоритмическая модель.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [
+        "L63: Неизвестна стоимость вызова assertEquals(2, FlowCases.closeOverridesReturn(trace)).",
+        "L64: Неизвестна стоимость вызова assertEquals(List.of(\"open:one\", \"return:one\", \"close:one\", \"catch:close\", \"finally\"), trace)."
+      ],
+      "explanation": "Полная оценка неизвестна: L63: Неизвестна стоимость вызова assertEquals(2, FlowCases.closeOverridesReturn(trace)). L64: Неизвестна стоимость вызова assertEquals(List.of(\"open:one\", \"return:one\", \"close:one\", \"catch:close\", \"finally\"), trace).",
+      "evidence": [
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 109,
+          "nodeId": "534449fa-22c4-3e04-91a5-30811b77db17",
+          "estimate": "O(|failure.getMessage()| + |resource.name| + |resource.trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 63,
+          "nodeId": "f8d09d2d-3a1d-3a24-ba40-c0082e1347a9",
+          "estimate": "O(|failure.getMessage()| + |resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода FlowCases.closeOverridesReturn с подстановкой аргументов."
+        }
+      ]
+    },
+    {
+      "methodId": "6e272e2c-7be7-3a04-8037-60ae75a6ea16",
+      "method": "selfSuppressionIsDifferentFromOrdinarySuppression",
+      "file": "FlowCasesTest.java",
+      "line": 67,
+      "structuralBound": "O(1)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "Фиксированные накладные расходы JVM и построения stack trace не масштабируются с размером данных; анализируется алгоритмическая модель.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [
+        "L70: Неизвестна стоимость вызова assertTrue(FlowCases.selfSuppression(trace)).",
+        "L71: Неизвестна стоимость вызова assertEquals(List.of(\"open:one\", \"body:one\", \"close:one\", \"self-suppression\", \"finally\"), trace)."
+      ],
+      "explanation": "Полная оценка неизвестна: L70: Неизвестна стоимость вызова assertTrue(FlowCases.selfSuppression(trace)). L71: Неизвестна стоимость вызова assertEquals(List.of(\"open:one\", \"body:one\", \"close:one\", \"self-suppression\", \"finally\"), trace).",
+      "evidence": [
+        {
+          "line": 73,
+          "nodeId": "2413a052-085c-3d40-a9e1-7cbd83a1aad4",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 122,
+          "nodeId": "18b4db46-6354-3fc2-b8c6-5ce219d5ddb4",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 70,
+          "nodeId": "97a9eff2-28f5-3b8b-9888-6e7337435d04",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода FlowCases.selfSuppression с подстановкой аргументов."
+        }
+      ]
+    },
+    {
+      "methodId": "20450c56-faae-3f4a-b6ea-4ccfe38906f4",
+      "method": "exceptionInFinallyReplacesPendingReturn",
+      "file": "FlowCasesTest.java",
+      "line": 74,
+      "structuralBound": "O(1)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [
+        "L77: Неизвестна стоимость вызова assertThrows(IOException.class, () -> FlowCases.finallyThrows(trace)).",
+        "L77: Неизвестна стоимость вызова assertThrows(IOException.class, () -> FlowCases.finallyThrows(trace)).getMessage().",
+        "L77: Неизвестна стоимость вызова assertEquals(\"winner\", assertThrows(IOException.class, () -> FlowCases.finallyThrows(trace)).getMessage()).",
+        "L78: Неизвестна стоимость вызова assertEquals(List.of(\"return\", \"finally\"), trace)."
+      ],
+      "explanation": "Полная оценка неизвестна: L77: Неизвестна стоимость вызова assertThrows(IOException.class, () -> FlowCases.finallyThrows(trace)). L77: Неизвестна стоимость вызова assertThrows(IOException.class, () -> FlowCases.finallyThrows(trace)).getMessage(). L77: Неизвестна стоимость вызова assertEquals(\"winner\", assertThrows(IOException.class, () -> FlowCases.finallyThrows(trace)).getMessage()). L78: Неизвестна стоимость вызова assertEquals(List.of(\"return\", \"finally\"), trace).",
+      "evidence": []
+    },
+    {
+      "methodId": "fe7b40a9-1e25-3d8e-adfb-f78d167939b0",
+      "method": "nullResourceDoesNotClose",
+      "file": "FlowCasesTest.java",
+      "line": 81,
+      "structuralBound": "O(1)",
+      "estimate": "unknown",
+      "status": "unknown",
+      "kind": "upper_bound",
+      "confidence": "unknown",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Коллекции используют стандартные реализации JDK; пользовательские переопределения и конкурентные изменения не моделируются.",
+        "JDK-контракты: ArrayList/ArrayDeque — амортизированно; HashMap/HashSet — O(n) при коллизиях. equals/hashCode/compareTo у ключей считаются O(1), иначе требуется отдельная стоимость ключа."
+      ],
+      "limitations": [
+        "L85: Неизвестна стоимость вызова assertEquals(List.of(\"null\", \"finally\"), trace)."
+      ],
+      "explanation": "Полная оценка неизвестна: L85: Неизвестна стоимость вызова assertEquals(List.of(\"null\", \"finally\"), trace).",
+      "evidence": [
+        {
+          "line": 81,
+          "nodeId": "3c8488f9-a2c5-3b9c-a330-8346f7e33d30",
+          "estimate": "O(1)",
+          "rule": "Худшая ветка условия; независимые размеры сохраняются в сумме."
+        },
+        {
+          "line": 1,
+          "nodeId": "",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода Resource.close с подстановкой аргументов."
+        },
+        {
+          "line": 148,
+          "nodeId": "d27cf885-94cd-3ed8-810c-09b0496a4045",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Верхняя граница: try, возможный catch, finally и однократное закрытие каждого ресурса."
+        },
+        {
+          "line": 84,
+          "nodeId": "26dac9a8-663a-36c1-9418-bb2c1a25fb1c",
+          "estimate": "O(|resource.name| + |resource.trace|)",
+          "rule": "Стоимость метода FlowCases.nullResource с подстановкой аргументов."
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "revision": 1,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 1708,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "snapshot=1 [try, finally:9]\noverride=2 [try, finally]\nnested=7 [body, inner, outer]\ncontinue=3 [finally:0, finally:1, finally:2, after]\nprimary=body [open:first, open:second, body:first+second, close:second, close:first, catch:body, suppressed:close:second, suppressed:close:first, finally]\ninitialization=open:second [open:first, open:second, close:first, catch:open:second, finally]\nself=true [open:one, body:one, close:one, self-suppression, finally]\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 525,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "completion oracle",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ FlowCasesTest ✔\n│     ├─ breakAndContinueBothExecuteFinally() ✔\n│     ├─ selfSuppressionIsDifferentFromOrdinarySuppression() ✔\n│     ├─ failedSecondInitializerClosesOnlyFirstResource() ✔\n│     ├─ closeOrderAndTwoSuppressedFailuresPreservePrimary() ✔\n│     ├─ nestedFinalizersRunInsideOut() ✔\n│     ├─ returnInFinallyOverridesOnlyItsBranch() ✔\n│     ├─ nullResourceDoesNotClose() ✔\n│     ├─ exceptionInFinallyReplacesPendingReturn() ✔\n│     ├─ returnExpressionIsCapturedBeforeFinally() ✔\n│     └─ closeFailureReplacesPendingReturn() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 112 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        10 tests found           ]\n[         0 tests skipped         ]\n[        10 tests started         ]\n[         0 tests aborted         ]\n[        10 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1344,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ FlowCasesTest ✔\n│     ├─ breakAndContinueBothExecuteFinally() ✔\n│     ├─ selfSuppressionIsDifferentFromOrdinarySuppression() ✔\n│     ├─ failedSecondInitializerClosesOnlyFirstResource() ✔\n│     ├─ closeOrderAndTwoSuppressedFailuresPreservePrimary() ✔\n│     ├─ nestedFinalizersRunInsideOut() ✔\n│     ├─ returnInFinallyOverridesOnlyItsBranch() ✔\n│     ├─ nullResourceDoesNotClose() ✔\n│     ├─ exceptionInFinallyReplacesPendingReturn() ✔\n│     ├─ returnExpressionIsCapturedBeforeFinally() ✔\n│     └─ closeFailureReplacesPendingReturn() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 112 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        10 tests found           ]\n[         0 tests skipped         ]\n[        10 tests started         ]\n[         0 tests aborted         ]\n[        10 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (10 tests found)",
+            "status": "success",
+            "durationMs": 1344,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ FlowCasesTest ✔\n│     ├─ breakAndContinueBothExecuteFinally() ✔\n│     ├─ selfSuppressionIsDifferentFromOrdinarySuppression() ✔\n│     ├─ failedSecondInitializerClosesOnlyFirstResource() ✔\n│     ├─ closeOrderAndTwoSuppressedFailuresPreservePrimary() ✔\n│     ├─ nestedFinalizersRunInsideOut() ✔\n│     ├─ returnInFinallyOverridesOnlyItsBranch() ✔\n│     ├─ nullResourceDoesNotClose() ✔\n│     ├─ exceptionInFinallyReplacesPendingReturn() ✔\n│     ├─ returnExpressionIsCapturedBeforeFinally() ✔\n│     └─ closeFailureReplacesPendingReturn() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 112 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        10 tests found           ]\n[         0 tests skipped         ]\n[        10 tests started         ]\n[         0 tests aborted         ]\n[        10 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    },
+    "comparison": {
+      "status": "matched_on_inputs",
+      "checkedInputs": 1,
+      "provenEquivalent": false,
+      "explanation": "Observed stdout, stderr and exit codes match on these inputs only. Full program equivalence is not proven."
+    },
+    "original": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 1752,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "snapshot=1 [try, finally:9]\noverride=2 [try, finally]\nnested=7 [body, inner, outer]\ncontinue=3 [finally:0, finally:1, finally:2, after]\nprimary=body [open:first, open:second, body:first+second, close:second, close:first, catch:body, suppressed:close:second, suppressed:close:first, finally]\ninitialization=open:second [open:first, open:second, close:first, catch:open:second, finally]\nself=true [open:one, body:one, close:one, self-suppression, finally]\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 521,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "completion oracle",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ FlowCasesTest ✔\n│     ├─ breakAndContinueBothExecuteFinally() ✔\n│     ├─ selfSuppressionIsDifferentFromOrdinarySuppression() ✔\n│     ├─ failedSecondInitializerClosesOnlyFirstResource() ✔\n│     ├─ closeOrderAndTwoSuppressedFailuresPreservePrimary() ✔\n│     ├─ nestedFinalizersRunInsideOut() ✔\n│     ├─ returnInFinallyOverridesOnlyItsBranch() ✔\n│     ├─ nullResourceDoesNotClose() ✔\n│     ├─ exceptionInFinallyReplacesPendingReturn() ✔\n│     ├─ returnExpressionIsCapturedBeforeFinally() ✔\n│     └─ closeFailureReplacesPendingReturn() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 118 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        10 tests found           ]\n[         0 tests skipped         ]\n[        10 tests started         ]\n[         0 tests aborted         ]\n[        10 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1456,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ FlowCasesTest ✔\n│     ├─ breakAndContinueBothExecuteFinally() ✔\n│     ├─ selfSuppressionIsDifferentFromOrdinarySuppression() ✔\n│     ├─ failedSecondInitializerClosesOnlyFirstResource() ✔\n│     ├─ closeOrderAndTwoSuppressedFailuresPreservePrimary() ✔\n│     ├─ nestedFinalizersRunInsideOut() ✔\n│     ├─ returnInFinallyOverridesOnlyItsBranch() ✔\n│     ├─ nullResourceDoesNotClose() ✔\n│     ├─ exceptionInFinallyReplacesPendingReturn() ✔\n│     ├─ returnExpressionIsCapturedBeforeFinally() ✔\n│     └─ closeFailureReplacesPendingReturn() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 118 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        10 tests found           ]\n[         0 tests skipped         ]\n[        10 tests started         ]\n[         0 tests aborted         ]\n[        10 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (10 tests found)",
+            "status": "success",
+            "durationMs": 1456,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ FlowCasesTest ✔\n│     ├─ breakAndContinueBothExecuteFinally() ✔\n│     ├─ selfSuppressionIsDifferentFromOrdinarySuppression() ✔\n│     ├─ failedSecondInitializerClosesOnlyFirstResource() ✔\n│     ├─ closeOrderAndTwoSuppressedFailuresPreservePrimary() ✔\n│     ├─ nestedFinalizersRunInsideOut() ✔\n│     ├─ returnInFinallyOverridesOnlyItsBranch() ✔\n│     ├─ nullResourceDoesNotClose() ✔\n│     ├─ exceptionInFinallyReplacesPendingReturn() ✔\n│     ├─ returnExpressionIsCapturedBeforeFinally() ✔\n│     └─ closeFailureReplacesPendingReturn() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 118 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        10 tests found           ]\n[         0 tests skipped         ]\n[        10 tests started         ]\n[         0 tests aborted         ]\n[        10 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    }
+  }
+}

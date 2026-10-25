@@ -1,0 +1,731 @@
+{
+  "started": "2026-10-25T07:22:20.013Z",
+  "sources": [
+    {
+      "path": "MissionControl.java",
+      "lines": 1566,
+      "nonblankLines": 1442,
+      "sha256": "a0844908e5e36cf8a25c17ff73536751db59722e2e51f294b69e709f43193c76"
+    },
+    {
+      "path": "MissionControlTest.java",
+      "lines": 333,
+      "nonblankLines": 316,
+      "sha256": "51d9ce59b63564321440ba4050772763dd18f7357d22a1cbc19b29f690d13392"
+    }
+  ],
+  "parser": {
+    "nodes": 1463,
+    "edges": 2117,
+    "mainNodes": 1178,
+    "methods": 85,
+    "constructors": 11,
+    "compactConstructors": 4,
+    "kinds": {
+      "FieldDeclaration": 63,
+      "ConstructorDeclaration": 11,
+      "MethodDeclaration": 102,
+      "ExpressionStmt": 597,
+      "CompactConstructorDeclaration": 4,
+      "IfStmt": 129,
+      "ThrowStmt": 51,
+      "ReturnStmt": 79,
+      "TryStmt": 12,
+      "ExplicitConstructorInvocationStmt": 1,
+      "ForStmt": 45,
+      "WhileStmt": 13,
+      "ContinueStmt": 12,
+      "BreakStmt": 8,
+      "ForEachStmt": 32,
+      "SwitchStmt": 4,
+      "DoStmt": 1,
+      "LabeledStmt": 2,
+      "Completion": 223,
+      "Catch": 5,
+      "ExceptionDispatch": 8,
+      "Resume": 10,
+      "ResourceGuard": 17,
+      "ResourceClose": 17,
+      "Suppressed": 10,
+      "ResourceInit": 7
+    },
+    "warnings": [
+      "Lambda bodies and switch expressions are preserved in the AST; their internal execution is not expanded into a complete control-flow graph."
+    ],
+    "parseMs": 1724,
+    "layoutMs": 982
+  },
+  "baseline": {
+    "revision": 0,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 2819,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=48 seed=2048 tickLimit=340\nstatus SUCCEEDED=11 FAILED=1 BLOCKED=29 CANCELLED=7\nfuel initial=5240 available=4495 reserved=0 spent=745\nslots peak=2 capacity=2 active=0\nscheduler ticks=57 attempts=441 deferred=422 criticalPath=33\nnetwork stations=17 components=1 distanceSum=2641\ntelemetry samples=144 badRows=8 lowStreak=3\nfaults DEADLINE=7,DEPENDENCY=29\nevents=62 replayHash=18082238827775195674\nalgorithms 2485 628 10 7 68 2395 94 6765 2485 985 24\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=1040394504\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 621,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "0:empty",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=0 seed=1 tickLimit=52\nstatus -\nfuel initial=200 available=200 reserved=0 spent=0\nslots peak=0 capacity=2 active=0\nscheduler ticks=0 attempts=0 deferred=0 criticalPath=0\nnetwork stations=5 components=1 distanceSum=126\ntelemetry samples=0 badRows=0 lowStreak=0\nfaults -\nevents=0 replayHash=14695981039346656037\nalgorithms 0 0 0 0 68 2395 0 6765 0 0 0\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2212306575\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 592,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "1:0 1",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=1 seed=1 tickLimit=58\nstatus SUCCEEDED=1\nfuel initial=305 available=238 reserved=0 spent=67\nslots peak=1 capacity=3 active=0\nscheduler ticks=5 attempts=1 deferred=0 criticalPath=3\nnetwork stations=5 components=1 distanceSum=130\ntelemetry samples=3 badRows=0 lowStreak=1\nfaults -\nevents=3 replayHash=3526165770273510126\nalgorithms 71 0 1 1 68 2395 1 6765 71 -1 0\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=259919048\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 606,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "2:1 1",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=24 seed=99 tickLimit=196\nstatus SUCCEEDED=10 BLOCKED=11 CANCELLED=3\nfuel initial=2720 available=2140 reserved=0 spent=580\nslots peak=2 capacity=2 active=0\nscheduler ticks=39 attempts=175 deferred=162 criticalPath=30\nnetwork stations=11 components=1 distanceSum=912\ntelemetry samples=72 badRows=4 lowStreak=4\nfaults DEADLINE=3,DEPENDENCY=11\nevents=36 replayHash=10013424669514888907\nalgorithms 1411 155 6 4 68 2395 46 6765 1411 189 12\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=3310828445\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 632,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "3:24 99",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=120 seed=7 tickLimit=772\nstatus SUCCEEDED=40 FAILED=1 BLOCKED=53 CANCELLED=26\nfuel initial=12800 available=10256 reserved=0 spent=2544\nslots peak=2 capacity=2 active=0\nscheduler ticks=184 attempts=3948 deferred=3881 criticalPath=46\nnetwork stations=35 components=1 distanceSum=15359\ntelemetry samples=360 badRows=19 lowStreak=4\nfaults DEADLINE=26,DEPENDENCY=53\nevents=163 replayHash=15629244583594919384\nalgorithms 6084 4223 13 7 68 2395 236 6765 6084 6505 59\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=929853924\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 774,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "4:120 7",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=300 seed=42 tickLimit=1852\nstatus SUCCEEDED=79 FAILED=3 BLOCKED=156 CANCELLED=62\nfuel initial=31700 available=24703 reserved=0 spent=6997\nslots peak=2 capacity=2 active=0\nscheduler ticks=454 attempts=27465 deferred=27321 criticalPath=48\nnetwork stations=80 components=1 distanceSum=102791\ntelemetry samples=900 badRows=47 lowStreak=4\nfaults DEADLINE=62,DEPENDENCY=156\nevents=384 replayHash=4775980410416676156\nalgorithms 15458 21239 26 7 68 2395 596 6765 15458 43574 149\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2248243505\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1233,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "5:300 42",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=0 seed=3 tickLimit=52\nstatus -\nfuel initial=200 available=200 reserved=0 spent=0\nslots peak=0 capacity=2 active=0\nscheduler ticks=0 attempts=0 deferred=0 criticalPath=0\nnetwork stations=5 components=1 distanceSum=98\ntelemetry samples=0 badRows=0 lowStreak=0\nfaults -\nevents=0 replayHash=14695981039346656037\nalgorithms 0 0 0 0 68 2395 0 6765 0 0 0\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=59651077\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 536,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "6:-4 3",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=48 seed=2048 tickLimit=340\nstatus SUCCEEDED=11 FAILED=1 BLOCKED=29 CANCELLED=7\nfuel initial=5240 available=4495 reserved=0 spent=745\nslots peak=2 capacity=2 active=0\nscheduler ticks=57 attempts=441 deferred=422 criticalPath=33\nnetwork stations=17 components=1 distanceSum=2641\ntelemetry samples=144 badRows=8 lowStreak=3\nfaults DEADLINE=7,DEPENDENCY=29\nevents=62 replayHash=18082238827775195674\nalgorithms 2485 628 10 7 68 2395 94 6765 2485 985 24\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=1040394504\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 714,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "7:abc",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=60 seed=7 tickLimit=1\nstatus CANCELLED=60\nfuel initial=6500 available=6500 reserved=0 spent=0\nslots peak=2 capacity=2 active=0\nscheduler ticks=1 attempts=20 deferred=18 criticalPath=38\nnetwork stations=20 components=1 distanceSum=4441\ntelemetry samples=180 badRows=10 lowStreak=5\nfaults DEADLINE=58\nevents=62 replayHash=4903284106914003489\nalgorithms 3451 929 10 5 68 2395 116 6765 3451 1786 30\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=445314121\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 650,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "8:60 7 1",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=24 seed=99 tickLimit=196\nstatus SUCCEEDED=10 BLOCKED=11 CANCELLED=3\nfuel initial=2720 available=2140 reserved=0 spent=580\nslots peak=2 capacity=2 active=0\nscheduler ticks=39 attempts=175 deferred=162 criticalPath=30\nnetwork stations=11 components=1 distanceSum=912\ntelemetry samples=72 badRows=4 lowStreak=4\nfaults DEADLINE=3,DEPENDENCY=11\nevents=36 replayHash=10013424669514888907\nalgorithms 1411 155 6 4 68 2395 46 6765 1411 189 12\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=3310828445\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 637,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "9:24 99",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 426 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1804,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 426 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (16 tests found)",
+            "status": "success",
+            "durationMs": 1804,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 426 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    },
+    "comparison": {
+      "status": "not_requested",
+      "checkedInputs": 0,
+      "provenEquivalent": false,
+      "explanation": "Compilation, test success and behavior comparison are separate results."
+    }
+  },
+  "lint": {
+    "stdout": "",
+    "stderr": "",
+    "exitCode": 0,
+    "durationMs": 2763,
+    "timedOut": false,
+    "outputLimitExceeded": false
+  },
+  "variants": [
+    {
+      "name": "indexed loop to foreach",
+      "preservesBehavior": true,
+      "differences": [],
+      "verification": {
+        "revision": 1,
+        "current": {
+          "compilation": {
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 2773,
+            "timedOut": false,
+            "outputLimitExceeded": false
+          },
+          "runs": [
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=48 seed=2048 tickLimit=340\nstatus SUCCEEDED=11 FAILED=1 BLOCKED=29 CANCELLED=7\nfuel initial=5240 available=4495 reserved=0 spent=745\nslots peak=2 capacity=2 active=0\nscheduler ticks=57 attempts=441 deferred=422 criticalPath=33\nnetwork stations=17 components=1 distanceSum=2641\ntelemetry samples=144 badRows=8 lowStreak=3\nfaults DEADLINE=7,DEPENDENCY=29\nevents=62 replayHash=18082238827775195674\nalgorithms 2485 628 10 7 68 2395 94 6765 2485 985 24\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=1040394504\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 620,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "0:empty",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=0 seed=1 tickLimit=52\nstatus -\nfuel initial=200 available=200 reserved=0 spent=0\nslots peak=0 capacity=2 active=0\nscheduler ticks=0 attempts=0 deferred=0 criticalPath=0\nnetwork stations=5 components=1 distanceSum=126\ntelemetry samples=0 badRows=0 lowStreak=0\nfaults -\nevents=0 replayHash=14695981039346656037\nalgorithms 0 0 0 0 68 2395 0 6765 0 0 0\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2212306575\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 603,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "1:0 1",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=24 seed=99 tickLimit=196\nstatus SUCCEEDED=10 BLOCKED=11 CANCELLED=3\nfuel initial=2720 available=2140 reserved=0 spent=580\nslots peak=2 capacity=2 active=0\nscheduler ticks=39 attempts=175 deferred=162 criticalPath=30\nnetwork stations=11 components=1 distanceSum=912\ntelemetry samples=72 badRows=4 lowStreak=4\nfaults DEADLINE=3,DEPENDENCY=11\nevents=36 replayHash=10013424669514888907\nalgorithms 1411 155 6 4 68 2395 46 6765 1411 189 12\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=3310828445\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 589,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "3:24 99",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=300 seed=42 tickLimit=1852\nstatus SUCCEEDED=79 FAILED=3 BLOCKED=156 CANCELLED=62\nfuel initial=31700 available=24703 reserved=0 spent=6997\nslots peak=2 capacity=2 active=0\nscheduler ticks=454 attempts=27465 deferred=27321 criticalPath=48\nnetwork stations=80 components=1 distanceSum=102791\ntelemetry samples=900 badRows=47 lowStreak=4\nfaults DEADLINE=62,DEPENDENCY=156\nevents=384 replayHash=4775980410416676156\nalgorithms 15458 21239 26 7 68 2395 596 6765 15458 43574 149\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2248243505\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 1183,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "5:300 42",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=60 seed=7 tickLimit=1\nstatus CANCELLED=60\nfuel initial=6500 available=6500 reserved=0 spent=0\nslots peak=2 capacity=2 active=0\nscheduler ticks=1 attempts=20 deferred=18 criticalPath=38\nnetwork stations=20 components=1 distanceSum=4441\ntelemetry samples=180 badRows=10 lowStreak=5\nfaults DEADLINE=58\nevents=62 replayHash=4903284106914003489\nalgorithms 3451 929 10 5 68 2395 116 6765 3451 1786 30\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=445314121\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 650,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "8:60 7 1",
+              "passed": null
+            }
+          ],
+          "tests": {
+            "status": "passed",
+            "execution": {
+              "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 550 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 1786,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 550 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+            "cases": [
+              {
+                "id": "junit-suite",
+                "name": "JUnit 5 (16 tests found)",
+                "status": "success",
+                "durationMs": 1786,
+                "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 550 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n"
+              }
+            ]
+          }
+        },
+        "comparison": {
+          "status": "not_requested",
+          "checkedInputs": 0,
+          "provenEquivalent": false,
+          "explanation": "Compilation, test success and behavior comparison are separate results."
+        }
+      }
+    },
+    {
+      "name": "reorder compact-constructor validation",
+      "preservesBehavior": true,
+      "differences": [],
+      "verification": {
+        "revision": 1,
+        "current": {
+          "compilation": {
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 2678,
+            "timedOut": false,
+            "outputLimitExceeded": false
+          },
+          "runs": [
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=48 seed=2048 tickLimit=340\nstatus SUCCEEDED=11 FAILED=1 BLOCKED=29 CANCELLED=7\nfuel initial=5240 available=4495 reserved=0 spent=745\nslots peak=2 capacity=2 active=0\nscheduler ticks=57 attempts=441 deferred=422 criticalPath=33\nnetwork stations=17 components=1 distanceSum=2641\ntelemetry samples=144 badRows=8 lowStreak=3\nfaults DEADLINE=7,DEPENDENCY=29\nevents=62 replayHash=18082238827775195674\nalgorithms 2485 628 10 7 68 2395 94 6765 2485 985 24\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=1040394504\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 707,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "0:empty",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=0 seed=1 tickLimit=52\nstatus -\nfuel initial=200 available=200 reserved=0 spent=0\nslots peak=0 capacity=2 active=0\nscheduler ticks=0 attempts=0 deferred=0 criticalPath=0\nnetwork stations=5 components=1 distanceSum=126\ntelemetry samples=0 badRows=0 lowStreak=0\nfaults -\nevents=0 replayHash=14695981039346656037\nalgorithms 0 0 0 0 68 2395 0 6765 0 0 0\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2212306575\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 576,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "1:0 1",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=24 seed=99 tickLimit=196\nstatus SUCCEEDED=10 BLOCKED=11 CANCELLED=3\nfuel initial=2720 available=2140 reserved=0 spent=580\nslots peak=2 capacity=2 active=0\nscheduler ticks=39 attempts=175 deferred=162 criticalPath=30\nnetwork stations=11 components=1 distanceSum=912\ntelemetry samples=72 badRows=4 lowStreak=4\nfaults DEADLINE=3,DEPENDENCY=11\nevents=36 replayHash=10013424669514888907\nalgorithms 1411 155 6 4 68 2395 46 6765 1411 189 12\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=3310828445\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 628,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "3:24 99",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=300 seed=42 tickLimit=1852\nstatus SUCCEEDED=79 FAILED=3 BLOCKED=156 CANCELLED=62\nfuel initial=31700 available=24703 reserved=0 spent=6997\nslots peak=2 capacity=2 active=0\nscheduler ticks=454 attempts=27465 deferred=27321 criticalPath=48\nnetwork stations=80 components=1 distanceSum=102791\ntelemetry samples=900 badRows=47 lowStreak=4\nfaults DEADLINE=62,DEPENDENCY=156\nevents=384 replayHash=4775980410416676156\nalgorithms 15458 21239 26 7 68 2395 596 6765 15458 43574 149\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2248243505\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 1098,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "5:300 42",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=60 seed=7 tickLimit=1\nstatus CANCELLED=60\nfuel initial=6500 available=6500 reserved=0 spent=0\nslots peak=2 capacity=2 active=0\nscheduler ticks=1 attempts=20 deferred=18 criticalPath=38\nnetwork stations=20 components=1 distanceSum=4441\ntelemetry samples=180 badRows=10 lowStreak=5\nfaults DEADLINE=58\nevents=62 replayHash=4903284106914003489\nalgorithms 3451 929 10 5 68 2395 116 6765 3451 1786 30\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=445314121\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 651,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "8:60 7 1",
+              "passed": null
+            }
+          ],
+          "tests": {
+            "status": "passed",
+            "execution": {
+              "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 502 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 1845,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 502 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+            "cases": [
+              {
+                "id": "junit-suite",
+                "name": "JUnit 5 (16 tests found)",
+                "status": "success",
+                "durationMs": 1845,
+                "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 502 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n"
+              }
+            ]
+          }
+        },
+        "comparison": {
+          "status": "not_requested",
+          "checkedInputs": 0,
+          "provenEquivalent": false,
+          "explanation": "Compilation, test success and behavior comparison are separate results."
+        }
+      }
+    },
+    {
+      "name": "reject exact fuel balance mutation",
+      "preservesBehavior": false,
+      "differences": [],
+      "verification": {
+        "revision": 1,
+        "current": {
+          "compilation": {
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 2776,
+            "timedOut": false,
+            "outputLimitExceeded": false
+          },
+          "runs": [
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=48 seed=2048 tickLimit=340\nstatus SUCCEEDED=11 FAILED=1 BLOCKED=29 CANCELLED=7\nfuel initial=5240 available=4495 reserved=0 spent=745\nslots peak=2 capacity=2 active=0\nscheduler ticks=57 attempts=441 deferred=422 criticalPath=33\nnetwork stations=17 components=1 distanceSum=2641\ntelemetry samples=144 badRows=8 lowStreak=3\nfaults DEADLINE=7,DEPENDENCY=29\nevents=62 replayHash=18082238827775195674\nalgorithms 2485 628 10 7 68 2395 94 6765 2485 985 24\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=1040394504\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 644,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "0:empty",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=0 seed=1 tickLimit=52\nstatus -\nfuel initial=200 available=200 reserved=0 spent=0\nslots peak=0 capacity=2 active=0\nscheduler ticks=0 attempts=0 deferred=0 criticalPath=0\nnetwork stations=5 components=1 distanceSum=126\ntelemetry samples=0 badRows=0 lowStreak=0\nfaults -\nevents=0 replayHash=14695981039346656037\nalgorithms 0 0 0 0 68 2395 0 6765 0 0 0\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2212306575\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 552,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "1:0 1",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=24 seed=99 tickLimit=196\nstatus SUCCEEDED=10 BLOCKED=11 CANCELLED=3\nfuel initial=2720 available=2140 reserved=0 spent=580\nslots peak=2 capacity=2 active=0\nscheduler ticks=39 attempts=175 deferred=162 criticalPath=30\nnetwork stations=11 components=1 distanceSum=912\ntelemetry samples=72 badRows=4 lowStreak=4\nfaults DEADLINE=3,DEPENDENCY=11\nevents=36 replayHash=10013424669514888907\nalgorithms 1411 155 6 4 68 2395 46 6765 1411 189 12\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=3310828445\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 581,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "3:24 99",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=300 seed=42 tickLimit=1852\nstatus SUCCEEDED=79 FAILED=3 BLOCKED=156 CANCELLED=62\nfuel initial=31700 available=24703 reserved=0 spent=6997\nslots peak=2 capacity=2 active=0\nscheduler ticks=454 attempts=27465 deferred=27321 criticalPath=48\nnetwork stations=80 components=1 distanceSum=102791\ntelemetry samples=900 badRows=47 lowStreak=4\nfaults DEADLINE=62,DEPENDENCY=156\nevents=384 replayHash=4775980410416676156\nalgorithms 15458 21239 26 7 68 2395 596 6765 15458 43574 149\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2248243505\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 1213,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "5:300 42",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=60 seed=7 tickLimit=1\nstatus CANCELLED=60\nfuel initial=6500 available=6500 reserved=0 spent=0\nslots peak=2 capacity=2 active=0\nscheduler ticks=1 attempts=20 deferred=18 criticalPath=38\nnetwork stations=20 components=1 distanceSum=4441\ntelemetry samples=180 badRows=10 lowStreak=5\nfaults DEADLINE=58\nevents=62 replayHash=4903284106914003489\nalgorithms 3451 929 10 5 68 2395 116 6765 3451 1786 30\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=445314121\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 615,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "8:60 7 1",
+              "passed": null
+            }
+          ],
+          "tests": {
+            "status": "failed",
+            "execution": {
+              "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✘ expected: <true> but was: <false>\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MissionControlTest:fuelLedgerAcceptsExactBalanceAndConservesEveryUnit()\n    MethodSource [className = 'MissionControlTest', methodName = 'fuelLedgerAcceptsExactBalanceAndConservesEveryUnit', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <true> but was: <false>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)\n       org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)\n       org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)\n       org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:183)\n       MissionControlTest.fuelLedgerAcceptsExactBalanceAndConservesEveryUnit(MissionControlTest.java:114)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 499 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         1 tests failed          ]\n\n",
+              "stderr": "",
+              "exitCode": 1,
+              "durationMs": 1851,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✘ expected: <true> but was: <false>\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MissionControlTest:fuelLedgerAcceptsExactBalanceAndConservesEveryUnit()\n    MethodSource [className = 'MissionControlTest', methodName = 'fuelLedgerAcceptsExactBalanceAndConservesEveryUnit', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <true> but was: <false>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)\n       org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)\n       org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)\n       org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:183)\n       MissionControlTest.fuelLedgerAcceptsExactBalanceAndConservesEveryUnit(MissionControlTest.java:114)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 499 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         1 tests failed          ]\n\n",
+            "cases": [
+              {
+                "id": "junit-suite",
+                "name": "JUnit 5 (16 tests found)",
+                "status": "failure",
+                "durationMs": 1851,
+                "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✘ expected: <true> but was: <false>\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MissionControlTest:fuelLedgerAcceptsExactBalanceAndConservesEveryUnit()\n    MethodSource [className = 'MissionControlTest', methodName = 'fuelLedgerAcceptsExactBalanceAndConservesEveryUnit', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <true> but was: <false>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)\n       org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)\n       org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)\n       org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:183)\n       MissionControlTest.fuelLedgerAcceptsExactBalanceAndConservesEveryUnit(MissionControlTest.java:114)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 499 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         1 tests failed          ]\n\n"
+              }
+            ]
+          }
+        },
+        "comparison": {
+          "status": "not_requested",
+          "checkedInputs": 0,
+          "provenEquivalent": false,
+          "explanation": "Compilation, test success and behavior comparison are separate results."
+        }
+      }
+    },
+    {
+      "name": "payload fuel multiplier mutation",
+      "preservesBehavior": false,
+      "differences": [
+        "0:empty",
+        "3:24 99",
+        "5:300 42",
+        "8:60 7 1"
+      ],
+      "verification": {
+        "revision": 1,
+        "current": {
+          "compilation": {
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 2772,
+            "timedOut": false,
+            "outputLimitExceeded": false
+          },
+          "runs": [
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=48 seed=2048 tickLimit=340\nstatus SUCCEEDED=11 FAILED=1 BLOCKED=29 CANCELLED=7\nfuel initial=5240 available=4397 reserved=0 spent=843\nslots peak=2 capacity=2 active=0\nscheduler ticks=57 attempts=441 deferred=422 criticalPath=33\nnetwork stations=17 components=1 distanceSum=2641\ntelemetry samples=144 badRows=8 lowStreak=3\nfaults DEADLINE=7,DEPENDENCY=29\nevents=62 replayHash=7737114063133213920\nalgorithms 2485 628 10 7 68 2395 94 6765 2485 985 24\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2516181137\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 662,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "0:empty",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=0 seed=1 tickLimit=52\nstatus -\nfuel initial=200 available=200 reserved=0 spent=0\nslots peak=0 capacity=2 active=0\nscheduler ticks=0 attempts=0 deferred=0 criticalPath=0\nnetwork stations=5 components=1 distanceSum=126\ntelemetry samples=0 badRows=0 lowStreak=0\nfaults -\nevents=0 replayHash=14695981039346656037\nalgorithms 0 0 0 0 68 2395 0 6765 0 0 0\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2212306575\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 599,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "1:0 1",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=24 seed=99 tickLimit=196\nstatus SUCCEEDED=10 BLOCKED=11 CANCELLED=3\nfuel initial=2720 available=2042 reserved=0 spent=678\nslots peak=2 capacity=2 active=0\nscheduler ticks=39 attempts=175 deferred=162 criticalPath=30\nnetwork stations=11 components=1 distanceSum=912\ntelemetry samples=72 badRows=4 lowStreak=4\nfaults DEADLINE=3,DEPENDENCY=11\nevents=36 replayHash=3779827990414636607\nalgorithms 1411 155 6 4 68 2395 46 6765 1411 189 12\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=1352719448\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 668,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "3:24 99",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=300 seed=42 tickLimit=1852\nstatus SUCCEEDED=79 FAILED=3 BLOCKED=156 CANCELLED=62\nfuel initial=31700 available=23875 reserved=0 spent=7825\nslots peak=2 capacity=2 active=0\nscheduler ticks=454 attempts=27465 deferred=27321 criticalPath=48\nnetwork stations=80 components=1 distanceSum=102791\ntelemetry samples=900 badRows=47 lowStreak=4\nfaults DEADLINE=62,DEPENDENCY=156\nevents=384 replayHash=14749608588265856244\nalgorithms 15458 21239 26 7 68 2395 596 6765 15458 43574 149\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=3211127686\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 1189,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "5:300 42",
+              "passed": null
+            },
+            {
+              "stdout": "=== Orbital mission control ===\nscenario missions=60 seed=7 tickLimit=1\nstatus CANCELLED=60\nfuel initial=6500 available=6500 reserved=0 spent=0\nslots peak=2 capacity=2 active=0\nscheduler ticks=1 attempts=20 deferred=18 criticalPath=38\nnetwork stations=20 components=1 distanceSum=4441\ntelemetry samples=180 badRows=10 lowStreak=5\nfaults DEADLINE=58\nevents=62 replayHash=3594818063838335519\nalgorithms 3451 929 10 5 68 2395 116 6765 3451 1786 30\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=87078308\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 647,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "8:60 7 1",
+              "passed": null
+            }
+          ],
+          "tests": {
+            "status": "failed",
+            "execution": {
+              "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✘ expected: <33> but was: <35>\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MissionControlTest:fuelFormulaIncludesPayloadTravelAndKindFee()\n    MethodSource [className = 'MissionControlTest', methodName = 'fuelFormulaIncludesPayloadTravelAndKindFee', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <33> but was: <35>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MissionControlTest.fuelFormulaIncludesPayloadTravelAndKindFee(MissionControlTest.java:156)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 566 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         1 tests failed          ]\n\n",
+              "stderr": "",
+              "exitCode": 1,
+              "durationMs": 1811,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✘ expected: <33> but was: <35>\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MissionControlTest:fuelFormulaIncludesPayloadTravelAndKindFee()\n    MethodSource [className = 'MissionControlTest', methodName = 'fuelFormulaIncludesPayloadTravelAndKindFee', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <33> but was: <35>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MissionControlTest.fuelFormulaIncludesPayloadTravelAndKindFee(MissionControlTest.java:156)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 566 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         1 tests failed          ]\n\n",
+            "cases": [
+              {
+                "id": "junit-suite",
+                "name": "JUnit 5 (16 tests found)",
+                "status": "failure",
+                "durationMs": 1811,
+                "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✘ expected: <33> but was: <35>\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MissionControlTest:fuelFormulaIncludesPayloadTravelAndKindFee()\n    MethodSource [className = 'MissionControlTest', methodName = 'fuelFormulaIncludesPayloadTravelAndKindFee', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <33> but was: <35>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MissionControlTest.fuelFormulaIncludesPayloadTravelAndKindFee(MissionControlTest.java:156)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 566 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        15 tests successful      ]\n[         1 tests failed          ]\n\n"
+              }
+            ]
+          }
+        },
+        "comparison": {
+          "status": "not_requested",
+          "checkedInputs": 0,
+          "provenEquivalent": false,
+          "explanation": "Compilation, test success and behavior comparison are separate results."
+        }
+      }
+    }
+  ],
+  "roundTrip": {
+    "revision": 2,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 2738,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=48 seed=2048 tickLimit=340\nstatus SUCCEEDED=11 FAILED=1 BLOCKED=29 CANCELLED=7\nfuel initial=5240 available=4495 reserved=0 spent=745\nslots peak=2 capacity=2 active=0\nscheduler ticks=57 attempts=441 deferred=422 criticalPath=33\nnetwork stations=17 components=1 distanceSum=2641\ntelemetry samples=144 badRows=8 lowStreak=3\nfaults DEADLINE=7,DEPENDENCY=29\nevents=62 replayHash=18082238827775195674\nalgorithms 2485 628 10 7 68 2395 94 6765 2485 985 24\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=1040394504\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 630,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "0:empty",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=0 seed=1 tickLimit=52\nstatus -\nfuel initial=200 available=200 reserved=0 spent=0\nslots peak=0 capacity=2 active=0\nscheduler ticks=0 attempts=0 deferred=0 criticalPath=0\nnetwork stations=5 components=1 distanceSum=126\ntelemetry samples=0 badRows=0 lowStreak=0\nfaults -\nevents=0 replayHash=14695981039346656037\nalgorithms 0 0 0 0 68 2395 0 6765 0 0 0\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2212306575\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 584,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "1:0 1",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=24 seed=99 tickLimit=196\nstatus SUCCEEDED=10 BLOCKED=11 CANCELLED=3\nfuel initial=2720 available=2140 reserved=0 spent=580\nslots peak=2 capacity=2 active=0\nscheduler ticks=39 attempts=175 deferred=162 criticalPath=30\nnetwork stations=11 components=1 distanceSum=912\ntelemetry samples=72 badRows=4 lowStreak=4\nfaults DEADLINE=3,DEPENDENCY=11\nevents=36 replayHash=10013424669514888907\nalgorithms 1411 155 6 4 68 2395 46 6765 1411 189 12\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=3310828445\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 606,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "3:24 99",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=300 seed=42 tickLimit=1852\nstatus SUCCEEDED=79 FAILED=3 BLOCKED=156 CANCELLED=62\nfuel initial=31700 available=24703 reserved=0 spent=6997\nslots peak=2 capacity=2 active=0\nscheduler ticks=454 attempts=27465 deferred=27321 criticalPath=48\nnetwork stations=80 components=1 distanceSum=102791\ntelemetry samples=900 badRows=47 lowStreak=4\nfaults DEADLINE=62,DEPENDENCY=156\nevents=384 replayHash=4775980410416676156\nalgorithms 15458 21239 26 7 68 2395 596 6765 15458 43574 149\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=2248243505\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1221,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "5:300 42",
+          "passed": null
+        },
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=60 seed=7 tickLimit=1\nstatus CANCELLED=60\nfuel initial=6500 available=6500 reserved=0 spent=0\nslots peak=2 capacity=2 active=0\nscheduler ticks=1 attempts=20 deferred=18 criticalPath=38\nnetwork stations=20 components=1 distanceSum=4441\ntelemetry samples=180 badRows=10 lowStreak=5\nfaults DEADLINE=58\nevents=62 replayHash=4903284106914003489\nalgorithms 3451 929 10 5 68 2395 116 6765 3451 1786 30\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=445314121\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 615,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "8:60 7 1",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 562 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1842,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 562 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (16 tests found)",
+            "status": "success",
+            "durationMs": 1842,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 562 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    },
+    "comparison": {
+      "status": "not_requested",
+      "checkedInputs": 0,
+      "provenEquivalent": false,
+      "explanation": "Compilation, test success and behavior comparison are separate results."
+    }
+  },
+  "finished": "2026-10-25T07:23:38.860Z",
+  "complexitySummary": {
+    "scopes": 100,
+    "estimated": 99,
+    "unknown": [
+      {
+        "method": "id",
+        "line": 136,
+        "limitations": [
+          "L136: Метод не имеет тела; открытые реализации требуют внешнего контракта."
+        ]
+      }
+    ],
+    "explicitCallbackContracts": [
+      {
+        "method": "key",
+        "line": 138,
+        "estimate": "O(C(id()))"
+      },
+      {
+        "method": "add",
+        "line": 146,
+        "estimate": "O(C(item.id()) + |items|)"
+      },
+      {
+        "method": "first",
+        "line": 160,
+        "estimate": "O(C(predicate) * |items|)"
+      },
+      {
+        "method": "project",
+        "line": 168,
+        "estimate": "O(C(mapper) * |items|)"
+      }
+    ]
+  }
+}

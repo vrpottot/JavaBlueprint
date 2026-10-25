@@ -1,0 +1,1308 @@
+{
+  "started": "2026-10-25T07:20:05.627Z",
+  "checks": [
+    {
+      "name": "index for to foreach",
+      "expectedSame": true,
+      "compilation": 0,
+      "tests": "passed",
+      "changedInputs": [],
+      "details": {
+        "revision": 1,
+        "current": {
+          "compilation": {
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 2456,
+            "timedOut": false,
+            "outputLimitExceeded": false
+          },
+          "runs": [
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 552,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "empty",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 525,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "0 1",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 529,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "5 11",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 541,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "35 99",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2799.48 discounts=464.37 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.59\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1192465059\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 565,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "60 7",
+              "passed": null
+            }
+          ],
+          "tests": {
+            "status": "passed",
+            "execution": {
+              "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 266 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 1467,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 266 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n",
+            "cases": [
+              {
+                "id": "junit-suite",
+                "name": "JUnit 5 (12 tests found)",
+                "status": "success",
+                "durationMs": 1467,
+                "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 266 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n"
+              }
+            ]
+          }
+        },
+        "comparison": {
+          "status": "not_requested",
+          "checkedInputs": 0,
+          "provenEquivalent": false,
+          "explanation": "Compilation, test success and behavior comparison are separate results."
+        }
+      }
+    },
+    {
+      "name": "shipping while to for",
+      "expectedSame": true,
+      "compilation": 0,
+      "tests": "passed",
+      "changedInputs": [],
+      "details": {
+        "revision": 1,
+        "current": {
+          "compilation": {
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 2609,
+            "timedOut": false,
+            "outputLimitExceeded": false
+          },
+          "runs": [
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 544,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "empty",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 520,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "0 1",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 554,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "5 11",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 567,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "35 99",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2799.48 discounts=464.37 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.59\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1192465059\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 589,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "60 7",
+              "passed": null
+            }
+          ],
+          "tests": {
+            "status": "passed",
+            "execution": {
+              "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 269 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 1524,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 269 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n",
+            "cases": [
+              {
+                "id": "junit-suite",
+                "name": "JUnit 5 (12 tests found)",
+                "status": "success",
+                "durationMs": 1524,
+                "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 269 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n"
+              }
+            ]
+          }
+        },
+        "comparison": {
+          "status": "not_requested",
+          "checkedInputs": 0,
+          "provenEquivalent": false,
+          "explanation": "Compilation, test success and behavior comparison are separate results."
+        }
+      }
+    },
+    {
+      "name": "ternary to if/else",
+      "expectedSame": true,
+      "compilation": 0,
+      "tests": "passed",
+      "changedInputs": [],
+      "details": {
+        "revision": 1,
+        "current": {
+          "compilation": {
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 2609,
+            "timedOut": false,
+            "outputLimitExceeded": false
+          },
+          "runs": [
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 545,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "empty",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 533,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "0 1",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 536,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "5 11",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 556,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "35 99",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2799.48 discounts=464.37 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.59\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1192465059\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 595,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "60 7",
+              "passed": null
+            }
+          ],
+          "tests": {
+            "status": "passed",
+            "execution": {
+              "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 264 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 1545,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 264 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n",
+            "cases": [
+              {
+                "id": "junit-suite",
+                "name": "JUnit 5 (12 tests found)",
+                "status": "success",
+                "durationMs": 1545,
+                "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 264 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n"
+              }
+            ]
+          }
+        },
+        "comparison": {
+          "status": "not_requested",
+          "checkedInputs": 0,
+          "provenEquivalent": false,
+          "explanation": "Compilation, test success and behavior comparison are separate results."
+        }
+      }
+    },
+    {
+      "name": "GOLD discount mutation",
+      "expectedSame": false,
+      "compilation": 0,
+      "tests": "failed",
+      "changedInputs": [
+        "empty",
+        "35 99",
+        "60 7"
+      ],
+      "details": {
+        "revision": 1,
+        "current": {
+          "compilation": {
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 2583,
+            "timedOut": false,
+            "outputLimitExceeded": false
+          },
+          "runs": [
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1624.37 discounts=76.93 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=7737987\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 568,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "empty",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 557,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "0 1",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 635,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "5 11",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2023.02 discounts=222.13 shipping=355.40\nreturns accepted=6 rejected=4 refunds=88.95\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=3614368013\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 563,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "35 99",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2796.10 discounts=467.75 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.34\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1859403512\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 550,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "60 7",
+              "passed": null
+            }
+          ],
+          "tests": {
+            "status": "failed",
+            "execution": {
+              "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✘ expected: <204064> but was: <202302>\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MainTest:normalScenarioKeepsInventoryAndMoneyConsistent()\n    MethodSource [className = 'MainTest', methodName = 'normalScenarioKeepsInventoryAndMoneyConsistent', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <204064> but was: <202302>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MainTest.normalScenarioKeepsInventoryAndMoneyConsistent(MainTest.java:92)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 201 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        11 tests successful      ]\n[         1 tests failed          ]\n\n",
+              "stderr": "",
+              "exitCode": 1,
+              "durationMs": 1570,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✘ expected: <204064> but was: <202302>\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MainTest:normalScenarioKeepsInventoryAndMoneyConsistent()\n    MethodSource [className = 'MainTest', methodName = 'normalScenarioKeepsInventoryAndMoneyConsistent', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <204064> but was: <202302>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MainTest.normalScenarioKeepsInventoryAndMoneyConsistent(MainTest.java:92)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 201 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        11 tests successful      ]\n[         1 tests failed          ]\n\n",
+            "cases": [
+              {
+                "id": "junit-suite",
+                "name": "JUnit 5 (12 tests found)",
+                "status": "failure",
+                "durationMs": 1570,
+                "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✘ expected: <204064> but was: <202302>\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MainTest:normalScenarioKeepsInventoryAndMoneyConsistent()\n    MethodSource [className = 'MainTest', methodName = 'normalScenarioKeepsInventoryAndMoneyConsistent', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <204064> but was: <202302>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MainTest.normalScenarioKeepsInventoryAndMoneyConsistent(MainTest.java:92)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 201 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        11 tests successful      ]\n[         1 tests failed          ]\n\n"
+              }
+            ]
+          }
+        },
+        "comparison": {
+          "status": "not_requested",
+          "checkedInputs": 0,
+          "provenEquivalent": false,
+          "explanation": "Compilation, test success and behavior comparison are separate results."
+        }
+      }
+    },
+    {
+      "name": "SILVER partial reservation mutation",
+      "expectedSame": false,
+      "compilation": 0,
+      "tests": "failed",
+      "changedInputs": [
+        "empty",
+        "35 99",
+        "60 7"
+      ],
+      "details": {
+        "revision": 1,
+        "current": {
+          "compilation": {
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0,
+            "durationMs": 2626,
+            "timedOut": false,
+            "outputLimitExceeded": false
+          },
+          "runs": [
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1724.67 discounts=87.08 shipping=241.00\nreturns accepted=2 rejected=3 refunds=75.72\nreservation failures=11 rollbacks=3 reservedLeft=0\nrestocked=12 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 331.00\n  FOOD 229.00\n  CLOTHING 753.75\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x15 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=3559341867\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 593,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "empty",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 570,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "0 1",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 542,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "5 11",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=17 shipped=17 returned=1\nrevenue=2051.64 discounts=206.71 shipping=368.60\nreturns accepted=6 rejected=4 refunds=114.23\nreservation failures=43 rollbacks=12 reservedLeft=0\nrestocked=39 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=1854549806\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 633,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "35 99",
+              "passed": null
+            },
+            {
+              "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=29 shipped=30 returned=1\nrevenue=2849.04 discounts=494.11 shipping=646.50\nreturns accepted=10 rejected=6 refunds=229.78\nreservation failures=95 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=2\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 339.75\n  FOOD 405.40\n  CLOTHING 506.75\n  TOYS 497.25\n  BOOKS 947.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=3870759027\n",
+              "stderr": "",
+              "exitCode": 0,
+              "durationMs": 562,
+              "timedOut": false,
+              "outputLimitExceeded": false,
+              "name": "60 7",
+              "passed": null
+            }
+          ],
+          "tests": {
+            "status": "failed",
+            "execution": {
+              "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✘ expected: <204064> but was: <205164>\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MainTest:normalScenarioKeepsInventoryAndMoneyConsistent()\n    MethodSource [className = 'MainTest', methodName = 'normalScenarioKeepsInventoryAndMoneyConsistent', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <204064> but was: <205164>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MainTest.normalScenarioKeepsInventoryAndMoneyConsistent(MainTest.java:92)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 194 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        11 tests successful      ]\n[         1 tests failed          ]\n\n",
+              "stderr": "",
+              "exitCode": 1,
+              "durationMs": 1551,
+              "timedOut": false,
+              "outputLimitExceeded": false
+            },
+            "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✘ expected: <204064> but was: <205164>\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MainTest:normalScenarioKeepsInventoryAndMoneyConsistent()\n    MethodSource [className = 'MainTest', methodName = 'normalScenarioKeepsInventoryAndMoneyConsistent', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <204064> but was: <205164>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MainTest.normalScenarioKeepsInventoryAndMoneyConsistent(MainTest.java:92)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 194 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        11 tests successful      ]\n[         1 tests failed          ]\n\n",
+            "cases": [
+              {
+                "id": "junit-suite",
+                "name": "JUnit 5 (12 tests found)",
+                "status": "failure",
+                "durationMs": 1551,
+                "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✘ expected: <204064> but was: <205164>\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nFailures (1):\n  JUnit Jupiter:MainTest:normalScenarioKeepsInventoryAndMoneyConsistent()\n    MethodSource [className = 'MainTest', methodName = 'normalScenarioKeepsInventoryAndMoneyConsistent', methodParameterTypes = '']\n    => org.opentest4j.AssertionFailedError: expected: <204064> but was: <205164>\n       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)\n       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)\n       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)\n       MainTest.normalScenarioKeepsInventoryAndMoneyConsistent(MainTest.java:92)\n       java.base/java.lang.reflect.Method.invoke(Method.java:580)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\nTest run finished after 194 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        11 tests successful      ]\n[         1 tests failed          ]\n\n"
+              }
+            ]
+          }
+        },
+        "comparison": {
+          "status": "not_requested",
+          "checkedInputs": 0,
+          "provenEquivalent": false,
+          "explanation": "Compilation, test success and behavior comparison are separate results."
+        }
+      }
+    },
+    {
+      "name": "Broken1.java",
+      "errors": [
+        {
+          "file": "Broken1.java",
+          "message": "Parse error. Found \"{\", expected one of  \"!=\" \"%\" \"%=\" \"&\" \"&&\" \"&=\" \")\" \"*\" \"*=\" \"+\" \"+=\" \"-\" \"-=\" \"->\" \"/\" \"/=\" \"::\" \"<\" \"<<=\" \"<=\" \"=\" \"==\" \">\" \">=\" \">>=\" \">>>=\" \"?\" \"^\" \"^=\" \"instanceof\" \"|\" \"|=\" \"||\"",
+          "line": 1,
+          "column": 47
+        }
+      ]
+    },
+    {
+      "name": "Broken2.java",
+      "errors": [
+        {
+          "file": "Broken2.java",
+          "message": "Parse error. Found \"return\", expected one of  \"!\" \"(\" \"+\" \"++\" \"-\" \"--\" \"@\" \"\\\"\\\"\\\"\" \"boolean\" \"byte\" \"char\" \"double\" \"enum\" \"exports\" \"false\" \"float\" \"int\" \"long\" \"module\" \"new\" \"null\" \"open\" \"opens\" \"permits\" \"provides\" \"record\" \"requires\" \"sealed\" \"short\" \"strictfp\" \"super\" \"switch\" \"this\" \"throw\" \"to\" \"transitive\" \"true\" \"uses\" \"void\" \"when\" \"with\" \"yield\" \"{\" \"~\" <CHARACTER_LITERAL> <FLOATING_POINT_LITERAL> <IDENTIFIER> <INTEGER_LITERAL> <LONG_LITERAL> <STRING_LITERAL>",
+          "line": 1,
+          "column": 58
+        },
+        {
+          "file": "Broken2.java",
+          "message": "Parse error. Found \"else\", expected one of  \";\" \"<\" \"@\" \"abstract\" \"boolean\" \"byte\" \"char\" \"class\" \"default\" \"double\" \"enum\" \"exports\" \"final\" \"float\" \"int\" \"interface\" \"long\" \"module\" \"native\" \"non-sealed\" \"open\" \"opens\" \"permits\" \"private\" \"protected\" \"provides\" \"public\" \"record\" \"requires\" \"sealed\" \"short\" \"static\" \"strictfp\" \"synchronized\" \"to\" \"transient\" \"transitive\" \"uses\" \"void\" \"volatile\" \"when\" \"with\" \"yield\" \"{\" \"}\" <IDENTIFIER>",
+          "line": 1,
+          "column": 71
+        }
+      ]
+    }
+  ],
+  "parse": {
+    "ms": 2427,
+    "nodes": 1106,
+    "edges": 1503,
+    "methodsMain": 63,
+    "warnings": [
+      "Lambda bodies and switch expressions are preserved in the AST; their internal execution is not expanded into a complete control-flow graph."
+    ],
+    "width": 172650,
+    "height": 21980,
+    "isolated": [
+      {
+        "kind": "FieldDeclaration",
+        "line": 22,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 23,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 24,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 29,
+        "file": "Main.java"
+      },
+      {
+        "kind": "MethodDeclaration",
+        "line": 63,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 71,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 72,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 73,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 83,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 84,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 85,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 86,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 87,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 108,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 132,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 157,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 158,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 159,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 160,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 161,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 162,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 163,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 164,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 165,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 166,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 167,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 168,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 193,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 194,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 195,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 196,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 283,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 362,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 404,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 405,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 406,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 407,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 408,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 409,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 410,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 411,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 682,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 683,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 697,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 704,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 705,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 706,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 978,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 979,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 980,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 981,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 982,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 983,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 984,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 985,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 986,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 987,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 988,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 989,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 990,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 991,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 992,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 993,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 994,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 995,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 996,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 997,
+        "file": "Main.java"
+      },
+      {
+        "kind": "FieldDeclaration",
+        "line": 998,
+        "file": "Main.java"
+      }
+    ]
+  },
+  "complexity": [
+    {
+      "methodId": "d6a2e3fb-dd03-3bdf-b216-84435b3b6800",
+      "method": "constantAccess",
+      "file": "Main.java",
+      "line": 800,
+      "structuralBound": "O(1)",
+      "estimate": "O(1)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(1) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "8800a0a3-4e42-3d0a-93fa-f2c7dfdab41c",
+      "method": "linearSum",
+      "file": "Main.java",
+      "line": 812,
+      "structuralBound": "O(n)",
+      "estimate": "O(|a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "f0324ed2-8c40-3d5e-8bde-2d5ccf86b84a",
+      "method": "halvingSteps",
+      "file": "Main.java",
+      "line": 821,
+      "structuralBound": "O(n)",
+      "estimate": "O(log(n))",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(log(n)) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "94a1282d-0b66-3270-b792-be918940de5f",
+      "method": "countInversions",
+      "file": "Main.java",
+      "line": 832,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(|a|^2)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|^2) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "b9a366d9-1e13-3b2d-b4fd-87d09397ae5f",
+      "method": "gridWeightedSum",
+      "file": "Main.java",
+      "line": 845,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(max(|grid[]|) * |grid|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Для многомерного массива используется максимальная длина вложенной строки; строки могут иметь разную длину."
+      ],
+      "limitations": [],
+      "explanation": "O(max(|grid[]|) * |grid|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "bdc9db44-8dd8-3530-b48f-a07c59fdbbcf",
+      "method": "countCommonSorted",
+      "file": "Main.java",
+      "line": 856,
+      "structuralBound": "O(n)",
+      "estimate": "O(|a| + |b|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a| + |b|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "9941b9bf-3eea-37e9-a184-50c331bf36be",
+      "method": "halvingSpanScore",
+      "file": "Main.java",
+      "line": 875,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(|a| * log(|a|))",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a| * log(|a|)) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "2624171d-2752-309e-8f81-a1d332aaaec3",
+      "method": "fixedWindowScore",
+      "file": "Main.java",
+      "line": 889,
+      "structuralBound": "O(n^2)",
+      "estimate": "O(|a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "4aa10025-05f3-3741-9079-18320d9b95de",
+      "method": "countAboveAverage",
+      "file": "Main.java",
+      "line": 905,
+      "structuralBound": "O(n)",
+      "estimate": "O(|a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Стоимость обработки числовых элементов может зависеть от их максимального модуля; для int число десятичных цифр ограничено 10."
+      ],
+      "limitations": [],
+      "explanation": "O(|a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "002a7de6-8245-32bc-86c3-2595f7719870",
+      "method": "totalDigitSum",
+      "file": "Main.java",
+      "line": 923,
+      "structuralBound": "O(n)",
+      "estimate": "O(log(max(|a[*]|)) * |a|)",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Стоимость обработки числовых элементов может зависеть от их максимального модуля; для int число десятичных цифр ограничено 10.",
+        "Числовые размеры в оценке обозначают модуль значения.",
+        "Размер результата digitSum задаётся отдельным символом: он не выводится из стоимости вычисления."
+      ],
+      "limitations": [],
+      "explanation": "O(log(max(|a[*]|)) * |a|) — верхняя граница для распознанных конструкций при указанных предположениях."
+    },
+    {
+      "methodId": "3347d00f-6659-384e-98e7-037817c97177",
+      "method": "digitSum",
+      "file": "Main.java",
+      "line": 932,
+      "structuralBound": "O(n)",
+      "estimate": "O(log(value))",
+      "status": "estimated",
+      "kind": "upper_bound",
+      "confidence": "conditional",
+      "assumptions": [
+        "Размеры входов неотрицательны; оценивается верхняя граница времени в модели постоянной стоимости примитивных операций.",
+        "Числовые размеры в оценке обозначают модуль значения."
+      ],
+      "limitations": [],
+      "explanation": "O(log(value)) — верхняя граница для распознанных конструкций при указанных предположениях."
+    }
+  ],
+  "baseline": {
+    "revision": 0,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 2618,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 549,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "0:empty",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 541,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "1:0 1",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=1 seed=1\nproducts=3 orders=1\nstatus shipped=1\nrevenue=65.76 discounts=2.29 shipping=29.80\nreturns accepted=0 rejected=1 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\n  CLOTHING 38.25\ntop=CLO-848x3 crossSell=none\ncomplexity 355 177 1 0 0 0 1 177 0 15\nchecksum=3857764810\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 517,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "2:1 1",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 540,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "3:5 11",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 593,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "4:35 99",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2799.48 discounts=464.37 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.59\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1192465059\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 550,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "5:60 7",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=0 seed=3\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=221921452\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 565,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "6:-4 3",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 542,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "7:abc",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 557,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "8:35 99",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 584,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "9:35 99",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 277 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1530,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 277 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (12 tests found)",
+            "status": "success",
+            "durationMs": 1530,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 277 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    },
+    "comparison": {
+      "status": "not_requested",
+      "checkedInputs": 0,
+      "provenEquivalent": false,
+      "explanation": "Compilation, test success and behavior comparison are separate results."
+    }
+  },
+  "roundTrip": {
+    "revision": 2,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 2575,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=12 seed=2026\nproducts=7 orders=12\nstatus rejected=4 shipped=8\nrevenue=1627.39 discounts=73.91 shipping=245.05\nreturns accepted=2 rejected=3 refunds=48.25\nreservation failures=13 rollbacks=3 reservedLeft=0\nrestocked=9 lowStock=0\nproblems OUT_OF_STOCK,UNKNOWN_SKU\n  ELECTRONICS 317.00\n  FOOD 229.00\n  CLOTHING 653.25\n  TOYS 44.00\n  BOOKS 213.00\ntop=CLO-478x13 crossSell=ELE-399@2&1\ncomplexity 457 2414 4 30 713 4 56 26301 6 128\nchecksum=1874315167\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 575,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "empty",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=0 seed=1\nproducts=0 orders=0\nstatus -\nrevenue=0.00 discounts=0.00 shipping=0.00\nreturns accepted=0 rejected=0 refunds=0.00\nreservation failures=0 rollbacks=0 reservedLeft=0\nrestocked=0 lowStock=0\nproblems -\ntop=none crossSell=none\ncomplexity 0 0 0 0 0 0 0 0 0 0\nchecksum=199289198\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 558,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "0 1",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=5 seed=11\nproducts=4 orders=5\nstatus rejected=3 shipped=2\nrevenue=729.06 discounts=41.69 shipping=202.00\nreturns accepted=0 rejected=2 refunds=0.00\nreservation failures=5 rollbacks=2 reservedLeft=0\nrestocked=5 lowStock=0\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK\n  ELECTRONICS 182.50\n  FOOD 176.25\n  CLOTHING 190.00\n  TOYS 20.00\ntop=CLO-207x10 crossSell=CLO-207@2&5\ncomplexity 635 2719 3 5 40 2 9 15716 2 73\nchecksum=3749303284\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 559,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "5 11",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=35 seed=99\nproducts=14 orders=35\nstatus rejected=16 shipped=19\nrevenue=2040.64 discounts=204.51 shipping=355.40\nreturns accepted=6 rejected=4 refunds=89.01\nreservation failures=41 rollbacks=12 reservedLeft=0\nrestocked=38 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 386.75\n  FOOD 201.50\n  CLOTHING 713.50\n  TOYS 207.00\n  BOOKS 381.00\ntop=CLO-999x13 crossSell=ELE-351@1&6\ncomplexity 651 8804 6 362 15260 20 312 77665 18 376\nchecksum=2241818443\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 546,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "35 99",
+          "passed": null
+        },
+        {
+          "stdout": "=== Warehouse report ===\nscenario size=60 seed=7\nproducts=23 orders=60\nstatus rejected=32 shipped=27 returned=1\nrevenue=2799.48 discounts=464.37 shipping=619.20\nreturns accepted=9 rejected=6 refunds=124.59\nreservation failures=96 rollbacks=9 reservedLeft=0\nrestocked=69 lowStock=1\nproblems LIMIT_EXCEEDED,OUT_OF_STOCK,UNKNOWN_SKU,partial\n  ELECTRONICS 333.25\n  FOOD 405.40\n  CLOTHING 505.25\n  TOYS 497.25\n  BOOKS 903.50\ntop=FOO-512x14 crossSell=CLO-223@7&51\ncomplexity 1435 16531 6 833 82228 29 522 159130 31 695\nchecksum=1192465059\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 568,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "60 7",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 200 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1730,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 200 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (12 tests found)",
+            "status": "success",
+            "durationMs": 1730,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MainTest ✔\n│     ├─ emptyScenarioHasNoProductsOrdersOrMoney() ✔\n│     ├─ perishablePricingAndNonReturnableCases() ✔\n│     ├─ reservationRejectsInvalidQuantityLimitAndUnknownSku() ✔\n│     ├─ discountsCombineCouponTierAndVolumeWithCap() ✔\n│     ├─ inputParsingUsesDefaultsAndClampsSize() ✔\n│     ├─ fatalLineRollsBackWholeOrderButPartialGoldOrderSurvives() ✔\n│     ├─ sameInputGivesSameOutputAndSeedChangesIt() ✔\n│     ├─ normalScenarioKeepsInventoryAndMoneyConsistent() ✔\n│     ├─ complexityLabMethodsReturnKnownValues() ✔\n│     ├─ shippingDependsOnMethodZoneWeightAndThreshold() ✔\n│     ├─ reservationFailsWithoutPartialAndGrantsRemainderWithPartial() ✔\n│     └─ returnsRefundProportionallyAndRespectShippedQuantity() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 200 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        12 tests found           ]\n[         0 tests skipped         ]\n[        12 tests started         ]\n[         0 tests aborted         ]\n[        12 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    },
+    "comparison": {
+      "status": "not_requested",
+      "checkedInputs": 0,
+      "provenEquivalent": false,
+      "explanation": "Compilation, test success and behavior comparison are separate results."
+    }
+  },
+  "finished": "2026-10-25T07:21:10.698Z"
+}

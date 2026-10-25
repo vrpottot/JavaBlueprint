@@ -1,0 +1,606 @@
+{
+  "base": "http://127.0.0.1:5173",
+  "started": "2026-10-25T07:18:59.017Z",
+  "errors": [],
+  "scopes": [
+    {
+      "title": "MissionControl — MissionControl · L37",
+      "nodes": 2,
+      "overlaps": []
+    },
+    {
+      "title": "main — MissionControl · L40",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "Config — MissionControl.Config · L49",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "defaults — MissionControl.Config · L58",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "parse — MissionControl.Config · L62",
+      "nodes": 15,
+      "overlaps": []
+    },
+    {
+      "title": "terminal — MissionControl.Status · L86",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "Edge — MissionControl.Edge · L103",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "Route — MissionControl.Route · L111",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "MissionFailure — MissionControl.MissionFailure · L129",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "id — MissionControl.Identified · L136",
+      "nodes": 1,
+      "overlaps": []
+    },
+    {
+      "title": "key — MissionControl.Identified · L138",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "add — MissionControl.Repository · L146",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "require — MissionControl.Repository · L152",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "first — MissionControl.Repository · L160",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "values — MissionControl.Repository · L164",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "project — MissionControl.Repository · L168",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "Mission — MissionControl.Mission · L187",
+      "nodes": 13,
+      "overlaps": []
+    },
+    {
+      "title": "id — MissionControl.Mission · L202",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "transition — MissionControl.Mission · L207",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "Network — MissionControl.Network · L231",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "size — MissionControl.Network · L241",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "check — MissionControl.Network · L245",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "connect — MissionControl.Network · L251",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "link — MissionControl.Network · L257",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "close — MissionControl.Network · L261",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "reopen — MissionControl.Network · L267",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "usable — MissionControl.Network · L271",
+      "nodes": 4,
+      "overlaps": []
+    },
+    {
+      "title": "shortest — MissionControl.Network · L275",
+      "nodes": 38,
+      "overlaps": []
+    },
+    {
+      "title": "breadthFirst — MissionControl.Network · L324",
+      "nodes": 17,
+      "overlaps": []
+    },
+    {
+      "title": "depthFirst — MissionControl.Network · L344",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "visit — MissionControl.Network · L352",
+      "nodes": 10,
+      "overlaps": []
+    },
+    {
+      "title": "allPairs — MissionControl.Network · L365",
+      "nodes": 20,
+      "overlaps": []
+    },
+    {
+      "title": "reachableDistanceSum — MissionControl.Network · L393",
+      "nodes": 10,
+      "overlaps": []
+    },
+    {
+      "title": "topological — MissionControl.DependencyPlan · L408",
+      "nodes": 25,
+      "overlaps": []
+    },
+    {
+      "title": "criticalPath — MissionControl.DependencyPlan · L441",
+      "nodes": 14,
+      "overlaps": []
+    },
+    {
+      "title": "readiness — MissionControl.DependencyPlan · L457",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "FuelLedger — MissionControl.FuelLedger · L480",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "reserve — MissionControl.FuelLedger · L488",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "settle — MissionControl.FuelLedger · L502",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "check — MissionControl.FuelLedger · L516",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "SlotPool — MissionControl.SlotPool · L528",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "acquire — MissionControl.SlotPool · L535",
+      "nodes": 10,
+      "overlaps": []
+    },
+    {
+      "title": "release — MissionControl.SlotPool · L547",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "LaunchReservation — MissionControl.LaunchReservation · L564",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "prepare — MissionControl.LaunchReservation · L571",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "commit — MissionControl.LaunchReservation · L585",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "close — MissionControl.LaunchReservation · L592",
+      "nodes": 17,
+      "overlaps": []
+    },
+    {
+      "title": "tick — MissionControl.Event · L614",
+      "nodes": 1,
+      "overlaps": []
+    },
+    {
+      "title": "Finished — MissionControl.Finished · L621",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "append — MissionControl.EventJournal · L639",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "describe — MissionControl.EventJournal · L654",
+      "nodes": 3,
+      "overlaps": []
+    },
+    {
+      "title": "replay — MissionControl.EventJournal · L666",
+      "nodes": 16,
+      "overlaps": []
+    },
+    {
+      "title": "Scheduler — MissionControl.Scheduler · L715",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "fuelCost — MissionControl.Scheduler · L724",
+      "nodes": 15,
+      "overlaps": []
+    },
+    {
+      "title": "riskTolerance — MissionControl.Scheduler · L745",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "refreshReady — MissionControl.Scheduler · L763",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "readyOrder — MissionControl.Scheduler · L777",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "launch — MissionControl.Scheduler · L787",
+      "nodes": 35,
+      "overlaps": []
+    },
+    {
+      "title": "dispatch — MissionControl.Scheduler · L817",
+      "nodes": 13,
+      "overlaps": []
+    },
+    {
+      "title": "complete — MissionControl.Scheduler · L835",
+      "nodes": 22,
+      "overlaps": []
+    },
+    {
+      "title": "reject — MissionControl.Scheduler · L858",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "perturbLinks — MissionControl.Scheduler · L864",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "cancelRemaining — MissionControl.Scheduler · L877",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "run — MissionControl.Scheduler · L892",
+      "nodes": 21,
+      "overlaps": []
+    },
+    {
+      "title": "csv — MissionControl.Telemetry · L922",
+      "nodes": 32,
+      "overlaps": []
+    },
+    {
+      "title": "parse — MissionControl.Telemetry · L964",
+      "nodes": 13,
+      "overlaps": []
+    },
+    {
+      "title": "read — MissionControl.Telemetry · L979",
+      "nodes": 23,
+      "overlaps": []
+    },
+    {
+      "title": "generated — MissionControl.Telemetry · L999",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "longestLowVoltage — MissionControl.Telemetry · L1014",
+      "nodes": 10,
+      "overlaps": []
+    },
+    {
+      "title": "firstCriticalWindow — MissionControl.Telemetry · L1025",
+      "nodes": 14,
+      "overlaps": []
+    },
+    {
+      "title": "linearEnergy — MissionControl.AlgorithmLab · L1045",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "lowerBound — MissionControl.AlgorithmLab · L1053",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "mergeSort — MissionControl.AlgorithmLab · L1067",
+      "nodes": 5,
+      "overlaps": []
+    },
+    {
+      "title": "merge — MissionControl.AlgorithmLab · L1072",
+      "nodes": 21,
+      "overlaps": []
+    },
+    {
+      "title": "longestIncreasing — MissionControl.AlgorithmLab · L1099",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "knapsack — MissionControl.AlgorithmLab · L1114",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "longestAffordableWindow — MissionControl.AlgorithmLab · L1130",
+      "nodes": 16,
+      "overlaps": []
+    },
+    {
+      "title": "nextGreater — MissionControl.AlgorithmLab · L1150",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "prefix — MissionControl.AlgorithmLab · L1163",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "rangeSum — MissionControl.AlgorithmLab · L1171",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "pathCount — MissionControl.AlgorithmLab · L1178",
+      "nodes": 21,
+      "overlaps": []
+    },
+    {
+      "title": "geometricWork — MissionControl.AlgorithmLab · L1207",
+      "nodes": 10,
+      "overlaps": []
+    },
+    {
+      "title": "fibonacci — MissionControl.AlgorithmLab · L1220",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "fibonacciMemo — MissionControl.AlgorithmLab · L1229",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "DisjointSet — MissionControl.DisjointSet · L1246",
+      "nodes": 10,
+      "overlaps": []
+    },
+    {
+      "title": "find — MissionControl.DisjointSet · L1258",
+      "nodes": 13,
+      "overlaps": []
+    },
+    {
+      "title": "union — MissionControl.DisjointSet · L1274",
+      "nodes": 15,
+      "overlaps": []
+    },
+    {
+      "title": "CleanupProbe — MissionControl.CleanupProbe · L1298",
+      "nodes": 7,
+      "overlaps": []
+    },
+    {
+      "title": "close — MissionControl.CleanupProbe · L1305",
+      "nodes": 6,
+      "overlaps": []
+    },
+    {
+      "title": "cleanupTrace — MissionControl · L1314",
+      "nodes": 46,
+      "overlaps": []
+    },
+    {
+      "title": "labeledWalk — MissionControl · L1333",
+      "nodes": 12,
+      "overlaps": []
+    },
+    {
+      "title": "classifyObject — MissionControl · L1351",
+      "nodes": 8,
+      "overlaps": []
+    },
+    {
+      "title": "Simulation — MissionControl.Simulation · L1377",
+      "nodes": 11,
+      "overlaps": []
+    },
+    {
+      "title": "create — MissionControl.Simulation · L1391",
+      "nodes": 16,
+      "overlaps": []
+    },
+    {
+      "title": "buildNetwork — MissionControl.Simulation · L1409",
+      "nodes": 15,
+      "overlaps": []
+    },
+    {
+      "title": "buildMissions — MissionControl.Simulation · L1427",
+      "nodes": 15,
+      "overlaps": []
+    },
+    {
+      "title": "run — MissionControl.Simulation · L1448",
+      "nodes": 15,
+      "overlaps": []
+    },
+    {
+      "title": "algorithmFingerprint — MissionControl.Simulation · L1466",
+      "nodes": 15,
+      "overlaps": []
+    },
+    {
+      "title": "connectivityComponents — MissionControl.Simulation · L1494",
+      "nodes": 9,
+      "overlaps": []
+    },
+    {
+      "title": "render — MissionControl.MissionReport · L1510",
+      "nodes": 33,
+      "overlaps": []
+    }
+  ],
+  "overlappingScopes": [],
+  "verification": {
+    "revision": 1,
+    "current": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 2676,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=48 seed=2048 tickLimit=340\nstatus SUCCEEDED=11 FAILED=1 BLOCKED=29 CANCELLED=7\nfuel initial=5240 available=4495 reserved=0 spent=745\nslots peak=2 capacity=2 active=0\nscheduler ticks=57 attempts=441 deferred=422 criticalPath=33\nnetwork stations=17 components=1 distanceSum=2641\ntelemetry samples=144 badRows=8 lowStreak=3\nfaults DEADLINE=7,DEPENDENCY=29\nevents=62 replayHash=18082238827775195674\nalgorithms 2485 628 10 7 68 2395 94 6765 2485 985 24\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=1040394504\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 690,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 571 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1853,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 571 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (16 tests found)",
+            "status": "success",
+            "durationMs": 1853,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 571 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    },
+    "comparison": {
+      "status": "matched_on_inputs",
+      "checkedInputs": 1,
+      "provenEquivalent": false,
+      "explanation": "Observed stdout, stderr and exit codes match on these inputs only. Full program equivalence is not proven."
+    },
+    "original": {
+      "compilation": {
+        "stdout": "",
+        "stderr": "",
+        "exitCode": 0,
+        "durationMs": 2752,
+        "timedOut": false,
+        "outputLimitExceeded": false
+      },
+      "runs": [
+        {
+          "stdout": "=== Orbital mission control ===\nscenario missions=48 seed=2048 tickLimit=340\nstatus SUCCEEDED=11 FAILED=1 BLOCKED=29 CANCELLED=7\nfuel initial=5240 available=4495 reserved=0 spent=745\nslots peak=2 capacity=2 active=0\nscheduler ticks=57 attempts=441 deferred=422 criticalPath=33\nnetwork stations=17 components=1 distanceSum=2641\ntelemetry samples=144 badRows=8 lowStreak=3\nfaults DEADLINE=7,DEPENDENCY=29\nevents=62 replayHash=18082238827775195674\nalgorithms 2485 628 10 7 68 2395 94 6765 2485 985 24\ncleanup=open:first|open:second|body:first+second|close:second|close:first|catch:body failed|suppressed:2|finally\nlabeled=10\npattern=coordinate:2:7\nchecksum=1040394504\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 609,
+          "timedOut": false,
+          "outputLimitExceeded": false,
+          "name": "stdin",
+          "passed": null
+        }
+      ],
+      "tests": {
+        "status": "passed",
+        "execution": {
+          "stdout": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 497 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+          "stderr": "",
+          "exitCode": 0,
+          "durationMs": 1762,
+          "timedOut": false,
+          "outputLimitExceeded": false
+        },
+        "report": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 497 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n",
+        "cases": [
+          {
+            "id": "junit-suite",
+            "name": "JUnit 5 (16 tests found)",
+            "status": "success",
+            "durationMs": 1762,
+            "details": "╷\n├─ JUnit Platform Suite ✔\n├─ JUnit Jupiter ✔\n│  └─ MissionControlTest ✔\n│     ├─ prefixBoundsNextGreaterGridPathsAndMemoizedRecursion() ✔\n│     ├─ unionFindCleanupSuppressedExceptionsAndJava21Patterns() ✔\n│     ├─ fuelLedgerAcceptsExactBalanceAndConservesEveryUnit() ✔\n│     ├─ tickLimitCancelsRunningMissionsAndJournalKeepsCancellationDistinct() ✔\n│     ├─ knapsackAndSlidingWindowMatchExhaustiveOracles() ✔\n│     ├─ fuelFormulaIncludesPayloadTravelAndKindFee() ✔\n│     ├─ stateMachineRejectsTransitionsAfterCompletion() ✔\n│     ├─ mergeSortInversionsMatchQuadraticOracleAndLisKnownCases() ✔\n│     ├─ inputDefaultsClampingAndInvalidNumbers() ✔\n│     ├─ dependencyDiamondCriticalPathAndCycleDetection() ✔\n│     ├─ uncommittedReservationsReleaseSlotsAndRefundFuelEvenOnFailure() ✔\n│     ├─ shortestPathsAgreeWithIndependentBellmanFordOnRandomNetworks() ✔\n│     ├─ emptyAndRepeatedScenariosHaveStableOutput() ✔\n│     ├─ simulationReplaysExactlyAndLeaksNoFuelOrSlotsAcrossSeeds() ✔\n│     ├─ csvQuotesEscapesInvalidRowsAndNumericRanges() ✔\n│     └─ closuresRiskFiltersAndUnreachableStationsAffectBothTraversals() ✔\n└─ JUnit Vintage ✔\n\nTest run finished after 497 ms\n[         4 containers found      ]\n[         0 containers skipped    ]\n[         4 containers started    ]\n[         0 containers aborted    ]\n[         4 containers successful ]\n[         0 containers failed     ]\n[        16 tests found           ]\n[         0 tests skipped         ]\n[        16 tests started         ]\n[         0 tests aborted         ]\n[        16 tests successful      ]\n[         0 tests failed          ]\n\n"
+          }
+        ]
+      }
+    }
+  },
+  "sourceNavigation": true,
+  "fileNavigation": true,
+  "finished": "2026-10-25T07:19:28.877Z"
+}
