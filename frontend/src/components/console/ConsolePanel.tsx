@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Terminal, Trash2, CornerDownLeft, Keyboard, RotateCcw, SlidersHorizontal } from 'lucide-react';
+import { Terminal, Trash2, CornerDownLeft, Keyboard, RotateCcw, SlidersHorizontal, X } from 'lucide-react';
 import { useProjectStore } from '../../store/useProjectStore';
 import styles from './ConsolePanel.module.scss';
 
@@ -50,7 +50,17 @@ export const ConsolePanel: React.FC = () => {
       setHistory((prev) => [valueToSend, ...prev.filter((h) => h !== valueToSend)].slice(0, 50));
     }
     setHistoryIdx(-1);
-    setInputVal('');
+
+    // Keep data in the command line as requested by user, and highlight/select it
+    setTimeout(() => {
+      if (isMultiline) {
+        textareaRef.current?.focus();
+        textareaRef.current?.select();
+      } else {
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }
+    }, 20);
 
     await sendConsoleInput(valueToSend);
   };
@@ -254,6 +264,22 @@ export const ConsolePanel: React.FC = () => {
                 : 'Ввод в консоль (Enter для запуска с входными данными)...'
             }
           />
+        )}
+
+        {inputVal.length > 0 && (
+          <button
+            type="button"
+            className={styles.clearInputBtn}
+            onClick={() => {
+              setInputVal('');
+              if (isMultiline) textareaRef.current?.focus();
+              else inputRef.current?.focus();
+            }}
+            title="Очистить строку ввода"
+            aria-label="Очистить строку ввода"
+          >
+            <X size={12} />
+          </button>
         )}
 
         <button

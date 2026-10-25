@@ -401,9 +401,13 @@ public final class Engine {
     public static void main(String[] args) throws Exception {
         try {
             String input = new String(System.in.readAllBytes(), StandardCharsets.UTF_8);
-            System.out.print(JSON.toJson(new Engine().run(JsonParser.parseString(input).getAsJsonObject())));
+            byte[] output = JSON.toJson(new Engine().run(JsonParser.parseString(input).getAsJsonObject())).getBytes(StandardCharsets.UTF_8);
+            System.out.write(output);
+            System.out.flush();
         } catch (Exception e) {
-            System.out.print(JSON.toJson(obj("error",e.getMessage()==null?e.getClass().getSimpleName():e.getMessage())));
+            byte[] error = JSON.toJson(obj("error",e.getMessage()==null?e.getClass().getSimpleName():e.getMessage())).getBytes(StandardCharsets.UTF_8);
+            System.out.write(error);
+            System.out.flush();
         }
     }
 }
