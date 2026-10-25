@@ -388,12 +388,12 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       const type = supported.includes('updateCondition')
         ? 'updateCondition'
         : n.data.astKind === 'FieldDeclaration'
-        ? 'updateVariable'
-        : n.data.astKind === 'SwitchStmt' || n.data.astKind === 'ForEachStmt'
-        ? 'updateExpression'
-        : supported.includes('replaceStatement')
-        ? 'replaceStatement'
-        : 'updateExpression';
+          ? 'updateVariable'
+          : n.data.astKind === 'SwitchStmt' || n.data.astKind === 'ForEachStmt'
+            ? 'updateExpression'
+            : supported.includes('replaceStatement')
+              ? 'replaceStatement'
+              : 'updateExpression';
       if (!supported.includes(type)) {
         fail(new Error('Редактирование этого блока не поддерживается. Измените исходный Java-код.'));
         return;
@@ -499,7 +499,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
           accept(p, true);
           set({ showImportModal: false });
           await analysis();
-          if (oldId && oldId !== p.projectId) void api(`/projects/${oldId}`, undefined, 'DELETE').catch(() => {});
+          if (oldId && oldId !== p.projectId) void api(`/projects/${oldId}`, undefined, 'DELETE').catch(() => { });
           log('success', `Создан проект: загружено файлов ${files.length}, узлов ${p.graph.nodes.length}.`);
         } else {
           // Merge incoming files with existing project files so old files are kept
@@ -614,21 +614,21 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       if (!analysis) return;
       set((state) => {
         const aiIssues = analysis.issues?.map((iss, idx) => ({
-              ...iss,
-              id: `ai:${iss.id || `issue-${idx + 1}`}`,
-              title: `ИИ: ${iss.title}`,
-              level: iss.level || 'medium',
-              file: iss.file || state.activeFilePath || 'Main.java',
-              line: iss.line ?? 1,
-              resolved: false,
-            })) ?? [];
+          ...iss,
+          id: `ai:${iss.id || `issue-${idx + 1}`}`,
+          title: `ИИ: ${iss.title}`,
+          level: iss.level || 'medium',
+          file: iss.file || state.activeFilePath || 'Main.java',
+          line: iss.line ?? 1,
+          resolved: false,
+        })) ?? [];
 
         const aiRecs = analysis.recommendations?.map((rec, idx) => ({
-              ...rec,
-              id: `ai:${rec.id || `rec-${idx + 1}`}`,
-              impact: rec.impact || 'medium',
-              tag: 'ИИ-рекомендация',
-            })) ?? [];
+          ...rec,
+          id: `ai:${rec.id || `rec-${idx + 1}`}`,
+          impact: rec.impact || 'medium',
+          tag: 'ИИ-рекомендация',
+        })) ?? [];
 
         return {
           issues: [...state.issues.filter(issue => !issue.id.startsWith('ai:')), ...aiIssues],
