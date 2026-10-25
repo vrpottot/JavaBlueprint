@@ -41,6 +41,13 @@ class Advanced {
   void unsafeQueue(List<List<Integer>> graph,boolean[] seen) { ArrayDeque<Integer> q=new ArrayDeque<>(); q.add(0); while(!q.isEmpty() || true) { int u=q.remove(); for(int v:graph.get(u)) { if(!seen[v]) { seen[v]=true; q.add(v); } } } }
   void conditionalMark(List<List<Integer>> graph,boolean[] seen,boolean flag) { ArrayDeque<Integer> q=new ArrayDeque<>(); q.add(0); while(!q.isEmpty()) { int u=q.remove(); for(int v:graph.get(u)) { if(!seen[v]) { if(flag)seen[v]=true; q.add(v); } } } }
   void seeded(ArrayDeque<Integer> q,List<List<Integer>> graph,boolean[] seen) { while(!q.isEmpty()) { int u=q.remove(); for(int v:graph.get(u)) { if(!seen[v]) { seen[v]=true; q.add(v); } } } }
+  String aliasedCopy(int n) { StringBuilder a=new StringBuilder();StringBuilder b=a;String out="";for(int i=0;i<n;i++){a.append('x');out=b.toString();}return out; }
+  long grownTraversal(int n) { List<Integer> a=new ArrayList<>();long count=0;for(int i=0;i<n;i++){append(a,n);for(int x:a)count++;}return count; }
+  void append(List<Integer> a,int n) {for(int i=0;i<n;i++)a.add(i);}
+  String sharedArguments(int n) {StringBuilder b=new StringBuilder();return copyBoth(b,b,n);}
+  String copyBoth(StringBuilder a,StringBuilder b,int n) {String out="";for(int i=0;i<n;i++){a.append('x');out=b.toString();}return out;}
+  long grownIndexLoop(int n) {List<Integer>a=new ArrayList<>();long count=0;for(int i=0;i<n;i++){append(a,n);for(int j=0;j<a.size();j++)count++;}return count;}
+  String rebound(int n) {StringBuilder a=new StringBuilder();StringBuilder b=a;a=new StringBuilder();for(int i=0;i<n;i++)b.append('x');return a.toString();}
 }` }]);
   assert.deepEqual(result.errors, []);
   const costs = new Map(result.nodes.filter(node => node.kind === 'method').map(node => [node.title, node.complexity!]));
@@ -52,6 +59,11 @@ class Advanced {
   assert.match(costs.get('joined')!.estimate, /max\(\|stream text element\|\)/);
   assert.equal(costs.get('maxWithWork')!.estimate, 'O(n^2 * |values|)');
   assert.match(costs.get('seeded')!.estimate, /E\(graph\).*\|q\|/);
+  assert.equal(costs.get('aliasedCopy')!.estimate, 'O(n^2)');
+  assert.equal(costs.get('grownTraversal')!.estimate, 'O(n^3)');
+  assert.equal(costs.get('sharedArguments')!.estimate, 'O(n^2)');
+  assert.equal(costs.get('grownIndexLoop')!.estimate, 'O(n^3)');
+  assert.equal(costs.get('rebound')!.status, 'unknown');
   for (const name of ['arbitrary', 'arrayBound', 'inclusive', 'skip', 'badMidpoint', 'growing', 'mutatedRecursion', 'lateBase', 'conditionalBase', 'unsafeQueue', 'conditionalMark']) {
     assert.equal(costs.get(name)!.status, 'unknown', `${name}: ${JSON.stringify(costs.get(name))}`);
     assert.ok(costs.get(name)!.limitations.length);

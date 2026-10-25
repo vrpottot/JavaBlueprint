@@ -62,6 +62,8 @@ test('known throw types select the first compatible catch and self-suppression h
       catch(IllegalArgumentException e) { x=5; } catch(Exception e) { x=6; } }
     int expression(int n) throws java.io.IOException { try { return switch(n) { case 0 -> throw new java.io.IOException(); default -> 1; }; } finally { x=7; } }
     void assertion() { try { assert x>0; } finally { x=8; } }
+    int unboxing(Integer value) { try { return value+1; } finally { x=9; } }
+    void commentOnly() { try { x=1; } finally { /* orphan cleanup comment */ } }
   }` }]);
   assert.deepEqual(ir.errors, []);
   const scope = ir.nodes.find(node => node.title === 'ordered')!.id;
@@ -77,9 +79,9 @@ test('known throw types select the first compatible catch and self-suppression h
   const selected = ir.edges.filter(edge => edge.source === self.target);
   assert.equal(selected.length, 1);
   assert.match(selected[0]!.label ?? '', /IllegalArgumentException/);
-  for (const name of ['expression', 'assertion']) {
+  for (const name of ['expression', 'assertion', 'unboxing']) {
     const method = ir.nodes.find(node => node.title === name)!;
-    const abrupt = ir.nodes.find(node => node.methodId === method.id && node.astKind === (name === 'expression' ? 'ReturnStmt' : 'AssertStmt'))!;
+    const abrupt = ir.nodes.find(node => node.methodId === method.id && node.astKind === (name === 'assertion' ? 'AssertStmt' : 'ReturnStmt'))!;
     const exception = ir.edges.find(edge => edge.source === abrupt.id && edge.kind === 'exception')!;
     assert.ok(exception, `${name} can fail before normal completion`);
     assert.ok(ir.nodes.some(node => node.originId && node.methodId === method.id && reaches(ir, exception.target, node.id)), `${name} exception must pass through finally`);

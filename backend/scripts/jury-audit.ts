@@ -15,6 +15,8 @@ const output = resolve(argument('--output', '/tmp/javascope-jury/results'));
 const toolsDirectory = resolve(argument('--coverage-tools', '/tmp/javascope-jury/tools'));
 const engine = new JavaParserEngine();
 const runner = new DockerRunner();
+const revision = await runProcess('git', ['rev-parse', 'HEAD'], { timeoutMs: 5000 });
+const changes = await runProcess('git', ['diff', '--name-only'], { timeoutMs: 5000 });
 const cases = [
   { name: 'ClearingHouse', folder: 'clearing', max: '180 17 1', safe: 'inversionCount', mutation: 'fee',
     mutate: (code: string) => code.replace('Math.min(500,', 'Math.min(499,'),
@@ -93,7 +95,7 @@ async function coverage(name: string, files: SourceFile[], destination: string) 
 for (const scenario of cases.filter(value => selected === 'all' || value.folder === selected)) {
   const destination = resolve(output, scenario.folder);
   await mkdir(destination, { recursive: true });
-  const report: Record<string, any> = { started: new Date().toISOString(), evaluatedRevision: '4334d84b96fbe7bed553ec557d0f768b12a62009', scenario };
+  const report: Record<string, any> = { started: new Date().toISOString(), evaluatedRevision: revision.stdout.trim(), worktreeChanges: changes.stdout.trim().split('\n').filter(Boolean), scenario };
   const save = () => writeFile(resolve(destination, 'results.json'), JSON.stringify(report, null, 2) + '\n');
   try {
     const files = await Promise.all([`${scenario.name}.java`, `${scenario.name}Test.java`].map(async path => ({

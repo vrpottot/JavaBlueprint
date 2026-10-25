@@ -101,6 +101,15 @@ final class ControlFlow {
         if(expression instanceof LambdaExpr) return false;
         if(expression instanceof VariableDeclarationExpr declaration) return declaration.getVariables().stream().anyMatch(v->v.getInitializer().map(this::mayThrow).orElse(false));
         if(expression instanceof MethodCallExpr || expression instanceof ObjectCreationExpr || expression instanceof ArrayAccessExpr) return true;
+        if(expression instanceof SwitchExpr select&&nullableSelector(select.getSelector())&&select.getEntries().stream().flatMap(entry->entry.getLabels().stream()).noneMatch(label->label instanceof NullLiteralExpr))return true;
+        if(expression instanceof BinaryExpr binary&&(boxed(binary.getLeft())||boxed(binary.getRight())))return true;
+        if(expression instanceof UnaryExpr unary&&boxed(unary.getExpression()))return true;
+        if(boxed(expression)) {
+            Node parent=expression.getParentNode().orElse(null);
+            if(parent instanceof ReturnStmt&&expression.findAncestor(MethodDeclaration.class).map(method->method.getType().isPrimitiveType()).orElse(false))return true;
+            if(parent instanceof IfStmt||parent instanceof WhileStmt||parent instanceof DoStmt||parent instanceof ConditionalExpr)return true;
+            if(parent instanceof VariableDeclarator variable&&variable.getType().isPrimitiveType())return true;
+        }
         if(expression instanceof FieldAccessExpr f && !(f.getScope() instanceof ThisExpr)) return true;
         if(expression instanceof CastExpr cast && !cast.getType().isPrimitiveType()) return true;
         if(expression instanceof SwitchExpr select&&select.getEntries().stream().anyMatch(this::nestedMayThrow))return true;
@@ -110,6 +119,24 @@ final class ControlFlow {
         for(Node child:expression.getChildNodes()) if(child instanceof Expression e && mayThrow(e)) return true;
         return false;
     }
+    String expressionType(Expression expression) {
+        expression=Complexity.unwrap(expression);
+        if(expression instanceof IntegerLiteralExpr)return "int";
+        if(expression instanceof CharLiteralExpr)return "char";
+        if(expression instanceof CastExpr cast)return cast.getType().asString();
+        if(expression instanceof NameExpr name) {
+            Node callable=expression.findAncestor(CallableDeclaration.class).orElse(null);
+            if(callable!=null) {
+                for(Parameter parameter:Symbols.parameters(callable))if(parameter.getNameAsString().equals(name.getNameAsString()))return parameter.getType().asString();
+                for(VariableDeclarator variable:callable.findAll(VariableDeclarator.class))if(variable.getNameAsString().equals(name.getNameAsString()))return variable.getType().asString();
+            }
+            TypeDeclaration<?> owner=Symbols.owner(expression);
+            if(owner!=null)return engine.symbols.field(owner.getNameAsString(),name.getNameAsString());
+        }
+        return "";
+    }
+    boolean boxed(Expression expression) { return Set.of("Byte","Short","Integer","Long","Float","Double","Boolean","Character").contains(Symbols.raw(expressionType(expression))); }
+    boolean nullableSelector(Expression expression) { return !Set.of("byte","short","int","char").contains(expressionType(expression)); }
     boolean nestedMayThrow(Node node) {
         if(node instanceof LambdaExpr||node instanceof TypeDeclaration<?>)return false;
         if(node instanceof ThrowStmt)return true;
@@ -149,6 +176,7 @@ final class ControlFlow {
             }
             if(!hasDefault) edge(node,next,"branch","no match");
             implicit(node,select.getSelector(),c);
+            if(nullableSelector(select.getSelector())&&select.getEntries().stream().flatMap(entry->entry.getLabels().stream()).noneMatch(label->label instanceof NullLiteralExpr))edge(node,c.throwing.apply(new Thrown("NullPointerException")),"exception","null selector");
         } else if(statement instanceof TryStmt attempt) {
             tryFlow(attempt,node,next,c);
         } else if(statement instanceof ReturnStmt returned) {
@@ -184,7 +212,7 @@ final class ControlFlow {
     String finalRoute(TryStmt attempt,String destination,String reason,Context outer) {
         if(attempt.getFinallyBlock().isEmpty()) return destination;
         BlockStmt body=attempt.getFinallyBlock().get();
-        for(Node n:body.findAll(Node.class)) if(originals.containsKey(n.getData(Engine.ID))) {
+        for(Node n:body.findAll(Node.class)) if(n.containsData(Engine.ID)&&originals.containsKey(n.getData(Engine.ID))) {
             Map<String,Object> row=originals.get(n.getData(Engine.ID));
             if(outer.method.equals(row.get("methodId"))&&!row.get("astKind").equals("FieldDeclaration"))finallySources.add(n.getData(Engine.ID));
         }

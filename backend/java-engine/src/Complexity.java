@@ -71,6 +71,7 @@ final class Complexity {
     }
     static final class Context {
         final Map<String,String> types = new HashMap<>();
+        final Map<String,String> aliases = new HashMap<>();
         final Map<String,Cost> sizes = new HashMap<>();
         final Map<String,Expression> initializers = new HashMap<>();
         final Map<String,String> concrete = new HashMap<>();
@@ -86,7 +87,7 @@ final class Complexity {
         Cost returned = Cost.one();
         boolean sawReturn;
         Context copy() {
-            Context c = new Context(); c.types.putAll(types); c.sizes.putAll(sizes); c.initializers.putAll(initializers); c.concrete.putAll(concrete); c.maximum.putAll(maximum); c.positive.addAll(positive); c.growth.putAll(growth); c.immutableGrowth.addAll(immutableGrowth); c.chains.putAll(chains); c.roots.putAll(roots); c.owner=owner; c.receiver=receiver; c.returned=returned; c.sawReturn=sawReturn; return c;
+            Context c = new Context(); c.types.putAll(types); c.aliases.putAll(aliases); c.sizes.putAll(sizes); c.initializers.putAll(initializers); c.concrete.putAll(concrete); c.maximum.putAll(maximum); c.positive.addAll(positive); c.growth.putAll(growth); c.immutableGrowth.addAll(immutableGrowth); c.chains.putAll(chains); c.roots.putAll(roots); c.owner=owner; c.receiver=receiver; c.returned=returned; c.sawReturn=sawReturn; return c;
         }
     }
     final Node root;
@@ -232,8 +233,24 @@ final class Complexity {
         }
         return "";
     }
+    Expression canonical(Expression expression,Context c) {
+        expression=unwrap(expression);
+        if(expression instanceof FieldAccessExpr field) {
+            if(field.getScope() instanceof ThisExpr)return canonical(new NameExpr(field.getNameAsString()),c);
+            Expression scope=canonical(field.getScope(),c);
+            if(!scope.toString().equals(field.getScope().toString()))expression=new FieldAccessExpr(scope,field.getNameAsString());
+        }
+        Set<String> seen=new HashSet<>(); String key=expression.toString();
+        while(c.aliases.containsKey(key)&&seen.add(key))key=c.aliases.get(key);
+        if(!key.equals(expression.toString())) {
+            try { return com.github.javaparser.StaticJavaParser.parseExpression(key); }
+            catch(RuntimeException ignored) { return expression; }
+        }
+        return expression;
+    }
+    boolean mutable(String type) { return type.endsWith("[]")||collection(type)||baseType(type).equals("StringBuilder")||symbols.type(type)!=null; }
     Cost length(Expression e, Context c) {
-        e=unwrap(e);
+        e=canonical(e,c);
         if(e instanceof BinaryExpr binary && typeOf(e,c).equals("String"))return textLength(binary.getLeft(),c).plus(textLength(binary.getRight(),c));
         if(e instanceof StringLiteralExpr || e instanceof TextBlockLiteralExpr)return Cost.one();
         if(e instanceof ObjectCreationExpr created&&collection(created.getType().asString()))return size(created,c);
@@ -273,7 +290,7 @@ final class Complexity {
         return Cost.unknownCost();
     }
     Cost size(Expression raw, Context c) {
-        Expression e=unwrap(raw);
+        Expression e=canonical(raw,c);
         if(e instanceof CastExpr cast) return size(cast.getExpression(),c);
         if(e instanceof UnaryExpr unary && (unary.getOperator()==UnaryExpr.Operator.MINUS || unary.getOperator()==UnaryExpr.Operator.PLUS)) {
             assumptions.add("Числовые размеры в оценке обозначают модуль значения.");
@@ -377,7 +394,9 @@ final class Complexity {
                 }
                 else body.sizes.put(v.getNameAsString(),Cost.variable("max(|"+f.getIterable()+"[*]|)"));
             }
-            Cost result=setup.plus(iterations.times(statement(f.getBody(),body))).plus(propagateGrowth(body,c,iterations)); invalidateBranchAssignments(f.getBody(),c);
+            Cost work=statement(f.getBody(),body);
+            String read=canonical(f.getIterable(),c).toString(); c.linearReads.merge(read,work,Cost::plus);
+            Cost result=setup.plus(iterations.times(work)).plus(propagateGrowth(body,c,iterations)); invalidateBranchAssignments(f.getBody(),c);
             explain(s,result,"Число итераций равно длине массива/стандартной коллекции."); return result;
         }
         if(s instanceof WhileStmt w) return whileLoop(w,c);
@@ -584,7 +603,9 @@ final class Complexity {
             Cost body=statement(f.getBody(),loop), result=setup.plus(count.times(condition)).plus(AlgorithmRules.geometric(body,size(start,c),marker));
             invalidateBranchAssignments(f,c); explain(f,result,"Суммирование геометрически уменьшающихся объёмов, без лишнего множителя log n."); return result;
         }
-        Cost result=setup.plus(count.times(condition.plus(statement(f.getBody(),loop)))).plus(propagateGrowth(loop,c,count));
+        Cost work=statement(f.getBody(),loop);
+        for(MethodCallExpr bound:f.getCompare().get().findAll(MethodCallExpr.class))if(Set.of("size","length").contains(bound.getNameAsString())&&bound.getScope().isPresent())c.linearReads.merge(canonical(bound.getScope().get(),c).toString(),work,Cost::plus);
+        Cost result=setup.plus(count.times(condition.plus(work))).plus(propagateGrowth(loop,c,count));
         invalidateBranchAssignments(f,c);
         explain(f,result,step.logarithmic?"Счётчик делится на постоянный множитель > 1.":count.format().equals("O(1)")?"Постоянные границы цикла.":"Монотонный счётчик с постоянным шагом; стоимость тела умножается на число итераций.");
         return result;
@@ -708,7 +729,7 @@ final class Complexity {
     }
     Cost expression(Expression raw, Context c) {
         Expression e=unwrap(raw);
-        if(e instanceof LiteralExpr || e instanceof NameExpr || e instanceof ThisExpr || e instanceof ClassExpr || e instanceof TypeExpr || e instanceof MethodReferenceExpr || e instanceof LambdaExpr) return Cost.one();
+        if(e instanceof LiteralExpr || e instanceof NameExpr || e instanceof ThisExpr || e instanceof SuperExpr || e instanceof ClassExpr || e instanceof TypeExpr || e instanceof MethodReferenceExpr || e instanceof LambdaExpr) return Cost.one();
         if(e instanceof VariableDeclarationExpr declaration) {
             Cost cost=Cost.one();
             for(VariableDeclarator v:declaration.getVariables()) {
@@ -716,6 +737,8 @@ final class Complexity {
                 if(v.getInitializer().isPresent()) {
                     Expression init=v.getInitializer().get(); cost=cost.plus(expression(init,c));
                     if(v.getType().isVarType())c.types.put(name,typeOf(init,c));
+                    if(mutable(typeOf(init,c))&&(init instanceof NameExpr||init instanceof FieldAccessExpr))c.aliases.put(name,canonical(init,c).toString());
+                    if(init instanceof NameExpr source&&c.concrete.containsKey(source.getNameAsString()))c.concrete.put(name,c.concrete.get(source.getNameAsString()));
                     Cost value=size(init,c); if(!value.unknown)c.sizes.put(name,value); else c.sizes.remove(name); c.initializers.put(name,init);
                     if(init instanceof ObjectCreationExpr created)c.concrete.put(name,created.getType().asString());
                     if(integer(init)!=null)c.maximum.put(name,integer(init));
@@ -735,6 +758,10 @@ final class Complexity {
                 c.growth.merge(a.getTarget().toString(),added,Cost::plus); c.immutableGrowth.add(a.getTarget().toString());
             }
             if(a.getTarget() instanceof NameExpr n) {
+                String key=n.getNameAsString();
+                if(mutable(typeOf(n,c))&&c.aliases.keySet().stream().anyMatch(alias->!alias.equals(key)&&canonical(new NameExpr(alias),c).toString().equals(key)))return unknown(a,"Перепривязка объекта с живыми alias требует отдельной heap-модели.");
+                c.aliases.remove(key);
+                if(a.getOperator()==AssignExpr.Operator.ASSIGN&&mutable(typeOf(a.getValue(),c))&&(a.getValue() instanceof NameExpr||a.getValue() instanceof FieldAccessExpr))c.aliases.put(key,canonical(a.getValue(),c).toString());
                 Cost value=size(a.getValue(),c);
                 if(a.getOperator()==AssignExpr.Operator.ASSIGN && !value.unknown)c.sizes.put(n.getNameAsString(),value); else c.sizes.remove(n.getNameAsString());
                 if(a.getOperator()==AssignExpr.Operator.ASSIGN)c.initializers.put(n.getNameAsString(),a.getValue()); else c.initializers.remove(n.getNameAsString());
@@ -777,7 +804,7 @@ final class Complexity {
         return Cost.variable("C(toString("+value+"))").plus(textLength(value,c));
     }
     Cost linearSize(Expression receiver,Context c) {
-        String key=receiver instanceof FieldAccessExpr field&&field.getScope() instanceof ThisExpr?field.getNameAsString():receiver.toString();
+        String key=canonical(receiver,c).toString();
         c.linearReads.merge(key,Cost.one(),Cost::plus);
         return length(receiver,c);
     }
@@ -819,8 +846,10 @@ final class Complexity {
             String key=call.getScope().map(scope->scope instanceof ThisExpr?field:scope+"."+field).orElse(field);
             if(caller.sizes.containsKey(key))c.sizes.put(field,caller.sizes.get(key));
         }
+        Map<String,String> actualAliases=new HashMap<>();
         for(int i=0;i<method.getParameters().size();i++) {
             Parameter parameter=method.getParameter(i); Expression argument=call.getArgument(i);
+            if(mutable(typeOf(argument,caller))) { String previous=actualAliases.putIfAbsent(canonical(argument,caller).toString(),parameter.getNameAsString()); if(previous!=null)c.aliases.put(parameter.getNameAsString(),previous); }
             String declared=symbols.bind(parameter.getType().asString(),Symbols.owner(method),receiver);
             c.types.put(parameter.getNameAsString(),declared);
             Cost magnitude=collection(typeOf(argument,caller))||typeOf(argument,caller).endsWith("[]")?length(argument,caller):size(argument,caller);
@@ -837,7 +866,7 @@ final class Complexity {
     final Set<Node> sizing=Collections.newSetFromMap(new IdentityHashMap<>());
     Summary summarize(MethodDeclaration method,MethodCallExpr call,Context caller,String receiver) {
         Context body=callee(method,call,caller,receiver);
-        String key=method.getData(Engine.ID)+":"+receiver+":"+body.receiver+":"+new TreeMap<>(body.sizes)+":"+new TreeMap<>(body.maximum)+":"+new TreeMap<>(body.concrete)+":"+new TreeMap<>(body.initializers);
+        String key=method.getData(Engine.ID)+":"+receiver+":"+body.receiver+":"+new TreeMap<>(body.sizes)+":"+new TreeMap<>(body.maximum)+":"+new TreeMap<>(body.concrete)+":"+new TreeMap<>(body.initializers)+":"+new TreeMap<>(body.aliases);
         if(summaries.containsKey(key))return summaries.get(key);
         if(stack.contains(method)||sizing.contains(method))return new Summary(Cost.unknownCost(),Cost.unknownCost(),body);
         if(++calls>128)return new Summary(unknown(call,"Превышен бюджет межпроцедурного анализа."),Cost.unknownCost(),body);
@@ -897,7 +926,7 @@ final class Complexity {
     Cost methodCall(MethodCallExpr call, Context c) {
         Cost arguments=Cost.one(); for(Expression argument:call.getArguments())arguments=arguments.plus(expression(argument,c));
         String name=call.getNameAsString(), scope=call.getScope().map(Object::toString).orElse("");
-        Expression receiverExpression=call.getScope().orElse(null);
+        Expression receiverExpression=call.getScope().map(scopeExpression->canonical(scopeExpression,c)).orElse(null);
         if(receiverExpression!=null)arguments=arguments.plus(expression(receiverExpression,c));
         String receiver=receiverExpression==null?(c.owner==null?"":c.owner.getNameAsString()):typeOf(receiverExpression,c);
         String raw=baseType(receiver);
@@ -922,7 +951,7 @@ final class Complexity {
                 Context effects=variant==target?body:summarize(variant,call,c,Symbols.owner(variant).getNameAsString()).body;
                 for(var effect:effects.growth.entrySet()) {
                     String key=null;
-                    for(int i=0;i<variant.getParameters().size();i++)if(variant.getParameter(i).getNameAsString().equals(effect.getKey()))key=call.getArgument(i).toString();
+                    for(int i=0;i<variant.getParameters().size();i++)if(variant.getParameter(i).getNameAsString().equals(effect.getKey()))key=canonical(call.getArgument(i),c).toString();
                     if(key==null&&!symbols.field(Symbols.owner(variant).getNameAsString(),effect.getKey()).isEmpty())key=call.getScope().map(scopeExpr->scopeExpr instanceof ThisExpr?effect.getKey():scopeExpr+"."+effect.getKey()).orElse(effect.getKey());
                     if(key!=null) { c.sizes.merge(key,effect.getValue(),Cost::plus); c.growth.merge(key,effect.getValue(),Cost::plus); if(effects.immutableGrowth.contains(effect.getKey()))c.immutableGrowth.add(key); }
                 }
@@ -930,13 +959,14 @@ final class Complexity {
             explain(call,result,"Стоимость метода "+Symbols.owner(target).getNameAsString()+"."+name+" с подстановкой аргументов."); return result;
         }
         if(owner instanceof EnumDeclaration && Set.of("values","name","ordinal","toString","valueOf").contains(name))return arguments.plus(name.equals("valueOf")&&!call.getArguments().isEmpty()?textLength(call.getArgument(0),c):Cost.one());
-        if(Set.of("Math","java.lang.Math","StrictMath","java.lang.StrictMath").contains(scope)&&Set.of("abs","min","max","floor","ceil","round","sqrt","signum").contains(name))return arguments;
+        if(Set.of("Math","java.lang.Math","StrictMath","java.lang.StrictMath").contains(scope)&&Set.of("abs","min","max","floor","ceil","round","sqrt","signum","addExact","subtractExact","multiplyExact","negateExact","incrementExact","decrementExact","toIntExact","absExact","floorMod","floorDiv").contains(name))return arguments;
         if(Set.of("Integer","Long","Double","Boolean","Character").contains(scope)&&Set.of("sum","min","max","compare","toUnsignedLong","toUnsignedString","valueOf","parseInt","parseLong","toString").contains(name))return arguments.plus(call.getArguments().isEmpty()?Cost.one():textLength(call.getArgument(0),c));
         if(scope.equals("Objects")&&name.equals("requireNonNull"))return arguments.plus(call.getArguments().size()>1&&!(call.getArgument(1) instanceof StringLiteralExpr)?callback(call.getArgument(1),"List<Object>",c):Cost.one());
         if(scope.equals("Objects")&&Set.of("equals","hash").contains(name))return arguments.plus(Cost.variable("C("+name+" elements)"));
         if(scope.equals("Comparator")||raw.equals("Comparator"))return arguments;
         if(scope.equals("Collectors")||scope.equals("java.util.stream.Collectors"))return arguments;
         if(Set.of("List","Set","Map","Optional").contains(scope)&&Set.of("of","ofNullable","empty","copyOf").contains(name))return arguments.plus(name.equals("copyOf")?length(call.getArgument(0),c):Cost.one());
+        if(Set.of("Collections","java.util.Collections").contains(scope)&&Set.of("unmodifiableList","unmodifiableSet","unmodifiableMap","unmodifiableCollection").contains(name))return arguments;
         if(Set.of("Arrays","java.util.Arrays","Collections","java.util.Collections").contains(scope)) {
             if(Set.of("fill","copyOf","copyOfRange","toString","equals").contains(name)&&!call.getArguments().isEmpty()) {
                 String element=typeOf(call.getArgument(0),c).replaceFirst("\\[\\]$","");
